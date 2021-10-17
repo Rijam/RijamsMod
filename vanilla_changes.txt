@@ -1,0 +1,97 @@
+Vanilla changes (as of July 16th, 2021)
+§represents modded content
+
+Snow Globe can be crafted:
+	5 Glass, 5 Snow blocks, 5 Souls of Night, 5 Souls of Light. @ Mythril Anvil.
+Flesh Knuckles can be crafted:
+	Putrid Scent & 5 Ectoplasm. @ Mythril Anvil.
+Putrid Scent can be crafted:
+	Flesh Knuckles & 5 Ectoplasm. @ Mythril Anvil.
+
+Snowman Gansta can drop:
+	§ Thompson (1/15)
+	§ Carrot Nose (1/20)
+	§ Frosty Rose (1/25)
+	Gansta Hat (1/50)
+	Present (1/150)
+Snow Balla can drop:
+	§ Legion Scarf (1/15)
+	§ Carrot Nose (1/20)
+	§ Frosty Rose (1/25)
+	Balla Hat (1/50)
+	Present (1/150)
+Mister Stabby:
+	§ Legion Scarf (1/15)
+	§ Carrot Nose (1/20)
+	§ Stabby Shiv (1/15)
+	§ Frosty Rose (1/25)
+	Present (1/150)
+Goblin Summoner:
+	§ Shadowflame Staff (1/3)
+Armored Viking:
+	Armor Polish (1/100, 1/50 in Expert Mode)
+Santa NK1:
+	§ Naughty List (1/20, 1/10 in Expert Mode)
+Choas Elemental:
+	§ Teleportation Core (1/20)
+Enchanted Sword (NPC):
+	§ Teleportation Core (1/20)
+§Consolaria's Spectral Elemental:
+	§ Teleportation Core (1/20)
+
+Guide:
+	4 new chat lines
+Pirate:
+	2 new chat lines
+Steampunker:
+	1 new chat line
+Nurse:
+	1 new chat line
+Merchant:
+	1 new chat line
+	Sharpening Station (Hardmode) (10g)
+Stylist:
+	1 new chat line
+Angler:
+	2 new chat lines
+Traveling Merchant:
+	3 new chat lines
+	§ Strange Roll (Defeat EoC) (1/5 chance)
+Tax Collector:
+	1 new chat line
+Arms Dealer:
+	Ammo Box (Hardmode) (15g)
+Witch Doctor:
+	Worm Tooth (Crimson world or Hardmode) (1s)
+Dye Trader:
+	Red Husk (Caverns layer)
+	Orange Bloodroot (Underground or Caverns layer)
+	Lime Kelp (Underground or Caverns layer)
+	Green Mushroom (Underground or Caverns layer)
+	Teal Mushroom (Underground or Caverns layer)
+	Yellow Marigold (Surface forest or ocean)
+	Blue Berries (Surface forest or ocean)
+	Cyan Husk (Snow biome)
+	Sky BlueFlower (Jungle)
+	VioletHusk (Underground Jungle)
+	Pink Prickly Pear (Desert)
+	Purple Mucus (Ocean)
+	Black Ink (Ocean)
+Demolitionist:
+	Bomb Fish (Saved Angler) (10s)
+	Beenade (Defeat Queen Bee) (2s)
+	Molotov Cocktail (Defeat Skeletron) (5s)
+	Explosives (Saved Mechanic) (70s)
+	Detonator (10g)
+Dryad:
+	Jungle Grass Seeds (Jungle) (15s)
+Wizard:
+	Book (15s)
+Truffle:
+	Mushroom Grass Seeds (15s)
+Skeleton Merchant:
+	Hook (Defeat Goblin Army) (50s)
+	Bone (Defeat Skeletron) (2s 50c)
+	Bone Wand (Defeat Skeletron) (1g 25s)
+	Bone Sword (4g 50s)
+	Bone Pickaxe (7g 50s)

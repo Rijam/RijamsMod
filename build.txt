@@ -1,0 +1,8 @@
+displayName = Rijam's Mod
+author = Rijam
+version = 1.0.0.0
+weakReferences = SacredTools,CalamityMod,ThoriumMod,pinkymod,AAMod
+homepage = https://discord.gg/t63JzNHzvu
+hideCode = false
+hideResources = false
+includeSource = true
