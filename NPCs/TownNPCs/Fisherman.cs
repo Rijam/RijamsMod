@@ -281,6 +281,18 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I heard rumors of a blue hooded man who sells valuables...", 0.25);
 				}
 			}
+			if (ModLoader.GetMod("HelpfulNPCs") != null)
+			{
+				int expertFisherman = NPC.FindFirstNPC(ModLoader.GetMod("HelpfulNPCs").NPCType("ExpertFisherman"));
+				if (expertFisherman >= 0)
+				{
+					chat.Add("Don't let 'Expert' in " + Main.npc[expertFisherman].GivenName + "'s title fool ya. I'm just as much an expert as he is.", 0.25);
+				}
+			}
+			if (ModLoader.GetMod("FishermanNPC") != null)
+			{
+				chat.Add("Sorry FishermanNPC for taking yer mod name in 1.4, I hope yer don't mind.", 0.25);
+			}
 			return chat;
 		}
 		/*

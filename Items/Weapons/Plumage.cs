@@ -119,7 +119,8 @@ namespace RijamsMod.Items.Weapons
 
 		public override void SetDefaults()
 		{
-			item.damage = 100;
+			item.damage = 110;
+			item.crit = 4;
 			item.noMelee = true;
 			item.magic = true;
 			item.channel = true; //Channel so that you can hold the weapon [Important]

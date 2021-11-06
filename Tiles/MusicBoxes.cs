@@ -6,7 +6,7 @@ using Terraria.ObjectData;
 
 namespace RijamsMod.Tiles
 {
-	internal class TestMusicBox : ModTile
+	internal class MusicBoxOSW : ModTile
 	{
 		public override void SetDefaults()
 		{
@@ -25,7 +25,7 @@ namespace RijamsMod.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(i * 16, j * 16, 16, 48, ModContent.ItemType<Items.Placeable.TestMusicBox>());
+			Item.NewItem(i * 16, j * 16, 16, 48, ModContent.ItemType<Items.Placeable.MusicBoxOSW>());
 		}
 
 		public override void MouseOver(int i, int j)
@@ -33,7 +33,7 @@ namespace RijamsMod.Tiles
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.showItemIcon = true;
-			player.showItemIcon2 = ModContent.ItemType<Items.Placeable.TestMusicBox>();
+			player.showItemIcon2 = ModContent.ItemType<Items.Placeable.MusicBoxOSW>();
 		}
 	}
 }

@@ -35,8 +35,7 @@ namespace RijamsMod.Items.Accessories
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.MagmaStone, 1);
-			recipe.AddIngredient(ItemID.FragmentSolar, 10);
+			recipe.AddIngredient(ItemID.LunarBlockSolar, 50);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

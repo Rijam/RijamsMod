@@ -9,6 +9,10 @@ namespace RijamsMod.Items
 {
 	public class DebugDisplayStates : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override string Texture => "Terraria/Item_" + ItemID.PurpleSolution;
 		public override void SetStaticDefaults()
 		{
@@ -35,6 +39,8 @@ namespace RijamsMod.Items
 			Main.NewText("intTravQuestOddDevice is currenty: " + RijamsModWorld.intTravQuestOddDevice);
 			Main.NewText("intTravQuestBlankDisplay is currenty: " + RijamsModWorld.intTravQuestBlankDisplay);
 			Main.NewText("intTravQuestTPCore is currenty: " + RijamsModWorld.intTravQuestTPCore);
+			Main.NewText("intTravQuestRyeJam is currenty: " + RijamsModWorld.intTravQuestRyeJam);
+			Main.NewText("intTravQuestMagicOxygenizer is currenty: " + RijamsModWorld.intTravQuestMagicOxygenizer);
 			Main.NewText("savedHarpy is currenty: " + RijamsModWorld.savedHarpy);
 			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArived);
 			return true;
@@ -42,6 +48,10 @@ namespace RijamsMod.Items
 	}
 	public class DebugIntTravQuestOddDevice : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
@@ -160,6 +170,31 @@ namespace RijamsMod.Items
 			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestRyeJam == " + currentState));
 		}
 	}
+	public class DebugIntTravQuestMagicOxygenizer : DebugIntTravQuestOddDevice
+	{
+		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("[c/ff0000:Debug] - Magic Oxygenizer");
+			Tooltip.SetDefault("Changes the states of the Magic Oxygenizer quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+		}
+		public override bool UseItem(Player player)
+		{
+			RijamsModWorld.intTravQuestMagicOxygenizer = false;
+			RijamsModWorld.UpdateWorldBool();
+			return true;
+		}
+		public override void RightClick(Player player)
+		{
+			RijamsModWorld.intTravQuestMagicOxygenizer = true;
+			RijamsModWorld.UpdateWorldBool();
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			string currentState = RijamsModWorld.intTravQuestMagicOxygenizer.ToString();
+			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestRyeJam == " + currentState));
+		}
+	}
 	public class DebugIntTravArived : DebugIntTravQuestOddDevice
 	{
 		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
@@ -208,6 +243,10 @@ namespace RijamsMod.Items
 	}
 	public class DebugMethodTester : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override string Texture => "Terraria/Item_" + ItemID.PurpleSolution;
 		public override void SetStaticDefaults()
 		{
@@ -245,6 +284,10 @@ namespace RijamsMod.Items
 	}
 	public class DebugAnglerQuestChanger : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{

@@ -7,6 +7,18 @@ namespace RijamsMod
 {
 	public class RijamsModNPCs : GlobalNPC
 	{
+		/*public override bool InstancePerEntity => true;
+		public bool enemySlow;
+
+		public override void ResetEffects(NPC npc)
+		{
+			enemySlow = false;
+		}
+		public override void SetDefaults(NPC npc)
+		{
+			// We want our EnemySlow buff to follow the same immunities as normal Slow
+			npc.buffImmune[ModContent.BuffType<Buffs.EnemySlow>()] = npc.buffImmune[BuffID.Slow];
+		}*/
 		public override void NPCLoot(NPC npc)
 		{
 			if (npc.type == NPCID.SnowmanGangsta)
@@ -94,9 +106,12 @@ namespace RijamsMod
 						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.ArmorPolish);
 					}
 				}
-				else if (Main.rand.Next(100) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.ArmorPolish);
+				if (!Main.expertMode)
+                {
+					if (Main.rand.Next(100) == 0)
+					{
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.ArmorPolish);
+					}
 				}
 			}
 			if (npc.type == NPCID.SantaNK1)

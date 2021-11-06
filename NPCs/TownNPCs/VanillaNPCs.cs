@@ -191,6 +191,12 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].SetDefaults(ItemID.BlackInk);
 					nextSlot++;
 				}
+				int interTravel = NPC.FindFirstNPC(mod.NPCType("Interstellar Traveler"));
+				if (interTravel > 0)
+                {
+					shop.item[nextSlot].SetDefaults(mod.ItemType("BeamDye"));
+					nextSlot++;
+				}
 			}
 			if (type == NPCID.Demolitionist)
 			{

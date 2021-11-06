@@ -11,11 +11,13 @@ Includes:
 - - Find her in the sky.
 - Interstellar Traveler: sells information items and weapons. Has a quest system.
 - - Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
+
 Many new items and weapons throughout the game's progression.
-- 18 weapons: 3 Melee, 8 Ranged, 4 Magic, 3 Summoner.
-- 15 accessories.
+- 21 weapons: 3 Melee, 8 Ranged, 4 Magic, 6 Summoner.
+- 16 accessories.
 - 5 armor pieces.
-- 8 vanity items.
+- 8 vanity items + 3 dyes.
+
 Some QoL changes
 - Town NPCs sell more things.
 - Fisherman NPC.
@@ -23,17 +25,39 @@ Some QoL changes
 
 Some cross mod support:
 - Support for Census - Town NPC Checklist.
-- Harpy sells sells items from other mods.
+- Harpy sells some items from other mods.
 - Town NPC cross mod dialog.
 
 Known Issues:
-- Interstellar Traveler's quest system doesn't properly save in multiplayer.
+- In multiplayer, the Interstellar Traveler's quest system automatically completes the first quest. (It shouldn't be doing that)
 - Summoner's Glove is a little buggy, details in its tooltip.
 - Some items are unobtainable.
 
 The code is open source if you extract the mod!
 
+Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
+
 =-=-=-=-=-=-=-=-=-=
+
+Version 1.0.0.4
+- Harpy sprite updated
+- Rebalanced The Shredder: +10 damage, +4% critical strike chance, Red Harpy Feathers now only split twice instead of three times. Red Harpy Feathers only last 3 seconds instead of 5.
+- Added a quest checklist to the Interstellar Traveler. Hold left shift and click Quest Checklist to see it.
+- Added Daybreak Gauntlet (Pre-Moon Lord accessory)
+- Updated sprite for Daybreak Stone
+- Gave the Music Box (Outer Storage Warehouse) its own sprite and changed its internal name. (Pre-existing items/tiles will become unloaded.)
+- Changed the mod homepage to the GitHub Wiki.
+
+Version 1.0.0.3
+- Added three armor dyes: Yella Dye, Beam Dye, and Orange Beam Dye.
+
+Version 1.0.0.2
+- Three new summon sentry weapons: Slime Trap Staff, Spike Trap Staff, and Super Spike Trap Staff
+- Fixed the Interstellar Traveler's quest system in multiplayer! There is a new bug that causes the first quest to be automatically completed in multiplayer, but the other quests work.
+- Added a config option to disable/enable the debug items in the mod. Disabled by default.
+
+Version 1.0.0.1
+- GitHub Integration
 
 Version 1.0.0.0
 - Uploaded to the Mod Browser!

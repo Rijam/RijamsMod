@@ -3,7 +3,7 @@ using Terraria.ID;
 
 namespace RijamsMod.Items.Placeable
 {
-	public class TestMusicBox : ModItem
+	public class MusicBoxOSW : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -19,7 +19,7 @@ namespace RijamsMod.Items.Placeable
 			item.useTime = 10;
 			item.autoReuse = true;
 			item.consumable = true;
-			item.createTile = ModContent.TileType<Tiles.TestMusicBox>();
+			item.createTile = ModContent.TileType<Tiles.MusicBoxOSW>();
 			item.width = 24;
 			item.height = 24;
 			item.rare = ItemRarityID.LightRed;

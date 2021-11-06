@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
+using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -480,17 +481,29 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			button = "Shop";
 			button2 = "Quest";
+			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
+			{
+				button2 = "Quest Checklist";
+			}
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
 		{
+			
 			if (firstButton)
 			{
 				shop = true;
 			}
 			if (!firstButton)
 			{
-				QuestSystem();
+				if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
+				{
+					QuestSystemChecklist();
+				}
+				else
+                {
+					QuestSystem();
+				}
 			}
 		}
 		public void QuestSystem()
@@ -503,15 +516,16 @@ namespace RijamsMod.NPCs.TownNPCs
 				//Main.LocalPlayer.inventory[oddDeviceItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<OddDevice>());
 				Main.LocalPlayer.QuickSpawnItem(ItemID.GoldCoin, 2);
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestOddDevice = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
+					NetMessage.SendData(MessageID.WorldData);
 					//RijamsModWorld.SetIntTravQuestOddDevice();
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestOddDevice);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				else RijamsModWorld.intTravQuestOddDevice = true;
 				mod.Logger.Debug("RijamsMod: Odd Device quest completed.");
 				PlayCompleteQuestSound();
 				return;
@@ -523,15 +537,16 @@ namespace RijamsMod.NPCs.TownNPCs
 				//int blankDisplayItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<BlankDisplay>());
 				//Main.LocalPlayer.inventory[blankDisplayItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<BlankDisplay>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestBlankDisplay = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
+					NetMessage.SendData(MessageID.WorldData);
 					//RijamsModWorld.SetIntTravQuestBlankDisplay();
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestBlankDisplay);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestBlankDisplay = true;
 				mod.Logger.Debug("RijamsMod: Blank Display quest completed.");
 				PlayCompleteQuestSound();
 				return;
@@ -543,15 +558,15 @@ namespace RijamsMod.NPCs.TownNPCs
 				//int tPCoreItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<TeleportationCore>());
 				//Main.LocalPlayer.inventory[tPCoreItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<TeleportationCore>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestTPCore = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					//RijamsModWorld.SetIntTravQuestBlankDisplay();
+					NetMessage.SendData(MessageID.WorldData);
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestTPCore);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestTPCore = true;
 				mod.Logger.Debug("RijamsMod: Teleportation Core quest completed.");
 				PlayCompleteQuestSound();
 				return;
@@ -563,33 +578,34 @@ namespace RijamsMod.NPCs.TownNPCs
 				//int breadAndJellyItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<BreadAndJelly>());
 				//Main.LocalPlayer.inventory[breadAndJellyItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<BreadAndJelly>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestRyeJam = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					//RijamsModWorld.SetIntTravQuestBlankDisplay();
+					NetMessage.SendData(MessageID.WorldData);
+					RijamsModWorld.intTravQuestRyeJam = true;
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestRyeJam);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestRyeJam = true;
 				mod.Logger.Debug("RijamsMod: Rye Jam quest completed.");
 				PlayCompleteQuestSound();
 				return;
 			}
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<MagicOxygenizer>()) && RijamsModWorld.intTravQuestMagicOxygenizer == false)
 			{
-				Main.npcChatText = "This machine seems creates oxygen from only elecricity. How does it do that? Well it is magic, I guess. Anyway, I could use this on my ship and to create a personal breathing device!";
+				Main.npcChatText = "This machine seems to create oxygen from only elecricity. How does it do that? Well it is magic, I guess. Anyway, I could use this on my ship and to create a personal breathing device!";
 				Main.npcChatCornerItem = ModContent.ItemType<MagicOxygenizer>();
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<MagicOxygenizer>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestMagicOxygenizer = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					//RijamsModWorld.SetIntTravQuestBlankDisplay();
+					NetMessage.SendData(MessageID.WorldData);
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestMagicOxygenizer);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestMagicOxygenizer = true;
 				mod.Logger.Debug("RijamsMod: Magic Oxygenizer quest completed.");
 				PlayCompleteQuestSound();
 				return;
@@ -597,7 +613,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			else
 			{
 				bool allQuestsComplete = false;
-				if (RijamsModWorld.intTravQuestOddDevice == true && RijamsModWorld.intTravQuestBlankDisplay == true && RijamsModWorld.intTravQuestTPCore == true && RijamsModWorld.intTravQuestMagicOxygenizer == true)
+				if (RijamsModWorld.intTravQuestOddDevice == true && RijamsModWorld.intTravQuestBlankDisplay == true && RijamsModWorld.intTravQuestTPCore == true && RijamsModWorld.intTravQuestMagicOxygenizer == true) //Rye Jam quest is not needed
 				{
 					allQuestsComplete = true;
 				}
@@ -605,16 +621,121 @@ namespace RijamsMod.NPCs.TownNPCs
 				if (allQuestsComplete)
 				{
 					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
-					string[] lines = { "It looks like you've found everything I needed, thanks!", "Nice job! You have collected and turned in everything I needed.", "With your help, my ship has been repaired! I quite like it here, though. I might stay a little longer!" };
+					string[] lines = { "It looks like you've found everything I needed, thanks!", "Nice job! You have collected and turned in everything I needed.", "With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!" };
 					Main.npcChatText = lines[Main.rand.Next(lines.Length)];
 				}
 				else
 				{
 					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
-					string[] lines = { "I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.", "I need some items to repair my space ship. Do you think you could help me out?", "I'd be happy to take a look at other items, too; if you think I could use them for something." };
+					string[] lines = { "I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.", "I need some items to repair my space ship. Do you think you could help me out?", "I'd be happy to take a look at other items, too; if you think I could use them for something.", "Hold LEFT SHIFT to check which quests you have completed and what I still need." };
 					Main.npcChatText = lines[Main.rand.Next(lines.Length)];
 				}
 			}
+		}
+		public void QuestSystemChecklist()
+		{
+			bool intTravQuestOddDevice = RijamsModWorld.intTravQuestOddDevice;
+			bool intTravQuestBlankDisplay = RijamsModWorld.intTravQuestBlankDisplay;
+			bool intTravQuestTPCore = RijamsModWorld.intTravQuestTPCore;
+			bool intTravQuestRyeJam = RijamsModWorld.intTravQuestRyeJam;
+			bool intTravQuestMagicOxygenizer = RijamsModWorld.intTravQuestMagicOxygenizer;
+
+			//Strings for what items are still needed
+			string OddDevice = "  Could I look at that device you have?";
+			string BlankDisplay = "  I could use some sort of electronic screen.";
+			string TPCore = "  I need to repair my hyper-drive.";
+			string RyeJam = "  I'm feeling a little peckish... (heh)."; //Will never show in game
+			string MagicOxygenizer = "  My oxygen supplier isn't working currently.";
+
+			int numCompleted = 0;
+			int numNeedTo = 0;
+			bool secret = false;
+
+			//Strings for the final message that will show up in game
+			StringBuilder completed = new StringBuilder("Here is what you have completed so far:\n");
+			StringBuilder needTo = new StringBuilder("Here is what is left to do:\n");
+			StringBuilder completed2 = new StringBuilder("You have also completed:\n");
+			StringBuilder finalChat = new StringBuilder("");
+			string newLine = "\n";
+
+			if (intTravQuestOddDevice)
+			{
+				//If completed, change the message to the item
+				OddDevice = $"[i:{ModContent.ItemType<OddDevice>()}] ";
+				//Add it to the end of the completed string
+				completed.Append(OddDevice);
+				//increment numCompleted (used later)
+				numCompleted++;
+			}
+			else
+			{
+				//If not completed, add the message above to the end of the completed string
+				needTo.Append(OddDevice);
+				//Add a new line
+				needTo.Append(newLine);
+				//increment numNeedTo (used later)
+				numNeedTo++;
+			}
+			if (intTravQuestBlankDisplay)
+			{
+				BlankDisplay = $"[i:{ModContent.ItemType<BlankDisplay>()}] ";
+				completed.Append(BlankDisplay);
+				numCompleted++;
+			}
+			else
+			{
+				needTo.Append(BlankDisplay);
+				needTo.Append(newLine);
+				numNeedTo++;
+			}
+			if (intTravQuestTPCore)
+			{
+				TPCore = $"[i:{ModContent.ItemType<TeleportationCore>()}] ";
+				completed.Append(TPCore);
+				numCompleted++;
+			}
+			else
+			{
+				needTo.Append(TPCore);
+				needTo.Append(newLine);
+				numNeedTo++;
+			}
+			if (intTravQuestRyeJam) //Secret quest so it acts different
+			{
+				RyeJam = $"[i:{ModContent.ItemType<BreadAndJelly>()}] ";
+				completed2.Append(RyeJam);
+				secret = true;
+			}
+			if (intTravQuestMagicOxygenizer)
+			{
+				MagicOxygenizer = $"[i:{ModContent.ItemType<MagicOxygenizer>()}] ";
+				completed.Append(MagicOxygenizer);
+				numCompleted++;
+			}
+			else
+			{
+				needTo.Append(MagicOxygenizer);
+				needTo.Append(newLine);
+				numNeedTo++;
+			}
+
+			//Add everything to finalChat if applicable
+			if (numCompleted > 0)
+			{
+				finalChat.Append(completed);
+				finalChat.Append(newLine);
+			}
+			if (numNeedTo > 0)
+			{
+				finalChat.Append(needTo);
+			}
+			if (secret)
+            {
+				finalChat.Append(completed2);
+			}
+
+			Main.npcChatText = finalChat.ToString();
+			Main.npcChatCornerItem = 0;
 		}
 		public void PlayCompleteQuestSound()
 		{
@@ -772,7 +893,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(mod.ItemType("IntTrav_Vanity_Leggings"));
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(mod.ItemType("TestMusicBox"));
+			shop.item[nextSlot].SetDefaults(mod.ItemType("MusicBoxOSW"));
 			nextSlot++;
 			/*
 			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample)

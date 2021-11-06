@@ -168,7 +168,7 @@ namespace RijamsMod.Items.Accessories
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Assemble Assemble");
-			Tooltip.SetDefault("+4 Minion capacity\n+1 Sentry capacity\n+30% Minion damage\nIncreases Minion Knockback by 2\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled\nEnemies are less likely to target you\n'FlavorText BYTE \"It all comes together\", 0'");
+			Tooltip.SetDefault("+4 Minion capacity\n+1 Sentry capacity\n+30% Minion damage\n+2 Minion knockback\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled\nEnemies are less likely to target you\n'FlavorText BYTE \"It all comes together\", 0'");
 		}
 
 		public override void SetDefaults()

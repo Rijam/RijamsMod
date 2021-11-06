@@ -114,5 +114,16 @@ namespace RijamsMod
 		[Slider]
 		[ReloadRequired]
 		public int ShopPriceScaling { get; set; }
+
+		[Label("[i:784]   Load Debug Items")]
+		[Tooltip("This option toggles if the debug items will be loaded.\n" +
+			"  When Enabled: The debug items WILL be loaded.\n" +
+			"  When Disabled: The debug items WILL NOT be loaded.\n" +
+			"    Enable to load the debug items.\n" +
+			"Default value: Disabled\n" +
+			"Requires a Reload.")]
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool LoadDebugItems { get; set; }
 	}
 }
