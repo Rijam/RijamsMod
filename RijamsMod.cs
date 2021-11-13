@@ -15,7 +15,10 @@ namespace RijamsMod
 {
     public class RijamsMod : Mod
     {
-        //public static RijamsMod Instance;
+        internal static RijamsMod Instance;
+        internal static RijamsModConfigClient ConfigClient;
+        internal static RijamsModConfigServer ConfigServer;
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(this);
@@ -151,7 +154,18 @@ namespace RijamsMod
             text = CreateTranslation("Config.Ornithophobia");
             text.SetDefault($"[i:{ModContent.ItemType<Items.Armor.Vanity.IntTrav_Vanity_Helmet>()}]   Ornithophobia");
             AddTranslation(text);
+            text = CreateTranslation("Config.BurglarsRingSound");
+            text.SetDefault($"[i:{ModContent.ItemType<Items.Accessories.BurglarsRing>()}]   Burglar's Ring Notification Sound");
+            AddTranslation(text);
         }
+
+        public override void Unload()
+        {
+            Instance = null;
+            ConfigClient = null;
+            ConfigServer = null;
+        }
+
         public override void PostSetupContent()
         {
             Mod censusMod = ModLoader.GetMod("Census");
@@ -184,6 +198,10 @@ namespace RijamsMod
             RijamsModMessageType msgType = (RijamsModMessageType)reader.ReadByte();
             switch (msgType)
             {
+                case RijamsModMessageType.DummyPacket: 
+                    NetMessage.SendData(MessageID.WorldData);
+                    Logger.Debug("RijamsMod: Dummy Packet (Multiplayer packet).");
+                    break;
                 case RijamsModMessageType.SetQuestOddDevice:
                     //int questOddDevice = reader.ReadInt32();
                     //RijamsModWorld world = ModContent.GetInstance<RijamsModWorld>();
@@ -221,6 +239,7 @@ namespace RijamsMod
     }
     internal enum RijamsModMessageType : byte
     {
+        DummyPacket, //I'm not sure why, but the first packet gets triggered when entering the world (in multiplayer)
         SetQuestOddDevice,
         SetQuestBlankDisplay,
         SetQuestTPCore,

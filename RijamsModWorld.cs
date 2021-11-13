@@ -168,28 +168,9 @@ namespace RijamsMod
                 NetMessage.SendData(MessageID.WorldData);
             }
         }
-        /*public static void TransformHarpy()
-        {
-            savedHarpy = true;
-            UpdateWorldBool();
-        }*/
         public static void SetIntTravArived()
         {
             intTravArived = true;
-            UpdateWorldBool();
-        }
-        public static void SetIntTravQuestOddDevice()
-        {
-            intTravQuestOddDevice = true;
-
-            UpdateWorldBool();
-        }
-        public static void SetIntTravQuestBlankDisplay()
-        {
-            intTravQuestBlankDisplay = true;
-            //ModPacket packet = mod.GetPacket();
-            //packet.Write((byte)RijamsModMessageType.SetQuestBlankDisplay);
-            //packet.Send();
             UpdateWorldBool();
         }
     }

@@ -30,14 +30,24 @@ namespace RijamsMod
 		[Header("[c/00FF00:Client Option]")]
         [Label("$Mods.RijamsMod.Config.Ornithophobia")]
         [Tooltip("This option toggles if the Interstellar Traveler will wear a helmet or not\n" +
-			"  When enabled: the Interstellar Traveler will wear a helmet.\n" +
-			"  When enabled: the Interstellar Traveler will not wear a helmet.\n" +
+			"  When Enabled: the Interstellar Traveler will wear a helmet.\n" +
+			"  When Disabled: the Interstellar Traveler will not wear a helmet.\n" +
 			"   Enable if you don't want to see her head\n" +
 			"Default value: Disabled\n" +
 			"Requires Reload")]
         [ReloadRequired]
         [DefaultValue(false)]
         public bool Ornithophobia { get; set; }
+
+		[Label("$Mods.RijamsMod.Config.BurglarsRingSound")]
+		[Tooltip("This option toggles if the Burglar's Ring will make a sound upon successfully working\n" +
+			"  When Enabled: the Burglar's Ring will make a sound.\n" +
+			"  When Disabled: the Burglar's Ring will not make a sound.\n" +
+			"   Disable if you don't want to hear the sound\n" +
+			"Default value: Enabled\n" +
+			"Reload not required")]
+		[DefaultValue(true)]
+		public bool BurglarsRingSound { get; set; }
 	}
 	[Label("Rijam's Mod Server Options")]
 	public class RijamsModConfigServer : ModConfig

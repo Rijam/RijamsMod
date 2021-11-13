@@ -1,6 +1,6 @@
 displayName = Rijam's Mod
 author = Rijam
-version = 1.0.0.4
+version = 1.0.0.5
 buildIgnore = Effects\fxcompiler
 weakReferences = SacredTools,CalamityMod,ThoriumMod,pinkymod,AAMod
 homepage = https://github.com/Rijam/RijamsMod/wiki

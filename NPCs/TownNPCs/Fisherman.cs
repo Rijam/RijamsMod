@@ -179,7 +179,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("" + Main.npc[interTravel].GivenName + " is nice and all, but I don't trust her around my stash of fish!", 0.5);
 			}
 			int harpy = NPC.FindFirstNPC(mod.NPCType("Harpy"));
-			if (interTravel >= 0)
+			if (harpy >= 0)
 			{
 				chat.Add("" + Main.npc[harpy].GivenName + " sometimes helps me scout ahead on my fishing journies. Very helpful!", 0.5);
 			}

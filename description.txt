@@ -14,7 +14,7 @@ Includes:
 
 Many new items and weapons throughout the game's progression.
 - 21 weapons: 3 Melee, 8 Ranged, 4 Magic, 6 Summoner.
-- 16 accessories.
+- 17 accessories.
 - 5 armor pieces.
 - 8 vanity items + 3 dyes.
 
@@ -38,6 +38,13 @@ The code is open source if you extract the mod!
 Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
+
+Version 1.0.0.5
+- Added an icon to the bottom right of the Interstellar Traveler's Quest Checklist
+- Added a new light pet. Lumoth summoned by a Lumoth Bulb.
+- Flipped the buff icon for the Hissy Demon.
+- Added a new accessory: Burglar's Ring. Causes enemies to drop double loot.
+- Fixed the first Interstellar Traveler quest automatically being completed in multiplayer.
 
 Version 1.0.0.4
 - Harpy sprite updated

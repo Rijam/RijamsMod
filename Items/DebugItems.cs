@@ -200,8 +200,13 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Interstellar Traveler Arived Flag");
+			DisplayName.SetDefault("[c/ff0000:Debug] - Interstellar Traveler Arrived Flag");
 			Tooltip.SetDefault("Changes the flag that the Interstellar Traveler has arived\nLeft click to set false\nRight click to set true");
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			item.color = Color.Red;
 		}
 		public override bool UseItem(Player player)
 		{
@@ -225,6 +230,11 @@ namespace RijamsMod.Items
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Saved Harpy Flag");
 			Tooltip.SetDefault("Changes the flag that says the Harpy has been saved\nLeft click to set false\nRight click to set true");
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			item.color = Color.Red;
 		}
 		public override bool UseItem(Player player)
 		{
@@ -288,7 +298,7 @@ namespace RijamsMod.Items
 		{
 			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
 		}
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Item_" + ItemID.BlueSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Angler Quest Changer");
@@ -297,7 +307,7 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			item.color = Color.Orange;
+			item.color = Color.RoyalBlue;
 			item.width = 14;
 			item.height = 14;
 			item.maxStack = 999;

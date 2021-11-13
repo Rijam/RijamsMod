@@ -223,7 +223,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("Do you know who " + Main.npc[angler].GivenName + "'s parents are? Where are they?", 0.25);
 			}
 			if (angler >= 0 && fisherman >= 0)
-            {
+			{
 				chat.Add("Looking for these: [i:3120] , [i:3037] , [i:3096] ? Sorry, you're going to have to get them from " + Main.npc[angler].GivenName + " or " + Main.npc[fisherman].GivenName + ".", 0.75);
 			}
 			/*int zoologist = NPC.FindFirstNPC(NPCID.BestiaryGirl);
@@ -489,7 +489,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
 		{
-			
+
 			if (firstButton)
 			{
 				shop = true;
@@ -501,10 +501,18 @@ namespace RijamsMod.NPCs.TownNPCs
 					QuestSystemChecklist();
 				}
 				else
-                {
+				{
 					QuestSystem();
 				}
 			}
+		}
+		public bool AllQuestsCompleted()
+		{
+			if (RijamsModWorld.intTravQuestOddDevice == true && RijamsModWorld.intTravQuestBlankDisplay == true && RijamsModWorld.intTravQuestTPCore == true && RijamsModWorld.intTravQuestMagicOxygenizer == true) //Rye Jam quest is not needed
+			{
+				return true;
+			}
+			return false;
 		}
 		public void QuestSystem()
 		{
@@ -611,14 +619,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				return;
 			}
 			else
-			{
-				bool allQuestsComplete = false;
-				if (RijamsModWorld.intTravQuestOddDevice == true && RijamsModWorld.intTravQuestBlankDisplay == true && RijamsModWorld.intTravQuestTPCore == true && RijamsModWorld.intTravQuestMagicOxygenizer == true) //Rye Jam quest is not needed
-				{
-					allQuestsComplete = true;
-				}
-				
-				if (allQuestsComplete)
+			{			
+				if (AllQuestsCompleted())
 				{
 					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
 					string[] lines = { "It looks like you've found everything I needed, thanks!", "Nice job! You have collected and turned in everything I needed.", "With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!" };
@@ -735,7 +737,14 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 
 			Main.npcChatText = finalChat.ToString();
-			Main.npcChatCornerItem = 0;
+			if (AllQuestsCompleted())
+            {
+				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
+			}
+			else
+            {
+				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
+			}
 		}
 		public void PlayCompleteQuestSound()
 		{

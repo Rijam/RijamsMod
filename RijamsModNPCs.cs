@@ -7,18 +7,35 @@ namespace RijamsMod
 {
 	public class RijamsModNPCs : GlobalNPC
 	{
-		/*public override bool InstancePerEntity => true;
-		public bool enemySlow;
+		public override bool InstancePerEntity => true;
 
-		public override void ResetEffects(NPC npc)
-		{
-			enemySlow = false;
-		}
-		public override void SetDefaults(NPC npc)
-		{
-			// We want our EnemySlow buff to follow the same immunities as normal Slow
-			npc.buffImmune[ModContent.BuffType<Buffs.EnemySlow>()] = npc.buffImmune[BuffID.Slow];
-		}*/
+		public override bool SpecialNPCLoot(NPC npc)
+        {
+			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
+			//Player player = Main.LocalPlayer;
+			//If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not importal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
+			if (moddedplayer.burglarsRing && (!npc.boss || !npc.immortal || !npc.dontCountMe) && npc.active && npc.lastInteraction != 255)
+            {
+				//Main.NewText($"NPCLoot called for NPC Id: {npc.type}");
+				npc.NPCLoot();
+				//Main.NewText("Success?");
+				if (ModContent.GetInstance<RijamsModConfigClient>().BurglarsRingSound)
+                {
+					/*if (Main.netMode != NetmodeID.Server && Main.myPlayer == player.whoAmI)
+                    {
+						Main.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
+					}
+					else
+                    {
+						Main.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
+					}*/
+					Main.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
+
+					//Main.PlaySound(SoundLoader.customSoundType, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/beep"), 0.25f, 2f);
+				}
+			}
+			return base.SpecialNPCLoot(npc);
+        }
 		public override void NPCLoot(NPC npc)
 		{
 			if (npc.type == NPCID.SnowmanGangsta)

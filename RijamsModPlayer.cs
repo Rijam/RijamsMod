@@ -16,6 +16,8 @@ namespace RijamsMod
 		public bool daybreakStone;
 		public bool breathingPack;
 		public int breathingPackTimer;
+		public bool lumothPet;
+		public bool burglarsRing;
 		//public bool breathingPackUsed = true;
 
 		public override void ResetEffects()
@@ -26,6 +28,8 @@ namespace RijamsMod
 			summonersGlove = false;
 			daybreakStone = false;
 			breathingPack = false;
+			lumothPet = false;
+			burglarsRing = false;
 			//breathingPackUsed = true;
 			//breathingPackTimer = 0;
 		}
