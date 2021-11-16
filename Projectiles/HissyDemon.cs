@@ -121,14 +121,6 @@ namespace RijamsMod.Projectiles
 			}
 			Vector2 vector = projectile.position;
 			float num7 = 400f;
-			if (projectile.type == 423)
-			{
-				num7 = 300f;
-			}
-			if (projectile.type == 613)
-			{
-				num7 = 300f;
-			}
 			bool flag = false;
 			int num8 = -1;
 			projectile.tileCollide = true;

@@ -13,7 +13,7 @@ Includes:
 - - Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
 
 Many new items and weapons throughout the game's progression.
-- 21 weapons: 3 Melee, 8 Ranged, 4 Magic, 6 Summoner.
+- 23 weapons: 3 Melee, 8 Ranged, 5 Magic, 7 Summoner.
 - 17 accessories.
 - 5 armor pieces.
 - 8 vanity items + 3 dyes.
@@ -39,12 +39,16 @@ Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
 
+Version 1.0.0.6
+- Added a new summon weapon: Meatball Staff
+
 Version 1.0.0.5
 - Added an icon to the bottom right of the Interstellar Traveler's Quest Checklist
 - Added a new light pet. Lumoth summoned by a Lumoth Bulb.
 - Flipped the buff icon for the Hissy Demon.
 - Added a new accessory: Burglar's Ring. Causes enemies to drop double loot.
 - Fixed the first Interstellar Traveler quest automatically being completed in multiplayer.
+- Added a new early game magic weapon: Hot Stick.
 
 Version 1.0.0.4
 - Harpy sprite updated

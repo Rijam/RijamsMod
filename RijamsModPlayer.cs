@@ -9,8 +9,6 @@ namespace RijamsMod
 {
 	public class RijamsModPlayer : ModPlayer
 	{
-		public bool cutestIceFairy;
-		public bool acidicSpiderling;
 		public bool guideToProperFlightTechniques;
 		public bool summonersGlove;
 		public bool daybreakStone;
@@ -22,8 +20,6 @@ namespace RijamsMod
 
 		public override void ResetEffects()
 		{
-			cutestIceFairy = false;
-			acidicSpiderling = false;
 			guideToProperFlightTechniques = false;
 			summonersGlove = false;
 			daybreakStone = false;

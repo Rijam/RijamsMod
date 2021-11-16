@@ -15,9 +15,12 @@ namespace RijamsMod
 {
     public class RijamsMod : Mod
     {
-        internal static RijamsMod Instance;
-        internal static RijamsModConfigClient ConfigClient;
-        internal static RijamsModConfigServer ConfigServer;
+        public static RijamsMod Instance;
+        public static RijamsModConfigClient ConfigClient;
+        public static RijamsModConfigServer ConfigServer;
+        public static RijamsModNPCs RijamsModNPCs;
+        public static ItemUseGlow ItemUseGlow;
+        public static RijamsMod Items;
 
         public override void AddRecipes()
         {
@@ -164,6 +167,9 @@ namespace RijamsMod
             Instance = null;
             ConfigClient = null;
             ConfigServer = null;
+            RijamsModNPCs = null;
+            ItemUseGlow = null;
+            Items = null;
         }
 
         public override void PostSetupContent()
