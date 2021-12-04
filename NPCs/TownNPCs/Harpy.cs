@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.Utilities;
 
 namespace RijamsMod.NPCs.TownNPCs
@@ -61,6 +60,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
+			Main.npcCatchable[npc.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			npc.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? (short)ModContent.ItemType<Items.CaughtHarpy>() : (short)-1;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -78,7 +79,14 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
-			return RijamsModWorld.savedHarpy;
+			if (RijamsModWorld.savedHarpy && NPC.CountNPCS(ModContent.NPCType<Harpy>()) < 1)
+			{
+				return true;
+            }
+			else
+			{
+				return false;
+			}
 		}
 
 		public override bool CheckConditions(int left, int right, int top, int bottom)

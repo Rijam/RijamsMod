@@ -44,6 +44,9 @@ namespace RijamsMod.Tiles
 				case 3:
 					item = "DungeonBatBanner";
 					break;
+				case 4:
+					item = "SnowmanMuscleBanner";
+					break;
 				default:
 					return;
 			}
@@ -67,6 +70,9 @@ namespace RijamsMod.Tiles
 						break;
 					case 3:
 						type = "DungeonBat";
+						break;
+					case 4:
+						type = "SnowmanMuscle";
 						break;
 					default:
 						return;

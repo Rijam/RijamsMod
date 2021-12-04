@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Weapons
 			item.rare = ItemRarityID.Green;//2
 			item.UseSound = SoundID.Item41;
 			item.autoReuse = true;
-			item.shoot = AmmoID.Bullet; //idk why but all the guns in the vanilla source have this
+			item.shoot = AmmoID.Bullet;
 			item.shootSpeed = 16f;
 			item.scale = 0.75f;
 			item.useAmmo = AmmoID.Bullet;

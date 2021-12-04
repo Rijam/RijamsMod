@@ -29,22 +29,18 @@ namespace RijamsMod.Items.Armor
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.CrimsonHelmet);
-			//item.headSlot = mod.GetEquipSlot("DilapidatedCrimsonHelmet", EquipType.Head); //Will draw the correct equip sprite, but then it's not interchangable with Crimson Armor and doesn't have the effects
+			item.headSlot = mod.GetEquipSlot("DilapidatedCrimsonHelmet", EquipType.Head); //Will draw the correct equip sprite, but then it's not interchangable with Crimson Armor and doesn't have the effects
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
-			return body.type == ModContent.ItemType<DilapidatedCrimsonScalemail>() && legs.type == ModContent.ItemType<DilapidatedCrimsonGreaves>();
+			//The Crimson Helmet doesn't seem to work.
+			return (head.type == ItemID.CrimsonHelmet || head.type == ModContent.ItemType<DilapidatedCrimsonHelmet>()) && (body.type == ItemID.CrimsonScalemail || body.type == ModContent.ItemType<DilapidatedCrimsonScalemail>()) && (legs.type == ItemID.CrimsonGreaves || legs.type == ModContent.ItemType<DilapidatedCrimsonGreaves>());
 		}
 
-		public override void UpdateArmorSet(Player player)
+		public override void UpdateEquip(Player player)
 		{
 			player.allDamage += 0.02f;
-			player.setBonus = Language.GetTextValue("ArmorSetBonus.Crimson");
-			player.crimsonRegen = true;
-		}
-		/*public override void UpdateVanity(Player player, EquipType type)
-		{
 			int maxValue = 10;
 			if (Math.Abs(player.velocity.X) + Math.Abs(player.velocity.Y) > 1f)
 			{
@@ -52,16 +48,22 @@ namespace RijamsMod.Items.Armor
 			}
 			if (Main.rand.Next(maxValue) == 0)
 			{
-				int num6 = Dust.NewDust(player.position, player.width, player.height, 115, 0f, 0f, 140, default(Color), 0.75f); //DustID.CrimtaneWeapons
+				int num6 = Dust.NewDust(player.position, player.width, player.height, DustID.CrimtaneWeapons, 0f, 0f, 140, default, 0.75f);
 				Main.dust[num6].noGravity = true;
 				Main.dust[num6].fadeIn = 1.5f;
 				Main.dust[num6].velocity *= 0.3f;
 				Main.dust[num6].velocity += player.velocity * 0.2f;
-				//Main.dust[num6].shader = GameShaders.Armor.GetSecondaryShader(player.ArmorSetDye(), player);
+				Main.dust[num6].shader = GameShaders.Armor.GetSecondaryShader(player.ArmorSetDye(), player);
 			}
-		}*/
+		}
 
-		public override void AddRecipes()
+		public override void UpdateArmorSet(Player player)
+		{
+			player.setBonus = Language.GetTextValue("ArmorSetBonus.Crimson");
+			player.crimsonRegen = true;
+		}
+
+        public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.CrimtaneBar, 15);
@@ -93,7 +95,7 @@ namespace RijamsMod.Items.Armor
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.CrimsonScalemail);
-			//item.bodySlot = mod.GetEquipSlot("DilapidatedCrimsonScalemail", EquipType.Body);
+			item.bodySlot = mod.GetEquipSlot("DilapidatedCrimsonScalemail", EquipType.Body);
 		}
 
 		public override void UpdateEquip(Player player)
@@ -131,7 +133,7 @@ namespace RijamsMod.Items.Armor
 		public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.CrimsonGreaves);
-			//item.legSlot = mod.GetEquipSlot("DilapidatedCrimsonGreaves", EquipType.Legs);
+			item.legSlot = mod.GetEquipSlot("DilapidatedCrimsonGreaves", EquipType.Legs);
 		}
 
 		public override void UpdateEquip(Player player)

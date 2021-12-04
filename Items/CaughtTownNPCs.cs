@@ -50,9 +50,23 @@ namespace RijamsMod.Items
 
 		public override void OnConsumeItem(Player player)
 		{
-			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-			NPC.NewNPC((int)mousePos.X, (int)mousePos.Y, ModContent.NPCType<Fisherman>());
-			Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<Fisherman>())].GivenName + " the Fisherman has been spawned!", 50, 125, 255);
+			/*Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+			if (!ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs) //So it still spawns the Town NPC if the config is off. If it is on, it automatically does this.
+            {
+				NPC.NewNPC((int)mousePos.X, (int)mousePos.Y, ModContent.NPCType<Fisherman>());
+				NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, ModContent.NPCType<Fisherman>(), 0f, 0f, 0f, 0, 0, 0);
+			}*/
+			string chatmessage = "The Fisherman has been spawned!";
+			if (Main.netMode != NetmodeID.Server)
+            {
+				//Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<Harpy>())].GivenName + " the " + chatmessage, 50, 125, 255);//index was outside the bounds of the array on a server
+				Main.NewText(chatmessage, 50, 125, 255);
+			}
+			else
+            {
+				NetworkText text = NetworkText.FromLiteral(chatmessage);
+				NetMessage.BroadcastChatMessage(text, new Color(50, 125, 255));
+            }
 		}
 	}
 	public class CaughtHarpy : ModItem
@@ -91,11 +105,26 @@ namespace RijamsMod.Items
 			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			return (NPC.CountNPCS(ModContent.NPCType<Harpy>()) < 1 && !Collision.SolidCollision(mousePos, player.width, player.height));
 		}
+
 		public override void OnConsumeItem(Player player)
 		{
-			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-			NPC.NewNPC((int)mousePos.X, (int)mousePos.Y, ModContent.NPCType<Harpy>());
-			Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<Harpy>())].GivenName + " the Harpy has been spawned!", 50, 125, 255);
+			/*Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+			if (!ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs) //So it still spawns the Town NPC if the config is off. If it is on, it automatically does this.
+			{
+				NPC.NewNPC((int)mousePos.X, (int)mousePos.Y, ModContent.NPCType<Harpy>());
+			}*/
+
+			string chatmessage = "The Harpy has been spawned!";
+			if (Main.netMode != NetmodeID.Server)
+			{
+				//Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<Harpy>())].GivenName + " the " + chatmessage, 50, 125, 255); //index was outside the bounds of the array on a server
+				Main.NewText(chatmessage, 50, 125, 255);
+			}
+			else
+			{
+				NetworkText text = NetworkText.FromLiteral(chatmessage);
+				NetMessage.BroadcastChatMessage(text, new Color(50, 125, 255));
+			}
 		}
 	}
 	public class CaughtIntTrav : ModItem
@@ -136,9 +165,23 @@ namespace RijamsMod.Items
 		}
 		public override void OnConsumeItem(Player player)
 		{
-			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-			NPC.NewNPC((int)mousePos.X, (int)mousePos.Y, ModContent.NPCType<InterstellarTraveler>());
-			Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>())].GivenName + " the InterstellarTraveler has been spawned!", 50, 125, 255);
+			/*Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+			if (!ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs) //So it still spawns the Town NPC if the config is off. If it is on, it automatically does this.
+			{
+				NPC.NewNPC((int)mousePos.X, (int)mousePos.Y, ModContent.NPCType<InterstellarTraveler>());
+			}*/
+
+			string chatmessage = "The Interstellar Traveler has been spawned!";
+			if (Main.netMode != NetmodeID.Server)
+			{
+				//Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>())].GivenName + " the " + chatmessage, 50, 125, 255);
+				Main.NewText(chatmessage, 50, 125, 255);
+			}
+			else
+			{
+				NetworkText text = NetworkText.FromLiteral(chatmessage);
+				NetMessage.BroadcastChatMessage(text, new Color(50, 125, 255));
+			}
 		}
 	}
 }

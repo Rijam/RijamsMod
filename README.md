@@ -16,8 +16,8 @@ Includes:
 - - Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
 
 Many new items and weapons throughout the game's progression.
-- 21 weapons: 3 Melee, 8 Ranged, 4 Magic, 6 Summoner.
-- 17 accessories.
+- 24 weapons: 3 Melee, 8 Ranged, 6 Magic, 7 Summoner.
+- 18 accessories.
 - 5 armor pieces.
 - 8 vanity items + 3 dyes.
 
@@ -32,7 +32,6 @@ Some cross mod support:
 - Town NPC cross mod dialog.
 
 Known Issues:
-- In multiplayer, the Interstellar Traveler's quest system automatically completes the first quest. (It shouldn't be doing that)
 - Summoner's Glove is a little buggy, details in its tooltip.
 - Some items are unobtainable.
 

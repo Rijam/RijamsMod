@@ -135,5 +135,17 @@ namespace RijamsMod
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool LoadDebugItems { get; set; }
+
+		[Label("[i:1991]   Catch Town NPCs")]
+		[Tooltip("This option toggles if the Town NPCs added by this mod can be\n" +
+			"caught with a Bug Net (Fargo's Mutant Mod style)\n" +
+			"  When Enabled: The Town NPCs CAN be caught.\n" +
+			"  When Disabled: The Town NPCs CAN NOT be caught.\n" +
+			"    Enable to catch the Town NPCs.\n" +
+			"Default value: Disabled\n" +
+			"Requires a Reload.")]
+		[ReloadRequired]
+		[DefaultValue(false)]
+		public bool CatchNPCs { get; set; }
 	}
 }

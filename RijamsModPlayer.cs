@@ -1,5 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.IO;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.DataStructures;
@@ -16,6 +19,9 @@ namespace RijamsMod
 		public int breathingPackTimer;
 		public bool lumothPet;
 		public bool burglarsRing;
+		//public bool delapHelmet;
+		//public bool delapScalemail;
+		//public bool delapGreaves;
 		//public bool breathingPackUsed = true;
 
 		public override void ResetEffects()
@@ -92,5 +98,5 @@ namespace RijamsMod
 				}*/
             }
         }
-	}
+    }
 }

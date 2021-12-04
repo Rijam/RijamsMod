@@ -64,6 +64,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
+			Main.npcCatchable[npc.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			npc.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? (short)ModContent.ItemType<Items.CaughtIntTrav>() : (short)-1;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -81,7 +83,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
-			if (NPC.downedBoss2) //EoW or BoC
+			if (NPC.downedBoss2 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) < 1) //EoW or BoC
 			{
 				if (RijamsModWorld.intTravArived) //That way you don't need the Odd Device in your inventory if the Interstellar Traveler has arived once before.
 				{
@@ -168,7 +170,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 1) //more than one Interstellar Traveler
 			{
-				chat.Add("What? There two of me!? I have a lot of questions now. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 2.0);
+				chat.Add("What? There two of me!? I have a lot of questions now. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 5.0);
 			}
 			if (!NPC.downedBoss2 || RijamsModWorld.intTravArived == false) //spawn in the Interstellar Traveler before meeting the requirements
 			{

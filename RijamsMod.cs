@@ -108,6 +108,7 @@ namespace RijamsMod
             });
             RecipeGroup.RegisterGroup("RijamsMod:AdamantiteBars", group);
         }
+
         public override void Load()
         {
             if (!Main.dedServ)
@@ -129,7 +130,8 @@ namespace RijamsMod
                 //dilapidatedCrimsonHelmet.SetDefaults(ItemID.CrimsonHelmet);
                 //dilapidatedCrimsonHelmet.SetDefaults(ItemType("DilapidatedCrimsonHelmet"));//Index was outside the bounds of the array
                 //Main.armorHeadLoaded[dilapidatedCrimsonHelmet.headSlot] = true;
-                //Main.armorHeadTexture[dilapidatedCrimsonHelmet.headSlot] = GetTexture("Items/Armor/DilapidatedCrimsonHelmet_Head");
+                //Main.armorHeadTexture[dilapidatedCrimsonHelmet.headSlot] = GetTexture("Items/Armor/DilapidatedCrimsonHelmet_Head"); //replaces the normal Crimson Helmet too
+
 
                 AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/FreedoomPhase2_MAP07_OuterStorageWarehouse"), ItemType("MusicBoxOSW"), TileType("MusicBoxOSW"));
 

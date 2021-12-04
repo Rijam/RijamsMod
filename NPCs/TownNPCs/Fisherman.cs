@@ -79,6 +79,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
+			Main.npcCatchable[npc.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			npc.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? (short)ModContent.ItemType<Items.CaughtFisherman>() : (short)-1;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -103,7 +105,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
-			if (NPC.savedAngler && numTownNPCs > 4)
+			if (NPC.savedAngler && numTownNPCs > 4 && NPC.CountNPCS(ModContent.NPCType<Fisherman>()) < 1)
 			{
 				return true;
 			}
