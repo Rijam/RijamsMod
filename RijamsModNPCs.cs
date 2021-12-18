@@ -1,7 +1,8 @@
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace RijamsMod
 {
@@ -265,6 +266,19 @@ namespace RijamsMod
 					{
 						npc.AddBuff(BuffID.Daybreak, 60);
 					}
+				}
+			}
+		}
+		public override void SetupShop(int type, Chest shop, ref int nextSlot)
+		{
+			int shopPriceScaling = ModContent.GetInstance<RijamsModConfigServer>().ShopPriceScaling;
+			float shopMulti = (shopPriceScaling / 100f);
+			if (type == ModContent.NPCType<NPCs.TownNPCs.Fisherman>())
+			{
+				foreach (Item item in shop.item)
+				{
+					int shopPrice = item.shopCustomPrice ?? 0; //Some hackery with changing the int? type into int
+					item.shopCustomPrice = (int?)Math.Round(shopPrice * shopMulti);
 				}
 			}
 		}

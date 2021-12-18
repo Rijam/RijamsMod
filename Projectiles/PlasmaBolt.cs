@@ -61,7 +61,7 @@ namespace RijamsMod.Projectiles
 		public override void Kill(int timeLeft)
 		{
 			// This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
-			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, 29);// DustID.DungeonWater_Old
+			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, DustID.DungeonWater_Old);// DustID.DungeonWater_Old
 			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
 			Main.PlaySound(SoundID.Item118, projectile.position);
 		}

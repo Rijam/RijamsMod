@@ -18,6 +18,7 @@ namespace RijamsMod
 		public bool breathingPack;
 		public int breathingPackTimer;
 		public bool lumothPet;
+		public bool lEDLumothPet;
 		public bool burglarsRing;
 		//public bool delapHelmet;
 		//public bool delapScalemail;
@@ -31,6 +32,7 @@ namespace RijamsMod
 			daybreakStone = false;
 			breathingPack = false;
 			lumothPet = false;
+			lEDLumothPet = false;
 			burglarsRing = false;
 			//breathingPackUsed = true;
 			//breathingPackTimer = 0;

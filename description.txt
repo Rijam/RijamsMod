@@ -38,6 +38,11 @@ Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
 
+Version 1.0.0.8
+- The Fisherman's shop config options can be changed without having to reload! ("Parity" change)
+- Added a visual trail to the Cresceptre Spheres.
+- Added a new light pet. LED Lumoth summoned by an LED Lumoth Bulb. 
+
 Version 1.0.0.7
 - Added a new magic weapon: Cresceptre
 - Made the Pumpkin Hat ever so slightly more expensive (requires a Fallen Star now).

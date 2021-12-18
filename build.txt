@@ -1,9 +1,10 @@
 displayName = Rijam's Mod
 author = Rijam
-version = 1.0.0.7
-buildIgnore = Effects\fxcompiler
+version = 1.0.0.8
+buildIgnore = .vs\*, obj\*, bin\*, *.xcf, .git\*, git\*, Effects\fxcompiler
 weakReferences = SacredTools,CalamityMod,ThoriumMod,pinkymod,AAMod
 homepage = https://github.com/Rijam/RijamsMod/wiki
+includePDB = true
 hideCode = false
 hideResources = false
 includeSource = true

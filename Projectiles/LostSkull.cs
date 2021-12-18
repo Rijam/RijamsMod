@@ -108,7 +108,7 @@ namespace RijamsMod.Projectiles
 			}
 			return false;
 		}
-		//Copied from vanila (1.4) Projectiles.cs
+		//Copied from vanilla (1.4) Projectiles.cs
 		public int FindTargetWithLineOfSight(float maxRange = 800f)
 		{
 			float newMaxRange = maxRange;

@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -12,6 +13,8 @@ namespace RijamsMod.Projectiles
 		{
 			Main.projFrames[projectile.type] = 2;
 			ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
 		}
 
 		public override void SetDefaults()
@@ -62,9 +65,9 @@ namespace RijamsMod.Projectiles
 			projectile.rotation = projectile.velocity.ToRotation() + (projectile.spriteDirection == 1 ? 0f : MathHelper.Pi);
 			if (projectile.spriteDirection == 1) // facing right
 			{
-				drawOffsetX = -14; // These values match the values in SetDefaults
+				drawOffsetX = -12; // These values match the values in SetDefaults
 				drawOriginOffsetY = 0;
-				drawOriginOffsetX = 7;
+				drawOriginOffsetX = 6;
 			}
 			else
 			{
@@ -72,7 +75,7 @@ namespace RijamsMod.Projectiles
 				// You can figure these values out if you flip the sprite in your drawing program.
 				drawOffsetX = 0; // 0 since now the top left corner of the hitbox is on the far left pixel.
 				drawOriginOffsetY = 0; // doesn't change
-				drawOriginOffsetX = -7; // Math works out that this is negative of the other value.
+				drawOriginOffsetX = -6; // Math works out that this is negative of the other value.
 			}
 
 			// This is a simple "loop through all frames from top to bottom" animation
@@ -126,6 +129,21 @@ namespace RijamsMod.Projectiles
 				}
 			}
 			return result;
+		}
+		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+		{
+			//This isn't perfect (especially when the projectile is going any way but straight right or left), but I can't figure out how to fix it.
+			Vector2 drawOrigin = new Vector2(Main.projectileTexture[projectile.type].Width * 0.5f, projectile.height * 0.5f);
+			for (int k = 0; k < projectile.oldPos.Length; k++)
+			{
+				Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(projectile.direction >= 0 ? -12f : 0f, projectile.gfxOffY);
+				Color color = projectile.GetAlpha(lightColor) * ((float)(projectile.oldPos.Length - k) / (float)projectile.oldPos.Length)* 0.5f;
+				Texture2D texture = Main.projectileTexture[projectile.type];
+				Rectangle frame = Main.projectileTexture[projectile.type].Frame(1, Main.projFrames[projectile.type], 0, projectile.frame);
+				SpriteEffects spriteEffects = projectile.direction < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+				spriteBatch.Draw(texture, drawPos, frame, color, projectile.rotation, drawOrigin, projectile.scale, spriteEffects, 0f);
+			}
+			return true;
 		}
 		public override void Kill(int timeLeft)
 		{
