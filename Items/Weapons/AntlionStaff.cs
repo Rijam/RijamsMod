@@ -34,7 +34,7 @@ namespace RijamsMod.Items.Weapons
 			// These below are needed for a minion weapon
 			item.noMelee = true;
 			item.summon = true;
-			item.buffType = mod.BuffType("AntlionBiterBuff");
+			item.buffType = ModContent.BuffType<Buffs.AntlionBiterBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			item.shoot = ModContent.ProjectileType<AntlionBiter>();
 		}

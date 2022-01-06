@@ -1,4 +1,3 @@
-//using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,6 +38,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddRecipeGroup("IronBar", 1);
+			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(this, 100);
 			recipe.AddRecipe();
 		}
@@ -90,7 +90,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 			item.value = 1000;
 			item.rare = ItemRarityID.Lime;
 			item.shoot = ModContent.ProjectileType<Projectiles.ChlorophyteDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 16f;                  //The speed of the projectile
+			item.shootSpeed = 8f;                  //The speed of the projectile
 			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
@@ -116,7 +116,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Splits into five darts\nWIP");
+			Tooltip.SetDefault("Splits into five darts");
 		}
 
 		public override void SetDefaults()
@@ -131,7 +131,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 			item.value = 1500;
 			item.rare = ItemRarityID.Yellow;
 			item.shoot = ModContent.ProjectileType<Projectiles.SpectreDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 16f;                  //The speed of the projectile
+			item.shootSpeed = 10f;                  //The speed of the projectile
 			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
@@ -149,7 +149,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Very fast projectiles\nWIP");
+			Tooltip.SetDefault("Moves extremely fast");
 		}
 
 		public override void SetDefaults()

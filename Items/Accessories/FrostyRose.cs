@@ -11,7 +11,8 @@ namespace RijamsMod.Items.Accessories
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Frosty Rose");
-			Tooltip.SetDefault("Grants immunity to Frostburn, Frozen, and Chilled" + "\n[c/403638:Dropped by The Frost Legion]");
+			Tooltip.SetDefault("Grants immunity to Frostburn, Frozen, and Chilled");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by The Frost Legion]");
 		}
 
 		public override void SetDefaults()
@@ -65,7 +66,7 @@ namespace RijamsMod.Items.Accessories
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.ObsidianSkull, 1);
-			recipe.AddIngredient(null, "FrostyRose", 1);
+			recipe.AddIngredient(ModContent.ItemType<FrostyRose>(), 1);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

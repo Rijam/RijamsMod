@@ -14,7 +14,7 @@ Includes:
 
 Many new items and weapons throughout the game's progression.
 - 24 weapons: 3 Melee, 8 Ranged, 6 Magic, 7 Summoner.
-- 18 accessories.
+- 24 accessories.
 - 5 armor pieces.
 - 8 vanity items + 3 dyes.
 
@@ -37,6 +37,22 @@ The code is open source if you extract the mod!
 Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
+
+Version 1.0.1.0
+- Updated the Fisherman's Pants item sprite
+- Added a new quest to the Interstellar Traveler (Prime Thruster)
+- Two new magic accessories: Destroyer Cuffs and Cosmic Sorcery
+- Two new ranged accessories: Rocket Booster and Gamut Apparatus
+- One new summoner accessory: Hailfire Pygmy Scarf
+- Assemble Assemble is moved to later in the game and updated its sprite.
+- Added a new material, Crawler Chelicera, dropped by Blood Crawlers
+- Added a new arrow: Bloody Arrow (Exactly the same as the Unholy Arrow, but Crimson themed)
+- Changed the added a recipes for the Putrid Scent/Flesh Knuckles and added recipes for the Band of Starpower/Panic Necklace.
+- Fixed a bug with the Snowman Cannon shooting Rocket IVs if using the Endless Rocket Box.
+- Updated the Chlorophyte Dart, Spectre Dart, Shroomite Dart, and Luminite Dart to be better.
+- Added a new system to only display the source of certain items if you don't already own the item.
+- Added a new tile: Life Fruit Sanctuary. Gives +20 max life while nearby.
+- Updated the sprite of the Daybreak Gauntlet
 
 Version 1.0.0.8
 - The Fisherman's shop config options can be changed without having to reload! ("Parity" change)

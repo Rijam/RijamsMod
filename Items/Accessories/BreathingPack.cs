@@ -11,7 +11,8 @@ namespace RijamsMod.Items.Accessories
 
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Refills the player's air supply two seconds after it reaches zero" + "\n[c/403638:Sold by Interstellar Traveler]");
+			Tooltip.SetDefault("Refills the player's air supply two seconds after it reaches zero");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
 		}
 
 		public override void SetDefaults()

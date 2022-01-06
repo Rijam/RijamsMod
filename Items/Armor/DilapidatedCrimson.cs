@@ -23,7 +23,7 @@ namespace RijamsMod.Items.Armor
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Dilapidated Crimson Helmet");
-			Tooltip.SetDefault("2% increased damage\nInterchangable with Crimson Armor");
+			Tooltip.SetDefault("2% increased damage\nInterchangeable with Crimson Armor");
 		}
 
 		public override void SetDefaults()
@@ -89,7 +89,7 @@ namespace RijamsMod.Items.Armor
 		{
 			//base.SetStaticDefaults();
 			DisplayName.SetDefault("Dilapidated Crimson Scalemail");
-			Tooltip.SetDefault("2% increased damage\nInterchangable with Crimson Armor");
+			Tooltip.SetDefault("2% increased damage\nInterchangeable with Crimson Armor");
 		}
 
 		public override void SetDefaults()
@@ -127,7 +127,7 @@ namespace RijamsMod.Items.Armor
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Dilapidated Crimson Greaves");
-			Tooltip.SetDefault("2% increased damage\nInterchangable with Crimson Armor");
+			Tooltip.SetDefault("2% increased damage\nInterchangeable with Crimson Armor");
 		}
 
 		public override void SetDefaults()

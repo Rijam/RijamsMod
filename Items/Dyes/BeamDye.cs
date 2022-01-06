@@ -12,6 +12,7 @@ namespace RijamsMod.Items.Dyes
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Beam Dye");
+            ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Dye Trader]");
         }
         public override void SetDefaults()
         {
@@ -37,8 +38,8 @@ namespace RijamsMod.Items.Dyes
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod, "BeamDye", 1);
-            recipe.AddIngredient(mod, "SunEssence", 5);
+            recipe.AddIngredient(ModContent.ItemType<BeamDye>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 5);
             recipe.AddTile(TileID.DyeVat);
             recipe.SetResult(this);
             recipe.AddRecipe();

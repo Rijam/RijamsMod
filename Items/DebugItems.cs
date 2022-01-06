@@ -41,6 +41,7 @@ namespace RijamsMod.Items
 			Main.NewText("intTravQuestTPCore is currenty: " + RijamsModWorld.intTravQuestTPCore);
 			Main.NewText("intTravQuestRyeJam is currenty: " + RijamsModWorld.intTravQuestRyeJam);
 			Main.NewText("intTravQuestMagicOxygenizer is currenty: " + RijamsModWorld.intTravQuestMagicOxygenizer);
+			Main.NewText("intTravQuestPrimeThruster is currenty: " + RijamsModWorld.intTravQuestPrimeThruster);
 			Main.NewText("savedHarpy is currenty: " + RijamsModWorld.savedHarpy);
 			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArived);
 			return true;
@@ -192,7 +193,32 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.intTravQuestMagicOxygenizer.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestRyeJam == " + currentState));
+			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestMagicOxygenizer == " + currentState));
+		}
+	}
+	public class DebugIntTravQuestPrimeThruster : DebugIntTravQuestOddDevice
+	{
+		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("[c/ff0000:Debug] - Prime Thruster");
+			Tooltip.SetDefault("Changes the states of the Prime Thruster quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+		}
+		public override bool UseItem(Player player)
+		{
+			RijamsModWorld.intTravQuestPrimeThruster = false;
+			RijamsModWorld.UpdateWorldBool();
+			return true;
+		}
+		public override void RightClick(Player player)
+		{
+			RijamsModWorld.intTravQuestPrimeThruster = true;
+			RijamsModWorld.UpdateWorldBool();
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			string currentState = RijamsModWorld.intTravQuestPrimeThruster.ToString();
+			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestPrimeThruster == " + currentState));
 		}
 	}
 	public class DebugIntTravArived : DebugIntTravQuestOddDevice
@@ -201,7 +227,7 @@ namespace RijamsMod.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Interstellar Traveler Arrived Flag");
-			Tooltip.SetDefault("Changes the flag that the Interstellar Traveler has arived\nLeft click to set false\nRight click to set true");
+			Tooltip.SetDefault("Changes the flag that the Interstellar Traveler has arrived\nLeft click to set false\nRight click to set true");
 		}
 		public override void SetDefaults()
 		{

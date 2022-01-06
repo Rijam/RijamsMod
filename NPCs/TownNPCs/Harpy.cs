@@ -4,6 +4,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+using RijamsMod.Items;
+using RijamsMod.Projectiles;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -104,7 +106,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
-			int harpy = NPC.FindFirstNPC(mod.NPCType("Harpy"));
+			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
 			chat.Add("Don't attack, please!");
 			chat.Add("Friends? I am friendly.");
 			chat.Add("I think I am different...");
@@ -179,13 +181,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Wait, how did I get here? Where did I come from?", 2.0);
 			}
-			int interTravel = NPC.FindFirstNPC(mod.NPCType("Interstellar Traveler"));
+			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 			if (interTravel >= 0)
 			{
 				chat.Add("Me and " + Main.npc[interTravel].GivenName + " are like each other, but also not.", 0.5);
 				chat.Add("" + Main.npc[interTravel].GivenName + " really likes my wings. Why doesn't she have any if she is a bird?", 0.5);
 			}
-			int fisherman = NPC.FindFirstNPC(mod.NPCType("Fisherman"));
+			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
 			if (interTravel >= 0)
 			{
 				chat.Add("Me and " + Main.npc[fisherman].GivenName + " go on fishing trips sometimes! He lets me 'scout ahead', whatever that means!", 0.5);
@@ -435,7 +437,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				if (NPC.downedGolemBoss)
 				{
-					shop.item[nextSlot].SetDefaults(mod.ItemType("GiantRedHarpyFeather"));
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>());
 					nextSlot++;
 				}
 			}
@@ -452,17 +454,17 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("GuideToProperFlightTechniques"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.GuideToProperFlightTechniques>());
 				nextSlot++;
 			}
 			if (NPC.downedGolemBoss)
             {
-				shop.item[nextSlot].SetDefaults(mod.ItemType("SunEssence"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.SunEssence>());
 				nextSlot++;
 			}
-			shop.item[nextSlot].SetDefaults(mod.ItemType("Harpy_Vanity_Shirt"));
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shirt>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(mod.ItemType("Harpy_Vanity_Shorts"));
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shorts>());
 			nextSlot++;
 		}
 
@@ -498,11 +500,11 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if(NPC.downedMoonlord)
             {
-				projType = mod.ProjectileType("FriendlyHarpyFeatherRed");
+				projType = ModContent.ProjectileType<FriendlyHarpyFeatherRed>();
 			}
 			else
             {
-				projType = mod.ProjectileType("FriendlyHarpyFeather");
+				projType = ModContent.ProjectileType<FriendlyHarpyFeather>();
 			}
 			attackDelay = 2;
 		}

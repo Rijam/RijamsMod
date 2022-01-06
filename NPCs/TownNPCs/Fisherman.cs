@@ -118,7 +118,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
-			int fisherman = NPC.FindFirstNPC(mod.NPCType("Fisherman"));
+			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
 			chat.Add("Greetings. Care to do some fishin'?");
 			chat.Add("I got all the supplies you'd need if you want to do some fishin'.");
 			chat.Add("Fishing rods? Bait? Hooks? You want it?");
@@ -170,12 +170,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("A mysterious force told me not to sell anything. They said to check the \"config\", whatever that is.", 20.0);
 			}
-			int interTravel = NPC.FindFirstNPC(mod.NPCType("Interstellar Traveler"));
+			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 			if (interTravel >= 0)
 			{
 				chat.Add("" + Main.npc[interTravel].GivenName + " is nice and all, but I don't trust her around my stash of fish!", 0.5);
 			}
-			int harpy = NPC.FindFirstNPC(mod.NPCType("Harpy"));
+			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
 			if (harpy >= 0)
 			{
 				chat.Add("" + Main.npc[harpy].GivenName + " sometimes helps me scout ahead on my fishing journies. Very helpful!", 0.5);
@@ -704,12 +704,12 @@ namespace RijamsMod.NPCs.TownNPCs
 					// 5 Waxing Crescent
 					// 6 First Quarter
 					// 7 Waxing Gibbous
-					/*if (Main.moonPhase == 0)
+					if (Main.moonPhase == 0)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
+						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
 						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 1)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
@@ -728,12 +728,12 @@ namespace RijamsMod.NPCs.TownNPCs
 						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 4)
+					if (Main.moonPhase == 4)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
+						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
 						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 5)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
@@ -755,12 +755,12 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 10)
 				{
-					/*if (Main.moonPhase == 4)
+					if (Main.moonPhase == 4)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
+						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
 						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 5)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
@@ -779,12 +779,12 @@ namespace RijamsMod.NPCs.TownNPCs
 						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 0)
+					if (Main.moonPhase == 0)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
+						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
 						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 1)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
@@ -806,12 +806,12 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 15)
 				{
-					/*if (Main.moonPhase == 2)
+					if (Main.moonPhase == 2)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
+						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
 						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 3)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
@@ -830,12 +830,12 @@ namespace RijamsMod.NPCs.TownNPCs
 						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 6)
+					if (Main.moonPhase == 6)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
+						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
 						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 7)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
@@ -857,12 +857,12 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 20)
 				{
-					/*if (Main.moonPhase == 6)
+					if (Main.moonPhase == 6)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
+						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
 						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 7)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
@@ -881,12 +881,12 @@ namespace RijamsMod.NPCs.TownNPCs
 						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 2)
+					if (Main.moonPhase == 2)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
+						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
 						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 3)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
@@ -972,7 +972,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
 		{
-			projType = mod.ProjectileType("HarpoonSpear");
+			projType = ModContent.ProjectileType<HarpoonSpear>();
 			//projType = ProjectileID.Harpoon;
 			attackDelay = 1;
 		}

@@ -38,15 +38,15 @@ namespace RijamsMod.Items.Fishing
 				random = Main.rand.Next(9);
 				if (random == 8)
 				{
-					player.QuickSpawnItem(mod.ItemType("RedWorm"), Main.rand.Next(0, 3));
+					player.QuickSpawnItem(ModContent.ItemType<RedWorm>(), Main.rand.Next(0, 3));
 				}
 				if (random == 7)
 				{
-					player.QuickSpawnItem(mod.ItemType("Mealworm"), Main.rand.Next(0, 3));
+					player.QuickSpawnItem(ModContent.ItemType<Mealworm>(), Main.rand.Next(0, 3));
 				}
 				if (random == 6)
                 {
-					player.QuickSpawnItem(mod.ItemType("PlasticWormLure"), Main.rand.Next(0, 3));
+					player.QuickSpawnItem(ModContent.ItemType<PlasticWormLure>(), Main.rand.Next(0, 3));
 				}
 				if (random == 5)
 				{

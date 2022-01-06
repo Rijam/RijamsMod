@@ -34,7 +34,7 @@ namespace RijamsMod.Items.Pets
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "LargeGlowRing", 1);
+			recipe.AddIngredient(ModContent.ItemType<Accessories.LargeGlowRing>(), 1);
 			recipe.AddIngredient(ItemID.PixieDust, 1);
 			recipe.AddIngredient(ItemID.SoulofFlight, 1);
 			recipe.AddTile(TileID.WorkBenches);
@@ -72,8 +72,8 @@ namespace RijamsMod.Items.Pets
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "LumothBulb", 1);
-			recipe.AddIngredient(null, "SunEssence", 1);
+			recipe.AddIngredient(ModContent.ItemType<LumothBulb>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 1);
 			recipe.AddIngredient(ItemID.LunarOre, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.SetResult(this);

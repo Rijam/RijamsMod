@@ -49,7 +49,7 @@ namespace RijamsMod.Items.Accessories
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod, "GiantRedHarpyFeather", 1);
+			recipe.AddIngredient(ModContent.ItemType<Materials.GiantRedHarpyFeather>(), 1);
 			recipe.AddIngredient(ItemID.SoulofFlight, 20);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.SetResult(this);

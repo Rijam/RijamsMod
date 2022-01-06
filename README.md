@@ -17,7 +17,7 @@ Includes:
 
 Many new items and weapons throughout the game's progression.
 - 24 weapons: 3 Melee, 8 Ranged, 6 Magic, 7 Summoner.
-- 18 accessories.
+- 24 accessories.
 - 5 armor pieces.
 - 8 vanity items + 3 dyes.
 

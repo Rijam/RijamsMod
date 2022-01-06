@@ -10,7 +10,8 @@ namespace RijamsMod.Items.Accessories
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Guide to Proper Flight Techniques");
-			Tooltip.SetDefault("Only works while Wings are equiped\n+1 Second Flight Time\nIncreased vertical and horizontal flight speed\nIncreased jump height\nIncreased movement speed" + "\n[c/403638:Sold by Harpy]");
+			Tooltip.SetDefault("Only works while Wings are equipped\n+1 Second Flight Time\nIncreased vertical and horizontal flight speed\nIncreased jump height\nIncreased movement speed");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Harpy]");
 		}
 
 		public override void SetDefaults()

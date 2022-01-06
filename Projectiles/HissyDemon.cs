@@ -86,10 +86,10 @@ namespace RijamsMod.Projectiles
 			// projectile is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active) {
 				//player.ClearBuff(ModContent.BuffType<HissyDemonBuff>());
-				player.ClearBuff(mod.BuffType("HissyDemonBuff"));
+				player.ClearBuff(ModContent.BuffType<Buffs.HissyDemonBuff>());
 			}
 			//if (player.HasBuff(ModContent.BuffType<HissyDemonBuff>()))
-			if (player.HasBuff(mod.BuffType("HissyDemonBuff")))
+			if (player.HasBuff(ModContent.BuffType<Buffs.HissyDemonBuff>()))
 			{
 				projectile.timeLeft = 2;
 			}

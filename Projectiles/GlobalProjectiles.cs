@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -30,5 +31,32 @@ namespace RijamsMod.Projectiles
 				}
 			}
 		}
-	}
+        public override bool PreAI(Projectile projectile)
+        {
+			Player owner = Main.player[projectile.owner];
+			if (owner != null && owner.GetModPlayer<RijamsModPlayer>().rocketBooster)
+			{
+				short[] types = {ProjectileID.RocketI, ProjectileID.RocketII, ProjectileID.RocketIII, ProjectileID.RocketIV,
+							ProjectileID.RocketSnowmanI, ProjectileID.RocketSnowmanII, ProjectileID.RocketSnowmanIII, ProjectileID.RocketSnowmanIV};
+							//Not including Grenades, Proximity Mines, or the Celebration Rockets because extraUpdates causes them to:
+							//	Grenades and Proximity Mines fall way faster which makes them have even less range.
+							//	Celebration Rockets explode twice as soon (also they are shared with the placed colored firework Rockets)
+							//  Exctrosphere Missile moves slow enough that it doesn't need extraUpdates.
+							//Need to add all of the new 1.4 rocket types (liquid rockets & Celebration MkII)
+				foreach (short element in types)
+				{
+					if (owner.HeldItem.useAmmo == AmmoID.Rocket && projectile.type == element)
+					{
+						if (projectile.extraUpdates == 0)
+						{
+							//Main.NewText("rocketBooster GlobalProjectile");
+							projectile.extraUpdates++;
+							projectile.velocity *= 0.5f;
+						}
+					}
+				}
+			}
+			return base.PreAI(projectile);
+        }
+    }
 }

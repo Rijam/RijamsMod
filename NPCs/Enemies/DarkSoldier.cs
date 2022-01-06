@@ -37,7 +37,7 @@ namespace RijamsMod.NPCs.Enemies
 			aiType = NPCID.BoneThrowingSkeleton;
 			animationType = NPCID.BoneThrowingSkeleton;
 			banner = npc.type;
-			bannerItem = mod.ItemType("DarkSoldierBanner");
+			bannerItem = ModContent.ItemType<Items.Placeable.DarkSoldierBanner>();
 		}
 
 		public override void HitEffect(int hitDirection, double damage)

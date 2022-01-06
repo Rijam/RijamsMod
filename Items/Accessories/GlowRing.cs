@@ -69,7 +69,7 @@ namespace RijamsMod.Items.Accessories
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null, "SmallGlowRing", 1);
+			recipe.AddIngredient(ModContent.ItemType<SmallGlowRing>(), 1);
 			recipe.AddIngredient(ItemID.Meteorite, 1);
 			recipe.AddIngredient(ItemID.Hellstone, 1);
 			recipe.AddTile(TileID.WorkBenches);

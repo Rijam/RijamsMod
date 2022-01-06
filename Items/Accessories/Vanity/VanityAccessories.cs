@@ -11,7 +11,8 @@ namespace RijamsMod.Items.Accessories.Vanity
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Carrot Nose");
-			Tooltip.SetDefault("Vanity Accessory" + "\n[c/403638:Dropped by The Frost Legion]");
+			Tooltip.SetDefault("Vanity Accessory");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by The Frost Legion]");
 		}
 
 		public override void SetDefaults()

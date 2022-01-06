@@ -21,7 +21,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 			TileObjectData.addTile(Type);
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Recylcing Machine");
+			name.SetDefault("Recycling Machine");
 			AddMapEntry(new Color(171, 87, 0), name);
 		}
 

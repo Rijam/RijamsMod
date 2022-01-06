@@ -90,7 +90,7 @@ namespace RijamsMod.Items.Weapons
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod, "SpikeTrapStaff", 1);
+			recipe.AddIngredient(ModContent.ItemType<SpikeTrapStaff>(), 1);
 			recipe.AddIngredient(ItemID.LihzahrdBrick, 10);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.SetResult(this);

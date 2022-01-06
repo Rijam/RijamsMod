@@ -11,7 +11,8 @@ namespace RijamsMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Hissy Staff");
-			Tooltip.SetDefault("Summons a Hissy Demon to fight for you" + "\n[c/403638:Dropped by Dark Soldier]");
+			Tooltip.SetDefault("Summons a Hissy Demon to fight for you");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Dark Soldier]");
 			ItemID.Sets.GamepadWholeScreenUseRange[item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[item.type] = true;
 		}
@@ -38,7 +39,7 @@ namespace RijamsMod.Items.Weapons
 			item.noMelee = true;
 			item.summon = true;
 			//item.buffType = ModContent.BuffType<HissyDemonBuff>();
-			item.buffType = mod.BuffType("HissyDemonBuff");
+			item.buffType = ModContent.BuffType<Buffs.HissyDemonBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			item.shoot = ModContent.ProjectileType<HissyDemon>();
 		}

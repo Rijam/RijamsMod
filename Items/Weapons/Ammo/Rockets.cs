@@ -1,6 +1,6 @@
-//using ExampleMod.Tiles;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Ammo
@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			//Tooltip.SetDefault("Picked up a box of rockets");
+			Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.RocketI"));
 		}
 
 		public override void SetDefaults()
@@ -22,7 +22,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 			item.value = 100000;
 			item.rare = ItemRarityID.Green;
 			//item.shoot = ProjectileID.RocketI;   //The projectile shoot when your weapon using this ammo
-			item.ammo = AmmoID.Rocket;              //The ammo class this ammo belongs to.
+			//item.ammo = AmmoID.Rocket;              //The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()
@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.RocketI, 3996);
 			recipe.AddTile(TileID.CrystalBall);
-			recipe.SetResult(this, 1);
+			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
 	}

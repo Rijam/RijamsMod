@@ -11,7 +11,8 @@ namespace RijamsMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Shadowflame Staff");
-			Tooltip.SetDefault("Summons a Shadowflame Phantom to fight for you" + "\n[c/403638:Dropped by Goblin Summoner]");
+			Tooltip.SetDefault("Summons a Shadowflame Phantom to fight for you");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Goblin Summoner]");
 			ItemID.Sets.GamepadWholeScreenUseRange[item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[item.type] = true;
 		}
@@ -35,7 +36,7 @@ namespace RijamsMod.Items.Weapons
 			item.noMelee = true;
 			item.summon = true;
 			//item.buffType = ModContent.BuffType<ShadowflamePhantomBuff>();
-			item.buffType = mod.BuffType("ShadowflamePhantomBuff");
+			item.buffType = ModContent.BuffType<Buffs.ShadowflamePhantomBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			item.shoot = ModContent.ProjectileType<ShadowflamePhantom>();
 		}

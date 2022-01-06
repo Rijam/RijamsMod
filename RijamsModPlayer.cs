@@ -20,6 +20,8 @@ namespace RijamsMod
 		public bool lumothPet;
 		public bool lEDLumothPet;
 		public bool burglarsRing;
+		public bool rocketBooster;
+		public bool gamutApparatus;
 		//public bool delapHelmet;
 		//public bool delapScalemail;
 		//public bool delapGreaves;
@@ -34,10 +36,12 @@ namespace RijamsMod
 			lumothPet = false;
 			lEDLumothPet = false;
 			burglarsRing = false;
+            rocketBooster = false;
+			gamutApparatus = false;
 			//breathingPackUsed = true;
 			//breathingPackTimer = 0;
 		}
-		public override void clientClone(ModPlayer clientClone)
+        public override void clientClone(ModPlayer clientClone)
 		{
 			RijamsModPlayer clone = clientClone as RijamsModPlayer;
 		}
@@ -67,7 +71,7 @@ namespace RijamsMod
 				//Main.NewText("breathingPackUsed " + breathingPackUsed);
 				//Main.NewText("breathingPackTimer " + breathingPackTimer);
 				//Main.NewText("player.wet " + player.wet);
-				if (player.breath <= 1 )//&& breathingPackUsed == false)
+				if (player.breath <= 0 )//&& breathingPackUsed == false)
 				{
 					//breathingPackUsed = true;
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = true;

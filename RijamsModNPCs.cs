@@ -3,6 +3,11 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Items;
+using RijamsMod.Items.Weapons;
+using RijamsMod.Items.Accessories;
+using RijamsMod.Items.Accessories.Vanity;
+using RijamsMod.Items.Materials;
 
 namespace RijamsMod
 {
@@ -14,7 +19,7 @@ namespace RijamsMod
         {
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
 			//Player player = Main.LocalPlayer;
-			//If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not importal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
+			//If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
 			if (moddedplayer.burglarsRing && (!npc.boss || !npc.immortal || !npc.dontCountMe) && npc.active && npc.lastInteraction != 255)
             {
 				//Main.NewText($"NPCLoot called for NPC Id: {npc.type}");
@@ -43,15 +48,15 @@ namespace RijamsMod
 			{
 				if (Main.rand.Next(15) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("Thompson"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Thompson>());
 				}
 				if (Main.rand.Next(25) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CarrotNose"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CarrotNose>());
 				}
 				if (Main.rand.Next(25) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("FrostyRose"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FrostyRose>());
 				}
 				if (Main.rand.Next(50) == 0)
 				{
@@ -66,15 +71,15 @@ namespace RijamsMod
 			{
 				if (Main.rand.Next(15) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("LegionScarf"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<LegionScarf>());
 				}
 				if (Main.rand.Next(25) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CarrotNose"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CarrotNose>());
 				}
 				if (Main.rand.Next(25) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("FrostyRose"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FrostyRose>());
 				}
 				if (Main.rand.Next(50) == 0)
 				{
@@ -89,19 +94,19 @@ namespace RijamsMod
 			{
 				if (Main.rand.Next(15) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("LegionScarf"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<LegionScarf>());
 				}
 				if (Main.rand.Next(25) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CarrotNose"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CarrotNose>());
 				}
 				if (Main.rand.Next(15) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("StabbyShiv"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<StabbyShiv>());
 				}
 				if (Main.rand.Next(25) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("FrostyRose"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FrostyRose>());
 				}
 				if (Main.rand.Next(150) == 0)
 				{
@@ -112,7 +117,7 @@ namespace RijamsMod
 			{
 				if (Main.rand.Next(3) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("ShadowflameStaff"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<ShadowflameStaff>());
 				}
 			}
 			if (npc.type == NPCID.ArmoredViking)
@@ -138,14 +143,14 @@ namespace RijamsMod
 				{
 					if (Main.rand.Next(10) == 0)
 					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("NaughtyList"));
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<NaughtyList>());
 					}
 				}
 				if (!Main.expertMode)
 				{
 					if (Main.rand.Next(20) == 0)
 					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("NaughtyList"));
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<NaughtyList>());
 					}
 				}
 			}
@@ -153,7 +158,7 @@ namespace RijamsMod
 			{
 				if (Main.rand.Next(20) == 0) //5% chance, compared with the RoD's 0.2%
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("TeleportationCore"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Quest.TeleportationCore>());
 				}
 			}
 			Mod consolaria = ModLoader.GetMod("Consolaria"); //Consolaria's Specral Elemental can also drop it
@@ -163,7 +168,7 @@ namespace RijamsMod
 				{
 					if (Main.rand.Next(20) == 0)
 					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("TeleportationCore"));
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Quest.TeleportationCore>());
 					}
 				}
 			}
@@ -171,15 +176,15 @@ namespace RijamsMod
             {
 				if (Main.rand.Next(525) == 0) //0.19% chance
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("DilapidatedCrimsonHelmet"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.DilapidatedCrimsonHelmet>());
 				}
 				if (Main.rand.Next(525) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("DilapidatedCrimsonScalemail"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.DilapidatedCrimsonScalemail>());
 				}
 				if (Main.rand.Next(525) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("DilapidatedCrimsonGreaves"));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.DilapidatedCrimsonGreaves>());
 				}
 			}
 			if (npc.type == NPCID.PresentMimic)
@@ -217,6 +222,14 @@ namespace RijamsMod
 			if (npc.type == NPCID.Pumpking)
 			{
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 5));
+			}
+			if (npc.type == NPCID.BloodCrawler || npc.type == NPCID.BloodCrawlerWall)
+			{
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrawlerChelicera>(), Main.rand.Next(1, 2));
+			}
+			if (npc.type == NPCID.EyeofCthulhu && !Main.expertMode)
+			{
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 50));
 			}
 		}
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)

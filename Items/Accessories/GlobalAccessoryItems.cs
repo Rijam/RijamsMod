@@ -12,10 +12,10 @@ namespace RijamsMod.Items.Accessories
 	{
 		public override void SetDefaults(Item item)
 		{
-			if (item.type == ItemID.CelestialCuffs)
-			{ // Here we make sure to only change Copper Shortsword by checking item.type in an if statement
+			//if (item.type == ItemID.CelestialCuffs)
+			//{ // Here we make sure to only change Copper Shortsword by checking item.type in an if statement
 				//item.damage = 50;       // Changed original CopperShortsword's damage to 50!
-			}
+			//}
 		}
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
@@ -35,7 +35,38 @@ namespace RijamsMod.Items.Accessories
 				Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.875f);
 			}
 		}
-	}
+        public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback)
+        {
+			if (player.GetModPlayer<RijamsModPlayer>().rocketBooster && (ammo.type == AmmoID.Rocket || weapon.useAmmo == AmmoID.Rocket || 
+					ammo.type == ItemID.ExplosiveJackOLantern || weapon.useAmmo == ItemID.ExplosiveJackOLantern || ammo.type == ItemID.Nail ||
+					weapon.useAmmo == ItemID.Nail || ammo.type == ItemID.StyngerBolt || weapon.useAmmo == ItemID.StyngerBolt) && !player.GetModPlayer<RijamsModPlayer>().gamutApparatus)
+			{
+				knockback *= 1.1f;
+				speed *= 1.2f;
+			}
+			if (player.GetModPlayer<RijamsModPlayer>().gamutApparatus)
+			{
+				knockback *= 1.2f;
+				speed *= 1.2f;
+				if (type == ProjectileID.WoodenArrowFriendly)
+                {
+					type = ProjectileID.FireArrow;
+					damage += 2;
+				}
+			}
+		}
+        public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+        {
+			/*if (player.GetModPlayer<RijamsModPlayer>().rocketBooster && (item.ammo == AmmoID.Rocket || item.useAmmo == AmmoID.Rocket || type == AmmoID.Rocket))
+			{
+				Main.NewText("rocketBooster GlobalItem");
+				knockBack *= 1.5f;
+				speedX *= 0.5f;
+				speedY *= 0.5f;
+			}*/
+			return base.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+        }
+    }
 	public class SummonersGloveUpdate : GlobalItem
 	{
 		public override bool CanUseItem(Item item, Player player)

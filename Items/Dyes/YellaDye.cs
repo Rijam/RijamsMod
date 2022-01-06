@@ -23,7 +23,7 @@ namespace RijamsMod.Items.Dyes
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod, "SunEssence", 10);
+            recipe.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 10);
             recipe.AddTile(TileID.DyeVat);
             recipe.SetResult(this);
             recipe.AddRecipe();

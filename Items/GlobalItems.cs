@@ -27,5 +27,25 @@ namespace RijamsMod.Items
             }
             return "";
         }
+        public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback)
+        {
+            if (weapon.type == ItemID.SnowmanCannon)
+            {
+                if (ammo.type == ModContent.ItemType<Weapons.Ammo.EndlessRocketBox>())
+                {
+                    type = ProjectileID.RocketSnowmanI;
+                }
+            }
+        }
+        public override void OpenVanillaBag(string context, Player player, int arg)
+        {
+            if (context == "bossBag")
+            {
+                if (arg == ItemID.EyeOfCthulhuBossBag)
+                {
+                    player.QuickSpawnItem(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 50));
+                }
+            }
+        }
     }
 }

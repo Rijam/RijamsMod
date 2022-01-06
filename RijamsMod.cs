@@ -10,6 +10,8 @@ using Terraria.GameContent.Dyes;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
+using Terraria.UI;
+using RijamsMod.UI;
 
 namespace RijamsMod
 {
@@ -21,6 +23,9 @@ namespace RijamsMod
         public static RijamsModNPCs RijamsModNPCs;
         public static ItemUseGlow ItemUseGlow;
         public static RijamsMod Items;
+
+        /*internal UserInterface MyInterface;
+        internal TheUI MyUI;*/
 
         public override void AddRecipes()
         {
@@ -34,16 +39,30 @@ namespace RijamsMod
             recipe.AddRecipe();
 
             recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.PanicNecklace, 1);
+            recipe.AddIngredient(ItemID.VilePowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
+            recipe.SetResult(ItemID.BandofStarpower, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.BandofStarpower, 1);
+            recipe.AddIngredient(ItemID.ViciousPowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
+            recipe.SetResult(ItemID.PanicNecklace, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
             recipe.AddIngredient(ItemID.FleshKnuckles, 1);
-            recipe.AddIngredient(ItemID.Ectoplasm, 5);
-            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ItemID.VilePowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(ItemID.PutridScent, 1);
             recipe.AddRecipe();
 
             recipe = new ModRecipe(this);
             recipe.AddIngredient(ItemID.PutridScent, 1);
-            recipe.AddIngredient(ItemID.Ectoplasm, 5);
-            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ItemID.ViciousPowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(ItemID.FleshKnuckles, 1);
             recipe.AddRecipe();
 
@@ -53,6 +72,16 @@ namespace RijamsMod
             recipe.AddIngredient(ItemID.FallenStar, 1);
             recipe.AddTile(TileID.Anvils);
             recipe.SetResult(ItemID.SlimeStaff, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.BottledWater, 1);
+            recipe.AddIngredient(ItemID.Deathweed, 1);
+            recipe.AddIngredient(ItemID.Cactus, 1);
+            recipe.AddIngredient(ModContent.ItemType<Items.Materials.CrawlerChelicera>(), 1);
+            recipe.AddIngredient(ItemID.Stinger, 1);
+            recipe.AddTile(TileID.Bottles);
+            recipe.SetResult(ItemID.ThornsPotion, 1);
             recipe.AddRecipe();
         }
         public override void AddRecipeGroups()
@@ -111,6 +140,7 @@ namespace RijamsMod
 
         public override void Load()
         {
+            
             if (!Main.dedServ)
             {
                 AddEquipTexture(null, EquipType.Legs, "Harpy_Vanity_Shorts", "RijamsMod/Items/Armor/Vanity/Harpy_Vanity_Shorts_Legs");
@@ -154,6 +184,14 @@ namespace RijamsMod
                 GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.YellaDye>(), new ArmorShaderData(dyeRef, "YellaShaderPass")).UseColor(2f, 2f, 0f).UseSecondaryColor(0.6f, 0.3f, 0f);
                 GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.BeamDye>(), new ArmorShaderData(dyeRef2, "BeamShaderPass")).UseColor(0f, 1f, 2f);
                 GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.OrangeBeamDye>(), new ArmorShaderData(dyeRef2, "BeamShaderPass")).UseColor(2f, 1f, 0f);
+               
+                
+                
+
+                /*MyUI = new TheUI();
+                MyUI.Activate(); // Activate calls Initialize() on the UIState if not initialized, then calls OnActivate and then calls Activate on every child element
+                MyInterface = new UserInterface();
+                MyInterface.SetState(MyUI);*/
             }
             ModTranslation text;
             text = CreateTranslation("Config.Ornithophobia");
@@ -166,12 +204,14 @@ namespace RijamsMod
 
         public override void Unload()
         {
+            ItemOriginDesc.itemList.Clear();
             Instance = null;
             ConfigClient = null;
             ConfigServer = null;
             RijamsModNPCs = null;
             ItemUseGlow = null;
             Items = null;
+            //MyUI = null;
         }
 
         public override void PostSetupContent()
@@ -201,6 +241,36 @@ namespace RijamsMod
                 //pboneUtils.Call("MysteriousTraderItem", ModLoader.GetMod("RijamsMod"), ModContent.ItemType<Items.Consumables.StrangeRoll>(), rarity, condition);
             }
         }
+
+        /*public override void UpdateUI(GameTime gameTime)
+        {
+            //if (MyInterface?.CurrentState != null)
+            if (TheUI.Visible)
+            {
+                MyInterface?.Update(gameTime);
+            }
+        }*/
+
+        /*public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+        {
+            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (mouseTextIndex != -1)
+            {
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "RijamsMod: MyUI",
+                    delegate
+                    {
+                        if (TheUI.Visible)
+                        //if (_lastUpdateUiGameTime != null && MyInterface?.CurrentState != null)
+                        {
+                            MyInterface.Draw(Main.spriteBatch, new GameTime());
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI));
+            }
+        }*/
+
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             RijamsModMessageType msgType = (RijamsModMessageType)reader.ReadByte();
@@ -239,6 +309,11 @@ namespace RijamsMod
                     NetMessage.SendData(MessageID.WorldData);
                     Logger.Debug("RijamsMod: Magic Oxygenizer quest completed (Multiplayer packet).");
                     break;
+                case RijamsModMessageType.SetQuestPrimeThruster:
+                    RijamsModWorld.intTravQuestPrimeThruster = true;
+                    NetMessage.SendData(MessageID.WorldData);
+                    Logger.Debug("RijamsMod: Prime Thruster quest completed (Multiplayer packet).");
+                    break;
                 default:
                     Logger.WarnFormat("RijamsMod: Unknown Message type: {0}", msgType);
                     break;
@@ -252,6 +327,7 @@ namespace RijamsMod
         SetQuestBlankDisplay,
         SetQuestTPCore,
         SetQuestRyeJam,
-        SetQuestMagicOxygenizer
+        SetQuestMagicOxygenizer,
+        SetQuestPrimeThruster
     }
 }

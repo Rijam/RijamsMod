@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("[c/403638:Dropped by Snowman Gansta]");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Snowman Gansta]");
 		}
 
 		public override void SetDefaults()

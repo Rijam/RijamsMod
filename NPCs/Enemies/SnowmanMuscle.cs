@@ -30,7 +30,7 @@ namespace RijamsMod.NPCs.Enemies
 			aiType = NPCID.SnowmanGangsta;
 			animationType = NPCID.SnowmanGangsta;
 			banner = npc.type;
-			bannerItem = mod.ItemType("SnowmanMuscleBanner");
+			bannerItem = ModContent.ItemType<Items.Placeable.SnowmanMuscleBanner>();
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -47,11 +47,11 @@ namespace RijamsMod.NPCs.Enemies
 			}
 			if (Main.rand.Next(25) == 0)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CarrotNose"));
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.Vanity.CarrotNose>());
 			}
 			if (Main.rand.Next(25) == 0)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("FrostyRose"));
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.FrostyRose>());
 			}
 			if (Main.rand.Next(150) == 0)
 			{

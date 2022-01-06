@@ -25,6 +25,7 @@ namespace RijamsMod
         public static bool intTravQuestTPCore = false;
         public static bool intTravQuestRyeJam = false;
         public static bool intTravQuestMagicOxygenizer = false;
+        public static bool intTravQuestPrimeThruster = false;
 
         public override void Initialize()
         {
@@ -35,6 +36,7 @@ namespace RijamsMod
             intTravQuestTPCore = false;
             intTravQuestRyeJam = false;
             intTravQuestMagicOxygenizer = false;
+            intTravQuestPrimeThruster = false;
         }
 
         public override TagCompound Save()
@@ -70,6 +72,10 @@ namespace RijamsMod
             {
                 downed.Add("intTravQuestBreathingPack");
             }
+            if (intTravQuestPrimeThruster)
+            {
+                downed.Add("intTravQuestPrimeThruster");
+            }
 
 
             return new TagCompound
@@ -100,6 +106,7 @@ namespace RijamsMod
             intTravQuestTPCore = downed.Contains("intTravQuestTPCore");
             intTravQuestRyeJam = downed.Contains("intTravQuestRyeJam");
             intTravQuestMagicOxygenizer = downed.Contains("intTravQuestBreathingPack");
+            intTravQuestPrimeThruster = downed.Contains("intTravQuestPrimeThruster");
 
             /*savedHarpy = tag.GetBool("savedHarpy");
             intTravArived = tag.GetBool("intTravArived");
@@ -119,6 +126,7 @@ namespace RijamsMod
                 intTravQuestTPCore = flags[4];
                 intTravQuestRyeJam = flags[5];
                 intTravQuestMagicOxygenizer = flags[6];
+                intTravQuestPrimeThruster = flags[7];
             }
             else
             {
@@ -137,6 +145,7 @@ namespace RijamsMod
             flags[4] = intTravQuestTPCore;
             flags[5] = intTravQuestRyeJam;
             flags[6] = intTravQuestMagicOxygenizer;
+            flags[7] = intTravQuestPrimeThruster;
             writer.Write(flags);
 
             /*writer.Write(savedHarpy);
@@ -154,6 +163,7 @@ namespace RijamsMod
             intTravQuestTPCore = flags[4];
             intTravQuestRyeJam = flags[5];
             intTravQuestMagicOxygenizer = flags[6];
+            intTravQuestPrimeThruster = flags[7];
 
             /*savedHarpy = reader.ReadBoolean();
             intTravArived = reader.ReadBoolean();*/

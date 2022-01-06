@@ -38,7 +38,7 @@ namespace RijamsMod.Items.Weapons
 			item.noMelee = true;
 			item.summon = true;
 			//item.buffType = ModContent.BuffType<HissyDemonBuff>();
-			item.buffType = mod.BuffType("MeatballDemonBuff");
+			item.buffType = ModContent.BuffType<Buffs.MeatballDemonBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			item.shoot = ModContent.ProjectileType<MeatballDemon>();
 		}
