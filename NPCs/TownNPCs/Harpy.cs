@@ -3,8 +3,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
 using Terraria.Utilities;
+using RijamsMod.Items;
+using RijamsMod.Projectiles;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -61,6 +62,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
+			Main.npcCatchable[npc.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			npc.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? (short)ModContent.ItemType<Items.CaughtHarpy>() : (short)-1;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -78,7 +81,14 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
-			return RijamsModWorld.savedHarpy;
+			if (RijamsModWorld.savedHarpy && NPC.CountNPCS(ModContent.NPCType<Harpy>()) < 1)
+			{
+				return true;
+            }
+			else
+			{
+				return false;
+			}
 		}
 
 		public override bool CheckConditions(int left, int right, int top, int bottom)
@@ -96,7 +106,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
-			int harpy = NPC.FindFirstNPC(mod.NPCType("Harpy"));
+			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
 			chat.Add("Don't attack, please!");
 			chat.Add("Friends? I am friendly.");
 			chat.Add("I think I am different...");
@@ -171,13 +181,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Wait, how did I get here? Where did I come from?", 2.0);
 			}
-			int interTravel = NPC.FindFirstNPC(mod.NPCType("Interstellar Traveler"));
+			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 			if (interTravel >= 0)
 			{
 				chat.Add("Me and " + Main.npc[interTravel].GivenName + " are like each other, but also not.", 0.5);
 				chat.Add("" + Main.npc[interTravel].GivenName + " really likes my wings. Why doesn't she have any if she is a bird?", 0.5);
 			}
-			int fisherman = NPC.FindFirstNPC(mod.NPCType("Fisherman"));
+			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
 			if (interTravel >= 0)
 			{
 				chat.Add("Me and " + Main.npc[fisherman].GivenName + " go on fishing trips sometimes! He lets me 'scout ahead', whatever that means!", 0.5);
@@ -324,10 +334,14 @@ namespace RijamsMod.NPCs.TownNPCs
 					nextSlot++;
 				}
 			}
-			/*Mod shadowsOfAbaddon = ModLoader.GetMod("SacredTools");
+			Mod shadowsOfAbaddon = ModLoader.GetMod("SacredTools");
 			if (shadowsOfAbaddon != null) //Shadows of Abaddon
 			{
-				if (SacredToolsDownedHarpyPreHM) //Jensen
+				shop.item[nextSlot].SetDefaults(shadowsOfAbaddon.ItemType("BirdFeather")); //White Feather
+				shop.item[nextSlot].shopCustomPrice = 50;
+				nextSlot++;
+				
+				/*if (SacredToolsDownedHarpyPreHM) //Jensen
 				{
 					//shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SacredTools").ItemType("GrandHarpyFeather"));
 					shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SacredTools").ItemType("HarpyDrop")); //Grand Harpy Feather
@@ -340,8 +354,8 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SacredTools").ItemType("GoldenFeather")); //Royal Harpy Feather
 					shop.item[nextSlot].shopCustomPrice = 20000;
 					nextSlot++;
-				}
-			}*/
+				}*/
+			}
 			Mod ancientsAwakened = ModLoader.GetMod("AAMod");
 			if (ancientsAwakened != null) //Ancients Awakened
 			{
@@ -381,6 +395,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].shopCustomPrice = 2000;
 					nextSlot++;
 				}
+			}
+			Mod thorium = ModLoader.GetMod("ThoriumMod");
+			if (thorium != null) //Thorium
+			{
+				shop.item[nextSlot].SetDefaults(thorium.ItemType("BirdTalon")); //Talon
+				shop.item[nextSlot].shopCustomPrice = 100;
+				nextSlot++;
 			}
 			shop.item[nextSlot].SetDefaults(ItemID.SkyMill);
 			shop.item[nextSlot].shopCustomPrice = 17500;
@@ -427,7 +448,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				if (NPC.downedGolemBoss)
 				{
-					shop.item[nextSlot].SetDefaults(mod.ItemType("GiantRedHarpyFeather"));
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>());
 					nextSlot++;
 				}
 			}
@@ -444,18 +465,25 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("GuideToProperFlightTechniques"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.GuideToProperFlightTechniques>());
 				nextSlot++;
 			}
 			if (NPC.downedGolemBoss)
             {
-				shop.item[nextSlot].SetDefaults(mod.ItemType("SunEssence"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.SunEssence>());
 				nextSlot++;
 			}
-			shop.item[nextSlot].SetDefaults(mod.ItemType("Harpy_Vanity_Shirt"));
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shirt>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(mod.ItemType("Harpy_Vanity_Shorts"));
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shorts>());
 			nextSlot++;
+			Mod split = ModLoader.GetMod("Split");
+			if (split != null) //Thorium
+			{
+				shop.item[nextSlot].SetDefaults(split.ItemType("PosterHarpy"));
+				shop.item[nextSlot].shopCustomPrice = 10000;
+				nextSlot++;
+			}
 		}
 
 		public override bool CanGoToStatue(bool toKingStatue)
@@ -490,11 +518,11 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if(NPC.downedMoonlord)
             {
-				projType = mod.ProjectileType("FriendlyHarpyFeatherRed");
+				projType = ModContent.ProjectileType<FriendlyHarpyFeatherRed>();
 			}
 			else
             {
-				projType = mod.ProjectileType("FriendlyHarpyFeather");
+				projType = ModContent.ProjectileType<FriendlyHarpyFeather>();
 			}
 			attackDelay = 2;
 		}

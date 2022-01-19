@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("[c/403638:Dropped by Skeleton Crossbower]");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Skeleton Crossbower]");
 		}
 
 		public override void SetDefaults()

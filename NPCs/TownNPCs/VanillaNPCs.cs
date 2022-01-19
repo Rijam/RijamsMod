@@ -11,23 +11,23 @@ namespace RijamsMod.NPCs.TownNPCs
 	{
 		public override void GetChat(NPC npc, ref string chat)
 		{
-			int interTravel = NPC.FindFirstNPC(mod.NPCType("Interstellar Traveler"));
-			int harpy = NPC.FindFirstNPC(mod.NPCType("Harpy"));
-			int fisherman = NPC.FindFirstNPC(mod.NPCType("Fisherman"));
+			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
+			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
+			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
 			switch (npc.type)
 			{		
 				case NPCID.Guide:
-					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						string[] lines = { "I was not expecting to see a friendly alien like " + Main.npc[interTravel].GivenName + ". I'd like to know about where they are from.",
 						"" + Main.npc[interTravel].GivenName + " would like to learn about our planet's history. I hope they find it interesting and not confusing."};
 						chat = lines[Main.rand.Next(lines.Length)];
 					}
-					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) <= 0 && NPC.downedBoss2)
+					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) <= 0 && NPC.downedBoss2)
 					{
 						chat = "There is an odd device that you can craft now. Maybe you can find out what its purpose is?";
 					}
-					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(mod.NPCType("Harpy")) > 0)
+					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0)
 					{
 						chat = "I wonder what is different about " + Main.npc[harpy].GivenName + " to cause her to become friendly. What do you think it is?";
 					}
@@ -37,19 +37,19 @@ namespace RijamsMod.NPCs.TownNPCs
 					{
 						chat = "I were in this fine game...";
 					}
-					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(mod.NPCType("Fisherman")) > 0)
+					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(ModContent.NPCType<Fisherman>()) > 0)
 					{
 						chat = "Arr, that " + Main.npc[fisherman].GivenName + " is the type to steal me crew's waters and then get me crew into trouble with the authorities. Do not trust such a man.";
 					}
 					break;
 				case NPCID.Steampunker:
-					if (Main.rand.Next(0, 7) == 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 7) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						chat = "Do ya know if the armor " + Main.npc[interTravel].GivenName + " is wearing comes in brass? I'd even settle for brass-colored!";
 					}
 					break;
 				case NPCID.Nurse:
-					if (Main.rand.Next(0, 6) == 0 && NPC.CountNPCS(mod.NPCType("Harpy")) > 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 6) == 0 && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						chat = "Don't get me started on how difficult it is to operate on " + Main.npc[harpy].GivenName + ". At least " + Main.npc[interTravel].GivenName + " knows how to take care of herself.";
 					}
@@ -69,25 +69,25 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					break;*/
 				case NPCID.Merchant:
-					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						chat = "Next time you speak with " + Main.npc[interTravel].GivenName + ", tell them that their business is not welcomed.";
 					}
 					break;
 				case NPCID.Stylist:
-					if (Main.rand.Next(0, 5) == 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 5) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						chat = "I'm not sure what to do with " + Main.npc[interTravel].GivenName + ". Feathers are not the same as hair!";
 					}
 					break;
 				case NPCID.Angler:
-					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(mod.NPCType("Fisherman")) > 0)
+					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(ModContent.NPCType<Fisherman>()) > 0)
 					{
 						chat = "Yeah? What about " + Main.npc[fisherman].GivenName + "? He's alright I guess. Back to work with you!";
 					}
-					if (Main.rand.Next(0, 8) == 0 && NPC.CountNPCS(mod.NPCType("Harpy")) > 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 8) == 0 && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						chat = "Dodo " + Main.npc[harpy].GivenName + " definity fits the definition for Bird-Brain! Ugly Duckling over there hides herself behind that armor!";
+						chat = "Dodo " + Main.npc[harpy].GivenName + " definitely fits the definition for Bird-Brain! Ugly Duckling over there hides herself behind that armor!";
 					}
 					break;
 				case NPCID.TravellingMerchant:
@@ -95,7 +95,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					{
 						chat = "It has been quite a while since I have seen my ...good friend. I should visit The Valley at some point...";
 					}
-					if (Main.rand.Next(0, 3) == 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 3) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						string[] lines = { "I've never seen anyone like " + Main.npc[interTravel].GivenName + " throughout my travels. This is quite interesting!",
 						"No other merchants' goods are as exotic as mine! Not even " + Main.npc[interTravel].GivenName + "'s!"};
@@ -103,7 +103,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					break;
 				case NPCID.TaxCollector:
-					if (Main.rand.Next(0, 3) == 0 && NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 0)
+					if (Main.rand.Next(0, 3) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						chat = "That alien " + Main.npc[interTravel].GivenName + " keeps giving me this weird currency. I refuse to accept it! What am I supposed to do with it?";
 					}
@@ -118,11 +118,20 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].shopCustomPrice = 100000;
 				nextSlot++;
 			}
-			if (type == NPCID.ArmsDealer && Main.hardMode)
+			if (type == NPCID.ArmsDealer)
 			{
-				shop.item[nextSlot].SetDefaults(ItemID.AmmoBox);
-				shop.item[nextSlot].shopCustomPrice = 150000;
-				nextSlot++;
+				if ((!Main.dayTime && NPC.downedBoss2) || Main.hardMode) //EoW or BoC
+                {
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>());
+					shop.item[nextSlot].shopCustomPrice = 40;
+					nextSlot++;
+				}
+				if (Main.hardMode)
+                {
+					shop.item[nextSlot].SetDefaults(ItemID.AmmoBox);
+					shop.item[nextSlot].shopCustomPrice = 150000;
+					nextSlot++;
+				}
 			}
 			if (type == NPCID.WitchDoctor)
 			{
@@ -130,6 +139,12 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.WormTooth);
 					shop.item[nextSlot].shopCustomPrice = 100;
+					nextSlot++;
+				}
+				if (Main.hardMode || !WorldGen.crimson)
+				{
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.CrawlerChelicera>());
+					shop.item[nextSlot].shopCustomPrice = 125;
 					nextSlot++;
 				}
 				if (!NPC.downedPlantBoss && !Main.dayTime)
@@ -189,6 +204,12 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].SetDefaults(ItemID.PurpleMucos); //Need to update to PurpleMucus for 1.4
 					nextSlot++;
 					shop.item[nextSlot].SetDefaults(ItemID.BlackInk);
+					nextSlot++;
+				}
+				int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
+				if (interTravel > 0)
+                {
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Dyes.BeamDye>());
 					nextSlot++;
 				}
 			}
@@ -272,7 +293,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (NPC.downedBoss1 && Main.rand.Next(0, 5) == 0) //EoC
 			{
-				shop[nextSlot] = mod.ItemType("StrangeRoll");
+				shop[nextSlot] = ModContent.ItemType<Items.Consumables.StrangeRoll>();
 				nextSlot++;
 			}
 		}

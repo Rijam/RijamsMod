@@ -21,7 +21,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 			TileObjectData.addTile(Type);
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Recylcing Machine");
+			name.SetDefault("Recycling Machine");
 			AddMapEntry(new Color(171, 87, 0), name);
 		}
 
@@ -38,10 +38,19 @@ namespace RijamsMod.Tiles
 			// player.inventory[58].type ==
 
 
-			if (player.HeldItem.type == ItemID.OldShoe && player.HasItem(ItemID.OldShoe))
+			if ((player.HeldItem.type == ItemID.OldShoe && player.HasItem(ItemID.OldShoe)) || Main.mouseItem.type == ItemID.OldShoe)
 			{
 				Main.PlaySound(SoundID.Item, i * 16, j * 16, 65);
-				player.ConsumeItem(ItemID.OldShoe);
+
+				if (Main.mouseItem.type == ItemID.OldShoe)
+				{
+					Main.mouseItem.stack--; //:grimacing:
+				}
+				else if (player.HeldItem.type == ItemID.OldShoe)
+				{
+					player.ConsumeItem(ItemID.OldShoe);
+				}
+
 				if (Main.rand.Next(4) <= 2) //75% chance: 0, 1, 2, but not 3
 				{
 					player.QuickSpawnItem(ItemID.Silk, Main.rand.Next(1, 3));
@@ -55,10 +64,19 @@ namespace RijamsMod.Tiles
 					player.QuickSpawnItem(ItemID.GreenThread, Main.rand.Next(1, 3));
 				}
 			}
-			if (player.HeldItem.type == ItemID.FishingSeaweed && player.HasItem(ItemID.FishingSeaweed))
+			if ((player.HeldItem.type == ItemID.FishingSeaweed && player.HasItem(ItemID.FishingSeaweed)) || Main.mouseItem.type == ItemID.FishingSeaweed)
 			{
 				Main.PlaySound(SoundID.Item, i * 16, j * 16, 111);
-				player.ConsumeItem(ItemID.FishingSeaweed);
+
+				if (Main.mouseItem.type == ItemID.FishingSeaweed)
+				{
+					Main.mouseItem.stack--; //:grimacing:
+				}
+				else if (player.HeldItem.type == ItemID.FishingSeaweed)
+				{
+					player.ConsumeItem(ItemID.FishingSeaweed);
+				}
+
 				if (Main.rand.Next(4) <= 2) //75% chance
 				{
 					player.QuickSpawnItem(ItemID.Acorn, Main.rand.Next(1, 2));
@@ -80,10 +98,19 @@ namespace RijamsMod.Tiles
 					player.QuickSpawnItem(ItemID.WaterleafSeeds, Main.rand.Next(1, 2));
 				}
 			}
-			if (player.HeldItem.type == ItemID.TinCan && player.HasItem(ItemID.TinCan))
+			if ((player.HeldItem.type == ItemID.TinCan && player.HasItem(ItemID.TinCan)) || Main.mouseItem.type == ItemID.TinCan)
 			{
 				Main.PlaySound(SoundID.Item, i * 16, j * 16, 52);
-				player.ConsumeItem(ItemID.TinCan);
+
+				if (Main.mouseItem.type == ItemID.TinCan)
+				{
+					Main.mouseItem.stack--; //:grimacing:
+				}
+				else if (player.HeldItem.type == ItemID.TinCan)
+				{
+					player.ConsumeItem(ItemID.TinCan);
+				}
+
 				if (Main.rand.Next(2) == 0) //50% chance
 				{
 					player.QuickSpawnItem(ItemID.TinOre, Main.rand.Next(1, 2));
@@ -97,10 +124,19 @@ namespace RijamsMod.Tiles
 					player.QuickSpawnItem(ItemID.Bottle, Main.rand.Next(1, 2));
 				}
 			}
-			if (player.HeldItem.type == ItemID.Coal && player.HasItem(ItemID.Coal))
+			if ((player.HeldItem.type == ItemID.Coal && player.HasItem(ItemID.Coal)) || Main.mouseItem.type == ItemID.Coal)
 			{
 				Main.PlaySound(SoundID.Item, i * 16, j * 16, 23);
-				player.ConsumeItem(ItemID.Coal);
+
+				if (Main.mouseItem.type == ItemID.Coal)
+				{
+					Main.mouseItem.stack--; //:grimacing:
+				}
+				else if (player.HeldItem.type == ItemID.Coal)
+				{
+					player.ConsumeItem(ItemID.Coal);
+				}
+
 				if (Main.rand.Next(4) <= 2) //75% chance
 				{
 					player.QuickSpawnItem(ItemID.StoneBlock, Main.rand.Next(1, 3));

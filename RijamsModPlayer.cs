@@ -1,5 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.IO;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.DataStructures;
@@ -9,27 +12,36 @@ namespace RijamsMod
 {
 	public class RijamsModPlayer : ModPlayer
 	{
-		public bool cutestIceFairy;
-		public bool acidicSpiderling;
 		public bool guideToProperFlightTechniques;
 		public bool summonersGlove;
 		public bool daybreakStone;
 		public bool breathingPack;
 		public int breathingPackTimer;
+		public bool lumothPet;
+		public bool lEDLumothPet;
+		public bool burglarsRing;
+		public bool rocketBooster;
+		public bool gamutApparatus;
+		//public bool delapHelmet;
+		//public bool delapScalemail;
+		//public bool delapGreaves;
 		//public bool breathingPackUsed = true;
 
 		public override void ResetEffects()
 		{
-			cutestIceFairy = false;
-			acidicSpiderling = false;
 			guideToProperFlightTechniques = false;
 			summonersGlove = false;
 			daybreakStone = false;
 			breathingPack = false;
+			lumothPet = false;
+			lEDLumothPet = false;
+			burglarsRing = false;
+            rocketBooster = false;
+			gamutApparatus = false;
 			//breathingPackUsed = true;
 			//breathingPackTimer = 0;
 		}
-		public override void clientClone(ModPlayer clientClone)
+        public override void clientClone(ModPlayer clientClone)
 		{
 			RijamsModPlayer clone = clientClone as RijamsModPlayer;
 		}
@@ -59,7 +71,7 @@ namespace RijamsMod
 				//Main.NewText("breathingPackUsed " + breathingPackUsed);
 				//Main.NewText("breathingPackTimer " + breathingPackTimer);
 				//Main.NewText("player.wet " + player.wet);
-				if (player.breath <= 1 )//&& breathingPackUsed == false)
+				if (player.breath <= 0 )//&& breathingPackUsed == false)
 				{
 					//breathingPackUsed = true;
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = true;
@@ -92,5 +104,5 @@ namespace RijamsMod
 				}*/
             }
         }
-	}
+    }
 }

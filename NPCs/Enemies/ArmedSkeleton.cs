@@ -116,8 +116,9 @@ namespace RijamsMod.NPCs.Enemies
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo) //would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
         {
-            int rand = Main.rand.Next(2);
-            return (spawnInfo.player.ZoneDungeon) ? 0.03f : 0f;
+            //int rand = Main.rand.Next(2);
+            //return (spawnInfo.player.ZoneDungeon) ? 0.03f : 0f;
+            return 0f;
         }
     }
 }

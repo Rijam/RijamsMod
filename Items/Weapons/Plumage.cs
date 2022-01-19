@@ -84,8 +84,8 @@ namespace RijamsMod.Items.Weapons
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod, "Plumage", 1);
-			recipe.AddIngredient(mod, "SunEssence", 20);
+			recipe.AddIngredient(ModContent.ItemType<Plumage>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 20);
 			recipe.AddTile(TileID.Bookcases);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
@@ -119,7 +119,8 @@ namespace RijamsMod.Items.Weapons
 
 		public override void SetDefaults()
 		{
-			item.damage = 100;
+			item.damage = 110;
+			item.crit = 4;
 			item.noMelee = true;
 			item.magic = true;
 			item.channel = true; //Channel so that you can hold the weapon [Important]
@@ -141,8 +142,8 @@ namespace RijamsMod.Items.Weapons
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod, "PlumageStorm", 1);
-			recipe.AddIngredient(mod, "GiantRedHarpyFeather", 3);
+			recipe.AddIngredient(ModContent.ItemType<PlumageStorm>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<Materials.GiantRedHarpyFeather>(), 3);
 			recipe.AddIngredient(ItemID.FragmentNebula, 5);
 			recipe.AddIngredient(ItemID.LunarBar, 2);
 			recipe.AddTile(TileID.Bookcases);

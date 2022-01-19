@@ -31,7 +31,7 @@ namespace RijamsMod.NPCs.Enemies
             npc.HitSound = SoundID.NPCHit2;
             npc.DeathSound = SoundID.NPCDeath2;
             banner = npc.type;
-            bannerItem = mod.ItemType("SkeletonCrossbowerBanner");
+            bannerItem = ModContent.ItemType<Items.Placeable.SkeletonCrossbowerBanner>();
         }
 
         public override void HitEffect(int hitDirection, double damage)
@@ -74,7 +74,7 @@ namespace RijamsMod.NPCs.Enemies
             //additionally, drop the crossbow
             if (Main.rand.Next(15) == 0) //6.67% chance
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("StockadeCrossbow"));
+                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Weapons.StockadeCrossbow>());
             }
         }
 

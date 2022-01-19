@@ -39,6 +39,7 @@ namespace RijamsMod.Items.Armor
 		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Pumpkin, 20);
+			recipe.AddIngredient(ItemID.FallenStar, 1);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

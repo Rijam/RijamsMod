@@ -1,8 +1,12 @@
 using RijamsMod.Items.Quest;
+using RijamsMod.Items.Weapons;
+using RijamsMod.Items.Accessories;
+using RijamsMod.Items.Information;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
+using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -63,6 +67,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
+			Main.npcCatchable[npc.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			npc.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? (short)ModContent.ItemType<Items.CaughtIntTrav>() : (short)-1;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -80,9 +86,9 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
-			if (NPC.downedBoss2) //EoW or BoC
+			if (NPC.downedBoss2 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) < 1) //EoW or BoC
 			{
-				if (RijamsModWorld.intTravArived) //That way you don't need the Odd Device in your inventory if the Interstellar Traveler has arived once before.
+				if (RijamsModWorld.intTravArived) //That way you don't need the Odd Device in your inventory if the Interstellar Traveler has arrived once before.
 				{
 					return true;
 				}
@@ -95,7 +101,7 @@ namespace RijamsMod.NPCs.TownNPCs
 						{
 							for (int j = 0; j < player.inventory.Length; j++)
 							{
-								if (player.inventory[j].type == mod.ItemType("OddDevice")) //check if the player has the Odd Device in their inventory
+								if (player.inventory[j].type == ModContent.ItemType<OddDevice>()) //check if the player has the Odd Device in their inventory
 								{
 									return true;
 								}
@@ -120,11 +126,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			return Main.rand.Next(names);
 		}
 
-		public override string GetChat()
+        #region Chat
+        public override string GetChat()
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
-			int interTravel = NPC.FindFirstNPC(mod.NPCType("Interstellar Traveler"));
+			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 			chat.Add("I'm pretty far from home, but this place is pretty cool.");
 			chat.Add("Nice to meet you!");
 			chat.Add("I'm pretty lucky to have ended up on this planet. Not only is it inhabitable, but it also contains intelligent life!");
@@ -138,7 +145,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (Main.dayTime)
 			{
-				chat.Add(Main.raining ? "The rain is plesent to watch; maybe not to stand in, though." : "Nice day today, isn't it?");
+				chat.Add(Main.raining ? "The rain is pleasant to watch; maybe not to stand in, though." : "Nice day today, isn't it?");
 				chat.Add("This planet is very interesting.");
 			}
 			else
@@ -165,23 +172,23 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("What's the occasion? Ah, it doesn't matter. Parties are fun!", 2.0);
 			}
 
-			if (NPC.CountNPCS(mod.NPCType("Interstellar Traveler")) > 1) //more than one Interstellar Traveler
+			if (NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 1) //more than one Interstellar Traveler
 			{
-				chat.Add("What? There two of me!? I have a lot of questions now. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 2.0);
+				chat.Add("What? There two of me!? I have a lot of questions now. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 5.0);
 			}
 			if (!NPC.downedBoss2 || RijamsModWorld.intTravArived == false) //spawn in the Interstellar Traveler before meeting the requirements
 			{
 				chat.Add("I'm not supposed to be here, yet. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 2.0);
 			}
 
-			int harpy = NPC.FindFirstNPC(mod.NPCType("Harpy"));
+			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
 			if (harpy >= 0)
 			{
 				chat.Add(Main.npc[harpy].GivenName + " and I have surprisingly similar biology. Yet, we are different in many ways.", 0.5);
 				chat.Add(Main.npc[harpy].GivenName + "'s wings intrigue me. How much lift can she generate with them? How much energy does it take to continuously flap her wings? ...", 0.5);
 				chat.Add("I really enjoy " + Main.npc[harpy].GivenName + "'s presence. Some of the things she says makes me laugh!", 0.5);
 			}
-			int fisherman = NPC.FindFirstNPC(mod.NPCType("Fisherman"));
+			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
 			if (fisherman >= 0)
 			{
 				chat.Add("Do you think you could convince " + Main.npc[fisherman].GivenName + " to give me some fish?", 0.5);
@@ -222,7 +229,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("Do you know who " + Main.npc[angler].GivenName + "'s parents are? Where are they?", 0.25);
 			}
 			if (angler >= 0 && fisherman >= 0)
-            {
+			{
 				chat.Add("Looking for these: [i:3120] , [i:3037] , [i:3096] ? Sorry, you're going to have to get them from " + Main.npc[angler].GivenName + " or " + Main.npc[fisherman].GivenName + ".", 0.75);
 			}
 			/*int zoologist = NPC.FindFirstNPC(NPCID.BestiaryGirl);
@@ -260,7 +267,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			int armsDealer = NPC.FindFirstNPC(NPCID.ArmsDealer);
 			if (armsDealer >= 0)
 			{
-				chat.Add(Main.npc[armsDealer].GivenName + " took me to the range to show off his gun collection. He was very surpised to see how great of a shot I am.", 0.125);
+				chat.Add(Main.npc[armsDealer].GivenName + " took me to the range to show off his gun collection. He was very surprised to see how great of a shot I am.", 0.125);
 			}
 			int tavernkeep = NPC.FindFirstNPC(NPCID.DD2Bartender);
 			if (tavernkeep >= 0)
@@ -280,7 +287,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			int witchDoctor = NPC.FindFirstNPC(NPCID.WitchDoctor);
 			if (witchDoctor >= 0)
 			{
-				chat.Add(Main.npc[witchDoctor].GivenName + " is of Lihzahrd species? Facinating, another intelligent species.", 0.25);
+				chat.Add(Main.npc[witchDoctor].GivenName + " is of Lihzahrd species? Fascinating, another intelligent species.", 0.25);
 			}
 			int clothier = NPC.FindFirstNPC(NPCID.Clothier);
 			if (clothier >= 0)
@@ -294,7 +301,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			int mechanic = NPC.FindFirstNPC(NPCID.Mechanic);
 			if (mechanic >= 0)
 			{
-				chat.Add(Main.npc[mechanic].GivenName + " is facinated with the technology that I have. I would be, too!", 0.17);
+				chat.Add(Main.npc[mechanic].GivenName + " is fascinated with the technology that I have. I would be, too!", 0.17);
 			}
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
 			if (partyGirl >= 0)
@@ -363,7 +370,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				int seaKing = NPC.FindFirstNPC(ModLoader.GetMod("CalamityMod").NPCType("SEAHOE")); //Sea King
 				if (seaKing >= 0)
 				{
-					chat.Add("I didn't expect to see somebody like Amdias! This planet is full of surprises!", 0.25);
+					chat.Add("I didn't expect to see somebody like Amidias! This planet is full of surprises!", 0.25);
 				}
 			}
 			if (ModLoader.GetMod("ThoriumMod") != null) //Thorium
@@ -421,7 +428,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			return chat;
 		}
-		/*
+        /*
 			Future happiness notes:
 				Liked Biome: Forest
 				Disliked Biome: Underground, Cavern, Underworld
@@ -475,43 +482,68 @@ namespace RijamsMod.NPCs.TownNPCs
 					Tax Collector
 				
 		*/
+        #endregion
 
-		public override void SetChatButtons(ref string button, ref string button2)
+        public override void SetChatButtons(ref string button, ref string button2)
 		{
 			button = "Shop";
 			button2 = "Quest";
+			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
+			{
+				button2 = "Quest Checklist";
+			}
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
 		{
+
 			if (firstButton)
 			{
 				shop = true;
 			}
 			if (!firstButton)
 			{
-				QuestSystem();
+				if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
+				{
+					QuestSystemChecklist();
+				}
+				else
+				{
+					QuestSystem();
+				}
 			}
 		}
-		public void QuestSystem()
+		public bool AllQuestsCompleted()
+		{
+			if (RijamsModWorld.intTravQuestOddDevice == true && RijamsModWorld.intTravQuestBlankDisplay == true && RijamsModWorld.intTravQuestTPCore == true
+				&& RijamsModWorld.intTravQuestMagicOxygenizer == true && RijamsModWorld.intTravQuestPrimeThruster == true) //Rye Jam quest is not needed
+			{
+				return true;
+			}
+			return false;
+		}
+
+        #region Quest System
+        public void QuestSystem()
 		{
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<OddDevice>()) && RijamsModWorld.intTravQuestOddDevice == false)
 			{
-				Main.npcChatText = "I was tracking that device you have. Where did you get it? Yeah... it's irresponsible of me to enter an uncontacted planet, but I didn't have much choice. Anyway, I'll buy that device from you for 2 gold.";
+				Main.npcChatText = "I was tracking that device you have. Where did you get it? Yeah... it's irresponsible of me to enter an uncontacted planet, but I didn't have much choice. Anyway, I'll buy that device from you for 2[i:73].";
 				Main.npcChatCornerItem = ModContent.ItemType<OddDevice>();
 				//int oddDeviceItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OddDevice>());
 				//Main.LocalPlayer.inventory[oddDeviceItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<OddDevice>());
 				Main.LocalPlayer.QuickSpawnItem(ItemID.GoldCoin, 2);
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestOddDevice = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
+					NetMessage.SendData(MessageID.WorldData);
 					//RijamsModWorld.SetIntTravQuestOddDevice();
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestOddDevice);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				else RijamsModWorld.intTravQuestOddDevice = true;
 				mod.Logger.Debug("RijamsMod: Odd Device quest completed.");
 				PlayCompleteQuestSound();
 				return;
@@ -523,15 +555,16 @@ namespace RijamsMod.NPCs.TownNPCs
 				//int blankDisplayItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<BlankDisplay>());
 				//Main.LocalPlayer.inventory[blankDisplayItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<BlankDisplay>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestBlankDisplay = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
+					NetMessage.SendData(MessageID.WorldData);
 					//RijamsModWorld.SetIntTravQuestBlankDisplay();
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestBlankDisplay);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestBlankDisplay = true;
 				mod.Logger.Debug("RijamsMod: Blank Display quest completed.");
 				PlayCompleteQuestSound();
 				return;
@@ -543,15 +576,15 @@ namespace RijamsMod.NPCs.TownNPCs
 				//int tPCoreItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<TeleportationCore>());
 				//Main.LocalPlayer.inventory[tPCoreItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<TeleportationCore>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestTPCore = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					//RijamsModWorld.SetIntTravQuestBlankDisplay();
+					NetMessage.SendData(MessageID.WorldData);
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestTPCore);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestTPCore = true;
 				mod.Logger.Debug("RijamsMod: Teleportation Core quest completed.");
 				PlayCompleteQuestSound();
 				return;
@@ -563,93 +596,231 @@ namespace RijamsMod.NPCs.TownNPCs
 				//int breadAndJellyItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<BreadAndJelly>());
 				//Main.LocalPlayer.inventory[breadAndJellyItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<BreadAndJelly>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestRyeJam = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					//RijamsModWorld.SetIntTravQuestBlankDisplay();
+					NetMessage.SendData(MessageID.WorldData);
+					RijamsModWorld.intTravQuestRyeJam = true;
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestRyeJam);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestRyeJam = true;
 				mod.Logger.Debug("RijamsMod: Rye Jam quest completed.");
 				PlayCompleteQuestSound();
 				return;
 			}
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<MagicOxygenizer>()) && RijamsModWorld.intTravQuestMagicOxygenizer == false)
 			{
-				Main.npcChatText = "This machine seems creates oxygen from only elecricity. How does it do that? Well it is magic, I guess. Anyway, I could use this on my ship and to create a personal breathing device!";
+				Main.npcChatText = "This machine seems to create oxygen from only electricity. How does it do that? Well it is magic, I guess. Anyway, I could use this on my ship and to create a personal breathing device!";
 				Main.npcChatCornerItem = ModContent.ItemType<MagicOxygenizer>();
 				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<MagicOxygenizer>());
-				if (Main.netMode == NetmodeID.Server)
+				RijamsModWorld.intTravQuestMagicOxygenizer = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					//RijamsModWorld.SetIntTravQuestBlankDisplay();
+					NetMessage.SendData(MessageID.WorldData);
 					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetQuestMagicOxygenizer);
-					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				RijamsModWorld.intTravQuestMagicOxygenizer = true;
 				mod.Logger.Debug("RijamsMod: Magic Oxygenizer quest completed.");
 				PlayCompleteQuestSound();
 				return;
 			}
-			else
+			if (Main.LocalPlayer.HasItem(ModContent.ItemType<PrimeThruster>()) && RijamsModWorld.intTravQuestPrimeThruster == false)
 			{
-				bool allQuestsComplete = false;
-				if (RijamsModWorld.intTravQuestOddDevice == true && RijamsModWorld.intTravQuestBlankDisplay == true && RijamsModWorld.intTravQuestTPCore == true && RijamsModWorld.intTravQuestMagicOxygenizer == true)
+				Main.npcChatText = "This is the perfect replacement for my ship's thrusters. It seems like the magic from the this planet has been very beneficial for repairing my ship. Oh, and you of course! Thanks!";
+				Main.npcChatCornerItem = ModContent.ItemType<PrimeThruster>();
+				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<PrimeThruster>());
+				RijamsModWorld.intTravQuestPrimeThruster = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					allQuestsComplete = true;
+					NetMessage.SendData(MessageID.WorldData);
+					ModPacket packet = mod.GetPacket();
+					packet.Write((byte)RijamsModMessageType.SetQuestPrimeThruster);
+					packet.Send();
 				}
-				
-				if (allQuestsComplete)
+				mod.Logger.Debug("RijamsMod: Prime Thruster quest completed.");
+				PlayCompleteQuestSound();
+				return;
+			}
+			else
+			{			
+				if (AllQuestsCompleted())
 				{
 					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
-					string[] lines = { "It looks like you've found everything I needed, thanks!", "Nice job! You have collected and turned in everything I needed.", "With your help, my ship has been repaired! I quite like it here, though. I might stay a little longer!" };
+					string[] lines = { "It looks like you've found everything I needed, thanks!", "Nice job! You have collected and turned in everything I needed.", "With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!" };
 					Main.npcChatText = lines[Main.rand.Next(lines.Length)];
 				}
 				else
 				{
 					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
-					string[] lines = { "I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.", "I need some items to repair my space ship. Do you think you could help me out?", "I'd be happy to take a look at other items, too; if you think I could use them for something." };
+					string[] lines = { "I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.", "I need some items to repair my space ship. Do you think you could help me out?", "I'd be happy to take a look at other items, too; if you think I could use them for something.", "Hold LEFT SHIFT to check which quests you have completed and what I still need." };
 					Main.npcChatText = lines[Main.rand.Next(lines.Length)];
 				}
+			}
+		}
+		public void QuestSystemChecklist()
+		{
+			bool intTravQuestOddDevice = RijamsModWorld.intTravQuestOddDevice;
+			bool intTravQuestBlankDisplay = RijamsModWorld.intTravQuestBlankDisplay;
+			bool intTravQuestTPCore = RijamsModWorld.intTravQuestTPCore;
+			bool intTravQuestRyeJam = RijamsModWorld.intTravQuestRyeJam;
+			bool intTravQuestMagicOxygenizer = RijamsModWorld.intTravQuestMagicOxygenizer;
+			bool intTravQuestPrimeThruster = RijamsModWorld.intTravQuestPrimeThruster;
+
+			//Strings for what items are still needed
+			string OddDevice = "  Could I look at that device you have?";
+			string BlankDisplay = "  I could use some sort of electronic screen.";
+			string TPCore = "  I need to repair my hyper-drive.";
+			string RyeJam = "  I'm feeling a little peckish... (heh)."; //Will never show in game
+			string MagicOxygenizer = "  My oxygen supplier isn't working currently.";
+			string PrimeThruster = "  My ship's thrusters are shot.";
+
+			int numCompleted = 0;
+			int numNeedTo = 0;
+			bool secret = false;
+
+			//Strings for the final message that will show up in game
+			StringBuilder completed = new StringBuilder("Here is what you have completed so far:\n");
+			StringBuilder needTo = new StringBuilder("Here is what is left to do:\n");
+			StringBuilder completed2 = new StringBuilder("You have also completed:\n");
+			StringBuilder finalChat = new StringBuilder("");
+			string newLine = "\n";
+
+			if (intTravQuestOddDevice)
+			{
+				//If completed, change the message to the item
+				OddDevice = $"[i:{ModContent.ItemType<OddDevice>()}] ";
+				//Add it to the end of the completed string
+				completed.Append(OddDevice);
+				//increment numCompleted (used later)
+				numCompleted++;
+			}
+			else
+			{
+				//If not completed, add the message above to the end of the completed string
+				needTo.Append(OddDevice);
+				//Add a new line
+				needTo.Append(newLine);
+				//increment numNeedTo (used later)
+				numNeedTo++;
+			}
+			if (intTravQuestBlankDisplay)
+			{
+				BlankDisplay = $"[i:{ModContent.ItemType<BlankDisplay>()}] ";
+				completed.Append(BlankDisplay);
+				numCompleted++;
+			}
+			else
+			{
+				needTo.Append(BlankDisplay);
+				needTo.Append(newLine);
+				numNeedTo++;
+			}
+			if (intTravQuestTPCore)
+			{
+				TPCore = $"[i:{ModContent.ItemType<TeleportationCore>()}] ";
+				completed.Append(TPCore);
+				numCompleted++;
+			}
+			else
+			{
+				needTo.Append(TPCore);
+				needTo.Append(newLine);
+				numNeedTo++;
+			}
+			if (intTravQuestRyeJam) //Secret quest so it acts different
+			{
+				RyeJam = $"[i:{ModContent.ItemType<BreadAndJelly>()}] ";
+				completed2.Append(RyeJam);
+				secret = true;
+			}
+			if (intTravQuestMagicOxygenizer)
+			{
+				MagicOxygenizer = $"[i:{ModContent.ItemType<MagicOxygenizer>()}] ";
+				completed.Append(MagicOxygenizer);
+				numCompleted++;
+			}
+			else
+			{
+				needTo.Append(MagicOxygenizer);
+				needTo.Append(newLine);
+				numNeedTo++;
+			}
+			if (intTravQuestPrimeThruster)
+			{
+				PrimeThruster = $"[i:{ModContent.ItemType<PrimeThruster>()}] ";
+				completed.Append(PrimeThruster);
+				numCompleted++;
+			}
+			else
+			{
+				needTo.Append(PrimeThruster);
+				needTo.Append(newLine);
+				numNeedTo++;
+			}
+
+			//Add everything to finalChat if applicable
+			if (numCompleted > 0)
+			{
+				finalChat.Append(completed);
+				finalChat.Append(newLine);
+			}
+			if (numNeedTo > 0)
+			{
+				finalChat.Append(needTo);
+			}
+			if (secret)
+            {
+				finalChat.Append(completed2);
+			}
+
+			Main.npcChatText = finalChat.ToString();
+			if (AllQuestsCompleted())
+            {
+				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
+			}
+			else
+            {
+				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
 			}
 		}
 		public void PlayCompleteQuestSound()
 		{
 			Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/CelebrationJingle"));
 		}
-
-		public override void SetupShop(Chest shop, ref int nextSlot)
+        #endregion
+        #region Shop
+        public override void SetupShop(Chest shop, ref int nextSlot)
 		{
 			int armsDealer = NPC.FindFirstNPC(NPCID.ArmsDealer);
 			if (armsDealer > 0 && NPC.downedBoss3)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("InterstellarPistol"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<InterstellarPistol>());
 				nextSlot++;
 			}
 			if (NPC.downedPlantBoss)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("PlasmaRifle"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<PlasmaRifle>());
 				nextSlot++;
-				shop.item[nextSlot].SetDefaults(mod.ItemType("InterstellarSMG"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<InterstellarSMG>());
 				nextSlot++;
 			}
 			int cyborg = NPC.FindFirstNPC(NPCID.Cyborg);
 			if (cyborg > 0 && NPC.downedGolemBoss)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("AGMMissileLauncher"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<AGMMissileLauncher>());
 				nextSlot++;
 			}
 			if (NPC.downedMoonlord)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("InterstellarCarbine"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<InterstellarCarbine>());
 				nextSlot++;
 			}
 			if (Main.hardMode)
             {
-				shop.item[nextSlot].SetDefaults(mod.ItemType("SummonersGlove"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<SummonersGlove>());
 				nextSlot++;
 			}
 			shop.item[nextSlot].SetDefaults(ItemID.GoldWatch);
@@ -697,22 +868,22 @@ namespace RijamsMod.NPCs.TownNPCs
 				switch (Main.rand.Next(0, 4))// randomly choose a shop item
 				{
 					case 0:
-						shop.item[nextSlot].SetDefaults(mod.ItemType("LifeDisplay"));
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<LifeDisplay>());
 						shop.item[nextSlot].shopCustomPrice = 1000;
 						nextSlot++;
 						break;
 					case 1:
-						shop.item[nextSlot].SetDefaults(mod.ItemType("ManaDisplay"));
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<ManaDisplay>());
 						shop.item[nextSlot].shopCustomPrice = 1000;
 						nextSlot++;
 						break;
 					case 2:
-						shop.item[nextSlot].SetDefaults(mod.ItemType("DefenseDisplay"));
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<DefenseDisplay>());
 						shop.item[nextSlot].shopCustomPrice = 1000;
 						nextSlot++;
 						break;
 					default:
-						shop.item[nextSlot].SetDefaults(mod.ItemType("MovementDisplay"));
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<MovementDisplay>());
 						shop.item[nextSlot].shopCustomPrice = 1000;
 						nextSlot++;
 						break;
@@ -724,25 +895,25 @@ namespace RijamsMod.NPCs.TownNPCs
 				switch (Main.rand.Next(0, 3))// randomly choose a shop item
 				{
 					case 1:
-						shop.item[nextSlot].SetDefaults(mod.ItemType("DamageDisplay"));
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<DamageDisplay>());
 						shop.item[nextSlot].shopCustomPrice = 1000;
 						nextSlot++;
 						break;
 					case 2:
-						shop.item[nextSlot].SetDefaults(mod.ItemType("CritDisplay"));
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<CritDisplay>());
 						shop.item[nextSlot].shopCustomPrice = 1000;
 						nextSlot++;
 						break;
 					default:
-						shop.item[nextSlot].SetDefaults(mod.ItemType("SummonsDisplay"));
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<SummonsDisplay>());
 						shop.item[nextSlot].shopCustomPrice = 1000;
 						nextSlot++;
 						break;
 				}
 			}
-            if (Main.LocalPlayer.HasItem(ModContent.ItemType<Items.Information.InformationInterface>()))
+            if (Main.LocalPlayer.HasItem(ModContent.ItemType<InformationInterface>()))
             {
-				shop.item[nextSlot].SetDefaults(mod.ItemType("InformationInterfaceTile"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.InformationInterfaceTile>());
 				shop.item[nextSlot].shopCustomPrice = 5000;
 				nextSlot++;
 			}
@@ -753,26 +924,33 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (RijamsModWorld.intTravQuestRyeJam)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("RyeJam"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.RyeJam>());
 				nextSlot++;
 			}
 			if (RijamsModWorld.intTravQuestMagicOxygenizer)
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("BreathingPack"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<BreathingPack>());
 				shop.item[nextSlot].shopCustomPrice = 100000;
 				nextSlot++;
 			}
+			if (RijamsModWorld.intTravQuestPrimeThruster)
+            {
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<RocketBooster>());
+				shop.item[nextSlot].shopCustomPrice = 200000;
+				nextSlot++;
+			}
+			
 
 			if (Main.moonPhase >= 6 && !Main.dayTime) //first quarter & waxing gibbous
 			{
-				shop.item[nextSlot].SetDefaults(mod.ItemType("IntTrav_Vanity_Helmet"));
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav_Vanity_Helmet>());
 				nextSlot++;
 			}
-			shop.item[nextSlot].SetDefaults(mod.ItemType("IntTrav_Vanity_Chestplate"));
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav_Vanity_Chestplate>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(mod.ItemType("IntTrav_Vanity_Leggings"));
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav_Vanity_Leggings>());
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(mod.ItemType("TestMusicBox"));
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.MusicBoxOSW>());
 			nextSlot++;
 			/*
 			if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>(mod).ZoneExample)
@@ -782,14 +960,15 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			}*/
 		}
+        #endregion
 
-		/*public override void NPCLoot()
+        /*public override void NPCLoot()
 		{
 			Item.NewItem(npc.getRect(), mod.ItemType<Items.Armor.ExampleCostume>());
 		}*/
 
-		// Make this Town NPC teleport to the King and/or Queen statue when triggered.
-		public override bool CanGoToStatue(bool toKingStatue)
+        // Make this Town NPC teleport to the King and/or Queen statue when triggered.
+        public override bool CanGoToStatue(bool toKingStatue)
 		{
 			return !toKingStatue;
 		}
@@ -855,21 +1034,21 @@ namespace RijamsMod.NPCs.TownNPCs
 			//randomOffset = 2f;
 			if (!Main.hardMode)
 			{
-				item = mod.ItemType("InterstellarPistol");
+				item = ModContent.ItemType<InterstellarPistol>();
 				//item = 164;//Handgun
 				scale = 0.75f;
 				closeness = 12;
 			}
 			if (Main.hardMode && !NPC.downedMoonlord)
 			{
-				item = mod.ItemType("InterstellarSMG");
+				item = ModContent.ItemType<InterstellarSMG>();
 				//item = 1255;//Venus Magnum
 				scale = 0.75f;
 				closeness = 18;
 			}
 			if (NPC.downedMoonlord)
 			{
-				item = mod.ItemType("InterstellarCarbine");
+				item = ModContent.ItemType<InterstellarCarbine>();
 				//item = 3475;//Vortex Beater
 				scale = 0.75f;
 				closeness = 18;

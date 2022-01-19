@@ -13,7 +13,8 @@ namespace RijamsMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Interstellar Carbine");
-			Tooltip.SetDefault("50% not to consume ammo\nConverts musket balls into Chlorophyte Bullets\n[c/403638:Sold by Interstellar Traveler]");
+			Tooltip.SetDefault("50% not to consume ammo\nConverts musket balls into Chlorophyte Bullets");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
 		}
 
 		public override void SetDefaults()

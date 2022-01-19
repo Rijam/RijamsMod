@@ -19,7 +19,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(255, 255, 255));
-			dustType = 1;
+			dustType = DustID.Stone;
 			animationFrameHeight = 54;
 		}
 

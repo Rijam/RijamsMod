@@ -451,13 +451,13 @@ namespace RijamsMod.Items.Information
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(mod, "LifeDisplay", 1);
-			recipe.AddIngredient(mod, "ManaDisplay", 1);
-			recipe.AddIngredient(mod, "DefenseDisplay", 1);
-			recipe.AddIngredient(mod, "MovementDisplay", 1);
-			recipe.AddIngredient(mod, "DamageDisplay", 1);
-			recipe.AddIngredient(mod, "CritDisplay", 1);
-			recipe.AddIngredient(mod, "SummonsDisplay", 1);
+			recipe.AddIngredient(ModContent.ItemType<LifeDisplay>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<ManaDisplay>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<DefenseDisplay>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<MovementDisplay>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<DamageDisplay>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<CritDisplay>(), 1);
+			recipe.AddIngredient(ModContent.ItemType<SummonsDisplay>(), 1);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

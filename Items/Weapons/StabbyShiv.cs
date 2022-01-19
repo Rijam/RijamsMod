@@ -10,7 +10,7 @@ namespace RijamsMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Stabby Shiv");
-			Tooltip.SetDefault("[c/403638:Dropped by Mister Stabby]");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Mister Stabby]");
 		}
 
 		public override void SetDefaults() {

@@ -32,7 +32,7 @@ namespace RijamsMod.NPCs.Enemies
             npc.HitSound = SoundID.NPCHit2;
             npc.DeathSound = SoundID.NPCDeath4;
             banner = npc.type;
-            bannerItem = mod.ItemType("DungeonBatBanner");
+            bannerItem = ModContent.ItemType<Items.Placeable.DungeonBatBanner>();
         }
 
         public override void HitEffect(int hitDirection, double damage)

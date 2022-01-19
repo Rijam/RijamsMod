@@ -135,7 +135,7 @@ namespace RijamsMod.Items.Quest
 	{
 		public override void SetStaticDefaults()
 		{
-			//Tooltip.SetDefault("");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Chaos Elementals and Enchanted Swords]");
 		}
 
 		public override void SetDefaults()
@@ -226,6 +226,46 @@ namespace RijamsMod.Items.Quest
 			recipe.AddIngredient(ItemID.HallowedBar, 3);
 			recipe.AddIngredient(ItemID.CloudinaBottle, 1);
 			recipe.AddIngredient(ItemID.PixieDust, 1);
+			recipe.AddTile(TileID.MythrilAnvil);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+	public class PrimeThruster : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			//Tooltip.SetDefault("");
+		}
+
+		public override void SetDefaults()
+		{
+			item.maxStack = 99;
+			item.width = 60;
+			item.height = 36;
+			item.value = 15000;
+			item.rare = ItemRarityID.Quest;
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			if (RijamsModWorld.intTravQuestPrimeThruster == false)
+			{
+				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "'It can produce a lot of thrust...'"));
+				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
+			}
+			if (RijamsModWorld.intTravQuestPrimeThruster == true)
+			{
+				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "'The Interstellar Traveler is now selling the Rocket Booster.'"));
+				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
+			}
+		}
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.RocketI, 10);
+			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
+			recipe.AddIngredient(ItemID.SoulofFright, 1);
 			recipe.AddTile(TileID.MythrilAnvil);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

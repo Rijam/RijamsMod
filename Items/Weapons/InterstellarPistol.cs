@@ -12,12 +12,12 @@ namespace RijamsMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("[c/403638:Sold by Interstellar Traveler]");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
 		}
 
 		public override void SetDefaults()
 		{
-			item.damage = 25;
+			item.damage = 23;
 			item.ranged = true;
 			item.width = 52;
 			item.height = 32;
@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Weapons
 			item.rare = ItemRarityID.Green;//2
 			item.UseSound = SoundID.Item41;
 			item.autoReuse = true;
-			item.shoot = AmmoID.Bullet; //idk why but all the guns in the vanilla source have this
+			item.shoot = AmmoID.Bullet;
 			item.shootSpeed = 16f;
 			item.scale = 0.75f;
 			item.useAmmo = AmmoID.Bullet;

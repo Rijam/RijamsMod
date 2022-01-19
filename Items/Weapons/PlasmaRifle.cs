@@ -11,7 +11,7 @@ namespace RijamsMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Plasma Rifle");
-			Tooltip.SetDefault("[c/403638:Sold by Interstellar Traveler]");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
 		}
 
 		public override void SetDefaults()

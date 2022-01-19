@@ -1,17 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.GameContent.Dyes;
+using Terraria.Graphics.Effects;
+using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
+using Terraria.UI;
+using RijamsMod.UI;
 
 namespace RijamsMod
 {
     public class RijamsMod : Mod
     {
-        //public static RijamsMod Instance;
+        public static RijamsMod Instance;
+        public static RijamsModConfigClient ConfigClient;
+        public static RijamsModConfigServer ConfigServer;
+        public static RijamsModNPCs RijamsModNPCs;
+        public static ItemUseGlow ItemUseGlow;
+        public static RijamsMod Items;
+
+        /*internal UserInterface MyInterface;
+        internal TheUI MyUI;*/
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(this);
@@ -24,16 +39,30 @@ namespace RijamsMod
             recipe.AddRecipe();
 
             recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.PanicNecklace, 1);
+            recipe.AddIngredient(ItemID.VilePowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
+            recipe.SetResult(ItemID.BandofStarpower, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.BandofStarpower, 1);
+            recipe.AddIngredient(ItemID.ViciousPowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
+            recipe.SetResult(ItemID.PanicNecklace, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
             recipe.AddIngredient(ItemID.FleshKnuckles, 1);
-            recipe.AddIngredient(ItemID.Ectoplasm, 5);
-            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ItemID.VilePowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(ItemID.PutridScent, 1);
             recipe.AddRecipe();
 
             recipe = new ModRecipe(this);
             recipe.AddIngredient(ItemID.PutridScent, 1);
-            recipe.AddIngredient(ItemID.Ectoplasm, 5);
-            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.AddIngredient(ItemID.ViciousPowder, 5);
+            recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(ItemID.FleshKnuckles, 1);
             recipe.AddRecipe();
 
@@ -43,6 +72,16 @@ namespace RijamsMod
             recipe.AddIngredient(ItemID.FallenStar, 1);
             recipe.AddTile(TileID.Anvils);
             recipe.SetResult(ItemID.SlimeStaff, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.BottledWater, 1);
+            recipe.AddIngredient(ItemID.Deathweed, 1);
+            recipe.AddIngredient(ItemID.Cactus, 1);
+            recipe.AddIngredient(ModContent.ItemType<Items.Materials.CrawlerChelicera>(), 1);
+            recipe.AddIngredient(ItemID.Stinger, 1);
+            recipe.AddTile(TileID.Bottles);
+            recipe.SetResult(ItemID.ThornsPotion, 1);
             recipe.AddRecipe();
         }
         public override void AddRecipeGroups()
@@ -98,8 +137,10 @@ namespace RijamsMod
             });
             RecipeGroup.RegisterGroup("RijamsMod:AdamantiteBars", group);
         }
+
         public override void Load()
         {
+            
             if (!Main.dedServ)
             {
                 AddEquipTexture(null, EquipType.Legs, "Harpy_Vanity_Shorts", "RijamsMod/Items/Armor/Vanity/Harpy_Vanity_Shorts_Legs");
@@ -119,15 +160,60 @@ namespace RijamsMod
                 //dilapidatedCrimsonHelmet.SetDefaults(ItemID.CrimsonHelmet);
                 //dilapidatedCrimsonHelmet.SetDefaults(ItemType("DilapidatedCrimsonHelmet"));//Index was outside the bounds of the array
                 //Main.armorHeadLoaded[dilapidatedCrimsonHelmet.headSlot] = true;
-                //Main.armorHeadTexture[dilapidatedCrimsonHelmet.headSlot] = GetTexture("Items/Armor/DilapidatedCrimsonHelmet_Head");
+                //Main.armorHeadTexture[dilapidatedCrimsonHelmet.headSlot] = GetTexture("Items/Armor/DilapidatedCrimsonHelmet_Head"); //replaces the normal Crimson Helmet too
 
-                AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/FreedoomPhase2_MAP07_OuterStorageWarehouse"), ItemType("TestMusicBox"), TileType("TestMusicBox"));
+
+                AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/FreedoomPhase2_MAP07_OuterStorageWarehouse"), ItemType("MusicBoxOSW"), TileType("MusicBoxOSW"));
+
+                // First, you load in your shader file.
+
+                Ref<Effect> dyeRef = new Ref<Effect>(GetEffect("Effects/YellaShader"));
+                Ref<Effect> dyeRef2 = new Ref<Effect>(GetEffect("Effects/BeamShader"));
+
+                // To add a dye, simply add this for every dye you want to add.
+                // "PassName" should correspond to the name of your pass within the *technique*,
+                // so if you get an error here, make sure you've spelled it right across your effect file.
+
+                GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.YellaDye>(), new ArmorShaderData(dyeRef, "YellaShaderPass"));
+                GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.BeamDye>(), new ArmorShaderData(dyeRef2, "BeamShaderPass"));
+                GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.OrangeBeamDye>(), new ArmorShaderData(dyeRef2, "BeamShaderPass"));
+
+                // If your dye takes specific parameters such as color, you can append them after binding the shader.
+                // IntelliSense should be able to help you out here.   
+
+                GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.YellaDye>(), new ArmorShaderData(dyeRef, "YellaShaderPass")).UseColor(2f, 2f, 0f).UseSecondaryColor(0.6f, 0.3f, 0f);
+                GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.BeamDye>(), new ArmorShaderData(dyeRef2, "BeamShaderPass")).UseColor(0f, 1f, 2f);
+                GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.OrangeBeamDye>(), new ArmorShaderData(dyeRef2, "BeamShaderPass")).UseColor(2f, 1f, 0f);
+               
+                
+                
+
+                /*MyUI = new TheUI();
+                MyUI.Activate(); // Activate calls Initialize() on the UIState if not initialized, then calls OnActivate and then calls Activate on every child element
+                MyInterface = new UserInterface();
+                MyInterface.SetState(MyUI);*/
             }
             ModTranslation text;
             text = CreateTranslation("Config.Ornithophobia");
             text.SetDefault($"[i:{ModContent.ItemType<Items.Armor.Vanity.IntTrav_Vanity_Helmet>()}]   Ornithophobia");
             AddTranslation(text);
+            text = CreateTranslation("Config.BurglarsRingSound");
+            text.SetDefault($"[i:{ModContent.ItemType<Items.Accessories.BurglarsRing>()}]   Burglar's Ring Notification Sound");
+            AddTranslation(text);
         }
+
+        public override void Unload()
+        {
+            ItemOriginDesc.itemList.Clear();
+            Instance = null;
+            ConfigClient = null;
+            ConfigServer = null;
+            RijamsModNPCs = null;
+            ItemUseGlow = null;
+            Items = null;
+            //MyUI = null;
+        }
+
         public override void PostSetupContent()
         {
             Mod censusMod = ModLoader.GetMod("Census");
@@ -140,38 +226,93 @@ namespace RijamsMod
                 // Additional lines for additional town npc that your mod adds
                 // Simpler example:
                 // censusMod.Call("TownNPCCondition", NPCType("Simple"), "Defeat Duke Fishron");
-                censusMod.Call("TownNPCCondition", NPCType("Fisherman"), "Rescue the Angler and have at least 5 Town NPC");
+                censusMod.Call("TownNPCCondition", NPCType("Fisherman"), "Rescue the Angler and have at least 5 Town NPCs");
                 censusMod.Call("TownNPCCondition", NPCType("Harpy"), "Rescue her in space");
             }
+            Mod pboneUtils = ModLoader.GetMod("PboneUtils");
+            if (pboneUtils != null)
+            {
+                //Something must be wrong, I can't get it to work.
+                byte rarity = 1;
+                Func<bool> condition = () => NPC.downedBoss1;
+                pboneUtils.Call("MysteriousTraderItem", ModLoader.GetMod("RijamsMod"), ModContent.ItemType<Items.Consumables.StrangeRoll>(), rarity, condition);
+                //rarity = 0;
+                //condition = () => true;
+                //pboneUtils.Call("MysteriousTraderItem", ModLoader.GetMod("RijamsMod"), ModContent.ItemType<Items.Consumables.StrangeRoll>(), rarity, condition);
+            }
         }
+
+        /*public override void UpdateUI(GameTime gameTime)
+        {
+            //if (MyInterface?.CurrentState != null)
+            if (TheUI.Visible)
+            {
+                MyInterface?.Update(gameTime);
+            }
+        }*/
+
+        /*public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+        {
+            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (mouseTextIndex != -1)
+            {
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "RijamsMod: MyUI",
+                    delegate
+                    {
+                        if (TheUI.Visible)
+                        //if (_lastUpdateUiGameTime != null && MyInterface?.CurrentState != null)
+                        {
+                            MyInterface.Draw(Main.spriteBatch, new GameTime());
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI));
+            }
+        }*/
+
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             RijamsModMessageType msgType = (RijamsModMessageType)reader.ReadByte();
             switch (msgType)
             {
+                case RijamsModMessageType.DummyPacket: 
+                    NetMessage.SendData(MessageID.WorldData);
+                    Logger.Debug("RijamsMod: Dummy Packet (Multiplayer packet).");
+                    break;
                 case RijamsModMessageType.SetQuestOddDevice:
                     //int questOddDevice = reader.ReadInt32();
                     //RijamsModWorld world = ModContent.GetInstance<RijamsModWorld>();
                     RijamsModWorld.intTravQuestOddDevice = true;
+                    NetMessage.SendData(MessageID.WorldData);
                     Logger.Debug("RijamsMod: Odd Device quest completed (Multiplayer packet).");
                     break;
                 case RijamsModMessageType.SetQuestBlankDisplay:
                     //int questBlankDisplay = reader.ReadInt32();
                     //RijamsModWorld world = ModContent.GetInstance<RijamsModWorld>();
                     RijamsModWorld.intTravQuestBlankDisplay = true;
+                    NetMessage.SendData(MessageID.WorldData);
                     Logger.Debug("RijamsMod: Blank Display quest completed (Multiplayer packet).");
                     break;
                 case RijamsModMessageType.SetQuestTPCore:
                     RijamsModWorld.intTravQuestTPCore = true;
+                    NetMessage.SendData(MessageID.WorldData);
                     Logger.Debug("RijamsMod: Teleportation Core quest completed (Multiplayer packet).");
                     break;
                 case RijamsModMessageType.SetQuestRyeJam:
                     RijamsModWorld.intTravQuestRyeJam = true;
+                    NetMessage.SendData(MessageID.WorldData);
                     Logger.Debug("RijamsMod: Rye Jam quest completed (Multiplayer packet).");
                     break;
                 case RijamsModMessageType.SetQuestMagicOxygenizer:
                     RijamsModWorld.intTravQuestMagicOxygenizer = true;
+                    NetMessage.SendData(MessageID.WorldData);
                     Logger.Debug("RijamsMod: Magic Oxygenizer quest completed (Multiplayer packet).");
+                    break;
+                case RijamsModMessageType.SetQuestPrimeThruster:
+                    RijamsModWorld.intTravQuestPrimeThruster = true;
+                    NetMessage.SendData(MessageID.WorldData);
+                    Logger.Debug("RijamsMod: Prime Thruster quest completed (Multiplayer packet).");
                     break;
                 default:
                     Logger.WarnFormat("RijamsMod: Unknown Message type: {0}", msgType);
@@ -181,10 +322,12 @@ namespace RijamsMod
     }
     internal enum RijamsModMessageType : byte
     {
+        DummyPacket, //I'm not sure why, but the first packet gets triggered when entering the world (in multiplayer)
         SetQuestOddDevice,
         SetQuestBlankDisplay,
         SetQuestTPCore,
         SetQuestRyeJam,
-        SetQuestMagicOxygenizer
+        SetQuestMagicOxygenizer,
+        SetQuestPrimeThruster
     }
 }

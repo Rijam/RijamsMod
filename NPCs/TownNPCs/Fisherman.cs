@@ -19,13 +19,6 @@ namespace RijamsMod.NPCs.TownNPCs
 	[AutoloadHead]
 	public class Fisherman : ModNPC
 	{
-		readonly bool loadModdedItems = ModContent.GetInstance<RijamsModConfigServer>().LoadModdedItems;
-		readonly bool sellBait = ModContent.GetInstance<RijamsModConfigServer>().SellBait;
-		readonly bool sellFish = ModContent.GetInstance<RijamsModConfigServer>().SellFish;
-		readonly bool sellFishingRods = ModContent.GetInstance<RijamsModConfigServer>().SellFishingRods;
-		readonly bool sellExtraItems = ModContent.GetInstance<RijamsModConfigServer>().SellExtraItems;
-		readonly int shopPriceScaling = ModContent.GetInstance<RijamsModConfigServer>().ShopPriceScaling;
-
 		private static bool shop1;
 		private static bool shop2;
 
@@ -79,6 +72,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			npc.DeathSound = SoundID.NPCDeath1;
 			npc.knockBackResist = 0.5f;
 			animationType = NPCID.Guide;
+			Main.npcCatchable[npc.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			npc.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? (short)ModContent.ItemType<Items.CaughtFisherman>() : (short)-1;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -103,7 +98,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
-			if (NPC.savedAngler && numTownNPCs > 4)
+			if (NPC.savedAngler && numTownNPCs > 4 && NPC.CountNPCS(ModContent.NPCType<Fisherman>()) < 1)
 			{
 				return true;
 			}
@@ -123,7 +118,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
-			int fisherman = NPC.FindFirstNPC(mod.NPCType("Fisherman"));
+			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
 			chat.Add("Greetings. Care to do some fishin'?");
 			chat.Add("I got all the supplies you'd need if you want to do some fishin'.");
 			chat.Add("Fishing rods? Bait? Hooks? You want it?");
@@ -169,17 +164,19 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Some sort of storm must've pushed me off course. I know I didn't intent on being here at this time.", 2.0);
 			}
-			if (!loadModdedItems && !sellBait && !sellFish && !sellFishingRods && !sellExtraItems) //if the config disables everything that he can sell
+			if (!ModContent.GetInstance<RijamsModConfigServer>().SellModdedItems && !ModContent.GetInstance<RijamsModConfigServer>().SellBait
+				&& !ModContent.GetInstance<RijamsModConfigServer>().SellFish && !ModContent.GetInstance<RijamsModConfigServer>().SellFishingRods
+				&& !ModContent.GetInstance<RijamsModConfigServer>().SellExtraItems) //if the config disables everything that he can sell
 			{
 				chat.Add("A mysterious force told me not to sell anything. They said to check the \"config\", whatever that is.", 20.0);
 			}
-			int interTravel = NPC.FindFirstNPC(mod.NPCType("Interstellar Traveler"));
+			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 			if (interTravel >= 0)
 			{
 				chat.Add("" + Main.npc[interTravel].GivenName + " is nice and all, but I don't trust her around my stash of fish!", 0.5);
 			}
-			int harpy = NPC.FindFirstNPC(mod.NPCType("Harpy"));
-			if (interTravel >= 0)
+			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
+			if (harpy >= 0)
 			{
 				chat.Add("" + Main.npc[harpy].GivenName + " sometimes helps me scout ahead on my fishing journies. Very helpful!", 0.5);
 			}
@@ -281,6 +278,18 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I heard rumors of a blue hooded man who sells valuables...", 0.25);
 				}
 			}
+			if (ModLoader.GetMod("HelpfulNPCs") != null)
+			{
+				int expertFisherman = NPC.FindFirstNPC(ModLoader.GetMod("HelpfulNPCs").NPCType("ExpertFisherman"));
+				if (expertFisherman >= 0)
+				{
+					chat.Add("Don't let 'Expert' in " + Main.npc[expertFisherman].GivenName + "'s title fool ya. I'm just as much an expert as he is.", 0.25);
+				}
+			}
+			if (ModLoader.GetMod("FishermanNPC") != null)
+			{
+				chat.Add("Sorry FishermanNPC for taking yer mod name in 1.4, I hope yer don't mind.", 0.25);
+			}
 			return chat;
 		}
 		/*
@@ -342,104 +351,107 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void SetupShop(Chest shop, ref int nextSlot)
 		{
-			//Do the math for the price scaling config option. Divide by 100 to turn it into a decimal.
-			float shopMulti = (shopPriceScaling / 100f);
+			bool sellModdedItems = ModContent.GetInstance<RijamsModConfigServer>().SellModdedItems;
+			bool sellBait = ModContent.GetInstance<RijamsModConfigServer>().SellBait;
+			bool sellFish = ModContent.GetInstance<RijamsModConfigServer>().SellFish;
+			bool sellFishingRods = ModContent.GetInstance<RijamsModConfigServer>().SellFishingRods;
+			bool sellExtraItems = ModContent.GetInstance<RijamsModConfigServer>().SellExtraItems;
 			//
 			// Bait
 			//
 			if (sellBait && shop1)
 			{
-				if (loadModdedItems)
+				if (sellModdedItems)
 				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<PlasticWormLure>());//5% bait power
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50 * shopMulti); //50 copper coins is the base price. Multiply that by the shop price multiplier. Round to the nearest whole number. Convert float to integer.
+					shop.item[nextSlot].shopCustomPrice = 50; //50 copper coins is the base price. Multiply that by the shop price multiplier. Round to the nearest whole number. Convert float to integer.
 					nextSlot++;
 				}
 				shop.item[nextSlot].SetDefaults(ItemID.Snail);//10%
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2000 * shopMulti);
+				shop.item[nextSlot].shopCustomPrice = 2000;
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.ApprenticeBait);//15%
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2500 * shopMulti);
+				shop.item[nextSlot].shopCustomPrice = 2500;
 				nextSlot++;
 				/*if (NPC.downedBoss1)//EoC
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.HellButterfly);//15%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 3000;
 					nextSlot++;
 				}*/
-				if (loadModdedItems)
+				if (sellModdedItems)
 				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Mealworm>());//18%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2800 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 2800;
 					nextSlot++;
 				}
 				shop.item[nextSlot].SetDefaults(ItemID.Firefly);//20%
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3000 * shopMulti);
+				shop.item[nextSlot].shopCustomPrice = 3000;
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.Worm);//25%
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3500 * shopMulti);
+				shop.item[nextSlot].shopCustomPrice = 3500;
 				nextSlot++;
 				/*if (NPC.downedBoss2)//EoW or BoC
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Lavafly);//25%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(5000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 5000;
 					nextSlot++;
 				}*/
 				if (NPC.downedBoss1)//EoC
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.JourneymanBait);//30%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(4000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 4000;
 					nextSlot++;
-					if (loadModdedItems)
+					if (sellModdedItems)
 					{
 						shop.item[nextSlot].SetDefaults(ModContent.ItemType<RedWorm>());//32%
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(4200 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 4200;
 						nextSlot++;
 					}
 				}
 				if (NPC.downedBoss2)//EoW or BoC
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.EnchantedNightcrawler);//35%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(4500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 4500;
 					nextSlot++;
 				}
 				/*if (NPC.downedBoss3)//Skeletron
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.MagmaSnail);//35%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7000;
 					nextSlot++;
 				}*/
 				if (NPC.downedQueenBee)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Buggy);//40%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(5000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 5000;
 					nextSlot++;
 				}
 				if (Main.hardMode)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.MasterBait);//50%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(6000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 6000;
 					nextSlot++;
 				}
 				if (Main.hardMode && NPC.CountNPCS(NPCID.Truffle) > 0)
 				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<GlowingMushroomChunk>());//66%
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(8000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 8000;
 					nextSlot++;
 				}
 				if (NPC.downedFishron)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.TruffleWorm);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(150000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 150000;
 					nextSlot++;
 				}
 				/*shop.item[nextSlot].SetDefaults(ItemID.CanOfWorms);
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(25000 * shopMulti);
+				shop.item[nextSlot].shopCustomPrice = 25000;
 				nextSlot++;*/
-				if (loadModdedItems)
+				if (sellModdedItems)
 				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<BaitBox>());
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 50000;
 					nextSlot++;
 				}
 			}
@@ -451,19 +463,19 @@ namespace RijamsMod.NPCs.TownNPCs
 				if (Main.player[Main.myPlayer].ZoneDirtLayerHeight || Main.player[Main.myPlayer].ZoneRockLayerHeight || Main.player[Main.myPlayer].ZoneUnderworldHeight || Main.hardMode) //if Underground, Caverns, Underworld, or Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.ArmoredCavefish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti); //Fish's prices are based off of their vanilla values. 
+					shop.item[nextSlot].shopCustomPrice = 7500; //Fish's prices are based off of their vanilla values. 
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneSnow) //if Snow biome
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.AtlanticCod);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3750 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 3750;
 					nextSlot++;
 				}
 				if (!Main.player[Main.myPlayer].ZoneDesert) //if not Desert
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Bass);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 2500;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneDirtLayerHeight || Main.player[Main.myPlayer].ZoneRockLayerHeight || Main.player[Main.myPlayer].ZoneUnderworldHeight) //if Underground, Caverns, Underworld
@@ -471,134 +483,134 @@ namespace RijamsMod.NPCs.TownNPCs
 					if (Main.player[Main.myPlayer].ZoneHoly) //if Hallow
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.ChaosFish);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(150000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 150000;
 						nextSlot++;
 					}
 				}
 				if ((NPC.downedBoss2 && WorldGen.crimson) || Main.hardMode) //if EoW/BoC defeated and Crimson world, or Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.CrimsonTigerfish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3750 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 3750;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneSkyHeight) //if Space layer
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Damselfish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(15000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 15000;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneJungle) //if Jungle
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.DoubleCod);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 				if ((NPC.downedBoss2 && !WorldGen.crimson) || Main.hardMode) //if EoW/BoC defeated and Corruption world, or Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Ebonkoi);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneUnderworldHeight || Main.hardMode) //if Underworld or Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.FlarefinKoi);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(25000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 25000;
 					nextSlot++;
 				}
 				/*if (Main.player[Main.myPlayer].ZoneDesert) //if Desert
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Flounder);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(750 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 750;
 					nextSlot++;
 				}*/
 				if (Main.player[Main.myPlayer].ZoneSnow) //if Snow biome
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.FrostMinnow);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 				if ((NPC.downedBoss2 && WorldGen.crimson) || Main.hardMode) //if EoW/BoC defeated and Crimson world, or Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Hemopiranha);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneJungle) //if Jungle
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Honeyfin);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 					shop.item[nextSlot].SetDefaults(ItemID.NeonTetra);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneUnderworldHeight || Main.hardMode) //if Underworld or Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Obsidifish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneHoly) //if Hallow
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.PrincessFish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(12500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 12500;
 					nextSlot++;
 				}
 				if (Main.hardMode) //if Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Prismite);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 50000;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneBeach) //if Ocean
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.RedSnapper);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3750 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 3750;
 					nextSlot++;
 				}
 				/*if (Main.player[Main.myPlayer].ZoneDesert) //if Desert
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.RockLobster);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(5000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 5000;
 					nextSlot++;
 				}*/
 				if (Main.player[Main.myPlayer].ZoneSkyHeight || Main.player[Main.myPlayer].ZoneOverworldHeight) //if Sky or Surface
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Salmon);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3750 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 3750;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneBeach) //if Ocean
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Shrimp);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 				if ((Main.player[Main.myPlayer].ZoneDirtLayerHeight || Main.player[Main.myPlayer].ZoneRockLayerHeight || Main.player[Main.myPlayer].ZoneUnderworldHeight) && !Main.player[Main.myPlayer].ZoneDesert) //if Underground or Caverns or Underworld, and not Desert
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.SpecularFish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3750 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 3750;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneDirtLayerHeight || Main.player[Main.myPlayer].ZoneRockLayerHeight || Main.player[Main.myPlayer].ZoneUnderworldHeight) //if Underground or Caverns or Underworld
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Stinkfish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(12500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 12500;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneBeach) //if Ocean
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Trout);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 2500;
 					nextSlot++;
 					shop.item[nextSlot].SetDefaults(ItemID.Tuna);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(3750 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 3750;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].ZoneJungle || Main.hardMode) //if Jungle or Hardmode
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.VariegatedLardfish);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 				}
 			}
@@ -608,60 +620,60 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (sellFishingRods && shop2)
 			{
 				shop.item[nextSlot].SetDefaults(ItemID.ReinforcedFishingPole);
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+				shop.item[nextSlot].shopCustomPrice = 50000;
 				nextSlot++;
 				if ((NPC.downedBoss2 && WorldGen.crimson) || NPC.downedMoonlord)//EoW or BoC and Crimson world. Or defeated Moon Lord
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.Fleshcatcher);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(150000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 150000;
 					nextSlot++;
 				}
 				if ((NPC.downedBoss2 && !WorldGen.crimson) || NPC.downedMoonlord)//EoW or BoC and Corruption world. Or defeated Moon Lord
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.FisherofSouls);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(150000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 150000;
 					nextSlot++;
 				}
 				/*if (Main.bloodMoon)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.BloodFishingRod);//Chum Caster
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(250000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 250000;
 					nextSlot++;
 				}*/
 				/*if (NPC.downedBoss1 && Main.player[Main.myPlayer].ZoneDesert)//EoC and in desert
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.ScarabFishingRod);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(250000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 250000;
 					nextSlot++;
 				}*/
 				if (NPC.downedQueenBee)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.FiberglassFishingPole);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(250000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 250000;
 					nextSlot++;
 				}
 				if (NPC.downedBoss3)//Skeletron
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.MechanicsRod);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(300000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 300000;
 					nextSlot++;
 				}
 				if (NPC.downedBoss3 && NPCID.Count > 8)//Skeletron and more than 8 NPCs
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.SittingDucksFishingRod);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(400000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 400000;
 					nextSlot++;
 				}
 				if (Main.hardMode)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.HotlineFishingHook);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(450000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 450000;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 30)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.GoldenFishingRod);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(500000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 500000;
 					nextSlot++;
 				}
 			}
@@ -673,13 +685,13 @@ namespace RijamsMod.NPCs.TownNPCs
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 1)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.FishingPotion);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(7500 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 7500;
 					nextSlot++;
 					shop.item[nextSlot].SetDefaults(ItemID.CratePotion);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(6000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 6000;
 					nextSlot++;
 					shop.item[nextSlot].SetDefaults(ItemID.SonarPotion);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(5000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 5000;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 5)
@@ -692,239 +704,239 @@ namespace RijamsMod.NPCs.TownNPCs
 					// 5 Waxing Crescent
 					// 6 First Quarter
 					// 7 Waxing Gibbous
-					/*if (Main.moonPhase == 0)
+					if (Main.moonPhase == 0)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2500 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
+						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 1)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 2)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.AnglerEarring);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 3)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 4)
+					if (Main.moonPhase == 4)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(100000 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
+						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 5)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 6)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 7)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.TackleBox);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 10)
 				{
-					/*if (Main.moonPhase == 4)
+					if (Main.moonPhase == 4)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2500 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
+						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 5)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 6)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.AnglerEarring);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 7)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 0)
+					if (Main.moonPhase == 0)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(100000 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
+						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 1)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 2)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 3)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.TackleBox);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 15)
 				{
-					/*if (Main.moonPhase == 2)
+					if (Main.moonPhase == 2)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2500 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
+						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 3)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 4)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.AnglerEarring);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 5)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 6)
+					if (Main.moonPhase == 6)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(100000 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
+						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 7)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 0)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 1)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.TackleBox);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 20)
 				{
-					/*if (Main.moonPhase == 6)
+					if (Main.moonPhase == 6)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.ChumBucket);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(2500 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
+						shop.item[nextSlot].shopCustomPrice = 2500;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 7)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.Sextant);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 0)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.AnglerEarring);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 1)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
-					/*if (Main.moonPhase == 2)
+					if (Main.moonPhase == 2)
 					{
-						shop.item[nextSlot].SetDefaults(ItemID.LavaFishingHook);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(100000 * shopMulti);
+						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
+						shop.item[nextSlot].shopCustomPrice = 100000;
 						nextSlot++;
-					}*/
+					}
 					if (Main.moonPhase == 3)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.HighTestFishingLine);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 4)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 					if (Main.moonPhase == 5)
 					{
 						shop.item[nextSlot].SetDefaults(ItemID.TackleBox);
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+						shop.item[nextSlot].shopCustomPrice = 50000;
 						nextSlot++;
 					}
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 10)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.AnglerHat);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(10000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 10000;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 15)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.AnglerVest);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(10000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 10000;
 					nextSlot++;
 				}
 				if (Main.player[Main.myPlayer].anglerQuestsFinished >= 20)
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.AnglerPants);
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(10000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 10000;
 					nextSlot++;
 				}
-				if (loadModdedItems)
+				if (sellModdedItems)
 				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.RecyclingMachine>());
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(5000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 5000;
 					nextSlot++;
 				}
-				if (loadModdedItems && NPC.CountNPCS(NPCID.Clothier) > 0)
+				if (sellModdedItems && NPC.CountNPCS(NPCID.Clothier) > 0)
 				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Fisherman_Vanity_Shirt>());
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 50000;
 					nextSlot++;
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Fisherman_Vanity_Pants>());
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(50000 * shopMulti);
+					shop.item[nextSlot].shopCustomPrice = 50000;
 					nextSlot++;
 				}
 			}
@@ -960,7 +972,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
 		{
-			projType = mod.ProjectileType("HarpoonSpear");
+			projType = ModContent.ProjectileType<HarpoonSpear>();
 			//projType = ProjectileID.Harpoon;
 			attackDelay = 1;
 		}

@@ -31,7 +31,7 @@ namespace RijamsMod.NPCs.Enemies
             npc.HitSound = SoundID.NPCHit2;
             npc.DeathSound = SoundID.NPCDeath2;
             banner = npc.type;
-            bannerItem = mod.ItemType("SkeletonGunnerBanner");
+            bannerItem = ModContent.ItemType<Items.Placeable.SkeletonGunnerBanner>();
         }
 
         public override void HitEffect(int hitDirection, double damage)

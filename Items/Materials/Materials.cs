@@ -8,7 +8,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults() 
 		{
-			Tooltip.SetDefault("\n[c/403638:Sold by Harpy]");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Harpy]");
 		}
 
 		public override void SetDefaults() 
@@ -24,7 +24,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("\n[c/403638:Sold by Harpy]");
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Harpy]");
 		}
 
 		public override void SetDefaults()
@@ -34,6 +34,22 @@ namespace RijamsMod.Items.Materials
 			item.height = 20;
 			item.value = 7500;
 			item.rare = ItemRarityID.Yellow;
+		}
+	}
+	public class CrawlerChelicera : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Blood Crawlers]");
+		}
+
+		public override void SetDefaults()
+		{
+			item.maxStack = 99;
+			item.width = 20;
+			item.height = 10;
+			item.value = 25;
+			item.rare = ItemRarityID.White;
 		}
 	}
 }
