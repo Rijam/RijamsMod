@@ -38,6 +38,22 @@ Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
 
+Version 1.0.2.0
+- Arms Dealer now sells Bloody Arrows
+- Eye of Cthulhu Treasure Bag now drops Bloody Arrows while in a Crimson world
+- Bloody Arrows now do 2 more damage than Unholy Arrows, but have a 7% damage penalty when piercing.
+- Nerfed the Interstellar Pistol: Damaged reduced to 23 from 25
+- Added a new enemy: Sir Slush. Spawns in during the Frost Legion.
+- Added a new vanity item: Sir Slush's Top Hat.
+- Harpy now sells White Feather from Shadows of Abaddon and Talon from Thorium
+- Strange Rolls no longer give Exceptional Feast. Now gives Well Fed for 20 minutes.
+- Pink Prickly Pears can now be eaten and give Satiated for 1 minute.
+- Exceptional Feast and Well Fed (and Satiated) no longer stack.
+- New accessory: Gelid Skull Rose
+- New Town NPC: Hell Trader. Spawns randomly in Pre-Hardmode, moves in in Hardmode. Still WIP.
+- Two new materials: Infernic Fabric and Sulfur. 
+- A new block: Living Sulfur Fire Block
+
 Version 1.0.1.0
 - Updated the Fisherman's Pants item sprite
 - Added a new quest to the Interstellar Traveler (Prime Thruster)

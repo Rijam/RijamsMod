@@ -17,12 +17,16 @@ namespace RijamsMod.Projectiles
 		public override void SetDefaults()
 		{
 			projectile.CloneDefaults(ProjectileID.UnholyArrow);
+			projectile.timeLeft = 1800; //30 seconds
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			return true;
 		}
-
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+			projectile.damage = (int)(damage * 0.93f);
+		}
         public override void PostAI()
         {
 			if (Main.rand.Next(5) == 0)

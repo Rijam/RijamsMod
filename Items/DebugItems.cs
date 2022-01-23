@@ -44,6 +44,7 @@ namespace RijamsMod.Items
 			Main.NewText("intTravQuestPrimeThruster is currenty: " + RijamsModWorld.intTravQuestPrimeThruster);
 			Main.NewText("savedHarpy is currenty: " + RijamsModWorld.savedHarpy);
 			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArived);
+			Main.NewText("hellTraderArrivable is currenty: " + RijamsModWorld.hellTraderArrivable);
 			return true;
 		}
 	}
@@ -275,6 +276,34 @@ namespace RijamsMod.Items
 		{
 			string currentState = RijamsModWorld.savedHarpy.ToString();
 			tooltips.Add(new TooltipLine(mod, "CurrentState", "savedHarpy == " + currentState));
+		}
+	}
+	public class DebugHellTraderArrivable : DebugIntTravQuestOddDevice
+	{
+		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("[c/ff0000:Debug] - Hell Trader Arrivable Flag");
+			Tooltip.SetDefault("Changes the flag that the Hell Trader can arrive\nLeft click to set false\nRight click to set true");
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			item.color = Color.Red;
+		}
+		public override bool UseItem(Player player)
+		{
+			RijamsModWorld.hellTraderArrivable = false;
+			return true;
+		}
+		public override void RightClick(Player player)
+		{
+			RijamsModWorld.hellTraderArrivable = true;
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			string currentState = RijamsModWorld.hellTraderArrivable.ToString();
+			tooltips.Add(new TooltipLine(mod, "CurrentState", "hellTraderArrivable == " + currentState));
 		}
 	}
 	public class DebugMethodTester : ModItem

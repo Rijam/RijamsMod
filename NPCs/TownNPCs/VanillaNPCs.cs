@@ -118,11 +118,20 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].shopCustomPrice = 100000;
 				nextSlot++;
 			}
-			if (type == NPCID.ArmsDealer && Main.hardMode)
+			if (type == NPCID.ArmsDealer)
 			{
-				shop.item[nextSlot].SetDefaults(ItemID.AmmoBox);
-				shop.item[nextSlot].shopCustomPrice = 150000;
-				nextSlot++;
+				if ((!Main.dayTime && NPC.downedBoss2) || Main.hardMode) //EoW or BoC
+                {
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>());
+					shop.item[nextSlot].shopCustomPrice = 40;
+					nextSlot++;
+				}
+				if (Main.hardMode)
+                {
+					shop.item[nextSlot].SetDefaults(ItemID.AmmoBox);
+					shop.item[nextSlot].shopCustomPrice = 150000;
+					nextSlot++;
+				}
 			}
 			if (type == NPCID.WitchDoctor)
 			{

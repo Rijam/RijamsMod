@@ -12,7 +12,7 @@ namespace RijamsMod.Items.Consumables
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Strange Roll");
-			Tooltip.SetDefault("Extreme improvements to all stats\n'A strange food from an unknown place'\n'What's inside?'");
+			Tooltip.SetDefault("Minor improvements to all stats\n'A strange food from an unknown place'\n'What's inside?'");
 		}
 		/*public override bool CanUseItem(Player player)
 		{
@@ -32,23 +32,8 @@ namespace RijamsMod.Items.Consumables
 			item.useTime = 15;
 			item.useTurn = true;
 			item.UseSound = SoundID.Item2;
-			item.buffType = ModContent.BuffType<Buffs.ExceptionalFeast>(); //Specify an existing buff to be applied when used.
-			item.buffTime = 7200; //2 minutes
-		}
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
-			if (isLeftShiftHeld)
-			{
-				tooltips.Add(new TooltipLine(mod, "ExceptionalFeast", "Exceptional Feast provides:"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+5 Defense"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+5% Critical Hit Chance"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+12.5% Melee Speed"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+12.5% Damage"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+1.25 Minion Knockback"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+50% Movement Speed"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+20% Mining Speed"));
-			}
+			item.buffType = BuffID.WellFed; //Specify an existing buff to be applied when used.
+			item.buffTime = 72000; //20 minutes
 		}
 	}
 	public class RyeJam : ModItem
@@ -79,20 +64,6 @@ namespace RijamsMod.Items.Consumables
 			item.buffType = ModContent.BuffType<Buffs.ExceptionalFeast>(); //Specify an existing buff to be applied when used.
 			item.buffTime = 18000; //5 minutes
 		}
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
-			if (isLeftShiftHeld)
-			{
-				tooltips.Add(new TooltipLine(mod, "ExceptionalFeast", "Exceptional Feast provides:"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+5 Defense"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+5% Critical Hit Chance"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+12.5% Melee Speed"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+12.5% Damage"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+1.25 Minion Knockback"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+50% Movement Speed"));
-				tooltips.Add(new TooltipLine(mod, "Stats", "+20% Mining Speed"));
-			}
-		}
+		//Tool tip set in GlobalItems
 	}
 }

@@ -19,13 +19,14 @@ namespace RijamsMod
     public class RijamsModWorld : ModWorld
     {
 		public static bool savedHarpy = false;
-        public static bool intTravArived = false;
+        public static bool intTravArived = false; //oops typo
         public static bool intTravQuestOddDevice = false;
         public static bool intTravQuestBlankDisplay = false;
         public static bool intTravQuestTPCore = false;
         public static bool intTravQuestRyeJam = false;
         public static bool intTravQuestMagicOxygenizer = false;
         public static bool intTravQuestPrimeThruster = false;
+        public static bool hellTraderArrivable = false;
 
         public override void Initialize()
         {
@@ -37,6 +38,7 @@ namespace RijamsMod
             intTravQuestRyeJam = false;
             intTravQuestMagicOxygenizer = false;
             intTravQuestPrimeThruster = false;
+            hellTraderArrivable = false;
         }
 
         public override TagCompound Save()
@@ -76,6 +78,10 @@ namespace RijamsMod
             {
                 downed.Add("intTravQuestPrimeThruster");
             }
+            if (hellTraderArrivable)
+            {
+                downed.Add("hellTraderArrivable");
+            }
 
 
             return new TagCompound
@@ -107,6 +113,7 @@ namespace RijamsMod
             intTravQuestRyeJam = downed.Contains("intTravQuestRyeJam");
             intTravQuestMagicOxygenizer = downed.Contains("intTravQuestBreathingPack");
             intTravQuestPrimeThruster = downed.Contains("intTravQuestPrimeThruster");
+            hellTraderArrivable = downed.Contains("hellTraderArrivable");
 
             /*savedHarpy = tag.GetBool("savedHarpy");
             intTravArived = tag.GetBool("intTravArived");
@@ -127,6 +134,9 @@ namespace RijamsMod
                 intTravQuestRyeJam = flags[5];
                 intTravQuestMagicOxygenizer = flags[6];
                 intTravQuestPrimeThruster = flags[7];
+
+                BitsByte flags2 = reader.ReadByte();
+                hellTraderArrivable = flags2[0];
             }
             else
             {
@@ -148,6 +158,10 @@ namespace RijamsMod
             flags[7] = intTravQuestPrimeThruster;
             writer.Write(flags);
 
+            var flags2 = new BitsByte();
+            flags2[0] = hellTraderArrivable;
+            writer.Write(flags2);
+
             /*writer.Write(savedHarpy);
             writer.Write(intTravArived);*/
             //writer.Write(intTravQuestOddDevice);
@@ -164,6 +178,9 @@ namespace RijamsMod
             intTravQuestRyeJam = flags[5];
             intTravQuestMagicOxygenizer = flags[6];
             intTravQuestPrimeThruster = flags[7];
+
+            BitsByte flags2 = reader.ReadByte();
+            hellTraderArrivable = flags2[0];
 
             /*savedHarpy = reader.ReadBoolean();
             intTravArived = reader.ReadBoolean();*/

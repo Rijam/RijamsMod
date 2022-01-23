@@ -54,6 +54,7 @@ namespace RijamsMod.Projectiles
 					}
 				}
 				projectile.ai[0] = 0;
+				projectile.netUpdate = true;
 			}
 
 			#region Animation and visuals

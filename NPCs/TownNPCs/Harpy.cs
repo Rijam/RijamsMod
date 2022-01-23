@@ -20,13 +20,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
-		public override string[] AltTextures
+		/*public override string[] AltTextures
 		{
 			get
 			{
 				return new string[] { "RijamsMod/NPCs/TownNPCs/Harpy_Alt_1" };
 			}
-		}
+		}*/
 
 		public override bool Autoload(ref string name)
 		{
@@ -192,6 +192,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Me and " + Main.npc[fisherman].GivenName + " go on fishing trips sometimes! He lets me 'scout ahead', whatever that means!", 0.5);
 			}
+			int hellTrader = NPC.FindFirstNPC(ModContent.NPCType<HellTrader>());
+			if (hellTrader >= 0 && RijamsModWorld.hellTraderArrivable)
+
+			{
+				chat.Add("Me and " + Main.npc[hellTrader].GivenName + " come from opposite heights of the world! Isn't that cool!", 0.5);
+			}
 			/*int zoologist = NPC.FindFirstNPC(NPCID.Zoologist);
 			if (zoologist >= 0)
 			{
@@ -289,7 +295,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
-			button = "Shop";
+			button = Language.GetTextValue("LegacyInterface.28"); //Shop
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
@@ -334,10 +340,14 @@ namespace RijamsMod.NPCs.TownNPCs
 					nextSlot++;
 				}
 			}
-			/*Mod shadowsOfAbaddon = ModLoader.GetMod("SacredTools");
+			Mod shadowsOfAbaddon = ModLoader.GetMod("SacredTools");
 			if (shadowsOfAbaddon != null) //Shadows of Abaddon
 			{
-				if (SacredToolsDownedHarpyPreHM) //Jensen
+				shop.item[nextSlot].SetDefaults(shadowsOfAbaddon.ItemType("BirdFeather")); //White Feather
+				shop.item[nextSlot].shopCustomPrice = 50;
+				nextSlot++;
+				
+				/*if (SacredToolsDownedHarpyPreHM) //Jensen
 				{
 					//shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SacredTools").ItemType("GrandHarpyFeather"));
 					shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SacredTools").ItemType("HarpyDrop")); //Grand Harpy Feather
@@ -350,8 +360,8 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].SetDefaults(ModLoader.GetMod("SacredTools").ItemType("GoldenFeather")); //Royal Harpy Feather
 					shop.item[nextSlot].shopCustomPrice = 20000;
 					nextSlot++;
-				}
-			}*/
+				}*/
+			}
 			Mod ancientsAwakened = ModLoader.GetMod("AAMod");
 			if (ancientsAwakened != null) //Ancients Awakened
 			{
@@ -391,6 +401,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].shopCustomPrice = 2000;
 					nextSlot++;
 				}
+			}
+			Mod thorium = ModLoader.GetMod("ThoriumMod");
+			if (thorium != null) //Thorium
+			{
+				shop.item[nextSlot].SetDefaults(thorium.ItemType("BirdTalon")); //Talon
+				shop.item[nextSlot].shopCustomPrice = 100;
+				nextSlot++;
 			}
 			shop.item[nextSlot].SetDefaults(ItemID.SkyMill);
 			shop.item[nextSlot].shopCustomPrice = 17500;
@@ -466,6 +483,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shorts>());
 			nextSlot++;
+			Mod split = ModLoader.GetMod("Split");
+			if (split != null) //Thorium
+			{
+				shop.item[nextSlot].SetDefaults(split.ItemType("PosterHarpy"));
+				shop.item[nextSlot].shopCustomPrice = 10000;
+				nextSlot++;
+			}
 		}
 
 		public override bool CanGoToStatue(bool toKingStatue)

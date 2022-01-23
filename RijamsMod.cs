@@ -228,6 +228,7 @@ namespace RijamsMod
                 // censusMod.Call("TownNPCCondition", NPCType("Simple"), "Defeat Duke Fishron");
                 censusMod.Call("TownNPCCondition", NPCType("Fisherman"), "Rescue the Angler and have at least 5 Town NPCs");
                 censusMod.Call("TownNPCCondition", NPCType("Harpy"), "Rescue her in space");
+                censusMod.Call("TownNPCCondition", NPCType("Hell Trader"), "Found in Hell. Can move in in Hardmode");
             }
             Mod pboneUtils = ModLoader.GetMod("PboneUtils");
             if (pboneUtils != null)
@@ -314,6 +315,11 @@ namespace RijamsMod
                     NetMessage.SendData(MessageID.WorldData);
                     Logger.Debug("RijamsMod: Prime Thruster quest completed (Multiplayer packet).");
                     break;
+                case RijamsModMessageType.SetHellTraderArrivable:
+                    RijamsModWorld.hellTraderArrivable = true;
+                    NetMessage.SendData(MessageID.WorldData);
+                    Logger.Debug("RijamsMod: Hell Trader Arrivable (Multiplayer packet).");
+                    break;
                 default:
                     Logger.WarnFormat("RijamsMod: Unknown Message type: {0}", msgType);
                     break;
@@ -328,6 +334,7 @@ namespace RijamsMod
         SetQuestTPCore,
         SetQuestRyeJam,
         SetQuestMagicOxygenizer,
-        SetQuestPrimeThruster
+        SetQuestPrimeThruster,
+        SetHellTraderArrivable
     }
 }

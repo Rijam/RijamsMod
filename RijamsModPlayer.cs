@@ -22,6 +22,7 @@ namespace RijamsMod
 		public bool burglarsRing;
 		public bool rocketBooster;
 		public bool gamutApparatus;
+		public bool frostburnStone;
 		//public bool delapHelmet;
 		//public bool delapScalemail;
 		//public bool delapGreaves;
@@ -38,6 +39,7 @@ namespace RijamsMod
 			burglarsRing = false;
             rocketBooster = false;
 			gamutApparatus = false;
+			frostburnStone = false;
 			//breathingPackUsed = true;
 			//breathingPackTimer = 0;
 		}

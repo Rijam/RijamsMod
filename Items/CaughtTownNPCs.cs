@@ -34,12 +34,7 @@ namespace RijamsMod.Items
 			item.consumable = true;
 			item.UseSound = SoundID.Item44;
 			item.makeNPC = (short)ModContent.NPCType<Fisherman>();
-		}
-
-		public override void HoldItem(Player player)
-		{
-			Player.tileRangeX += 600;
-			Player.tileRangeY += 600;
+			item.tileBoost += 20;
 		}
 
 		public override bool CanUseItem(Player player)
@@ -93,11 +88,7 @@ namespace RijamsMod.Items
 			item.consumable = true;
 			item.UseSound = SoundID.Item44;
 			item.makeNPC = (short)ModContent.NPCType<Harpy>();
-		}
-		public override void HoldItem(Player player)
-		{
-			Player.tileRangeX += 600;
-			Player.tileRangeY += 600;
+			item.tileBoost += 20;
 		}
 
 		public override bool CanUseItem(Player player)
@@ -151,11 +142,7 @@ namespace RijamsMod.Items
 			item.consumable = true;
 			item.UseSound = SoundID.Item44;
 			item.makeNPC = (short)ModContent.NPCType<InterstellarTraveler>();
-		}
-		public override void HoldItem(Player player)
-		{
-			Player.tileRangeX += 600;
-			Player.tileRangeY += 600;
+			item.tileBoost += 20;
 		}
 
 		public override bool CanUseItem(Player player)
@@ -175,6 +162,59 @@ namespace RijamsMod.Items
 			if (Main.netMode != NetmodeID.Server)
 			{
 				//Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>())].GivenName + " the " + chatmessage, 50, 125, 255);
+				Main.NewText(chatmessage, 50, 125, 255);
+			}
+			else
+			{
+				NetworkText text = NetworkText.FromLiteral(chatmessage);
+				NetMessage.BroadcastChatMessage(text, new Color(50, 125, 255));
+			}
+		}
+	}
+	public class CaughtHellTrader : ModItem
+	{
+		public override string Texture => "RijamsMod/NPCs/TownNPCs/HellTrader";
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Hell Trader");
+			Tooltip.SetDefault("'Hey, human! Good to see you again.'");
+			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 23));
+		}
+
+		public override void SetDefaults()
+		{
+			item.width = 20;
+			item.height = 20;
+			item.maxStack = 10;
+			item.value = 0;
+			item.rare = ItemRarityID.Blue;
+			item.useAnimation = 15;
+			item.useTime = 15;
+			item.useStyle = ItemUseStyleID.SwingThrow;
+			item.noUseGraphic = true;
+			item.consumable = true;
+			item.UseSound = SoundID.Item44;
+			item.makeNPC = (short)ModContent.NPCType<HellTrader>();
+			item.tileBoost += 20;
+		}
+
+		public override bool CanUseItem(Player player)
+		{
+			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+			return (NPC.CountNPCS(ModContent.NPCType<HellTrader>()) < 1 && !Collision.SolidCollision(mousePos, player.width, player.height));
+		}
+		public override void OnConsumeItem(Player player)
+		{
+			/*Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+			if (!ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs) //So it still spawns the Town NPC if the config is off. If it is on, it automatically does this.
+			{
+				NPC.NewNPC((int)mousePos.X, (int)mousePos.Y, ModContent.NPCType<HellTrader>());
+			}*/
+
+			string chatmessage = "The Hell Trader has been spawned!";
+			if (Main.netMode != NetmodeID.Server)
+			{
+				//Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<HellTrader>())].GivenName + " the " + chatmessage, 50, 125, 255);
 				Main.NewText(chatmessage, 50, 125, 255);
 			}
 			else

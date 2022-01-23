@@ -121,7 +121,7 @@ namespace RijamsMod.Items.Information
 			}
 
 			tooltips.Add(new TooltipLine(mod, "moveSpeed", "Movement speed multiplier: " + moveSpeedString));
-			tooltips.Add(new TooltipLine(mod, "moveSpeed", "Maxium Running speed: " + maxRunSpeedString));
+			tooltips.Add(new TooltipLine(mod, "moveSpeed", "Maximum Running speed: " + maxRunSpeedString));
 			tooltips.Add(new TooltipLine(mod, "runAcceleration", "Running acceleration speed: " + runAccelerationString));
 			tooltips.Add(new TooltipLine(mod, "runSlowdown", "Running deceleration speed: " + runSlowdownString));
 			tooltips.Add(new TooltipLine(mod, "wingTimeMax", "Wing flight time: " + wingTimeMaxString));
@@ -152,12 +152,12 @@ namespace RijamsMod.Items.Information
 			float allDamage = Main.player[Main.myPlayer].allDamage;
 			string allDamageString = allDamage.ToString();
 
-			tooltips.Add(new TooltipLine(mod, "Melee", "Melee damage multipler: " + meleeDamageString));
-			tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged damage multipler: " + rangedDamageString));
-			tooltips.Add(new TooltipLine(mod, "Magic", "Magic damage multipler: " + magicDamageString));
-			tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multipler: " + minionDamageString));
-			tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multipler: " + thrownDamageString));
-			tooltips.Add(new TooltipLine(mod, "All", "All damage multipler: " + allDamageString));
+			tooltips.Add(new TooltipLine(mod, "Melee", "Melee damage multiplier: " + meleeDamageString));
+			tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged damage multiplier: " + rangedDamageString));
+			tooltips.Add(new TooltipLine(mod, "Magic", "Magic damage multiplier: " + magicDamageString));
+			tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multiplier: " + minionDamageString));
+			tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multiplier: " + thrownDamageString));
+			tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
 		}
 	}
 	public class CritDisplay : LifeDisplay
@@ -213,7 +213,6 @@ namespace RijamsMod.Items.Information
 	}
 	public class InformationInterface : ModItem
 	{
-		//public static string ShowAll => Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl) ? "Rustburn lowers defense by 25 and is effective against inorganic enemies\nInorganic enemies with Rustburn take even more damage from Acid Burn\nOrganic enemies only take a bit of damage over time" : "(Hold LEFT CONTROL for more info on Rust Burn)";
 		//public override string Texture => "Terraria/Item_" + ItemID.CellPhone;
 		public override void SetStaticDefaults()
 		{
@@ -391,7 +390,7 @@ namespace RijamsMod.Items.Information
 
 				//Movement
 				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Movement speed multiplier: " + moveSpeedString));
-				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Maxium Running speed: " + maxRunSpeedString));
+				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Maximum Running speed: " + maxRunSpeedString));
 				tooltips.Add(new TooltipLine(mod, "runAcceleration", "Running acceleration speed: " + runAccelerationString));
 				tooltips.Add(new TooltipLine(mod, "runSlowdown", "Running deceleration speed: " + runSlowdownString));
 				tooltips.Add(new TooltipLine(mod, "wingTimeMax", "Wing flight time: " + wingTimeMaxString));
@@ -402,12 +401,12 @@ namespace RijamsMod.Items.Information
 			if (isLeftCtrlHeld)
 			{
 				//Damage
-				tooltips.Add(new TooltipLine(mod, "Melee", "Melee damage multipler: " + meleeDamageString));
-				tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged damage multipler: " + rangedDamageString));
-				tooltips.Add(new TooltipLine(mod, "Magic", "Magic damage multipler: " + magicDamageString));
-				tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multipler: " + minionDamageString));
-				tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multipler: " + thrownDamageString));
-				tooltips.Add(new TooltipLine(mod, "All", "All damage multipler: " + allDamageString));
+				tooltips.Add(new TooltipLine(mod, "Melee", "Melee damage multiplier: " + meleeDamageString));
+				tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged damage multiplier: " + rangedDamageString));
+				tooltips.Add(new TooltipLine(mod, "Magic", "Magic damage multiplier: " + magicDamageString));
+				tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multiplier: " + minionDamageString));
+				tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multiplier: " + thrownDamageString));
+				tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
 
 				//Crit
 				tooltips.Add(new TooltipLine(mod, "Melee", "Melee critical hit: " + meleeCritString));
@@ -441,9 +440,9 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(mod, "lifeRegen", "Life regeneration: " + lifeRegenString));
 				tooltips.Add(new TooltipLine(mod, "manaRegen", "Mana regeneration: " + manaRegenString));
 				tooltips.Add(new TooltipLine(mod, "Endurance", "Damage Reduction: " + enduranceString + "%"));
-				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Movement speed multipler: " + moveSpeedString));
+				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Movement speed multiplier: " + moveSpeedString));
 				tooltips.Add(new TooltipLine(mod, "wingTimeMax", "Wing flight time: " + wingTimeMaxString));
-				tooltips.Add(new TooltipLine(mod, "All", "All damage multipler: " + allDamageString));
+				tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
 				tooltips.Add(new TooltipLine(mod, "MinionCount", "Maximum minions: " + summonTotalString));
 				tooltips.Add(new TooltipLine(mod, "SentryCount", "Maximum sentries: " + sentryTotalString));
 			}

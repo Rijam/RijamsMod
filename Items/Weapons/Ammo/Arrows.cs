@@ -6,9 +6,14 @@ namespace RijamsMod.Items.Weapons.Ammo
 {
 	public class BloodyArrow : ModItem
 	{
-		public override void SetDefaults()
+        public override void SetStaticDefaults()
+        {
+			Tooltip.SetDefault("7% damage penalty per enemy pierced");
+		}
+        public override void SetDefaults()
 		{
 			item.CloneDefaults(ItemID.UnholyArrow);
+			item.damage = 14;
 			item.shoot = ModContent.ProjectileType<Projectiles.BloodyArrow>();   //The projectile shoot when your weapon using this ammo
 		}
 

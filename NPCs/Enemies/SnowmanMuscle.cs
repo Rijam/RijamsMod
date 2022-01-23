@@ -106,6 +106,7 @@ namespace RijamsMod.NPCs.Enemies
 						{
 							int projectileDamage = 15;
 							int projectileType = ProjectileID.BulletSnowman;
+							Main.PlaySound(SoundID.Item36, (int)npc.position.X, (int)npc.position.Y);
 							for (int i=0; i < 3; i++)
                             {
 								int newProjectile = Projectile.NewProjectile(projectileVector.X, projectileVector.Y, speedX, speedY, projectileType, projectileDamage, 0.5f, Main.myPlayer);

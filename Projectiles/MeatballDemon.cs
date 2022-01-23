@@ -84,11 +84,10 @@ namespace RijamsMod.Projectiles
 
 			#region Active check
 			// projectile is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-			if (player.dead || !player.active) {
-				//player.ClearBuff(ModContent.BuffType<HissyDemonBuff>());
+			if (player.dead || !player.active)
+			{
 				player.ClearBuff(ModContent.BuffType<Buffs.MeatballDemonBuff>());
 			}
-			//if (player.HasBuff(ModContent.BuffType<HissyDemonBuff>()))
 			if (player.HasBuff(ModContent.BuffType<Buffs.MeatballDemonBuff>()))
 			{
 				projectile.timeLeft = 2;
@@ -386,33 +385,18 @@ namespace RijamsMod.Projectiles
 			{
 				projectile.spriteDirection = (projectile.direction = 1);
 			}
-			if (projectile.type == 373)
+			if (projectile.ai[1] > 0f)
 			{
-				if (projectile.ai[1] > 0f)
-				{
-					projectile.ai[1] += Main.rand.Next(1, 4);
-				}
-				if (projectile.ai[1] > 90f)
-				{
-					projectile.ai[1] = 0f;
-					projectile.netUpdate = true;
-				}
-			}
-			else if ((projectile.type == 375 || true))
-			{
-				if (projectile.ai[1] > 0f)
+				projectile.ai[1] += 1f;
+				if (Main.rand.Next(3) == 0)
 				{
 					projectile.ai[1] += 1f;
-					if (Main.rand.Next(3) == 0)
-					{
-						projectile.ai[1] += 1f;
-					}
 				}
-				if (projectile.ai[1] > (float)Main.rand.Next(120, 180))
-				{
-					projectile.ai[1] = 0f;
-					projectile.netUpdate = true;
-				}
+			}
+			if (projectile.ai[1] > (float)Main.rand.Next(120, 180))
+			{
+				projectile.ai[1] = 0f;
+				projectile.netUpdate = true;
 			}
 			if (projectile.ai[0] != 0f)
 			{
@@ -423,16 +407,13 @@ namespace RijamsMod.Projectiles
 			{
 				return;
 			}
-			if ((projectile.type == 375 || true))
+			if ((vector - projectile.Center).X > 0f)
 			{
-				if ((vector - projectile.Center).X > 0f)
-				{
-					projectile.spriteDirection = (projectile.direction = -1);
-				}
-				else if ((vector - projectile.Center).X < 0f)
-				{
-					projectile.spriteDirection = (projectile.direction = 1);
-				}
+				projectile.spriteDirection = (projectile.direction = -1);
+			}
+			else if ((vector - projectile.Center).X < 0f)
+			{
+				projectile.spriteDirection = (projectile.direction = 1);
 			}
 			if (projectile.ai[1] == 0f)
 			{
@@ -440,6 +421,7 @@ namespace RijamsMod.Projectiles
 				if (Main.myPlayer == projectile.owner)
 				{
 					shooting = true;
+					projectile.netUpdate = true;
 					projectile.frameCounter = 32;
 					Vector2 vector11 = vector - projectile.Center;
 					vector11.Normalize();

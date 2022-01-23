@@ -18,6 +18,61 @@ namespace RijamsMod.Items
             {
                 item.maxStack = 99;
             }
+            if (item.type == ItemID.PinkPricklyPear)
+            {
+                item.consumable = true;
+                item.useStyle = ItemUseStyleID.EatingUsing;
+                item.useAnimation = 15;
+                item.useTime = 15;
+                item.useTurn = true;
+                item.UseSound = SoundID.Item2;
+                item.buffType = ModContent.BuffType<Buffs.Satiated>(); //Specify an existing buff to be applied when used.
+                item.buffTime = 3600; //1 minute
+            }
+        }
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+            if (item.buffType == ModContent.BuffType<Buffs.ExceptionalFeast>())
+            {
+                if (isLeftShiftHeld)
+                {
+                    tooltips.Add(new TooltipLine(mod, "ExceptionalFeast", "Exceptional Feast provides:"));
+                    tooltips.Add(new TooltipLine(mod, "EFStats1", "+5 Defense"));
+                    tooltips.Add(new TooltipLine(mod, "EFStats2", "+5% Critical Hit Chance"));
+                    tooltips.Add(new TooltipLine(mod, "EFStats3", "+12.5% Melee Speed"));
+                    tooltips.Add(new TooltipLine(mod, "EFStats4", "+12.5% Damage"));
+                    tooltips.Add(new TooltipLine(mod, "EFStats5", "+1.25 Minion Knockback"));
+                    tooltips.Add(new TooltipLine(mod, "EFStats6", "+50% Movement Speed"));
+                    tooltips.Add(new TooltipLine(mod, "EFStats7", "+20% Mining Speed"));
+                    tooltips.Add(new TooltipLine(mod, "EFOverride", "Exceptional Feast will override Satiated & Well Fed"));
+                }
+                else
+                {
+                    tooltips.Add(new TooltipLine(mod, "EFInfo", "Hold Left Shift for more information"));
+                }
+            }
+            if (item.buffType == ModContent.BuffType<Buffs.Satiated>())
+            {
+                if (isLeftShiftHeld)
+                {
+                    tooltips.Add(new TooltipLine(mod, "Satiated", "Satiated provides:"));
+                    tooltips.Add(new TooltipLine(mod, "SStats1", "+1 Defense"));
+                    tooltips.Add(new TooltipLine(mod, "SStats2", "+1% Critical Hit Chance"));
+                    tooltips.Add(new TooltipLine(mod, "SStats3", "+2.5% Melee Speed"));
+                    tooltips.Add(new TooltipLine(mod, "SStats4", "+2.5% Damage"));
+                    tooltips.Add(new TooltipLine(mod, "SStats5", "+0.25 Minion Knockback"));
+                    tooltips.Add(new TooltipLine(mod, "SStats6", "+10% Movement Speed"));
+                    tooltips.Add(new TooltipLine(mod, "SStats7", "Does not provide increase life regeneration in Expert Mode"));
+                    tooltips.Add(new TooltipLine(mod, "SOverride", "Satiated will be overridden by Well Fed & Exceptional Feast"));
+                }
+                else
+                {
+                    tooltips.Add(new TooltipLine(mod, "SItemInfo", "Minuscule improvements to all stats"));
+                    tooltips.Add(new TooltipLine(mod, "SInfo", "Hold Left Shift for more information"));
+                }
+            }
+            base.ModifyTooltips(item, tooltips);
         }
         public override string IsArmorSet(Item head, Item body, Item legs)
         {
@@ -46,6 +101,18 @@ namespace RijamsMod.Items
                     player.QuickSpawnItem(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 50));
                 }
             }
+        }
+        public override bool CanUseItem(Item item, Player player)
+        {
+            if (item.buffType == BuffID.WellFed && player.HasBuff(ModContent.BuffType<Buffs.ExceptionalFeast>()))
+            {
+                return false;
+            }
+            if (item.buffType == ModContent.BuffType<Buffs.Satiated>() && (player.HasBuff(ModContent.BuffType<Buffs.ExceptionalFeast>()) || player.HasBuff(BuffID.WellFed)))
+            {
+                return false;
+            }
+            return base.CanUseItem(item, player);
         }
     }
 }

@@ -103,24 +103,13 @@ namespace RijamsMod.Items.Armor.Vanity
 			item.value = Item.sellPrice(gold: 1);
 			item.rare = ItemRarityID.Blue;//1
 			item.vanity = true;
-			item.defense=0;
+			item.defense = 0;
 		}
 		public override void SetMatch(bool male, ref int equipSlot, ref bool robes)
         {
             if (male) equipSlot = mod.GetEquipSlot("Harpy_Vanity_Shorts", EquipType.Legs);
             if (!male) equipSlot = mod.GetEquipSlot("Harpy_Vanity_Shorts_Female", EquipType.Legs);
         }
-		/*public override string Texture
-		{
-			if (Main.player[Main.myPlayer].Male)
-			{
-				AddEquipTexture(GetItem("??"), EquipType.Legs, "Harpy_Vanity_Shorts", "RijamsMod/Items/Armor/Vanity/Harpy_Vanity_Shorts_Legs");
-			}
-			else
-			{
-				AddEquipTexture(GetItem("??"), EquipType.Legs, "Harpy_Vanity_Shorts_Female", "RijamsMod/Items/Armor/Vanity/Harpy_Vanity_Shorts_Legs_Female");
-			}
-		}*/
 	}
 	[AutoloadEquip(EquipType.Body)]
 	public class Fisherman_Vanity_Shirt : ModItem
@@ -160,6 +149,87 @@ namespace RijamsMod.Items.Armor.Vanity
 			item.rare = ItemRarityID.Blue;//1
 			item.vanity = true;
 			item.defense=0;
+		}
+	}
+
+	[AutoloadEquip(EquipType.Head)]
+	public class SirSlushsTopHat : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			DisplayName.SetDefault("Sir Slush's Top Hat");
+		}
+		public override void SetDefaults()
+		{
+			item.width = 24;
+			item.height = 20;
+			item.value = Item.sellPrice(gold: 1);
+			item.rare = ItemRarityID.Blue;//1
+			item.vanity = true;
+			item.defense = 0;
+		}
+        public override void DrawHair(ref bool drawHair, ref bool drawAltHair)
+        {
+			drawAltHair = true;
+        }
+    }
+	[AutoloadEquip(EquipType.Head)]
+	public class HellTrader_Vanity_Hood : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			DisplayName.SetDefault("Hell Trader's Hood");
+		}
+		public override void SetDefaults()
+		{
+			item.width = 22;
+			item.height = 24;
+			item.value = Item.sellPrice(gold: 1);
+			item.rare = ItemRarityID.Blue;//1
+			item.vanity = true;
+			item.defense = 0;
+		}
+	}
+	[AutoloadEquip(EquipType.Body)]
+	public class HellTrader_Vanity_Robes : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			DisplayName.SetDefault("Hell Trader's Robes");
+		}
+		public override void SetDefaults()
+		{
+			item.width = 28;
+			item.height = 20;
+			item.value = Item.sellPrice(gold: 1);
+			item.rare = ItemRarityID.Blue;//1
+			item.vanity = true;
+			item.defense = 0;
+		}
+		public override void DrawHands(ref bool drawHands, ref bool drawArms)
+		{
+			drawHands = true;
+			drawArms = false;
+		}
+	}
+	[AutoloadEquip(EquipType.Legs)]
+	public class HellTrader_Vanity_Trousers : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Hell Trader's Trousers");
+		}
+		public override void SetDefaults()
+		{
+			item.width = 22;
+			item.height = 18;
+			item.value = Item.sellPrice(gold: 1);
+			item.rare = ItemRarityID.Blue;//1
+			item.vanity = true;
+			item.defense = 0;
 		}
 	}
 }

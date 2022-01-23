@@ -52,4 +52,36 @@ namespace RijamsMod.Items.Materials
 			item.rare = ItemRarityID.White;
 		}
 	}
+	public class InfernicFabric : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Hell Trader]");
+		}
+
+		public override void SetDefaults()
+		{
+			item.maxStack = 999;
+			item.width = 24;
+			item.height = 24;
+			item.value = 5000;
+			item.rare = ItemRarityID.Orange;
+		}
+	}
+	public class Sulfur : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Hell Trader]");
+		}
+
+		public override void SetDefaults()
+		{
+			item.maxStack = 999;
+			item.width = 20;
+			item.height = 20;
+			item.value = 7500;
+			item.rare = ItemRarityID.LightRed;
+		}
+	}
 }
