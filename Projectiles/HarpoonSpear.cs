@@ -6,6 +6,7 @@ namespace RijamsMod.Projectiles
 {
 	public class HarpoonSpear : ModProjectile
 	{
+		public override string Texture => "Terraria/Projectile_" + ProjectileID.Harpoon;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Harpoon Spear");

@@ -20,13 +20,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
-		public override string[] AltTextures
+		/*public override string[] AltTextures
 		{
 			get
 			{
 				return new string[] { "RijamsMod/NPCs/TownNPCs/Harpy_Alt_1" };
 			}
-		}
+		}*/
 
 		public override bool Autoload(ref string name)
 		{
@@ -192,6 +192,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Me and " + Main.npc[fisherman].GivenName + " go on fishing trips sometimes! He lets me 'scout ahead', whatever that means!", 0.5);
 			}
+			int hellTrader = NPC.FindFirstNPC(ModContent.NPCType<HellTrader>());
+			if (hellTrader >= 0 && RijamsModWorld.hellTraderArrivable)
+
+			{
+				chat.Add("Me and " + Main.npc[hellTrader].GivenName + " come from opposite heights of the world! Isn't that cool!", 0.5);
+			}
 			/*int zoologist = NPC.FindFirstNPC(NPCID.Zoologist);
 			if (zoologist >= 0)
 			{
@@ -289,7 +295,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
-			button = "Shop";
+			button = Language.GetTextValue("LegacyInterface.28"); //Shop
 		}
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
@@ -478,7 +484,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shorts>());
 			nextSlot++;
 			Mod split = ModLoader.GetMod("Split");
-			if (split != null) //Thorium
+			if (split != null) //Split Mod
 			{
 				shop.item[nextSlot].SetDefaults(split.ItemType("PosterHarpy"));
 				shop.item[nextSlot].shopCustomPrice = 10000;

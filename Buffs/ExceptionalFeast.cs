@@ -40,4 +40,32 @@ namespace RijamsMod.Buffs
             }*/
         }
     }
+    public class Satiated : ModBuff
+    {
+        public override void SetDefaults()
+        {
+            DisplayName.SetDefault("Satiated");
+            Description.SetDefault("Minuscule improvements to all stats");
+            Main.buffNoTimeDisplay[Type] = false;
+            Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
+        }
+
+        public override void Update(Player player, ref int buffIndex)
+        {
+            //player.wellFed = true;
+            player.statDefense += 1;
+            player.meleeCrit += 1;
+            player.allDamage += 0.025f;
+            player.meleeSpeed += 0.025f;
+            player.magicCrit += 1;
+            player.rangedCrit += 1;
+            player.thrownCrit += 1;
+            player.minionKB += 0.25f;
+            player.moveSpeed += 0.1f;
+            /*if (Main.expertMode) //player.wellFed = true; already does this
+            {
+                player.lifeRegen += 2;
+            }*/
+        }
+    }
 }

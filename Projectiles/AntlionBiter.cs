@@ -85,10 +85,10 @@ namespace RijamsMod.Projectiles
 			// projectile is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active) {
 				//player.ClearBuff(ModContent.BuffType<AntlionBiterBuff>());
-				player.ClearBuff(mod.BuffType("AntlionBiterBuff"));
+				player.ClearBuff(ModContent.BuffType<Buffs.AntlionBiterBuff>());
 			}
 			//if (player.HasBuff(ModContent.BuffType<AntlionBiterBuff>()))
-			if (player.HasBuff(mod.BuffType("AntlionBiterBuff")))
+			if (player.HasBuff(ModContent.BuffType<Buffs.AntlionBiterBuff>()))
 			{
 				projectile.timeLeft = 2;
 			}

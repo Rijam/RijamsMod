@@ -180,6 +180,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("" + Main.npc[harpy].GivenName + " sometimes helps me scout ahead on my fishing journies. Very helpful!", 0.5);
 			}
+			int hellTrader = NPC.FindFirstNPC(ModContent.NPCType<HellTrader>());
+			if (hellTrader >= 0 && RijamsModWorld.hellTraderArrivable)
+
+			{
+				chat.Add("Traveling to the Underworld for Flarefin Koi and Obsidifish is quite dangerous. Luckily, " + Main.npc[hellTrader].GivenName + " can protect me when I'm fishin'.", 0.5);
+			}
 			int angler = NPC.FindFirstNPC(NPCID.Angler);
 			if (angler >= 0)
 			{

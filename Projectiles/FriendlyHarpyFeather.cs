@@ -57,7 +57,7 @@ namespace RijamsMod.Projectiles
 			projectile.light = 0.1f;            //How much light emit around the projectile
 			aiType = ProjectileID.Bullet;
 			projectile.penetrate = 5;
-			projectile.timeLeft = 300;
+			projectile.timeLeft = 180;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -103,7 +103,7 @@ namespace RijamsMod.Projectiles
 					float num196 = projectile.velocity.Length();
 					Vector2 vector28 = projectile.velocity;
 					vector28.Normalize();
-					int num197 = 3;
+					int num197 = 2;
 					for (int num198 = 0; num198 < num197; num198++)
 					{
 						Vector2 vector29 = new Vector2(Main.rand.Next(-100, 101), Main.rand.Next(-100, 101));

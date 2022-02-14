@@ -34,6 +34,14 @@ namespace RijamsMod.Items.Accessories
 				Main.dust[dust].velocity.Y -= 0.5f;
 				Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.875f);
 			}
+			if (player.GetModPlayer<RijamsModPlayer>().frostburnStone && item.melee && !item.noMelee && !item.noUseGraphic && Main.rand.Next(2) == 0)
+			{
+				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Frost, player.velocity.X * 0.2f + (float)(player.direction * 3), player.velocity.Y * 0.2f, 100, default, 1f);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].velocity *= 0.7f;
+				Main.dust[dust].velocity.Y -= 0.5f;
+				Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.LightBlue.ToVector3() * 0.875f);
+			}
 		}
         public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback)
         {

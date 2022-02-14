@@ -28,40 +28,7 @@ namespace RijamsMod.Projectiles
 			projectile.arrow = false;
 			aiType = ProjectileID.WoodenArrowFriendly;           //Act exactly like default Dart
 		}
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			//If collide with tile, reduce the penetrate.
-			//So the projectile can reflect at most 5 times
-			projectile.penetrate--;
-			if (projectile.penetrate <= 0)
-			{
-				projectile.Kill();
-			}
-			/*else {
-				Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-				Main.PlaySound(SoundID.Item10, projectile.position);
-				if (projectile.velocity.X != oldVelocity.X) {
-					projectile.velocity.X = -oldVelocity.X;
-				}
-				if (projectile.velocity.Y != oldVelocity.Y) {
-					projectile.velocity.Y = -oldVelocity.Y;
-				}
-			}*/
-			return false;
-		}
-
-		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-		{
-			//Redraw the projectile with the color not influenced by light
-			Vector2 drawOrigin = new Vector2(Main.projectileTexture[projectile.type].Width * 0.5f, projectile.height * 0.5f);
-			for (int k = 0; k < projectile.oldPos.Length; k++)
-			{
-				Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, projectile.gfxOffY);
-				Color color = projectile.GetAlpha(lightColor) * ((float)(projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-				spriteBatch.Draw(Main.projectileTexture[projectile.type], drawPos, null, color, projectile.rotation, drawOrigin, projectile.scale, SpriteEffects.None, 0f);
-			}
-			return true;
-		}
+		public override bool OnTileCollide(Vector2 oldVelocity) => true;
 
 		public override void Kill(int timeLeft)
 		{
@@ -75,6 +42,8 @@ namespace RijamsMod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Chlorophyte Dart");     //The English name of the projectile
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
 		}
 
 		public override void SetDefaults()
@@ -86,27 +55,17 @@ namespace RijamsMod.Projectiles
 			projectile.hostile = false;         //Can the projectile deal damage to the player?
 			projectile.ranged = true;           //Is the projectile shoot by a ranged weapon?
 			projectile.penetrate = 7;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
-			projectile.light = 0.25f;            //How much light emit around the projectile
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?
-			projectile.alpha = 255;
 			projectile.arrow = false;
 			aiType = ProjectileID.WoodenArrowFriendly;           //Act exactly like default Dart
+			projectile.extraUpdates = 1;
 			projectile.usesLocalNPCImmunity = true;
 			projectile.localNPCHitCooldown = 30;
 		}
 		public override void AI()
 		{
-			if (projectile.alpha > 0)
-			{
-				projectile.alpha -= 255;
-				projectile.velocity *= 2f;
-			}
-			if (projectile.alpha < 0)
-			{
-				projectile.alpha = 0;
-			}
-			Lighting.AddLight(projectile.Center, 0.5f, 1.0f, 0.5f);
+			Lighting.AddLight(projectile.Center, 0.25f, 0.5f, 0.25f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -159,6 +118,8 @@ namespace RijamsMod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Spectre Dart");     //The English name of the projectile
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
 		}
 
 		public override void SetDefaults()
@@ -172,10 +133,10 @@ namespace RijamsMod.Projectiles
 			projectile.penetrate = 6;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?
-			projectile.light = 0.25f;            //How much light emit around the projectile
-			projectile.alpha = 255;
+			projectile.alpha = 127;
 			projectile.arrow = false;
 			aiType = ProjectileID.WoodenArrowFriendly;           //Act exactly like default Dart
+			projectile.extraUpdates = 1;
 			projectile.usesLocalNPCImmunity = true;
 			projectile.localNPCHitCooldown = 30;
 			projectile.timeLeft = 1200;
@@ -189,7 +150,8 @@ namespace RijamsMod.Projectiles
 			{
 				projectile.Kill();
 			}
-			else {
+			else
+			{
 				Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
 				Main.PlaySound(SoundID.Item10, projectile.position);
 				if (projectile.velocity.X != oldVelocity.X)
@@ -206,16 +168,7 @@ namespace RijamsMod.Projectiles
 
 		public override void AI()
 		{
-			Lighting.AddLight(projectile.Center, 0.9f, 0.9f, 1.0f);
-			if (projectile.alpha > 0)
-			{
-				projectile.alpha -= 255;
-				projectile.velocity *= 2f;
-			}
-			if (projectile.alpha < 0)
-			{
-				projectile.alpha = 0;
-			}
+			Lighting.AddLight(projectile.Center, 0.45f, 0.45f, 0.5f);
 			//Taken from Ichor Dart
 			if (Main.myPlayer == projectile.owner)
 			{
@@ -276,7 +229,8 @@ namespace RijamsMod.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Shroomite Dart");     //The English name of the projectile
-			//ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 7;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
 		}
 
 		public override void SetDefaults()
@@ -290,35 +244,18 @@ namespace RijamsMod.Projectiles
 			projectile.penetrate = 6;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?
-			projectile.light = 0.25f;            //How much light emit around the projectile
-			projectile.alpha = 255;
+			projectile.alpha = 0;
 			projectile.arrow = false;
 			aiType = ProjectileID.CrystalDart;
 			projectile.usesLocalNPCImmunity = true;
 			projectile.localNPCHitCooldown = 30;
-			projectile.extraUpdates = 10;
+			projectile.extraUpdates = 7;
 			projectile.timeLeft = 1200;
 		}
 
 		public override void AI()
 		{
-			Lighting.AddLight(projectile.Center, 0.75f, 0.75f, 1.0f);
-
-			/*projectile.velocity.X *= 2.5f;
-			if (projectile.velocity.X >= 16f)
-			{
-				projectile.velocity.X = 16f;
-			}*/
-			if (projectile.alpha > 0)
-			{
-				projectile.alpha -= 255;
-				//projectile.velocity *= 2f;
-			}
-			if (projectile.alpha < 0)
-			{
-				projectile.alpha = 0;
-			}
-
+			Lighting.AddLight(projectile.Center, 0.325f, 0.325f, 0.5f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -372,6 +309,8 @@ namespace RijamsMod.Projectiles
 		{
 			DisplayName.SetDefault("Luminite Dart");     //The English name of the projectile
 			ProjectileID.Sets.Homing[projectile.type] = true;
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 3;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
 		}
 
 		public override void SetDefaults()
@@ -383,7 +322,6 @@ namespace RijamsMod.Projectiles
 			projectile.hostile = false;         //Can the projectile deal damage to the player?
 			projectile.ranged = true;           //Is the projectile shoot by a ranged weapon?
 			projectile.penetrate = 9;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
-			projectile.light = 0.5f;            //How much light emit around the projectile
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?
 			projectile.arrow = false;
@@ -402,7 +340,8 @@ namespace RijamsMod.Projectiles
 			{
 				projectile.Kill();
 			}
-			else {
+			else
+			{
 				Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
 				Main.PlaySound(SoundID.Item10, projectile.position);
 				if (projectile.velocity.X != oldVelocity.X) {

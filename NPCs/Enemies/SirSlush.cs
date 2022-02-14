@@ -45,6 +45,10 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.HandWarmer);
 			}
+			if (Main.rand.Next(3) == 0)
+			{
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.Vanity.SirSlushsTopHat>());
+			}
 			Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SlushBlock, Main.rand.Next(10, 20));
 
 			//From Spirit Mod FrostSaucer.cs
@@ -264,7 +268,11 @@ namespace RijamsMod.NPCs.Enemies
 	}
 	public class SirSlushHat : ModNPC
     {
-		public override string Texture => "Terraria/NPC_0";
+        public override bool Autoload(ref string name)
+        {
+            return false;
+        }
+        public override string Texture => "Terraria/NPC_0";
 
 		public override void SetDefaults()
 		{

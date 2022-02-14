@@ -193,6 +193,11 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Do you think you could convince " + Main.npc[fisherman].GivenName + " to give me some fish?", 0.5);
 			}
+			int hellTrader = NPC.FindFirstNPC(ModContent.NPCType<HellTrader>());
+			if (hellTrader >= 0 && RijamsModWorld.hellTraderArrivable && fisherman >= 0)
+			{
+				chat.Add("So, " + Main.npc[fisherman].GivenName + " gives " + Main.npc[hellTrader].GivenName + " a bunch of fish, but not me?", 0.5);
+			}
 			int guide = NPC.FindFirstNPC(NPCID.Guide);
 			if (guide >= 0)
 			{
@@ -225,7 +230,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			int angler = NPC.FindFirstNPC(NPCID.Angler);
 			if (angler >= 0)
 			{
-				chat.Add(Main.npc[angler].GivenName + " keeps calling me names like 'Chicken Legs' or 'Bird Brain'. I hope he realizes I don't take offence to those phrases.", 0.25);
+				chat.Add(Main.npc[angler].GivenName + " keeps calling me names like 'Chicken Legs' or 'Bird Brain'. I hope he realizes I don't take offense to those phrases.", 0.25);
 				chat.Add("Do you know who " + Main.npc[angler].GivenName + "'s parents are? Where are they?", 0.25);
 			}
 			if (angler >= 0 && fisherman >= 0)
@@ -486,8 +491,8 @@ namespace RijamsMod.NPCs.TownNPCs
 
         public override void SetChatButtons(ref string button, ref string button2)
 		{
-			button = "Shop";
-			button2 = "Quest";
+			button = Language.GetTextValue("LegacyInterface.28"); //Shop
+			button2 = Language.GetTextValue("LegacyInterface.64"); //Quest
 			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
 			{
 				button2 = "Quest Checklist";
