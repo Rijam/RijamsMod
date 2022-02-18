@@ -151,6 +151,8 @@ namespace RijamsMod.Items.Information
 			string thrownDamageString = thrownDamage.ToString();
 			float allDamage = Main.player[Main.myPlayer].allDamage;
 			string allDamageString = allDamage.ToString();
+			float meleeSpeed = Main.player[Main.myPlayer].meleeSpeed;
+			string meleeSpeedString = meleeSpeed.ToString();
 
 			tooltips.Add(new TooltipLine(mod, "Melee", "Melee damage multiplier: " + meleeDamageString));
 			tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged damage multiplier: " + rangedDamageString));
@@ -158,6 +160,7 @@ namespace RijamsMod.Items.Information
 			tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multiplier: " + minionDamageString));
 			tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multiplier: " + thrownDamageString));
 			tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
+			tooltips.Add(new TooltipLine(mod, "MeleeSpeed", "Melee speed: " + meleeSpeedString));
 		}
 	}
 	public class CritDisplay : LifeDisplay
@@ -324,6 +327,8 @@ namespace RijamsMod.Items.Information
 			string thrownDamageString = thrownDamage.ToString();
 			float allDamage = Main.player[Main.myPlayer].allDamage;
 			string allDamageString = allDamage.ToString();
+			float meleeSpeed = Main.player[Main.myPlayer].meleeSpeed;
+			string meleeSpeedString = meleeSpeed.ToString();
 
 			//Crit
 			int meleeCrit = Main.player[Main.myPlayer].meleeCrit;
@@ -407,6 +412,7 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multiplier: " + minionDamageString));
 				tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multiplier: " + thrownDamageString));
 				tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
+				tooltips.Add(new TooltipLine(mod, "MeleeSpeed", "Melee speed: " + meleeSpeedString));
 
 				//Crit
 				tooltips.Add(new TooltipLine(mod, "Melee", "Melee critical hit: " + meleeCritString));

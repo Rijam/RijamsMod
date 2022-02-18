@@ -7,19 +7,21 @@ Rijam's Mod is a bunch of random additions created by Rijam. This mod is mostly 
 
 Includes:
 
-3 Town NPCs
+4 Town NPCs
 - Fisherman: sells bait, fish, fishing rods, and more. From my Fisherman NPC mod for 1.4
 - - Arrives after the Angler has been rescued and there are 5 or more Town NPCs.
 - Harpy: sells sky related items and a few extra things.
 - - Find her in the sky.
 - Interstellar Traveler: sells information items and weapons. Has a quest system.
 - - Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
+- Hell Trader: sells Underworld related items.
+- - Spawns randomly in the Underworld, can move in in Hardmode.
 
 Many new items and weapons throughout the game's progression.
-- 24 weapons: 3 Melee, 8 Ranged, 6 Magic, 7 Summoner.
-- 24 accessories.
-- 5 armor pieces.
-- 8 vanity items + 3 dyes.
+- 27 weapons: 5 Melee, 8 Ranged, 7 Magic, 7 Summoner.
+- 30 accessories.
+- 8 armor pieces.
+- 12 vanity items + 3 dyes.
 
 Some QoL changes
 - Town NPCs sell more things.

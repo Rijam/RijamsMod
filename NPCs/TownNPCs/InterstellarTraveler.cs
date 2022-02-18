@@ -230,7 +230,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			int angler = NPC.FindFirstNPC(NPCID.Angler);
 			if (angler >= 0)
 			{
-				chat.Add(Main.npc[angler].GivenName + " keeps calling me names like 'Chicken Legs' or 'Bird Brain'. I hope he realizes I don't take offence to those phrases.", 0.25);
+				chat.Add(Main.npc[angler].GivenName + " keeps calling me names like 'Chicken Legs' or 'Bird Brain'. I hope he realizes I don't take offense to those phrases.", 0.25);
 				chat.Add("Do you know who " + Main.npc[angler].GivenName + "'s parents are? Where are they?", 0.25);
 			}
 			if (angler >= 0 && fisherman >= 0)
@@ -944,8 +944,9 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].shopCustomPrice = 200000;
 				nextSlot++;
 			}
-			
 
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.InterestingSphere>());
+			nextSlot++;
 			if (Main.moonPhase >= 6 && !Main.dayTime) //first quarter & waxing gibbous
 			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav_Vanity_Helmet>());

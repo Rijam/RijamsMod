@@ -121,7 +121,7 @@ namespace RijamsMod.Projectiles.Pets
 			}
 			if (posNewXY < 50f)
 			{
-				if (Math.Abs(projectile.velocity.X) > 2f || Math.Abs(projectile.velocity.Y) > 2f)
+				if (Math.Abs(projectile.velocity.X) > 1f || Math.Abs(projectile.velocity.Y) > 1f)
 				{
 					projectile.velocity *= 0.9f;
 				}

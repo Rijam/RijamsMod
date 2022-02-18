@@ -14,6 +14,12 @@ namespace RijamsMod
 	public class RijamsModNPCs : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
+		public bool sulfuricAcid;
+
+		public override void ResetEffects(NPC npc)
+		{
+			sulfuricAcid = false;
+		}
 
 		public override bool SpecialNPCLoot(NPC npc)
         {
@@ -334,5 +340,69 @@ namespace RijamsMod
 				}
 			}
 		}
+		public override void UpdateLifeRegen(NPC npc, ref int damage)
+		{
+			if (sulfuricAcid)
+			{
+				if (npc.lifeRegen > 0)
+				{
+					npc.lifeRegen = 0;
+				}
+				npc.lifeRegen -= 16;
+				if (damage < 2)
+				{
+					damage = 2;
+				}
+				/*int index = npc.FindBuffIndex(ModContent.BuffType<Buffs.SulfuricAcid>());
+				if (npc.buffTime[index] > 2)
+				{
+					npc.damage = (int)(npc.defDamage * 0.9f);
+				}
+				if (npc.buffTime[index] <= 2)
+				{
+					npc.damage = npc.defDamage;
+				}*/
+			}
+		}
+		public override void DrawEffects(NPC npc, ref Color drawColor)
+		{
+			if (sulfuricAcid)
+			{
+				if (Main.rand.Next(4) < 3)
+				{
+					int dust = Dust.NewDust(npc.position - new Vector2(2f, 2f), npc.width + 4, npc.height + 4, ModContent.DustType<Dusts.SulfurDust>(), npc.velocity.X * 0.4f, npc.velocity.Y * 0.4f, 100, default, 2f);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity *= 1.8f;
+					Main.dust[dust].velocity.Y -= 0.5f;
+					if (Main.rand.NextBool(4))
+					{
+						Main.dust[dust].noGravity = false;
+						Main.dust[dust].scale *= 0.5f;
+					}
+				}
+				Lighting.AddLight(npc.position, 1.0f, 1.0f, 0.0f);
+			}
+		}
+		/*public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            if (sulfuricAcid)
+            {
+				damage = (int)(npc.defDamage * 0.5f);
+			}
+        }
+        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+        {
+			if (sulfuricAcid)
+			{
+				damage = (int)(npc.defDamage * 0.5f);
+			}
+		}
+		public override void ModifyHitNPC(NPC npc, NPC target, ref int damage, ref float knockback, ref bool crit)
+		{
+			if (sulfuricAcid)
+			{
+				damage = (int)(npc.defDamage * 0.5f);
+			}
+		}*/
 	}
 }

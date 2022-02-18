@@ -67,6 +67,17 @@ namespace RijamsMod.Projectiles
 					}
 				}
 			}
+			if (owner != null && owner.GetModPlayer<RijamsModPlayer>().yoyoBackpack && projectile.aiStyle == 99)
+			{
+				//Main.NewText("yoyoBackpack GlobalProjectile");
+				projectile.localAI[0] = -1;
+				if (projectile.type == ProjectileID.BlackCounterweight + Main.rand.Next(6))
+                {
+					projectile.scale = 1.5f;
+					projectile.width = 15;
+					projectile.height = 15;
+				}
+			}
 			return base.PreAI(projectile);
         }
     }

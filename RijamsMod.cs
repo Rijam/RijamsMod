@@ -22,7 +22,7 @@ namespace RijamsMod
         public static RijamsModConfigServer ConfigServer;
         public static RijamsModNPCs RijamsModNPCs;
         public static ItemUseGlow ItemUseGlow;
-        public static RijamsMod Items;
+        public static ArmorUseGlow ArmorUseGlow;
 
         /*internal UserInterface MyInterface;
         internal TheUI MyUI;*/
@@ -82,6 +82,18 @@ namespace RijamsMod
             recipe.AddIngredient(ItemID.Stinger, 1);
             recipe.AddTile(TileID.Bottles);
             recipe.SetResult(ItemID.ThornsPotion, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.WhiteString, 1);
+            recipe.AddIngredient(ItemID.LivingRainbowDye, 1);
+            recipe.SetResult(ItemID.RainbowString, 1);
+            recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ItemID.WhiteString, 1);
+            recipe.AddIngredient(ItemID.RainbowHairDye, 1);
+            recipe.SetResult(ItemID.RainbowString, 1);
             recipe.AddRecipe();
         }
         public override void AddRecipeGroups()
@@ -210,7 +222,7 @@ namespace RijamsMod
             ConfigServer = null;
             RijamsModNPCs = null;
             ItemUseGlow = null;
-            Items = null;
+            ArmorUseGlow = null;
             //MyUI = null;
         }
 

@@ -30,6 +30,7 @@ namespace RijamsMod.Projectiles
 			aiType = -1;
 			projectile.timeLeft = 600;
 			drawOffsetX = -12;
+			projectile.netImportant = true;
 		}
 
 		public override void AI()
@@ -38,6 +39,7 @@ namespace RijamsMod.Projectiles
 			if (projectile.ai[0] == 2) //Update every 2 ticks
             {
 				int newTarget = FindTargetWithLineOfSight();
+				projectile.netUpdate = true;
 				if (newTarget != -1) //fly to the target
 				{
 					float speed = 14f;
@@ -148,7 +150,10 @@ namespace RijamsMod.Projectiles
 		}
 		public override void Kill(int timeLeft)
 		{
-			Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CresceptreSphereExplode").WithPitchVariance(.05f), projectile.position);
+			if (!Main.dedServ)
+            {
+				Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CresceptreSphereExplode").WithPitchVariance(.05f), projectile.position);
+			}
 			for (int i = 0; i < 30; i++)
 			{
 				int dustIndex = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, DustID.PurpleTorch);

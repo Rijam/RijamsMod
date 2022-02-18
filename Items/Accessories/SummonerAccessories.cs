@@ -61,9 +61,7 @@ namespace RijamsMod.Items.Accessories
 			player.maxMinions++;
 			player.fireWalk = true;
 			player.statDefense++;
-			player.buffImmune[BuffID.Frostburn] = true;
-			player.buffImmune[BuffID.Frozen] = true;
-			player.buffImmune[BuffID.Chilled] = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 		}
 
 		public override void AddRecipes()
@@ -128,9 +126,7 @@ namespace RijamsMod.Items.Accessories
 			player.minionDamage += 0.15f;
 			player.minionKB += 2f;
 			player.fireWalk = true;
-			player.buffImmune[BuffID.Frostburn] = true;
-			player.buffImmune[BuffID.Frozen] = true;
-			player.buffImmune[BuffID.Chilled] = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 		}
 		public override void AddRecipes()
 		{
@@ -189,9 +185,7 @@ namespace RijamsMod.Items.Accessories
 			player.minionDamage += 0.30f;
 			player.statDefense++;
 			player.fireWalk = true;
-			player.buffImmune[BuffID.Frostburn] = true;
-			player.buffImmune[BuffID.Frozen] = true;
-			player.buffImmune[BuffID.Chilled] = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 		}
 		public override void AddRecipes()
 		{
@@ -230,9 +224,7 @@ namespace RijamsMod.Items.Accessories
 			player.minionKB += 2f;
 			player.statDefense++;
 			player.fireWalk = true;
-			player.buffImmune[BuffID.Frostburn] = true;
-			player.buffImmune[BuffID.Frozen] = true;
-			player.buffImmune[BuffID.Chilled] = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 			player.aggro -= 30 * 16; //30 tiles
 		}
 		public override void AddRecipes()

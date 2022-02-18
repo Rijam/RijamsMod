@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
+using Terraria.Graphics.Shaders;
 
 namespace RijamsMod
 {
@@ -23,10 +24,12 @@ namespace RijamsMod
 		public bool rocketBooster;
 		public bool gamutApparatus;
 		public bool frostburnStone;
-		//public bool delapHelmet;
-		//public bool delapScalemail;
-		//public bool delapGreaves;
-		//public bool breathingPackUsed = true;
+		public bool sulfuricAcid;
+		public bool ancientSet;
+		public bool frostyRose;
+		public bool honeyComb;
+		public bool yoyoBackpack;
+		public bool snuggetPet;
 
 		public override void ResetEffects()
 		{
@@ -37,13 +40,21 @@ namespace RijamsMod
 			lumothPet = false;
 			lEDLumothPet = false;
 			burglarsRing = false;
-            rocketBooster = false;
+			rocketBooster = false;
 			gamutApparatus = false;
 			frostburnStone = false;
-			//breathingPackUsed = true;
-			//breathingPackTimer = 0;
+			sulfuricAcid = false;
+			ancientSet = false;
+			frostyRose = false;
+			honeyComb = false;
+			yoyoBackpack = false;
+			snuggetPet = false;
 		}
-        public override void clientClone(ModPlayer clientClone)
+		public override void UpdateDead()
+		{
+			sulfuricAcid = false;
+		}
+		public override void clientClone(ModPlayer clientClone)
 		{
 			RijamsModPlayer clone = clientClone as RijamsModPlayer;
 		}
@@ -54,13 +65,23 @@ namespace RijamsMod
 			packet.Send(toWho, fromWho);
 		}
 		public override void SendClientChanges(ModPlayer clientPlayer)
-        {
+		{
 			RijamsModPlayer clone = clientPlayer as RijamsModPlayer;
 		}
 		public override void PostUpdateEquips()
-        {
-			if (guideToProperFlightTechniques)
+		{
+			if (frostyRose)
+			{
+				player.buffImmune[BuffID.Frostburn] = true;
+				player.buffImmune[BuffID.Frozen] = true;
+				player.buffImmune[BuffID.Chilled] = true;
+			}
+			if (honeyComb)
             {
+				player.bee = true;
+            }
+			if (guideToProperFlightTechniques)
+			{
 				if (player.wingTimeMax > 0)
 				{
 					player.wingTimeMax += 60;
@@ -69,17 +90,17 @@ namespace RijamsMod
 				}
 			}
 			if (breathingPack)
-            {
+			{
 				//Main.NewText("breathingPackUsed " + breathingPackUsed);
 				//Main.NewText("breathingPackTimer " + breathingPackTimer);
 				//Main.NewText("player.wet " + player.wet);
-				if (player.breath <= 0 )//&& breathingPackUsed == false)
+				if (player.breath <= 0)//&& breathingPackUsed == false)
 				{
 					//breathingPackUsed = true;
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = true;
 					breathingPackTimer++;
 					if (breathingPackTimer == 1 && !Main.dedServ)
-                    {
+					{
 						Main.PlaySound(SoundLoader.customSoundType, (int)player.Center.X, (int)player.Center.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/beep"), 0.5f, 1.5f);
 					}
 					if (breathingPackTimer == 60 && !Main.dedServ)
@@ -89,7 +110,7 @@ namespace RijamsMod
 					if (breathingPackTimer >= 120)
 					{
 						if (!Main.dedServ)
-                        {
+						{
 							Main.PlaySound(SoundLoader.customSoundType, (int)player.Center.X, (int)player.Center.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/beep"), 0.5f, 0.5f);
 						}
 						breathingPackTimer = 0;
@@ -104,7 +125,62 @@ namespace RijamsMod
 					//breathingPackUsed = false;
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = false;
 				}*/
-            }
+			}
+			if (yoyoBackpack)
+            {
+				player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6);
+				player.yoyoGlove = true;
+				player.yoyoString = true;
+				player.stringColor = 27;
+			}
+		}
+		public override void UpdateBadLifeRegen()
+		{
+			if (sulfuricAcid)
+			{
+				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects.
+				if (player.lifeRegen > 0)
+				{
+					player.lifeRegen = 0;
+				}
+				player.lifeRegenTime = 0;
+				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second.
+				player.lifeRegen -= 16;
+				player.allDamageMult *= 0.9f;
+			}
+		}
+		public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		{
+			if (sulfuricAcid)
+			{
+				if (Main.rand.NextBool(4) && drawInfo.shadow == 0f)
+				{
+					int dust = Dust.NewDust(drawInfo.position - new Vector2(2f, 2f), player.width + 4, player.height + 4, ModContent.DustType<Dusts.SulfurDust>(), player.velocity.X * 0.4f, player.velocity.Y * 0.4f, 100, default, 2f);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity *= 1.8f;
+					Main.dust[dust].velocity.Y -= 0.5f;
+					Main.playerDrawDust.Add(dust);
+				}
+				r *= 1.0f;
+				g *= 1.0f;
+				b *= 0.0f;
+				fullBright = true;
+			}
+		}
+        public override void PostUpdateRunSpeeds()
+        {
+            if (ancientSet)
+            {
+				player.runAcceleration += 0.1f;
+				player.maxRunSpeed += 2;
+			}
+		}
+        public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit)
+        {
+            if (honeyComb)
+            {
+				player.AddBuff(BuffID.Honey, 300);
+			}			
         }
     }
 }

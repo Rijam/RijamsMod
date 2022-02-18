@@ -7,7 +7,8 @@ namespace RijamsMod.Projectiles
 {
 	public class SolyoProjectile : ModProjectile
 	{
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
 			// The following sets are only applicable to yoyo that use aiStyle 99.
 			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
 			// Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
@@ -20,7 +21,8 @@ namespace RijamsMod.Projectiles
 			ProjectileID.Sets.YoyosTopSpeed[projectile.type] = 16f;
 		}
 
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			projectile.extraUpdates = 0;
 			projectile.width = 16;
 			projectile.height = 16;

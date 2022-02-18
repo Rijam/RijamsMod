@@ -4,19 +4,21 @@ Rijam's Mod is a bunch of random additions created by Rijam. This mod is mostly 
 
 Includes:
 
-3 Town NPCs
+4 Town NPCs
 - Fisherman: sells bait, fish, fishing rods, and more. From my Fisherman NPC mod for 1.4
 - - Arrives after the Angler has been rescued and there are 5 or more Town NPCs.
 - Harpy: sells sky related items and a few extra things.
 - - Find her in the sky.
 - Interstellar Traveler: sells information items and weapons. Has a quest system.
 - - Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
+- Hell Trader: sells Underworld related items.
+- - Spawns randomly in the Underworld, can move in in Hardmode.
 
 Many new items and weapons throughout the game's progression.
-- 24 weapons: 3 Melee, 8 Ranged, 6 Magic, 7 Summoner.
-- 24 accessories.
-- 5 armor pieces.
-- 8 vanity items + 3 dyes.
+- 27 weapons: 5 Melee, 8 Ranged, 7 Magic, 7 Summoner.
+- 30 accessories.
+- 8 armor pieces.
+- 12 vanity items + 3 dyes.
 
 Some QoL changes
 - Town NPCs sell more things.
@@ -37,6 +39,15 @@ The code is open source if you extract the mod!
 Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
+
+Version 1.0.3.0
+- Hell Trader now sells the Unholy Trident
+- Pharaoh set and Ancient set are now armor sets instead of vanity
+- New armor set: Infernic armor. A magic focused armor with some summoner support
+- New magic weapon: Sulfuric Incursion
+- Two new melee weapons: Timon's Axe and Hammer of Retribution
+- Five new accessories: Rose of Fire and Ice, Different Bundle of Balloons, Too Many Balloons, Too Many Horseshoe Balloons, and Yoyo Backpack
+- A new pet: Snugget summoned with an Interesting Sphere
 
 Version 1.0.2.0
 - Arms Dealer now sells Bloody Arrows

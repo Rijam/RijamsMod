@@ -484,7 +484,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shorts>());
 			nextSlot++;
 			Mod split = ModLoader.GetMod("Split");
-			if (split != null) //Thorium
+			if (split != null) //Split Mod
 			{
 				shop.item[nextSlot].SetDefaults(split.ItemType("PosterHarpy"));
 				shop.item[nextSlot].shopCustomPrice = 10000;

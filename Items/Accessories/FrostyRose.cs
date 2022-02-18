@@ -26,9 +26,7 @@ namespace RijamsMod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.buffImmune[BuffID.Frostburn] = true;
-			player.buffImmune[BuffID.Frozen] = true;
-			player.buffImmune[BuffID.Chilled] = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 		}
 	}
 	[AutoloadEquip(EquipType.Face)]
@@ -51,9 +49,7 @@ namespace RijamsMod.Items.Accessories
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.buffImmune[BuffID.Frostburn] = true;
-			player.buffImmune[BuffID.Frozen] = true;
-			player.buffImmune[BuffID.Chilled] = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 			player.fireWalk = true;
 			player.statDefense++;
 		}
@@ -93,9 +89,7 @@ namespace RijamsMod.Items.Accessories
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<RijamsModPlayer>().frostburnStone = true;
-			player.buffImmune[BuffID.Frostburn] = true;
-			player.buffImmune[BuffID.Frozen] = true;
-			player.buffImmune[BuffID.Chilled] = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 			player.fireWalk = true;
 			player.statDefense++;
 		}
@@ -110,6 +104,39 @@ namespace RijamsMod.Items.Accessories
 			recipe.AddIngredient(ModContent.ItemType<ObsidianFrostySkullRose>(), 1);
 			recipe.AddIngredient(ItemID.MagmaStone, 1);
 			recipe.AddIngredient(ItemID.IceBlock, 20);
+			recipe.AddTile(TileID.TinkerersWorkbench);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
+		}
+	}
+	[AutoloadEquip(EquipType.Face)]
+	public class RoseOfFireAndIce : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Rose of Fire and Ice");
+			Tooltip.SetDefault("Reduces damage from touching lava\nGrants immunity to Frostburn, Frozen, and Chilled");
+		}
+
+		public override void SetDefaults()
+		{
+			item.width = 50;
+			item.height = 44;
+			item.rare = ItemRarityID.LightRed; //4
+			item.value = Item.sellPrice(0, 4, 0, 0);
+			item.accessory = true;
+		}
+
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.lavaRose = true;
+			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+		}
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ModContent.ItemType<FrostyRose>(), 1);
+			recipe.AddIngredient(ItemID.ObsidianRose, 1);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

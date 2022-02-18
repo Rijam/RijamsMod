@@ -23,6 +23,11 @@ namespace RijamsMod.Items.Accessories
             {
 				player.statManaMax2 += 20;
 			}
+			if (item.type == ItemID.FireGauntlet)
+			{
+				player.meleeSpeed += 0.02f;
+				player.meleeDamage += 0.02f;
+			}
 		}
 		public override void MeleeEffects(Item item, Player player, Rectangle hitbox)
 		{

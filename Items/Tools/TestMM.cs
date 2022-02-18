@@ -12,7 +12,7 @@ namespace RijamsMod.Items.Tools
 		{
 			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
 		}
-		public override string Texture => "Terraria/UI/Reforge_1";
+		public override string Texture => "RijamsMod/Items/Tools/MMPickaxe";
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("Right click to bring up the tool UI (UI has been disabled)");

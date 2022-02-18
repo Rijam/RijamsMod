@@ -7,6 +7,8 @@ using Terraria.Utilities;
 using RijamsMod.Items;
 using RijamsMod.Projectiles;
 using System;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -35,14 +37,22 @@ namespace RijamsMod.NPCs.TownNPCs
 			return mod.Properties.Autoload;
 		}
 
+		public override void BossHeadSlot(ref int index)
+		{
+			if (!RijamsModWorld.hellTraderArrivable)
+            {
+				index = -1;
+			}
+		}
+		//public override string HeadTexture => "RijamsMod/NPCs/TownNPCs/HellTrader_Head";
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
 			DisplayName.SetDefault("Hell Trader");
 			Main.npcFrameCount[npc.type] = 23;
 			NPCID.Sets.ExtraFramesCount[npc.type] = 7;
 			NPCID.Sets.AttackFrameCount[npc.type] = 2;
-			NPCID.Sets.DangerDetectRange[npc.type] = 700;
+			NPCID.Sets.DangerDetectRange[npc.type] = 1000;
 			NPCID.Sets.AttackType[npc.type] = 2;
 			NPCID.Sets.AttackTime[npc.type] = 40;
 			NPCID.Sets.AttackAverageChance[npc.type] = 10;
@@ -117,24 +127,39 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			return (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(npc.type) && spawnInfo.player.ZoneUnderworldHeight) ? 0.1f : 0f;
 		}
-        public override bool UsesPartyHat()
-        {
-            return RijamsModWorld.hellTraderArrivable;
-        }
-
+		public override bool UsesPartyHat()
+		{
+			return RijamsModWorld.hellTraderArrivable;
+		}
         public override void AI()
         {
-
-			float distance = Math.Abs(npc.position.X - Main.player[npc.FindClosestPlayer()].position.X) + Math.Abs(npc.position.Y - Main.player[npc.FindClosestPlayer()].position.Y);
-			if (distance >= 4000f && (!RijamsModWorld.hellTraderArrivable || npc.homeless))
+			if (!RijamsModWorld.hellTraderArrivable)
             {
-				npc.active = false;
-				npc.netSkip = -1;
-				npc.life = 0;
+				npc.rarity = 1;
+				float distance = Math.Abs(npc.position.X - Main.player[npc.FindClosestPlayer()].position.X) + Math.Abs(npc.position.Y - Main.player[npc.FindClosestPlayer()].position.Y);
+				if (distance >= 4000f && npc.homeless)
+				{
+					npc.active = false;
+					npc.netSkip = -1;
+					npc.life = 0;
+				}
+			}
+			if (RijamsModWorld.hellTraderArrivable)
+            {
+				npc.rarity = 0;
 			}
 		}
+        /*public override bool PreAI()
+        {
+			if (!RijamsModWorld.hellTraderArrivable)
+			{
+				npc.altTexture = 0; //works, but then there is an infinite amount of confetti
+				//Main.npcTexture[npc.type] = Main.npcAltTextures[npc.type][npc.altTexture];
+			}
+			return true;
+        }*/
 
-		public override string GetChat()
+        public override string GetChat()
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
@@ -377,12 +402,21 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.Cascade);
 				nextSlot++;
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.TimonsAxe>());
+				nextSlot++;
 			}
 			if (Main.hardMode)
             {
 				shop.item[nextSlot].SetDefaults(ItemID.HelFire);
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.Pwnhammer);
+				nextSlot++;
+			}
+			if (NPC.downedMechBossAny)
+            {
+				shop.item[nextSlot].SetDefaults(ItemID.UnholyTrident);
+				nextSlot++;
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.HammerOfRetribution>());
 				nextSlot++;
 			}
 			shop.item[nextSlot].SetDefaults(ItemID.AshBlock);
@@ -407,7 +441,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].shopCustomPrice = 10;
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.Fireblossom);
-			shop.item[nextSlot].shopCustomPrice = 200;
+			shop.item[nextSlot].shopCustomPrice = 20000;
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.Hellforge);
 			shop.item[nextSlot].shopCustomPrice = 7500;
@@ -446,15 +480,15 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (!Main.hardMode)
 			{
-			damage = 50;
+				damage = 50;
 			}
 			if (Main.hardMode && !NPC.downedMoonlord)
 			{
-			damage = 80;
+				damage = 80;
 			}
 			if (NPC.downedMoonlord)
 			{
-			damage = 110;
+				damage = 110;
 			}
 			knockback = 4f;
 		}
@@ -467,13 +501,14 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
 		{
-			projType = ProjectileID.BallofFire;
+			Main.PlaySound(SoundID.Item, npc.position, 8);
+			projType = ModContent.ProjectileType<Projectiles.SulfurSphere>();
 			attackDelay = 2;
 		}
 
 		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
 		{
-			multiplier = 12f;
+			multiplier = 6f;
 			randomOffset = 0.15f;
 		}
 	}

@@ -38,7 +38,8 @@ namespace RijamsMod
 
 
             Player drawPlayer = drawInfo.drawPlayer;
-            Mod mod = ModLoader.GetMod("QwertysRandomContent");
+            
+            //Mod mod = ModLoader.GetMod("QwertysRandomContent");
             if (!drawPlayer.HeldItem.IsAir)
             {
                 Item item = drawPlayer.HeldItem;
@@ -86,7 +87,6 @@ namespace RijamsMod
                             DrawData value = new DrawData(texture, drawPos, new Microsoft.Xna.Framework.Rectangle?(new Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), glowcolor, drawAngle, zero3, item.scale, drawInfo.spriteEffects, 0);
                             costomDraw(item, drawInfo, drawPos, drawAngle, glowcolor);
                             Main.playerDrawData.Add(value);
-
                         }
                         else
                         {
@@ -115,14 +115,10 @@ namespace RijamsMod
                             DrawData value = new DrawData(texture, drawPos, new Microsoft.Xna.Framework.Rectangle?(new Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), glowcolor, drawAngle, origin5, item.scale, drawInfo.spriteEffects, 0);
                             costomDraw(item, drawInfo, drawPos, drawAngle, glowcolor);
                             Main.playerDrawData.Add(value);
-
-
                         }
                     }
                     else
                     {
-
-
                         DrawData value = new DrawData(texture,
                             new Vector2((float)((int)(value2.X + (item.GetGlobalItem<ItemUseGlow>().glowOffsetX *drawPlayer.direction) - Main.screenPosition.X)),
                             (float)((int)(value2.Y + (item.GetGlobalItem<ItemUseGlow>().glowOffsetY * drawPlayer.gravDir) - Main.screenPosition.Y))), new Rectangle?(new Rectangle(0, 0, texture.Width, texture.Height)),
@@ -132,9 +128,11 @@ namespace RijamsMod
                             item.scale,
                             drawInfo.spriteEffects,
                             0);
-
+                        if ((item.type == ModContent.ItemType<Items.Weapons.TimonsAxe>() || item.type == ModContent.ItemType<Items.Weapons.HammerOfRetribution>()) && !drawPlayer.CheckMana(20, false)) //Special check for the Timon's Axe and Hammer of Retribution. Only draw the glowmask if the player has enough mana.
+                        {
+                            return;
+                        }
                         Main.playerDrawData.Add(value);
-
                     }
                 }
             }
