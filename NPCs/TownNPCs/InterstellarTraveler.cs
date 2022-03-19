@@ -947,6 +947,11 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.InterestingSphere>());
 			nextSlot++;
+			if (Main.hardMode)
+            {
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.FluffaloEgg>());
+				nextSlot++;
+			}
 			if (Main.moonPhase >= 6 && !Main.dayTime) //first quarter & waxing gibbous
 			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav_Vanity_Helmet>());

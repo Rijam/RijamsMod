@@ -39,6 +39,17 @@ namespace RijamsMod.Projectiles
 							Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.875f);
 						}
 					}
+					if (moddedplayer.flaskBuff == 1)
+					{
+						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantments && Main.rand.Next(2 * (1 + projectile.extraUpdates)) == 0)
+						{
+							int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<Dusts.SulfurDust>(), projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
+							Main.dust[dust].noGravity = true;
+							Main.dust[dust].velocity *= 0.7f;
+							Main.dust[dust].velocity.Y -= 0.5f;
+							Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.1f);
+						}
+					}
 				}
 			}
 		}

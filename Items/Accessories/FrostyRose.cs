@@ -103,7 +103,7 @@ namespace RijamsMod.Items.Accessories
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ModContent.ItemType<ObsidianFrostySkullRose>(), 1);
 			recipe.AddIngredient(ItemID.MagmaStone, 1);
-			recipe.AddIngredient(ItemID.IceBlock, 20);
+			recipe.AddIngredient(ItemID.LivingFrostFireBlock, 20);
 			recipe.AddTile(TileID.TinkerersWorkbench);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

@@ -23,6 +23,8 @@ namespace RijamsMod
         public static RijamsModNPCs RijamsModNPCs;
         public static ItemUseGlow ItemUseGlow;
         public static ArmorUseGlow ArmorUseGlow;
+        public static Texture2D HarpySpriteChange;
+        public static Texture2D HarpySpriteOG;
 
         /*internal UserInterface MyInterface;
         internal TheUI MyUI;*/
@@ -174,6 +176,15 @@ namespace RijamsMod
                 //Main.armorHeadLoaded[dilapidatedCrimsonHelmet.headSlot] = true;
                 //Main.armorHeadTexture[dilapidatedCrimsonHelmet.headSlot] = GetTexture("Items/Armor/DilapidatedCrimsonHelmet_Head"); //replaces the normal Crimson Helmet too
 
+                /*if (ModContent.GetInstance<RijamsModConfigClient>().HarpySpriteChange)
+                {
+                    //Replace the vanilla sprite with a new one.
+                    HarpySpriteOG = Main.npcTexture[NPCID.Harpy];
+                    HarpySpriteChange = GetTexture("NPCs/Enemies/HarpySpriteChange");
+                    Main.npcTexture[NPCID.Harpy] = HarpySpriteChange;
+                    NPC harpy = new NPC();
+                    harpy.SetDefaults(NPCID.Harpy);
+                }*/
 
                 AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/FreedoomPhase2_MAP07_OuterStorageWarehouse"), ItemType("MusicBoxOSW"), TileType("MusicBoxOSW"));
 
@@ -224,6 +235,13 @@ namespace RijamsMod
             ItemUseGlow = null;
             ArmorUseGlow = null;
             //MyUI = null;
+            /*if (!Main.dedServ)
+            {
+                //Doesn't unload correctly
+                HarpySpriteChange = null;
+                //Main.npcTexture[NPCID.Harpy] = HarpySpriteOG;
+                HarpySpriteOG = null; 
+            }*/
         }
 
         public override void PostSetupContent()

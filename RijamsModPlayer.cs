@@ -30,6 +30,8 @@ namespace RijamsMod
 		public bool honeyComb;
 		public bool yoyoBackpack;
 		public bool snuggetPet;
+		public bool fluffaloPet;
+		public int flaskBuff = 0;
 
 		public override void ResetEffects()
 		{
@@ -49,6 +51,8 @@ namespace RijamsMod
 			honeyComb = false;
 			yoyoBackpack = false;
 			snuggetPet = false;
+			fluffaloPet = false;
+			flaskBuff = 0;
 		}
 		public override void UpdateDead()
 		{

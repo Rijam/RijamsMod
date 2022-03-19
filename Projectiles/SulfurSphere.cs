@@ -58,11 +58,11 @@ namespace RijamsMod.Projectiles
 		}
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
-			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 300);
+			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 300 + Main.rand.Next(0, 120));
 		}
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 300);
+			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 300 + Main.rand.Next(0, 120));
 			target.netUpdate = true;
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -80,7 +80,7 @@ namespace RijamsMod.Projectiles
 		public override bool OnTileCollide(Vector2 oldVelocity) => false;
 		public override void Kill(int timeLeft)
 		{
-			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, DustID.Fire);
+			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, ModContent.DustType<Dusts.SulfurDust>());
 			Main.PlaySound(SoundID.NPCDeath3, projectile.position);
 		}
 	}

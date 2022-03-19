@@ -10,7 +10,8 @@ namespace RijamsMod.Tiles
 {
 	public class MonsterBanners : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
@@ -47,6 +48,9 @@ namespace RijamsMod.Tiles
 				case 4:
 					item = "SnowmanMuscleBanner";
 					break;
+				case 5:
+					item = "SirSlushBanner";
+					break;
 				default:
 					return;
 			}
@@ -73,6 +77,9 @@ namespace RijamsMod.Tiles
 						break;
 					case 4:
 						type = "SnowmanMuscle";
+						break;
+					case 5:
+						type = "SirSlush";
 						break;
 					default:
 						return;

@@ -37,6 +37,79 @@ namespace RijamsMod.Projectiles
 			Main.PlaySound(SoundID.Item10, projectile.position);
 		}
 	}
+	public class SulfurDart : ModProjectile
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Sulfur Dart");     //The English name of the projectile
+			ProjectileID.Sets.TrailCacheLength[projectile.type] = 2;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
+		}
+
+		public override void SetDefaults()
+		{
+			projectile.width = 16;               //The width of projectile hitbox
+			projectile.height = 16;              //The height of projectile hitbox
+			projectile.aiStyle = 1;             //The ai style of the projectile, please reference the source code of Terraria
+			projectile.friendly = true;         //Can the projectile deal damage to enemies?
+			projectile.hostile = false;         //Can the projectile deal damage to the player?
+			projectile.ranged = true;           //Is the projectile shoot by a ranged weapon?
+			projectile.penetrate = 1;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
+			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
+			projectile.tileCollide = false;          //Can the projectile collide with tiles?
+			projectile.arrow = false;
+			projectile.alpha = 255;
+			projectile.timeLeft = 300; //5 seconds
+			aiType = ProjectileID.WoodenArrowFriendly;           //Act exactly like default Dart
+		}
+		public override Color? GetAlpha(Color lightColor) => Color.White;
+
+		public override void OnHitPlayer(Player target, int damage, bool crit)
+		{
+			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+		}
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+			target.netUpdate = true;
+		}
+		public override bool OnTileCollide(Vector2 oldVelocity) => false;
+		public override void PostAI()
+		{
+			if (projectile.alpha > 0)
+			{
+				Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.2f);
+				projectile.alpha -= 20;
+			}
+			if (projectile.timeLeft % 2 == 0)
+			{
+				int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<Dusts.SulfurDust>(), projectile.velocity.X, projectile.velocity.Y, 200, default, 1f);
+				Main.dust[dust].noGravity = true;
+				Main.dust[dust].noLight = true;
+				if (projectile.timeLeft % 8 == 0)
+				{
+					Main.dust[dust].noGravity = false;
+				}
+			}
+		}
+		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+		{
+			//Redraw the projectile with the color not influenced by light
+			Vector2 drawOrigin = new Vector2(Main.projectileTexture[projectile.type].Width * 0.5f, projectile.height * 0.5f);
+			for (int k = 0; k < projectile.oldPos.Length; k++)
+			{
+				Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, projectile.gfxOffY);
+				Color color = projectile.GetAlpha(lightColor) * ((float)(projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
+				spriteBatch.Draw(Main.projectileTexture[projectile.type], drawPos, null, color, projectile.rotation, drawOrigin, projectile.scale, SpriteEffects.None, 0f);
+			}
+			return true;
+		}
+		public override void Kill(int timeLeft)
+		{
+			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, ModContent.DustType<Dusts.SulfurDust>());
+			Main.PlaySound(SoundID.NPCDeath3, projectile.position);
+		}
+	}
 	public class ChlorophyteDart : ModProjectile
 	{
 		public override void SetStaticDefaults()
@@ -66,6 +139,10 @@ namespace RijamsMod.Projectiles
 		public override void AI()
 		{
 			Lighting.AddLight(projectile.Center, 0.25f, 0.5f, 0.25f);
+		}
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			projectile.damage = (int)(damage * 0.9f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -130,7 +207,7 @@ namespace RijamsMod.Projectiles
 			projectile.friendly = true;         //Can the projectile deal damage to enemies?
 			projectile.hostile = false;         //Can the projectile deal damage to the player?
 			projectile.ranged = true;           //Is the projectile shoot by a ranged weapon?
-			projectile.penetrate = 6;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
+			projectile.penetrate = 2;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?
 			projectile.alpha = 127;
@@ -138,8 +215,12 @@ namespace RijamsMod.Projectiles
 			aiType = ProjectileID.WoodenArrowFriendly;           //Act exactly like default Dart
 			projectile.extraUpdates = 1;
 			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 30;
+			projectile.localNPCHitCooldown = 60;
 			projectile.timeLeft = 1200;
+		}
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			projectile.damage = (int)(damage * 0.70f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -198,7 +279,7 @@ namespace RijamsMod.Projectiles
 						vector29 += vector28 * 2f;
 						vector29.Normalize();
 						vector29 *= num196 * 3f;
-						Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, vector29.X, vector29.Y, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, 0f, -1000f);
+						Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, vector29.X, vector29.Y, projectile.type, (int)(projectile.damage * 0.75f), projectile.knockBack, projectile.owner, 0f, -1000f);
 					}
 				}
 			}
@@ -252,7 +333,10 @@ namespace RijamsMod.Projectiles
 			projectile.extraUpdates = 7;
 			projectile.timeLeft = 1200;
 		}
-
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			projectile.damage = (int)(damage * 0.9f);
+		}
 		public override void AI()
 		{
 			Lighting.AddLight(projectile.Center, 0.325f, 0.325f, 0.5f);
@@ -321,7 +405,7 @@ namespace RijamsMod.Projectiles
 			projectile.friendly = true;         //Can the projectile deal damage to enemies?
 			projectile.hostile = false;         //Can the projectile deal damage to the player?
 			projectile.ranged = true;           //Is the projectile shoot by a ranged weapon?
-			projectile.penetrate = 9;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
+			projectile.penetrate = 4;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
 			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
 			projectile.tileCollide = true;          //Can the projectile collide with tiles?
 			projectile.arrow = false;
@@ -330,6 +414,10 @@ namespace RijamsMod.Projectiles
 			projectile.usesLocalNPCImmunity = true;
 			projectile.localNPCHitCooldown = 30;
 			projectile.timeLeft = 1200;
+		}
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			projectile.damage = (int)(damage * 0.75f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{

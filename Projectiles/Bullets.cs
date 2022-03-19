@@ -7,68 +7,31 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles
 {
-	public class BloodyArrow : ModProjectile
+	public class SulfurBullet : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Bloody Arrow");     //The English name of the projectile
-		}
-
-		public override void SetDefaults()
-		{
-			projectile.CloneDefaults(ProjectileID.UnholyArrow);
-			projectile.timeLeft = 1800; //30 seconds
-		}
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			return true;
-		}
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-			projectile.damage = (int)(damage * 0.93f);
-		}
-        public override void PostAI()
-        {
-			if (Main.rand.Next(5) == 0)
-			{
-				Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.CrimtaneWeapons, 0f, 0f, 150, default, 1.1f);
-			}
-		}
-
-        public override void Kill(int timeLeft)
-		{
-			Main.PlaySound(SoundID.Dig, projectile.position);
-			for (int i = 0; i < 10; i++)
-			{
-				Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.CrimtaneWeapons, 0f, 0f, 150, default, 1.1f);
-			}
-		}
-	}
-	public class SulfurArrow : ModProjectile
-	{
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Sulfur Arrow");     //The English name of the projectile
+			DisplayName.SetDefault("Sulfur Bullet");     //The English name of the projectile
 			ProjectileID.Sets.TrailCacheLength[projectile.type] = 2;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.width = 16;               //The width of projectile hitbox
-			projectile.height = 16;              //The height of projectile hitbox
-			projectile.aiStyle = 1;             //The ai style of the projectile, please reference the source code of Terraria
-			projectile.friendly = true;         //Can the projectile deal damage to enemies?
-			projectile.hostile = false;         //Can the projectile deal damage to the player?
-			projectile.ranged = true;           //Is the projectile shoot by a ranged weapon?
-			projectile.penetrate = 1;           //How many monsters the projectile can penetrate. (OnTileCollide below also decrements penetrate for bounces as well)
-			projectile.ignoreWater = true;          //Does the projectile's speed be influenced by water?
-			projectile.tileCollide = false;          //Can the projectile collide with tiles?
-			projectile.arrow = true;
+			projectile.width = 8;
+			projectile.height = 8;
+			projectile.friendly = true;
+			projectile.hostile = false;
+			projectile.ranged = true;
+			projectile.penetrate = 1;
+			projectile.ignoreWater = true;
+			projectile.tileCollide = false;
 			projectile.alpha = 255;
 			projectile.timeLeft = 300; //5 seconds
-			aiType = ProjectileID.WoodenArrowFriendly;
+			projectile.extraUpdates = 1;
+			aiType = ProjectileID.Bullet;
 		}
+		public override bool OnTileCollide(Vector2 oldVelocity) => false;
 		public override Color? GetAlpha(Color lightColor) => Color.White;
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)
@@ -80,9 +43,9 @@ namespace RijamsMod.Projectiles
 			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			target.netUpdate = true;
 		}
-		public override bool OnTileCollide(Vector2 oldVelocity) => false;
 		public override void PostAI()
-		{
+        {
+			projectile.rotation = projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			if (projectile.alpha > 0)
 			{
 				Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.2f);
@@ -111,6 +74,7 @@ namespace RijamsMod.Projectiles
 			}
 			return true;
 		}
+
 		public override void Kill(int timeLeft)
 		{
 			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, ModContent.DustType<Dusts.SulfurDust>());

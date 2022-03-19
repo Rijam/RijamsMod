@@ -124,6 +124,9 @@ namespace RijamsMod.Items.Accessories
 			recipe.AddIngredient(ItemID.GoldDust, 1);
 			recipe.AddIngredient(ItemID.UnicornHorn, 1);
 			recipe.AddIngredient(ItemID.Vine, 1);
+			recipe.AddIngredient(ItemID.FrostCore, 1);
+			recipe.AddIngredient(ItemID.AncientBattleArmorMaterial, 1); //Forbidden Fragment
+			recipe.AddIngredient(ItemID.GreenThread, 1);
 			recipe.AddTile(TileID.Anvils);
 			recipe.SetResult(this);
 			recipe.AddRecipe();

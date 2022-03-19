@@ -40,6 +40,24 @@ Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
 
+Version 1.0.4.0
+- Added Sulfur Torch, Sulfur Arrow, Sulfur Dart, Sulfur Bullet, Flask of Sulfuric Acid
+- Added Flower of Hailfire
+- Added two new accessories: Stellar Shield and Citadel
+- Nerfed Spectre Dart. Now pierces 2 times instead of 4 and has a 30% damage reduction per pierce. 
+- Nerfed Luminite Dart. Now pierces 4 times instead of 6 and has a 25% damage reduction per pierce.
+- Nerfed Shroomite Dart. Now has a 10% damage reduction per pierce.
+- Nerfed Chlorophyte Dart. Now has a 10% damage reduction per pierce.
+- Added a new pet: Fluffalo summoned with a Fluffalo Egg
+- Added a banner for Sir Slush
+- Fixed banners missing their tooltips
+
+Version 1.0.3.1
+- Nerfed Spectre Dart. Now pierces 4 times instead of 6 and has a 25% damage reduction per pierce. 
+- Nerfed Luminite Dart. Now pierces 6 times instead of 9.
+- Made Burglar's Ring harder to craft.
+- Hell Trader now sells the Lava Charm and Plummer's Hat.
+
 Version 1.0.3.0
 - Hell Trader now sells the Unholy Trident
 - Pharaoh set and Ancient set are now armor sets instead of vanity

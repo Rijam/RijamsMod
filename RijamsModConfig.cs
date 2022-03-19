@@ -180,5 +180,16 @@ namespace RijamsMod
 			"Reload not required.")]
 		[DefaultValue(true)]
 		public bool BurglarsRingSound { get; set; }
+
+		/*[Label("[i:1516]   Vanilla Harpy Enemy Resprite")]
+		[Tooltip("This option toggles if the vanilla Harpy enemy will use an updated sprite\n" +
+			"  When On: Harpies will be changed.\n" +
+			"  When Off: Harpies will not be changed.\n" +
+			"   Turn Off if you don't the new sprite or have a resource pack.\n" +
+			"Default value: On\n" +
+			"Requires Reload.")]
+		[ReloadRequired]
+		[DefaultValue(true)]
+		public bool HarpySpriteChange { get; set; }*/
 	}
 }

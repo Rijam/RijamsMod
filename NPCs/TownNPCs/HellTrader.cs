@@ -411,6 +411,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.Pwnhammer);
 				nextSlot++;
+				shop.item[nextSlot].SetDefaults(ItemID.LavaCharm);
+				nextSlot++;
 			}
 			if (NPC.downedMechBossAny)
             {
@@ -458,6 +460,9 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (RijamsModWorld.hellTraderArrivable)
             {
+				shop.item[nextSlot].SetDefaults(ItemID.PlumbersHat);
+				shop.item[nextSlot].shopCustomPrice = 400000;
+				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.HellTrader_Vanity_Hood>());
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.HellTrader_Vanity_Robes>());

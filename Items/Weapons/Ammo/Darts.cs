@@ -72,10 +72,44 @@ namespace RijamsMod.Items.Weapons.Ammo
 			recipe.AddRecipe();
 		}
 	}
+
+	public class SulfurDart : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
+		}
+
+		public override void SetDefaults()
+		{
+			item.damage = 14;
+			item.ranged = true;
+			item.width = 14;
+			item.height = 28;
+			item.maxStack = 999;
+			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			item.knockBack = 2f;
+			item.value = 8;
+			item.rare = ItemRarityID.LightRed;
+			item.shoot = ModContent.ProjectileType<Projectiles.SulfurDart>();   //The projectile shoot when your weapon using this ammo
+			item.shootSpeed = 3.5f;                  //The speed of the projectile
+			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1);
+			recipe.SetResult(this, 100);
+			recipe.AddRecipe();
+		}
+	}
+
 	public class ChlorophyteDart : ModItem
 	{
-		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Grants Dryad's Blessing");
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("Grants Dryad's Blessing\n10% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()
@@ -116,7 +150,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Splits into five darts");
+			Tooltip.SetDefault("Splits into five darts\n30% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()
@@ -149,7 +183,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Moves extremely fast");
+			Tooltip.SetDefault("Moves extremely fast\n10% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()
@@ -182,7 +216,7 @@ namespace RijamsMod.Items.Weapons.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Homing");
+			Tooltip.SetDefault("Homing\n25% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()

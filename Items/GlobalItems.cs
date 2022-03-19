@@ -57,6 +57,17 @@ namespace RijamsMod.Items
                 item.buffTime = 3600; //1 minute
             }
         }
+        public override void MeleeEffects(Item item, Player player, Rectangle hitbox)
+        {
+            if (player.GetModPlayer<RijamsModPlayer>().flaskBuff == 1 && item.melee && !item.noMelee && !item.noUseGraphic && Main.rand.Next(2) == 0)
+            {
+                int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.SulfurDust>(), player.velocity.X * 0.2f + (float)(player.direction * 3), player.velocity.Y * 0.2f, 100, default, 1f);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity *= 0.7f;
+                Main.dust[dust].velocity.Y -= 0.5f;
+                Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.1f);
+            }
+        }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);

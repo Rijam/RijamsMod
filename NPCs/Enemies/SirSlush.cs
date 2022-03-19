@@ -28,8 +28,8 @@ namespace RijamsMod.NPCs.Enemies
 			npc.knockBackResist = 0f;
 			npc.aiStyle = 0; //0 will face the player
 			//npc.dontTakeDamage = true;
-			//banner = npc.type;
-			//bannerItem = ModContent.ItemType<Items.Placeable.SirSlush>();
+			banner = npc.type;
+			bannerItem = ModContent.ItemType<Items.Placeable.SirSlushBanner>();
 		}
 		public override void NPCLoot()
 		{

@@ -108,4 +108,32 @@ namespace RijamsMod.Items.Pets
 			}
 		}
 	}
+	public class FluffaloEgg : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Fluffalo Egg");
+			Tooltip.SetDefault("Summons a pet Fluffalo");
+		}
+
+		public override void SetDefaults()
+		{
+			item.CloneDefaults(ItemID.DD2PetGato);
+			item.width = 26;
+			item.height = 32;
+			item.shoot = ModContent.ProjectileType<Projectiles.Pets.Fluffalo>();
+			item.buffType = ModContent.BuffType<Buffs.FluffaloBuff>();
+			item.rare = ItemRarityID.LightPurple;
+			item.value = 70000;
+			item.UseSound = SoundID.Item46;
+		}
+
+		public override void UseStyle(Player player)
+		{
+			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
+			{
+				player.AddBuff(item.buffType, 3600, true);
+			}
+		}
+	}
 }

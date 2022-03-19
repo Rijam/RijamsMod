@@ -245,41 +245,39 @@ namespace RijamsMod
 			{
 				if (moddedplayer.daybreakStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.melee)
 				{
-					if (projectile.melee == true)
+					//Same chances as Magma Stone, but half duration
+					if (Main.rand.Next(8) <= 2)
+					{
+						npc.AddBuff(BuffID.Daybreak, 180);
+					}
+					else if (Main.rand.Next(8) <= 3)
                     {
-						//Same chances as Magma Stone, but half duration
-						if (Main.rand.Next(8) <= 2)
-						{
-							npc.AddBuff(BuffID.Daybreak, 180);
-						}
-						else if (Main.rand.Next(8) <= 3)
-                        {
-							npc.AddBuff(BuffID.Daybreak, 120);
-						}
-						else if (Main.rand.Next(8) <= 3)
-						{
-							npc.AddBuff(BuffID.Daybreak, 60);
-						}
+						npc.AddBuff(BuffID.Daybreak, 120);
+					}
+					else if (Main.rand.Next(8) <= 3)
+					{
+						npc.AddBuff(BuffID.Daybreak, 60);
 					}
 				}
 				if (moddedplayer.frostburnStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.melee)
 				{
-					if (projectile.melee == true)
+					//Same chances as Magma Stone, but half duration
+					if (Main.rand.Next(8) <= 2)
 					{
-						//Same chances as Magma Stone, but half duration
-						if (Main.rand.Next(8) <= 2)
-						{
-							npc.AddBuff(BuffID.Frostburn, 360);
-						}
-						else if (Main.rand.Next(8) <= 3)
-						{
-							npc.AddBuff(BuffID.Frostburn, 240);
-						}
-						else if (Main.rand.Next(8) <= 3)
-						{
-							npc.AddBuff(BuffID.Frostburn, 120);
-						}
+						npc.AddBuff(BuffID.Frostburn, 360);
 					}
+					else if (Main.rand.Next(8) <= 3)
+					{
+						npc.AddBuff(BuffID.Frostburn, 240);
+					}
+					else if (Main.rand.Next(8) <= 3)
+					{
+						npc.AddBuff(BuffID.Frostburn, 120);
+					}
+				}
+				if (moddedplayer.flaskBuff == 1 && projectile.owner == Main.LocalPlayer.whoAmI && projectile.melee)
+				{
+					npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 				}
 			}
 		}
@@ -288,43 +286,41 @@ namespace RijamsMod
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
 			if (moddedplayer.daybreakStone && item.owner == Main.LocalPlayer.whoAmI && item.melee)
 			{
-				if (item.melee == true)
+				//Same chances as Magma Stone, but half duration
+				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
+				if (dayBreakStoneRand <= 1)//0 or 1
 				{
-					//Same chances as Magma Stone, but half duration
-					int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
-					if (dayBreakStoneRand <= 1)//0 or 1
-					{
-						npc.AddBuff(BuffID.Daybreak, 180);
-					}
-					else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
-					{
-						npc.AddBuff(BuffID.Daybreak, 120);
-					}
-					else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
-					{
-						npc.AddBuff(BuffID.Daybreak, 60);
-					}
+					npc.AddBuff(BuffID.Daybreak, 180);
+				}
+				else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
+				{
+					npc.AddBuff(BuffID.Daybreak, 120);
+				}
+				else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
+				{
+					npc.AddBuff(BuffID.Daybreak, 60);
 				}
 			}
 			if (moddedplayer.frostburnStone && item.owner == Main.LocalPlayer.whoAmI && item.melee)
 			{
-				if (item.melee == true)
+				//Same chances as Magma Stone
+				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
+				if (dayBreakStoneRand <= 1)//0 or 1
 				{
-					//Same chances as Magma Stone
-					int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
-					if (dayBreakStoneRand <= 1)//0 or 1
-					{
-						npc.AddBuff(BuffID.Frostburn, 360);
-					}
-					else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
-					{
-						npc.AddBuff(BuffID.Frostburn, 240);
-					}
-					else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
-					{
-						npc.AddBuff(BuffID.Frostburn, 120);
-					}
+					npc.AddBuff(BuffID.Frostburn, 360);
 				}
+				else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
+				{
+					npc.AddBuff(BuffID.Frostburn, 240);
+				}
+				else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
+				{
+					npc.AddBuff(BuffID.Frostburn, 120);
+				}
+			}
+			if (moddedplayer.flaskBuff == 1 && item.owner == Main.LocalPlayer.whoAmI && item.melee)
+			{
+				npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			}
 		}
 		public override void SetupShop(int type, Chest shop, ref int nextSlot)
