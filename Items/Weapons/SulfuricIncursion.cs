@@ -10,7 +10,7 @@ namespace RijamsMod.Items.Weapons
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Summons balls of sulfur\nInflicts Sulfuric Acid");
+			Tooltip.SetDefault("Summons balls of sulfur that travel through tiles\nInflicts Sulfuric Acid");
 		}
 
 		public override void SetDefaults()

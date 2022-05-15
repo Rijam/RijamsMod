@@ -41,7 +41,7 @@ namespace RijamsMod
                     {
 						Main.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
 					}*/
-					Main.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
+					Main.PlaySound(SoundID.Item, -1, -1, 35, 0.75f, 0.5f);
 
 					//Main.PlaySound(SoundLoader.customSoundType, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/beep"), 0.25f, 2f);
 				}
@@ -170,7 +170,7 @@ namespace RijamsMod
 			Mod consolaria = ModLoader.GetMod("Consolaria"); //Consolaria's Spectral Elemental can also drop it
 			if (consolaria != null)
             {
-				if (npc.type == mod.NPCType("SpectralElemental"))
+				if (npc.type == consolaria.NPCType("SpectralElemental"))
 				{
 					if (Main.rand.Next(20) == 0)
 					{
@@ -195,47 +195,61 @@ namespace RijamsMod
 			}
 			if (npc.type == NPCID.PresentMimic)
             {
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 5));
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 6));
 			}
 			if (npc.type == NPCID.Nutcracker)
 			{
 				if (Main.rand.Next(5) == 0)
                 {
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 3));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 4));
 				}
 			}
 			if (npc.type == NPCID.Everscream)
 			{
 				if (Main.rand.Next(2) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 3));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 4));
+				}
+			}
+			if (npc.type == NPCID.IceQueen)
+			{
+				if (Main.rand.Next(4) == 0)
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FestiveWhip>(), 1);
 				}
 			}
 			if (npc.type == NPCID.Poltergeist)
 			{
 				if (Main.rand.Next(5) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 3));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 4));
 				}
 			}
 			if (npc.type == NPCID.MourningWood)
 			{
 				if (Main.rand.Next(2) == 0)
 				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 3));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 4));
 				}
 			}
 			if (npc.type == NPCID.Pumpking)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 5));
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 6));
 			}
 			if (npc.type == NPCID.BloodCrawler || npc.type == NPCID.BloodCrawlerWall)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrawlerChelicera>(), Main.rand.Next(1, 2));
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrawlerChelicera>(), Main.rand.Next(1, 3));
 			}
-			if (npc.type == NPCID.EyeofCthulhu && !Main.expertMode)
+			if (npc.type == NPCID.EyeofCthulhu && !Main.expertMode && WorldGen.crimson)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 50));
+				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 51));
+			}
+			if (npc.type == NPCID.DesertGhoul || npc.type == NPCID.DesertGhoulCorruption || npc.type == NPCID.DesertGhoulCrimson || npc.type == NPCID.DesertGhoulHallow)
+			{
+				if (Main.rand.Next(10) == 0)
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AncientCloth, Main.rand.Next(1, 3));
+				}
 			}
 		}
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
@@ -333,6 +347,22 @@ namespace RijamsMod
 				{
 					int shopPrice = item.shopCustomPrice ?? 0; //Some hackery with changing the int? type into int
 					item.shopCustomPrice = (int?)Math.Round(shopPrice * shopMulti);
+				}
+			}
+			Mod pboneUtils = ModLoader.GetMod("PboneUtils");
+			if (pboneUtils != null)
+            {
+				if (type == pboneUtils.NPCType("Miner"))
+				{
+					if (Main.hardMode)
+					{
+						shop.item[nextSlot].SetDefaults(ItemID.MiningShirt);
+						shop.item[nextSlot].shopCustomPrice = 100000;
+						nextSlot++;
+						shop.item[nextSlot].SetDefaults(ItemID.MiningPants);
+						shop.item[nextSlot].shopCustomPrice = 100000;
+						nextSlot++;
+					}
 				}
 			}
 		}

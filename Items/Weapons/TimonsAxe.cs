@@ -9,12 +9,12 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons
 {
-	public class TimonsAxe : ModItem
+	public class TimonsAxe : MagicMeleeGlow
 	{
 		public override void SetStaticDefaults() 
 		{
 			DisplayName.SetDefault("Timon's Axe");
-			Tooltip.SetDefault("Much more powerful when combined with mana:\nThrows short range projectiles\nWeapon does double damage\nUses 20 mana");
+			Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws short range projectiles\n  Weapon does double damage\n  Uses 20 mana");
 			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Hell Trader]");
 		}
 
@@ -51,7 +51,7 @@ namespace RijamsMod.Items.Weapons
 				for (int i = 0; i < numberProjectiles; i++)
 				{
 					Vector2 perturbedSpeed = new Vector2(speedX, speedY).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
-					Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage * 2, knockBack * 2, player.whoAmI);
+					Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI); //Already gets the double damage from below
 				}
 				player.manaRegenDelay = (int)player.maxRegenDelay;
 			}

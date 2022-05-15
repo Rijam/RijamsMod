@@ -56,4 +56,28 @@ namespace RijamsMod.Items.Weapons.Ammo
 			recipe.AddRecipe();
 		}
 	}
+	public class EvilArrows : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			Tooltip.SetDefault("Both an Unholy Arrow and Bloody Arrow");
+		}
+		public override void SetDefaults()
+		{
+			item.CloneDefaults(ItemID.UnholyArrow);
+			item.damage = 13;
+			item.shoot = ModContent.ProjectileType<Projectiles.EvilArrows>();   //The projectile shoot when your weapon using this ammo
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.UnholyArrow, 50);
+			recipe.AddIngredient(ModContent.ItemType<BloodyArrow>(), 50);
+			recipe.AddIngredient(ItemID.SoulofNight, 1);
+			recipe.AddTile(TileID.Anvils);
+			recipe.SetResult(this, 100);
+			recipe.AddRecipe();
+		}
+	}
 }

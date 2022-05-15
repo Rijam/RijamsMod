@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using RijamsMod.Items.Armor;
+using System.Linq;
 
 namespace RijamsMod.Items
 {
@@ -71,6 +72,11 @@ namespace RijamsMod.Items
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
+            int index = 0;
+            if (item.favorited)
+            {
+                index += 2;
+            }
             if (item.buffType == ModContent.BuffType<Buffs.ExceptionalFeast>())
             {
                 if (isLeftShiftHeld)
@@ -94,7 +100,7 @@ namespace RijamsMod.Items
             {
                 if (item.type == ItemID.PinkPricklyPear)
                 {
-                    tooltips.Insert(4, new TooltipLine(mod, "SItemInfo", "Minuscule improvements to all stats"));
+                    tooltips.Insert(index + 4, new TooltipLine(mod, "SItemInfo", "Minuscule improvements to all stats"));
                 }
                
                 if (isLeftShiftHeld)
@@ -116,29 +122,34 @@ namespace RijamsMod.Items
             }
             if (item.type == ItemID.AncientArmorHat)
             {
-                tooltips.Insert(3, new TooltipLine(mod, "AncientHeaddress", "+5 critical strike chance"));
-                tooltips.Insert(4, new TooltipLine(mod, "AncientHeaddress", "20% chance to not consume ammo"));
+                tooltips.Insert(index + 3, new TooltipLine(mod, "AncientHeaddress", "+5 critical strike chance"));
+                tooltips.Insert(index + 4, new TooltipLine(mod, "AncientHeaddress", "20% chance to not consume ammo"));
             }
             if (item.type == ItemID.AncientArmorShirt)
             {
-                tooltips.Insert(3, new TooltipLine(mod, "AncientGarments", "20% increased damage"));
-                tooltips.Insert(4, new TooltipLine(mod, "AncientGarments", "+1 Minion capacity"));
+                tooltips.Insert(index + 3, new TooltipLine(mod, "AncientGarments", "20% increased damage"));
+                tooltips.Insert(index + 4, new TooltipLine(mod, "AncientGarments", "+1 Minion capacity"));
             }
             if (item.type == ItemID.AncientArmorPants)
             {
-                tooltips.Insert(3, new TooltipLine(mod, "AncientSlacks", "10% increased melee speed"));
-                tooltips.Insert(4, new TooltipLine(mod, "AncientSlacks", "10% reduced mana usage"));
-                tooltips.Insert(5, new TooltipLine(mod, "AncientSlacks", "+2 life regeneration"));
+                tooltips.Insert(index + 3, new TooltipLine(mod, "AncientSlacks", "10% increased melee speed"));
+                tooltips.Insert(index + 4, new TooltipLine(mod, "AncientSlacks", "10% reduced mana usage"));
+                tooltips.Insert(index + 5, new TooltipLine(mod, "AncientSlacks", "+2 life regeneration"));
                 
             }
             if (item.type == ItemID.CelestialCuffs)
             {
-                tooltips.Insert(5, new TooltipLine(mod, "CelestialCuffs", "Increases maximum mana by 20"));
+                tooltips.Insert(index + 5, new TooltipLine(mod, "CelestialCuffs", "Increases maximum mana by 20"));
             }
             if (item.type == ItemID.FireGauntlet)
             {
-                tooltips.RemoveAt(4);
-                tooltips.Insert(4, new TooltipLine(mod, "FireGauntlet", "12% increased melee damage and speed"));
+                TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip1" && x.mod == "Terraria");
+                if (line != null)
+                {
+                    line.text = "12% increased melee damage and speed";
+                }
+                //tooltips.RemoveAt(4);
+                //tooltips.Insert(4, new TooltipLine(mod, "FireGauntlet", "12% increased melee damage and speed"));
             }
             base.ModifyTooltips(item, tooltips);
         }
@@ -222,9 +233,16 @@ namespace RijamsMod.Items
         {
             if (context == "bossBag")
             {
-                if (arg == ItemID.EyeOfCthulhuBossBag)
+                if (arg == ItemID.EyeOfCthulhuBossBag && WorldGen.crimson)
                 {
                     player.QuickSpawnItem(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 50));
+                }
+            }
+            if (context == "crate")
+            {
+                if (arg == ItemID.WoodenCrate && Main.rand.Next(10) == 0)
+                {
+                    player.QuickSpawnItem(ModContent.ItemType<Weapons.Belt>(), 1);
                 }
             }
         }
@@ -240,5 +258,12 @@ namespace RijamsMod.Items
             }
             return base.CanUseItem(item, player);
         }
+    }
+
+    //This is used for the Timon's Axe, Hammer of Retribution, and Quietus for checking if the glow mask should be drawn in ItemUseGlow
+    public class MagicMeleeGlow : ModItem
+    {
+        public override bool Autoload(ref string name) => GetType() != typeof(MagicMeleeGlow);
+        public override string Texture => item.type == ModContent.ItemType<MagicMeleeGlow>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
     }
 }

@@ -79,6 +79,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			Main.npcCatchable[npc.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
 			npc.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? (short)ModContent.ItemType<CaughtHellTrader>() : (short)-1;
 			npc.rarity = RijamsModWorld.hellTraderArrivable ? 0 : 1;
+			npc.npcSlots = RijamsModWorld.hellTraderArrivable ? 1 : 0.25f;
 		}
 
 		public override void HitEffect(int hitDirection, double damage)
@@ -125,7 +126,25 @@ namespace RijamsMod.NPCs.TownNPCs
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			return (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(npc.type) && spawnInfo.player.ZoneUnderworldHeight) ? 0.1f : 0f;
+			if (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(npc.type) && spawnInfo.player.ZoneUnderworldHeight)
+            {
+				if (spawnInfo.spawnTileType == TileID.ObsidianBrick || spawnInfo.spawnTileType == TileID.HellstoneBrick || spawnInfo.spawnTileType == TileID.Platforms)
+                {
+					if (!NPC.downedBoss1) //Haven't killed EoC
+                    {
+						return 0.05f;
+                    }
+					else if (!NPC.downedBoss3) //Have killed EoC but not Skeletron
+                    {
+						return 0.075f;
+					}
+					else
+                    {
+						return 0.1f; //Else
+					}
+                }
+            }
+			return 0f;
 		}
 		public override bool UsesPartyHat()
 		{
@@ -421,6 +440,11 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.HammerOfRetribution>());
 				nextSlot++;
 			}
+			if (NPC.downedGolemBoss)
+			{
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Quietus>());
+				nextSlot++;
+			}
 			shop.item[nextSlot].SetDefaults(ItemID.AshBlock);
 			shop.item[nextSlot].shopCustomPrice = 70;
 			nextSlot++;
@@ -443,7 +467,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].shopCustomPrice = 10;
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.Fireblossom);
-			shop.item[nextSlot].shopCustomPrice = 20000;
+			shop.item[nextSlot].shopCustomPrice = 10000;
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.Hellforge);
 			shop.item[nextSlot].shopCustomPrice = 7500;

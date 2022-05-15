@@ -127,7 +127,7 @@ namespace RijamsMod.Items.Accessories
 			recipe.AddIngredient(ModContent.ItemType<RoseOfFireAndIce>(), 1);
 			recipe.AddIngredient(ItemID.StarVeil, 1);
 			recipe.AddIngredient(ItemID.SweetheartNecklace, 1);
-			recipe.AddIngredient(ItemID.HallowedBar, 5);
+			recipe.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 10);
 			recipe.AddIngredient(ItemID.PocketMirror, 1);
 			recipe.AddIngredient(ItemID.LunarBar, 2);
 			recipe.AddTile(TileID.TinkerersWorkbench);

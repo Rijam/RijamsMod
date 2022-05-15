@@ -14,7 +14,7 @@ namespace RijamsMod.Tiles
             {
                 if (Main.hardMode && Main.rand.Next(100) == 0)
                 {
-                    Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 40));
+                    Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 41));
                 }
             }
             return base.Drop(i, j, type);

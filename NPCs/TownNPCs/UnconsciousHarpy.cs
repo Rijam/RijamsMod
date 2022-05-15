@@ -32,7 +32,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			npc.lifeMax = 250;
 			npc.HitSound = SoundID.NPCHit1;
 			npc.DeathSound = SoundID.NPCDeath1;
-			npc.knockBackResist = 1f;
+			npc.knockBackResist = 0.1f;
 			npc.rarity = 1;
 		}
 		/*public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)

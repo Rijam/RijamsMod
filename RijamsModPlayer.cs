@@ -31,6 +31,7 @@ namespace RijamsMod
 		public bool yoyoBackpack;
 		public bool snuggetPet;
 		public bool fluffaloPet;
+		public bool hailfireBootsBoost;
 		public int flaskBuff = 0;
 
 		public override void ResetEffects()
@@ -52,6 +53,7 @@ namespace RijamsMod
 			yoyoBackpack = false;
 			snuggetPet = false;
 			fluffaloPet = false;
+			hailfireBootsBoost = false;
 			flaskBuff = 0;
 		}
 		public override void UpdateDead()
@@ -91,6 +93,17 @@ namespace RijamsMod
 					player.wingTimeMax += 60;
 					player.jumpSpeedBoost += 2f;
 					player.moveSpeed += 2;
+				}
+			}
+			if (hailfireBootsBoost)
+            {
+				if (player.wingTimeMax > 0)
+				{
+					player.wingTimeMax += 30;
+				}
+				if (player.rocketTimeMax > 0)
+                {
+					player.rocketTimeMax = 8;
 				}
 			}
 			if (breathingPack)

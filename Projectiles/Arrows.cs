@@ -117,4 +117,31 @@ namespace RijamsMod.Projectiles
 			Main.PlaySound(SoundID.NPCDeath3, projectile.position);
 		}
 	}
+	public class EvilArrows : ModProjectile
+	{
+        public override string Texture => "Terraria/Projectile_0";
+		public override Color? GetAlpha(Color lightColor) => Color.White * 0f;
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Evil Arrows");     //The English name of the projectile
+		}
+
+		public override void SetDefaults()
+		{
+			projectile.CloneDefaults(ProjectileID.WoodenArrowFriendly);
+			projectile.timeLeft = 2;
+		}
+		public override bool OnTileCollide(Vector2 oldVelocity)
+		{
+			return false;
+		}
+        public override void Kill(int timeLeft)
+        {
+			if (Main.myPlayer == projectile.owner)
+			{
+				Projectile.NewProjectile(projectile.Center.X - 1, projectile.Center.Y - 4, projectile.velocity.X, projectile.velocity.Y + 0.2f, ProjectileID.UnholyArrow, projectile.damage - 1, projectile.knockBack, projectile.owner);
+				Projectile.NewProjectile(projectile.Center.X + 1, projectile.Center.Y + 4, projectile.velocity.X, projectile.velocity.Y - 0.2f, ModContent.ProjectileType<BloodyArrow>(), projectile.damage + 1, projectile.knockBack, projectile.owner);
+			}
+		}
+	}
 }

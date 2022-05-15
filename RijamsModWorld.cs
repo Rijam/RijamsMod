@@ -13,6 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
+using System.Linq;
 
 namespace RijamsMod
 { 
@@ -200,5 +201,106 @@ namespace RijamsMod
             intTravArived = true;
             UpdateWorldBool();
         }
+        public override void PostWorldGen()
+        {
+            List<Chest> Chests = Main.chest.Where(checkfor => checkfor != null).ToList();
+            for (int i = 0; i < 5; i++)
+            {
+                for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
+                {
+                    Chest chest = Main.chest[chestIndex];
+                    if (i == 0 && chest != null)
+                    {
+                        if (WorldGen.genRand.Next(0, 100) < (Main.tile[chest.x, chest.y].frameX / 36 == 17 ? 50 : (Main.tile[chest.x, chest.y].frameX / 36 == 1 ? 15 : Main.tile[chest.x, chest.y].frameX / 36 == 0 ? 10 : 5)))
+                        {
+                            for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+                            {
+                                if (chest.item[inventoryIndex].IsAir)
+                                {
+                                    chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Belt>());
+                                    chest.item[inventoryIndex].stack = 1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //NPCs don't sync properly in multiplayer. Probably need to use a ModPacket.
+        //https://github.com/JavidPack/CheatSheet/blob/1.3/Menus/NPCSlot.cs#L219
+        //https://github.com/JavidPack/CheatSheet/blob/1.3/CheatSheet.cs#L531
+
+        /*
+        public override void PostUpdate()
+        {
+            
+            if (Main.slimeRain && Main.hardMode)
+            {
+                //NetMessage.BroadcastChatMessage(NetworkText.FromLiteral("Main.slimeRain && Main.hardMode passed"), Color.DarkGray);
+                for (int i = 0; i < Main.maxPlayers; i++)
+                {
+                    Player player = Main.player[i];
+                    NPC.SlimeRainSpawns(i);
+                    if (player.ZoneOverworldHeight && player.active)
+                    {
+                        //NetMessage.BroadcastChatMessage(NetworkText.FromLiteral("player.ZoneOverworldHeight && player.active passed"), Color.Gray);
+
+                        //If the player has the battle potion buff, double the chance
+                        if (Main.rand.Next(player.enemySpawns ? 1750 : 3500) == 0 && Main.expertMode)
+                        {
+                            int spawnNPC = NPC.NewNPC((int)player.position.X + Main.rand.Next(-600, 600), (int)player.position.Y - 2000 - Main.rand.Next(100, 200), NPCID.SlimeSpiked);
+                            Main.npc[spawnNPC].SetDefaults(NPCID.SlimeSpiked);
+                            if (Main.netMode != NetmodeID.Server)
+                            {
+                                NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, spawnNPC);
+                            }
+                            NetMessage.BroadcastChatMessage(NetworkText.FromLiteral("Spiked Slime spawned?"), Color.White);
+                        }
+                        if (Main.rand.Next(player.enemySpawns ? 1000 : 2000) == 0)
+                        {
+                            int spawnNPC = NPC.NewNPC((int)player.position.X + Main.rand.Next(-600, 600), (int)player.position.Y - 2000 - Main.rand.Next(100, 200), NPCID.BlueSlime);
+                            Main.npc[spawnNPC].SetDefaults(NPCID.RedSlime);
+                            if (Main.netMode == NetmodeID.Server)
+                            {
+                                NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, spawnNPC);
+                            }
+                            NetMessage.BroadcastChatMessage(NetworkText.FromLiteral("Red Slime spawned?"), Color.White);
+                        }
+                        if (Main.rand.Next(player.enemySpawns ? 1050 : 2100) == 0)
+                        {
+                            int spawnNPC = NPC.NewNPC((int)player.position.X + Main.rand.Next(-600, 600), (int)player.position.Y - 2000 - Main.rand.Next(100, 200), NPCID.BlueSlime);
+                            Main.npc[spawnNPC].SetDefaults(NPCID.YellowSlime);
+                            if (Main.netMode == NetmodeID.Server)
+                            {
+                                NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, spawnNPC);
+                            }
+                            NetMessage.BroadcastChatMessage(NetworkText.FromLiteral("Yellow Slime spawned?"), Color.White);
+                        }
+                        if (Main.rand.Next(player.enemySpawns ? 1250 : 2500) == 0)
+                        {
+                            int spawnNPC = NPC.NewNPC((int)player.position.X + Main.rand.Next(-600, 600), (int)player.position.Y - 2000 - Main.rand.Next(100, 200), NPCID.BlueSlime);
+                            Main.npc[spawnNPC].SetDefaults(NPCID.BlackSlime);
+                            if (Main.netMode == NetmodeID.Server)
+                            {
+                                NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, spawnNPC);
+                            }
+                            NetMessage.BroadcastChatMessage(NetworkText.FromLiteral("Black Slime spawned?"), Color.White);
+                        }
+                        if (Main.rand.Next(player.enemySpawns ? 1500 : 3000) == 0)
+                        {
+                            int spawnNPC = NPC.NewNPC((int)player.position.X + Main.rand.Next(-600, 600), (int)player.position.Y - 2000 - Main.rand.Next(100, 200), NPCID.ToxicSludge);
+                            Main.npc[spawnNPC].SetDefaults(NPCID.ToxicSludge);
+                            if (Main.netMode == NetmodeID.Server)
+                            {
+                                NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, spawnNPC);
+                            }
+                            NetMessage.BroadcastChatMessage(NetworkText.FromLiteral("Toxic Sludge spawned?"), Color.White);
+                        }
+                    }
+                }
+            }
+        }*/
     }
 }

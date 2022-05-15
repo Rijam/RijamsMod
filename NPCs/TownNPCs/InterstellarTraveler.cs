@@ -944,7 +944,11 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].shopCustomPrice = 200000;
 				nextSlot++;
 			}
-
+			if (NPC.downedFishron)
+			{
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.ReefCola>());
+				nextSlot++;
+			}
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.InterestingSphere>());
 			nextSlot++;
 			if (Main.hardMode)

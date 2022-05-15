@@ -266,46 +266,32 @@ namespace RijamsMod.Items.Information
 			bool isRightShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightShift);
 
 			//Life
-			int statLifeMax = Main.player[Main.myPlayer].statLifeMax;
-			string statLifeMaxString = statLifeMax.ToString();
-			int statLifeMax2 = Main.player[Main.myPlayer].statLifeMax2;
-			string statLifeMax2String = statLifeMax2.ToString();
-			int lifeRegen = Main.player[Main.myPlayer].lifeRegen;
-			string lifeRegenString = lifeRegen.ToString();
-			int lifeRegenTime = Main.player[Main.myPlayer].lifeRegenTime;
-			string lifeRegenTimeString = lifeRegenTime.ToString();
+			string statLifeMaxString = Main.player[Main.myPlayer].statLifeMax.ToString();
+			string statLifeMax2String = Main.player[Main.myPlayer].statLifeMax2.ToString();
+			string lifeRegenString = Main.player[Main.myPlayer].lifeRegen.ToString();
+			string lifeRegenTimeString = Main.player[Main.myPlayer].lifeRegenTime.ToString();
 
 			//Mana
-			int statManaMax = Main.player[Main.myPlayer].statManaMax;
-			string statManaMaxString = statManaMax.ToString();
-			int statManaMax2 = Main.player[Main.myPlayer].statManaMax2;
-			string statManaMax2String = statManaMax2.ToString();
-			float manaCost = Main.player[Main.myPlayer].manaCost;
-			string manaCostString = manaCost.ToString();
-			int manaRegen = Main.player[Main.myPlayer].manaRegen;
-			string manaRegenString = manaRegen.ToString();
-			int manaRegenBonus = Main.player[Main.myPlayer].manaRegenBonus;
-			string manaRegenBonusString = manaRegenBonus.ToString();
+			string statManaMaxString = Main.player[Main.myPlayer].statManaMax.ToString();
+			string statManaMax2String = Main.player[Main.myPlayer].statManaMax2.ToString();
+			string manaCostString = Main.player[Main.myPlayer].manaCost.ToString();
+			string manaRegenString = Main.player[Main.myPlayer].manaRegen.ToString();
+			string manaRegenBonusString = Main.player[Main.myPlayer].manaRegenBonus.ToString();
 
 			//Defense
-			float statDefense = Main.player[Main.myPlayer].statDefense;
-			string statDefenseString = statDefense.ToString();
-			float endurance = Main.player[Main.myPlayer].endurance;
-			string enduranceString = endurance.ToString();
+			string statDefenseString = Main.player[Main.myPlayer].statDefense.ToString();
+			string enduranceString = Main.player[Main.myPlayer].endurance.ToString();
 
 			//Movement
-			float moveSpeed = Main.player[Main.myPlayer].moveSpeed;
-			string moveSpeedString = moveSpeed.ToString();
-			float maxRunSpeed = Main.player[Main.myPlayer].maxRunSpeed;
-			string maxRunSpeedString = maxRunSpeed.ToString();
-			float runAcceleration = Main.player[Main.myPlayer].runAcceleration;
-			string runAccelerationString = runAcceleration.ToString();
-			float runSlowdown = Main.player[Main.myPlayer].runSlowdown;
-			string runSlowdownString = runSlowdown.ToString();
-			float wingTimeMax = Main.player[Main.myPlayer].wingTimeMax;
-			string wingTimeMaxString = wingTimeMax.ToString();
-			bool noKnockback = Main.player[Main.myPlayer].noKnockback;
-			string noKnockbackString = noKnockback.ToString();
+			string moveSpeedString = Main.player[Main.myPlayer].moveSpeed.ToString();
+			string maxRunSpeedString = Main.player[Main.myPlayer].maxRunSpeed.ToString();
+			string runAccelerationString = Main.player[Main.myPlayer].runAcceleration.ToString();
+			string runSlowdownString = Main.player[Main.myPlayer].runSlowdown.ToString();
+			string wingTimeMaxString = Main.player[Main.myPlayer].wingTimeMax.ToString();
+			string wingTimeString = Main.player[Main.myPlayer].wingTime.ToString();
+			string rocketTimeMaxString = Main.player[Main.myPlayer].rocketTimeMax.ToString();
+			string rocketTimeString = Main.player[Main.myPlayer].rocketTime.ToString();
+			string noKnockbackString = Main.player[Main.myPlayer].noKnockback.ToString();
 			bool noFallDmg = Main.player[Main.myPlayer].noFallDmg;
 			int wings = Main.player[Main.myPlayer].wings;
 			string realFallDmgString = "False";
@@ -315,64 +301,38 @@ namespace RijamsMod.Items.Information
 			}
 
 			//Damage
-			float meleeDamage = Main.player[Main.myPlayer].meleeDamage;
-			string meleeDamageString = meleeDamage.ToString();
-			float rangedDamage = Main.player[Main.myPlayer].rangedDamage;
-			string rangedDamageString = rangedDamage.ToString();
-			float magicDamage = Main.player[Main.myPlayer].magicDamage;
-			string magicDamageString = magicDamage.ToString();
-			float minionDamage = Main.player[Main.myPlayer].minionDamage;
-			string minionDamageString = minionDamage.ToString();
-			float thrownDamage = Main.player[Main.myPlayer].thrownDamage;
-			string thrownDamageString = thrownDamage.ToString();
-			float allDamage = Main.player[Main.myPlayer].allDamage;
-			string allDamageString = allDamage.ToString();
-			float meleeSpeed = Main.player[Main.myPlayer].meleeSpeed;
-			string meleeSpeedString = meleeSpeed.ToString();
+			string meleeDamageString = Main.player[Main.myPlayer].meleeDamage.ToString();
+			string rangedDamageString = Main.player[Main.myPlayer].rangedDamage.ToString();
+			string magicDamageString = Main.player[Main.myPlayer].magicDamage.ToString();
+			string minionDamageString = Main.player[Main.myPlayer].minionDamage.ToString();
+			string thrownDamageString = Main.player[Main.myPlayer].thrownDamage.ToString();
+			string allDamageString = Main.player[Main.myPlayer].allDamage.ToString();
+			string meleeSpeedString = Main.player[Main.myPlayer].meleeSpeed.ToString();
 
 			//Crit
-			int meleeCrit = Main.player[Main.myPlayer].meleeCrit;
-			string meleeCritString = meleeCrit.ToString();
-			int rangedCrit = Main.player[Main.myPlayer].rangedCrit;
-			string rangedCritString = rangedCrit.ToString();
-			int magicCrit = Main.player[Main.myPlayer].magicCrit;
-			string magicCritString = magicCrit.ToString();
-			int thrownCrit = Main.player[Main.myPlayer].thrownCrit;
-			string thrownCritString = thrownCrit.ToString();
+			string meleeCritString = Main.player[Main.myPlayer].meleeCrit.ToString();
+			string rangedCritString = Main.player[Main.myPlayer].rangedCrit.ToString();
+			string magicCritString = Main.player[Main.myPlayer].magicCrit.ToString();
+			string thrownCritString = Main.player[Main.myPlayer].thrownCrit.ToString();
 
 			//Summmons
-			int summonTotal = Main.player[Main.myPlayer].maxMinions;
-			string summonTotalString = summonTotal.ToString();
-			int sentryTotal = Main.player[Main.myPlayer].maxTurrets;
-			string sentryTotalString = sentryTotal.ToString();
-			float minionKB = Main.player[Main.myPlayer].minionKB;
-			string minionKBString = minionKB.ToString();
-			int numMinions = Main.player[Main.myPlayer].numMinions;
-			string numMinionsString = numMinions.ToString();
+			string summonTotalString = Main.player[Main.myPlayer].maxMinions.ToString();
+			string sentryTotalString = Main.player[Main.myPlayer].maxTurrets.ToString();
+			string minionKBString = Main.player[Main.myPlayer].minionKB.ToString();
+			string numMinionsString = Main.player[Main.myPlayer].numMinions.ToString();
 
 			//Other
-			int taxMoney = Main.player[Main.myPlayer].taxMoney;
-			string taxMoneyString = taxMoney.ToString();
-			int taxTimer = Main.player[Main.myPlayer].taxTimer;
-			string taxTimerString = taxTimer.ToString();
-			//int taxRate = Player.taxRate;
-			//string taxRateString = taxRate.ToString();
-			int anglerQuestsFinished = Main.player[Main.myPlayer].anglerQuestsFinished;
-			string anglerQuestsFinishedString = anglerQuestsFinished.ToString();
-			int breath = Main.player[Main.myPlayer].breath;
-			string breathString = breath.ToString();
-			int breathCD = Main.player[Main.myPlayer].breathCD;
-			string breathCDString = breathCD.ToString();
-			int breathMax = Main.player[Main.myPlayer].breathMax;
-			string breathMaxString = breathMax.ToString();
-			bool lavaImmune = Main.player[Main.myPlayer].lavaImmune;
-			string lavaImmuneString = lavaImmune.ToString();
-			float pickSpeed = Main.player[Main.myPlayer].pickSpeed;
-			string pickSpeedString = pickSpeed.ToString();
-			bool ZoneWaterCandle = Main.player[Main.myPlayer].ZoneWaterCandle;
-			string ZoneWaterCandleString = ZoneWaterCandle.ToString();
-			bool ZonePeaceCandle = Main.player[Main.myPlayer].ZonePeaceCandle;
-			string ZonePeaceCandleString = ZonePeaceCandle.ToString();
+			string taxMoneyString = Main.player[Main.myPlayer].taxMoney.ToString();
+			string taxTimerString = Main.player[Main.myPlayer].taxTimer.ToString();
+			//string taxRateString = Player.taxRate.ToString();
+			string anglerQuestsFinishedString = Main.player[Main.myPlayer].anglerQuestsFinished.ToString();
+			string breathString = Main.player[Main.myPlayer].breath.ToString();
+			string breathCDString = Main.player[Main.myPlayer].breathCD.ToString();
+			string breathMaxString = Main.player[Main.myPlayer].breathMax.ToString();
+			string lavaImmuneString = Main.player[Main.myPlayer].lavaImmune.ToString();
+			string pickSpeedString = Main.player[Main.myPlayer].pickSpeed.ToString();
+			string ZoneWaterCandleString = Main.player[Main.myPlayer].ZoneWaterCandle.ToString();
+			string ZonePeaceCandleString = Main.player[Main.myPlayer].ZonePeaceCandle.ToString();
 
 			if (isLeftShiftHeld)
             {
@@ -399,6 +359,9 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(mod, "runAcceleration", "Running acceleration speed: " + runAccelerationString));
 				tooltips.Add(new TooltipLine(mod, "runSlowdown", "Running deceleration speed: " + runSlowdownString));
 				tooltips.Add(new TooltipLine(mod, "wingTimeMax", "Wing flight time: " + wingTimeMaxString));
+				tooltips.Add(new TooltipLine(mod, "wingTime", "Current wing flight time: " + wingTimeString));
+				tooltips.Add(new TooltipLine(mod, "rocketTimeMax", "Rocket Boots flight time: " + rocketTimeMaxString));
+				tooltips.Add(new TooltipLine(mod, "rocketTime", "Current Rocket Boots flight time: " + rocketTimeString));
 				tooltips.Add(new TooltipLine(mod, "noKnockback", "Knockback immunity: " + noKnockbackString));
 				tooltips.Add(new TooltipLine(mod, "noFallDmg", "Fall damage immunity: " + realFallDmgString));
 			}

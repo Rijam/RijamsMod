@@ -251,6 +251,12 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].shopCustomPrice = 1500;
 					nextSlot++;
 				}
+				if (NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !Main.hardMode)
+                {
+					shop.item[nextSlot].SetDefaults(ItemID.FireBlossomPlanterBox);
+					shop.item[nextSlot].shopCustomPrice = 100;
+					nextSlot++;
+				}
 			}
 			if (type == NPCID.Wizard)
 			{

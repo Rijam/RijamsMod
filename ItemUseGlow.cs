@@ -33,10 +33,8 @@ namespace RijamsMod
     }
     public class PlayerUseGlow : ModPlayer
     {
-        public static readonly PlayerLayer ItemUseGlow = new PlayerLayer("QwertysRandomContent", "ItemUseGlow", PlayerLayer.HeldItem, delegate (PlayerDrawInfo drawInfo)
+        public static readonly PlayerLayer ItemUseGlow = new PlayerLayer("RijamsMod", "ItemUseGlow", PlayerLayer.HeldItem, delegate (PlayerDrawInfo drawInfo)
         {
-
-
             Player drawPlayer = drawInfo.drawPlayer;
             
             //Mod mod = ModLoader.GetMod("QwertysRandomContent");
@@ -51,6 +49,10 @@ namespace RijamsMod
 
                 if (texture != null && drawPlayer.itemAnimation > 0)
                 {
+                    if (drawPlayer.frozen)
+                    {
+                        return;
+                    }
                     Vector2 value2 = drawInfo.itemLocation;
                     if (item.useStyle == ItemUseStyleID.HoldingOut)
                     {
@@ -128,7 +130,7 @@ namespace RijamsMod
                             item.scale,
                             drawInfo.spriteEffects,
                             0);
-                        if ((item.type == ModContent.ItemType<Items.Weapons.TimonsAxe>() || item.type == ModContent.ItemType<Items.Weapons.HammerOfRetribution>()) && !drawPlayer.CheckMana(20, false)) //Special check for the Timon's Axe and Hammer of Retribution. Only draw the glowmask if the player has enough mana.
+                        if (item.modItem != null && item.modItem is Items.MagicMeleeGlow && !drawPlayer.CheckMana(20, false)) //Special check for the Timon's Axe and Hammer of Retribution. Only draw the glowmask if the player has enough mana.
                         {
                             return;
                         }

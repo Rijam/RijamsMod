@@ -35,6 +35,18 @@ namespace RijamsMod.Items.Weapons
 			//item.shootSpeed = 1f;
 			item.value = Item.sellPrice(copper: 5);
 		}
+		public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
+		{
+			// 60 frames = 1 second
+			if (Main.rand.Next(10) == 0)
+			{
+				target.AddBuff(BuffID.OnFire, 60);
+			}
+			else if (Main.rand.Next(10) == 0)
+			{
+				target.AddBuff(BuffID.OnFire, 30);
+			}
+		}
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);

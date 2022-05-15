@@ -17,9 +17,10 @@ Includes:
 - Hell Trader: sells Underworld related items.
 - - Spawns randomly in the Underworld, can move in in Hardmode.
 
-Many new items and weapons throughout the game's progression.
-- 27 weapons: 5 Melee, 8 Ranged, 7 Magic, 7 Summoner.
-- 30 accessories.
+154 new items and weapons throughout the game's progression.
+- 33 weapons: 6 Melee, 8 Ranged, 8 Magic, 13 Summoner.
+- 12 ammo types.
+- 32 accessories.
 - 8 armor pieces.
 - 12 vanity items + 3 dyes.
 
@@ -34,9 +35,10 @@ Some cross mod support:
 - Town NPC cross mod dialog.
 
 Known Issues:
-- Summoner's Glove is a little buggy, details in its tooltip.
-- Some items are unobtainable.
+- Summoner's Glove is a little bugggy, details in its tooltip.
 
 The code is open source if you extract the mod!
 
 Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
+
+Rijam's Discord server: https://discord.gg/t63JzNHzvu

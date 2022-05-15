@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,6 +55,8 @@ namespace RijamsMod.Projectiles
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
 			target.AddBuff(BuffID.Daybreak, 60);
+
+			Projectile.NewProjectile(new Vector2(projectile.position.X, projectile.position.Y - Main.screenHeight - 100), new Vector2(Main.rand.NextFloat(-1, 1f), Main.rand.NextFloat(5f, 7f)), ModContent.ProjectileType<SolarFlare>(), projectile.damage / 2, projectile.knockBack / 2, projectile.owner);
 		}
 	}
 }

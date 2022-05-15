@@ -9,12 +9,12 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons
 {
-	public class HammerOfRetribution : ModItem
+	public class HammerOfRetribution : MagicMeleeGlow
 	{
 		public override void SetStaticDefaults() 
 		{
 			DisplayName.SetDefault("Hammer of Retribution");
-			Tooltip.SetDefault("Much more powerful when combined with mana:\nThrows a long range projectile\nWeapon does double damage\nUses 20 mana");
+			Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws a long range projectile\n  Weapon does double damage\n  Uses 20 mana");
 			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Hell Trader]");
 		}
 

@@ -52,7 +52,7 @@ namespace RijamsMod.NPCs.Enemies
 			Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SlushBlock, Main.rand.Next(10, 20));
 
 			//From Spirit Mod FrostSaucer.cs
-			if (Main.invasionType == 2)
+			if (Main.invasionType == InvasionID.SnowLegion)
 			{
 				Main.invasionSize -= 1;
 				if (Main.invasionSize < 0)
@@ -61,7 +61,9 @@ namespace RijamsMod.NPCs.Enemies
 				}
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					Main.ReportInvasionProgress(Main.invasionSizeStart - Main.invasionSize, Main.invasionSizeStart, 1, 0);
+					//icon: 1 = Frost Moon, 2 = Pumpkin Moon, 3 = Old One's Army, 4 = Goblin Army, 5 = Frost Legion, 6 = Pirate Invasion, 7 = Martian Madness
+					//Any other number (including 0) will be a generic invasion icon
+					Main.ReportInvasionProgress(Main.invasionSizeStart - Main.invasionSize, Main.invasionSizeStart, 5, 0);
 				}
 				if (Main.netMode == NetmodeID.Server)
 				{
@@ -102,35 +104,38 @@ namespace RijamsMod.NPCs.Enemies
         public override void AI()
         {
 			npc.ai[0]++;
-			//Main.NewText(npc.ai[0]);
-			//Main.NewText(AIState);
+			//Main.NewText("npc.ai[0] " + npc.ai[0]);
+			//Main.NewText("AIState " + AIState);
 			if (AIState == 0) //idle
 			{
 				npc.TargetClosest();
 				npc.FaceTarget();
 				bool lineOfSight = Collision.CanHitLine(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height);
 				float distance = Math.Abs(npc.position.X - Main.player[npc.target].position.X) + Math.Abs(npc.position.Y - Main.player[npc.target].position.Y);
-				if (npc.ai[0] >= 30 && npc.HasValidTarget && Main.netMode != NetmodeID.MultiplayerClient && distance <= 1000f && lineOfSight)
+				if (npc.ai[0] >= 30 && npc.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f && lineOfSight)
                 {
 					npc.ai[0] = 0;
 					Main.PlaySound(SoundLoader.customSoundType, (int)npc.position.X, (int)npc.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/SirSlushAlert"));
 					AIState = 1;
+					npc.netUpdate = true;
 				}
 			}
 			else if (AIState == 1) //alert
 			{
 				npc.FaceTarget();
 				float distance = Math.Abs(npc.position.X - Main.player[npc.target].position.X) + Math.Abs(npc.position.Y - Main.player[npc.target].position.Y);
-				if (npc.ai[0] == 80 && npc.HasValidTarget && Main.netMode != NetmodeID.MultiplayerClient && distance <= 1000f)
+				if (npc.ai[0] == 80 && npc.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f)
                 {
 					npc.ai[0] = 0;
 					npc.frameCounter = 0;
 					AIState = 2;
-                }
+					npc.netUpdate = true;
+				}
 				else if (npc.ai[0] > 80 || distance > 1000f)
                 {
 					npc.ai[0] = 0;
 					AIState = 0;
+					npc.netUpdate = true;
 				}
 			}
 			else if (AIState == 2) //attack
@@ -158,15 +163,17 @@ namespace RijamsMod.NPCs.Enemies
 						Projectile.NewProjectile(vectoryForProj.X, vectoryForProj.Y, projSpeedX, projSpeedY, projType, projDamage, 4f, Main.myPlayer);
 					}
 				}
-				if (npc.ai[0] == 40)
+				if (npc.ai[0] >= 40)
                 {
 					npc.ai[0] = 0;
 					AIState = 0;
+					npc.netUpdate = true;
 				}
 			}
 			else
 			{
 				AIState = 0;
+				npc.netUpdate = true;
 			}
 		}
 

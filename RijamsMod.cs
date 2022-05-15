@@ -97,6 +97,11 @@ namespace RijamsMod
             recipe.AddIngredient(ItemID.RainbowHairDye, 1);
             recipe.SetResult(ItemID.RainbowString, 1);
             recipe.AddRecipe();
+
+            recipe = new ModRecipe(this);
+            recipe.AddIngredient(ModContent.ItemType<Items.Placeable.SunplatePillarBlock>(), 1);
+            recipe.SetResult(ItemID.SunplateBlock, 1);
+            recipe.AddRecipe();
         }
         public override void AddRecipeGroups()
         {

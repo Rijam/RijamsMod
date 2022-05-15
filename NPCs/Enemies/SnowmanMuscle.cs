@@ -60,7 +60,7 @@ namespace RijamsMod.NPCs.Enemies
 			Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SnowBlock, Main.rand.Next(5, 10));
 
 			//From Spirit Mod FrostSaucer.cs
-			if (Main.invasionType == 2)
+			if (Main.invasionType == InvasionID.SnowLegion)
 			{
 				Main.invasionSize -= 1;
 				if (Main.invasionSize < 0)
@@ -69,7 +69,9 @@ namespace RijamsMod.NPCs.Enemies
 				}
 				if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-					Main.ReportInvasionProgress(Main.invasionSizeStart - Main.invasionSize, Main.invasionSizeStart, 1, 0);
+					//icon: 1 = Frost Moon, 2 = Pumpkin Moon, 3 = Old One's Army, 4 = Goblin Army, 5 = Frost Legion, 6 = Pirate Invasion, 7 = Martian Madness
+					//Any other number (including 0) will be a generic invasion icon
+					Main.ReportInvasionProgress(Main.invasionSizeStart - Main.invasionSize, Main.invasionSizeStart, 5, 0);
 				}
 				if (Main.netMode == NetmodeID.Server)
                 {

@@ -7,6 +7,10 @@ namespace RijamsMod.Items.Armor
 	[AutoloadEquip(EquipType.Head)]
 	public class MechaArmor_Helmet : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Mecha Helmet");
@@ -49,6 +53,10 @@ namespace RijamsMod.Items.Armor
 	[AutoloadEquip(EquipType.Body, EquipType.Back)]
 	public class MechaArmor_Chestplate : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
@@ -91,6 +99,10 @@ namespace RijamsMod.Items.Armor
 	[AutoloadEquip(EquipType.Legs)]
 	public class MechaArmor_Leggings : ModItem
 	{
+		public override bool Autoload(ref string name)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Mecha Leggings");

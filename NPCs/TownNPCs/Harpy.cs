@@ -397,7 +397,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				if (NPC.downedBoss1)
 				{
-					shop.item[nextSlot].SetDefaults(ModLoader.GetMod("OrchidMod").ItemType("HarpyTalon"));
+					shop.item[nextSlot].SetDefaults(orchidMod.ItemType("HarpyTalon"));
 					shop.item[nextSlot].shopCustomPrice = 2000;
 					nextSlot++;
 				}
@@ -421,6 +421,9 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].SetDefaults(ItemID.SunplateBlock);
 			shop.item[nextSlot].shopCustomPrice = 20;
 			nextSlot++;
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.SunplatePillarBlock>());
+			shop.item[nextSlot].shopCustomPrice = 20;
+			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.Cloud);
 			shop.item[nextSlot].shopCustomPrice = 90;
 			nextSlot++;
@@ -439,7 +442,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				Mod qwertysBossAndItems = ModLoader.GetMod("QwertysRandomContent");
 				if (qwertysBossAndItems != null) //Qwertys Boss And Items
 				{
-					shop.item[nextSlot].SetDefaults(ModLoader.GetMod("QwertysRandomContent").ItemType("FortressHarpyFeather"));
+					shop.item[nextSlot].SetDefaults(qwertysBossAndItems.ItemType("FortressHarpyFeather"));
 					nextSlot++;
 				}
 				if (NPC.downedMechBossAny)

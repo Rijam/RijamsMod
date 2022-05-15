@@ -14,9 +14,10 @@ Includes:
 - Hell Trader: sells Underworld related items.
 - - Spawns randomly in the Underworld, can move in in Hardmode.
 
-Many new items and weapons throughout the game's progression.
-- 27 weapons: 5 Melee, 8 Ranged, 7 Magic, 7 Summoner.
-- 30 accessories.
+154 new items and weapons throughout the game's progression.
+- 33 weapons: 6 Melee, 8 Ranged, 8 Magic, 13 Summoner.
+- 12 ammo types.
+- 32 accessories.
 - 8 armor pieces.
 - 12 vanity items + 3 dyes.
 
@@ -32,13 +33,32 @@ Some cross mod support:
 
 Known Issues:
 - Summoner's Glove is a little buggy, details in its tooltip.
-- Some items are unobtainable.
 
 The code is open source if you extract the mod!
 
 Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
+
+Version 1.0.5.0
+- Hell Trader now only spawns on Obsidian Brick, Hellstone Brick, or platforms
+- Hell Trader's spawn rate is decreased if Eye of Cthulhu or Skeletron have not been defeated.
+- Fixed Sir Slush's AI in multiplayer.
+- Fixed Eye of Cthulhu and the Treasure Bag dropping Bloody Arrows in Corruption worlds.
+- Corrected one of the recipes for the Citadel.
+- Buffed the Solyo, now spawns a projectile in the sky when it hits something.
+- Added Hailfire Boots
+- Added Quietus magic sword
+- Fixed Timon's Axe's projectiles dealing double the damage and knockback as they should have.
+- Added six "whips": Belt, Vile Whip, Vicious Whip, Sulfuric Whip, Festive Whip, and Stardust Whip
+- Made the Slime Rain ever so slightly more interesting in Hardmode by adding a Spiked Green Slime and Flying Purple Slime.
+- Gave the Unconscious Harpy knockback resistance.
+- Added Evil Arrows, a combination of Unholy and Bloody Arrows.
+- Added Fire Breathing Pack
+- Added Charm of Life
+- Fixed Snowman Muscle and Sir Slush showing the Frost Moon icon instead of the Frost Legion icon (just a visual bug).
+- Added Sunplate Pillar Block
+- Added Reef-Cola
 
 Version 1.0.4.0
 - Added Sulfur Torch, Sulfur Arrow, Sulfur Dart, Sulfur Bullet, Flask of Sulfuric Acid
