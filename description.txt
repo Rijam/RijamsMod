@@ -39,6 +39,9 @@ The code is open source if you extract the mod!
 Basic wiki on the mod's GitHub: https://github.com/Rijam/RijamsMod/wiki
 
 =-=-=-=-=-=-=-=-=-=
+Version 1.0.5.3
+- Added a config option to enable/disable the Town NPCs' cross mod dialog and selling cross mod items.
+- Fixed an issue with the Harpy's dialog.
 
 Version 1.0.5.0
 - Hell Trader now only spawns on Obsidian Brick, Hellstone Brick, or platforms

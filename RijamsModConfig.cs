@@ -79,6 +79,17 @@ namespace RijamsMod
 		[DefaultValue(true)]
 		public bool SellExtraItems { get; set; }
 
+		[Label("[i:3121]   Sell Cross Mod Items")]
+		[Tooltip("This option toggles if the Town NPCs will sell items from other mods\n" +
+			"and if they will have cross mod dialog.\n" +
+			"  When On: The Town NPCs will sell cross mod items.\n" +
+			"  When Off: The Town NPCs WILL NOT sell cross mod items.\n" +
+			"    Turn Off to remove cross mod items from the shops and dialog.\n" +
+			"Default value: On\n" +
+			"Reload not required.")]
+		[DefaultValue(true)]
+		public bool SellCrossModItems { get; set; }
+
 		[Label("[i:87]   Shop Price Scaling")]
 		[Tooltip("This option sets the scaling for the prices in the Fisherman's shop.\n" +
 			"  50 means half the normal price\n" +

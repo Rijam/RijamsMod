@@ -131,6 +131,8 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
+			bool sellCrossModItems = ModContent.GetInstance<RijamsModConfigServer>().SellCrossModItems;
+
 			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 			chat.Add("I'm pretty far from home, but this place is pretty cool.");
 			chat.Add("Nice to meet you!");
@@ -362,7 +364,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}*/
 
-			if (ModLoader.GetMod("SGAmod") != null) //SGAmod
+			if (ModLoader.GetMod("SGAmod") != null && sellCrossModItems) //SGAmod
 			{
 				int draken = NPC.FindFirstNPC(ModLoader.GetMod("SGAmod").NPCType("Dergon"));
 				if (draken >= 0)
@@ -370,7 +372,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("That Draken has a lot going through his head. He's a nice guy once you get to know him, though.", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("CalamityMod") != null) //Calamity
+			if (ModLoader.GetMod("CalamityMod") != null && sellCrossModItems) //Calamity
 			{
 				int seaKing = NPC.FindFirstNPC(ModLoader.GetMod("CalamityMod").NPCType("SEAHOE")); //Sea King
 				if (seaKing >= 0)
@@ -378,7 +380,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I didn't expect to see somebody like Amidias! This planet is full of surprises!", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("ThoriumMod") != null) //Thorium
+			if (ModLoader.GetMod("ThoriumMod") != null && sellCrossModItems) //Thorium
 			{
 				int cook = NPC.FindFirstNPC(ModLoader.GetMod("ThoriumMod").NPCType("Cook"));
 				if (cook >= 0)
@@ -395,7 +397,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I'm not sure what kind of Durasteel " + Main.npc[blacksmith].GivenName + " is working with, but it's certainly not the one I'm familiar with.", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("AlchemistNPC") != null) //Alchemist NPC
+			if (ModLoader.GetMod("AlchemistNPC") != null && sellCrossModItems) //Alchemist NPC
 			{
 				int brewer = NPC.FindFirstNPC(ModLoader.GetMod("AlchemistNPC").NPCType("Brewer"));
 				if (brewer >= 0)
@@ -403,7 +405,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add(Main.npc[brewer].GivenName + " has all sorts of interesting potions. I might have to try some for myself.", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("AlchemistNPCLite") != null) //Alchemist NPC Lite
+			if (ModLoader.GetMod("AlchemistNPCLite") != null && sellCrossModItems) //Alchemist NPC Lite
 			{
 				int brewer2 = NPC.FindFirstNPC(ModLoader.GetMod("AlchemistNPCLite").NPCType("Brewer"));
 				if (brewer2 >= 0)
@@ -411,7 +413,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add(Main.npc[brewer2].GivenName + " has all sorts of interesting potions. I might have to try some for myself.", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("ExampleMod") != null) //Example Mod
+			if (ModLoader.GetMod("ExampleMod") != null && sellCrossModItems) //Example Mod
 			{
 				int examplePerson = NPC.FindFirstNPC(ModLoader.GetMod("ExampleMod").NPCType("Example Person"));
 				if (examplePerson >= 0)
@@ -419,7 +421,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I feel like I'm not supposed to see " + Main.npc[examplePerson].GivenName + ".", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("Tremor") != null) //Tremor Mod
+			if (ModLoader.GetMod("Tremor") != null && sellCrossModItems) //Tremor Mod
 			{
 				int chef = NPC.FindFirstNPC(ModLoader.GetMod("Tremor").NPCType("Chef"));
 				if (chef >= 0)
@@ -427,7 +429,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add(Main.npc[chef].GivenName + " acts a little strange - as if he doesn't want me to see the food he cooks.", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("HappinessRemoval") != null) //Happiness Removal
+			if (ModLoader.GetMod("HappinessRemoval") != null && sellCrossModItems) //Happiness Removal
 			{
 				chat.Add("Thanks for removing happiness. Now, I am eternally unhappy.", 2.0);
 			}

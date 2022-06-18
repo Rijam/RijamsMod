@@ -105,6 +105,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override string GetChat()
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
+			bool sellCrossModItems = ModContent.GetInstance<RijamsModConfigServer>().SellCrossModItems;
 
 			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
 			chat.Add("Don't attack, please!");
@@ -170,7 +171,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}
 			Mod joostmod = ModLoader.GetMod("Joostmod");
-			if (joostmod != null) //Joostmod
+			if (joostmod != null && sellCrossModItems) //Joostmod
             {
 				if (Main.player[Main.myPlayer].HasBuff(mod.BuffType("HarpyMinion")))
 				{
@@ -188,7 +189,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("" + Main.npc[interTravel].GivenName + " really likes my wings. Why doesn't she have any if she is a bird?", 0.5);
 			}
 			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
-			if (interTravel >= 0)
+			if (fisherman >= 0)
 			{
 				chat.Add("Me and " + Main.npc[fisherman].GivenName + " go on fishing trips sometimes! He lets me 'scout ahead', whatever that means!", 0.5);
 			}
@@ -213,7 +214,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("" + Main.npc[pirate].GivenName + " lets me sit in the crows nest!", 0.25);
 			}
-			if (ModLoader.GetMod("SGAmod") != null) //SGAmod
+			if (ModLoader.GetMod("SGAmod") != null && sellCrossModItems) //SGAmod
 			{	
 				int draken = NPC.FindFirstNPC(ModLoader.GetMod("SGAmod").NPCType("Dergon"));
 				if (draken >= 0)
@@ -221,19 +222,19 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I asked Draken if he wants to go flying, but he said he didn't want to. Why not?", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("SacredTools") != null) //Shadows of Abaddon
+			if (ModLoader.GetMod("SacredTools") != null && sellCrossModItems) //Shadows of Abaddon
 			{
 				chat.Add("Jensen? Raynare? Sorry, I don't know what you are talking about.", 0.5);
 			}
-			if (ModLoader.GetMod("AAMod") != null) //Ancients Awakened
+			if (ModLoader.GetMod("AAMod") != null && sellCrossModItems) //Ancients Awakened
 			{
 				chat.Add("Athena? Sorry, I don't know what you are talking about.", 0.5);
 			}
-			if (ModLoader.GetMod("Varia") != null) //Varia
+			if (ModLoader.GetMod("Varia") != null && sellCrossModItems) //Varia
 			{
 				chat.Add("Fallen Angel? Sorry, I don't know what you are talking about.", 0.5);
 			}
-			if (ModLoader.GetMod("pinkymod") != null) //Pinky Mod
+			if (ModLoader.GetMod("pinkymod") != null && sellCrossModItems) //Pinky Mod
 			{
 				chat.Add("Valdaris? Sorry, I don't know what you are talking about.", 0.5);
 			}
@@ -325,11 +326,12 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void SetupShop(Chest shop, ref int nextSlot)
 		{
-			
+			bool sellCrossModItems = ModContent.GetInstance<RijamsModConfigServer>().SellCrossModItems;
+
 			shop.item[nextSlot].SetDefaults(ItemID.Feather);
 			nextSlot++;
 			Mod calamityMod = ModLoader.GetMod("CalamityMod");
-			if (calamityMod != null)
+			if (calamityMod != null && sellCrossModItems)
 			{
 				shop.item[nextSlot].SetDefaults(ModLoader.GetMod("CalamityMod").ItemType("DesertFeather"));
 				nextSlot++;
@@ -341,7 +343,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}
 			Mod shadowsOfAbaddon = ModLoader.GetMod("SacredTools");
-			if (shadowsOfAbaddon != null) //Shadows of Abaddon
+			if (shadowsOfAbaddon != null && sellCrossModItems) //Shadows of Abaddon
 			{
 				shop.item[nextSlot].SetDefaults(shadowsOfAbaddon.ItemType("BirdFeather")); //White Feather
 				shop.item[nextSlot].shopCustomPrice = 50;
@@ -363,7 +365,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}*/
 			}
 			Mod ancientsAwakened = ModLoader.GetMod("AAMod");
-			if (ancientsAwakened != null) //Ancients Awakened
+			if (ancientsAwakened != null && sellCrossModItems) //Ancients Awakened
 			{
 				shop.item[nextSlot].SetDefaults(ModLoader.GetMod("AAMod").ItemType("vulture_feather"));
 				shop.item[nextSlot].shopCustomPrice = 5000;
@@ -393,7 +395,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}*/
 			Mod orchidMod = ModLoader.GetMod("OrchidMod");
-			if (orchidMod != null) //Orchid Mod
+			if (orchidMod != null && sellCrossModItems) //Orchid Mod
 			{
 				if (NPC.downedBoss1)
 				{
@@ -403,7 +405,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}
 			Mod thorium = ModLoader.GetMod("ThoriumMod");
-			if (thorium != null) //Thorium
+			if (thorium != null && sellCrossModItems) //Thorium
 			{
 				shop.item[nextSlot].SetDefaults(thorium.ItemType("BirdTalon")); //Talon
 				shop.item[nextSlot].shopCustomPrice = 100;
@@ -440,7 +442,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].SetDefaults(ItemID.IceFeather);
 				nextSlot++;
 				Mod qwertysBossAndItems = ModLoader.GetMod("QwertysRandomContent");
-				if (qwertysBossAndItems != null) //Qwertys Boss And Items
+				if (qwertysBossAndItems != null && sellCrossModItems) //Qwertys Boss And Items
 				{
 					shop.item[nextSlot].SetDefaults(qwertysBossAndItems.ItemType("FortressHarpyFeather"));
 					nextSlot++;
@@ -487,7 +489,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy_Vanity_Shorts>());
 			nextSlot++;
 			Mod split = ModLoader.GetMod("Split");
-			if (split != null) //Split Mod
+			if (split != null && sellCrossModItems) //Split Mod
 			{
 				shop.item[nextSlot].SetDefaults(split.ItemType("PosterHarpy"));
 				shop.item[nextSlot].shopCustomPrice = 10000;

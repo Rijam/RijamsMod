@@ -118,6 +118,8 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
+			bool sellCrossModItems = ModContent.GetInstance<RijamsModConfigServer>().SellCrossModItems;
+
 			int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
 			chat.Add("Greetings. Care to do some fishin'?");
 			chat.Add("I got all the supplies you'd need if you want to do some fishin'.");
@@ -238,7 +240,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add(Main.npc[mechanic].GivenName + " the Mechanic is always here to help me when me ship needs repairs.", 0.25); //happiness quote
 			}
-			if (ModLoader.GetMod("ThoriumMod") != null) //Thorium
+			if (ModLoader.GetMod("ThoriumMod") != null && sellCrossModItems) //Thorium
 			{
 				int diverman = NPC.FindFirstNPC(ModLoader.GetMod("ThoriumMod").NPCType("Diverman"));
 				if (diverman >= 0)
@@ -246,7 +248,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("Now " + Main.npc[diverman].GivenName + " is the kind of guy I respect!", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("CalamityMod") != null) //Calamity
+			if (ModLoader.GetMod("CalamityMod") != null && sellCrossModItems) //Calamity
 			{
 				int seaKing = NPC.FindFirstNPC(ModLoader.GetMod("CalamityMod").NPCType("SEAHOE")); //Sea King
 				if (seaKing >= 0)
@@ -262,14 +264,14 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("Careful with mermaids, lass, not all of them are friendly.", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("SGAmod") != null) //SGAmod
+			if (ModLoader.GetMod("SGAmod") != null && sellCrossModItems) //SGAmod
 			{
 				if (Main.hardMode)
 				{
 					chat.Add("A Shark-what? That is truely a freak of nature.", 0.5);
 				}
 			}
-			if (ModLoader.GetMod("Fargowiltas") != null) //Fargo's Mutant Mod
+			if (ModLoader.GetMod("Fargowiltas") != null && sellCrossModItems) //Fargo's Mutant Mod
 			{
 				int mutant = NPC.FindFirstNPC(ModLoader.GetMod("Fargowiltas").NPCType("Mutant"));
 				if (mutant >= 0)
@@ -277,14 +279,14 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("The wings that" + " " + Main.npc[mutant].GivenName + " " + "have remind me of something else...", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("PboneUtils") != null)
+			if (ModLoader.GetMod("PboneUtils") != null && sellCrossModItems)
 			{
 				if (Main.dayTime)
 				{
 					chat.Add("I heard rumors of a blue hooded man who sells valuables...", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("HelpfulNPCs") != null)
+			if (ModLoader.GetMod("HelpfulNPCs") != null && sellCrossModItems)
 			{
 				int expertFisherman = NPC.FindFirstNPC(ModLoader.GetMod("HelpfulNPCs").NPCType("ExpertFisherman"));
 				if (expertFisherman >= 0)
@@ -292,7 +294,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("Don't let 'Expert' in " + Main.npc[expertFisherman].GivenName + "'s title fool ya. I'm just as much an expert as he is.", 0.25);
 				}
 			}
-			if (ModLoader.GetMod("FishermanNPC") != null)
+			if (ModLoader.GetMod("FishermanNPC") != null && sellCrossModItems)
 			{
 				chat.Add("Sorry FishermanNPC for taking yer mod name in 1.4, I hope yer don't mind.", 0.25);
 			}

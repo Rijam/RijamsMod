@@ -182,6 +182,8 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
+			bool sellCrossModItems = ModContent.GetInstance<RijamsModConfigServer>().SellCrossModItems;
+
 			int hellTrader = NPC.FindFirstNPC(ModContent.NPCType<HellTrader>());
 			if (!RijamsModWorld.hellTraderArrivable)
             {
@@ -304,7 +306,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I'm honestly surprised you were able to control those Imps. It's not easy getting hell spawn to do what you want, I should know!");
 				}
 				Mod thorium = ModLoader.GetMod("ThoriumMod");
-				if (thorium != null) //Thorium
+				if (thorium != null && sellCrossModItems) //Thorium
 				{
 					int weaponMaster = NPC.FindFirstNPC(thorium.NPCType("WeaponMaster"));
 					if (weaponMaster >= 0)
@@ -323,7 +325,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I feel like I've seen that energy gun you have, but I'm not sure where.", 0.5);
 				}
 				Mod calamity = ModLoader.GetMod("CalamityMod");
-				if (calamity != null) //Calamity
+				if (calamity != null && sellCrossModItems) //Calamity
 				{
 					int brimestoneWitch = NPC.FindFirstNPC(calamity.NPCType("WITCH")); //Brimstone Witch
 					if (brimestoneWitch >= 0)
