@@ -13,18 +13,18 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void SetDefaults()
 		{
-			item.damage = 7;
-			item.ranged = true;
-			item.width = 10;
-			item.height = 22;
-			item.maxStack = 999;
-			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
-			item.knockBack = 0.5f;
-			item.value = 10;
-			item.rare = ItemRarityID.Green;
-			item.shoot = ModContent.ProjectileType<Projectiles.BasicDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 16f;                  //The speed of the projectile
-			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+			Item.damage = 7;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 10;
+			Item.height = 22;
+			Item.maxStack = 999;
+			Item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.knockBack = 0.5f;
+			Item.value = 10;
+			Item.rare = ItemRarityID.Green;
+			Item.shoot = ModContent.ProjectileType<Projectiles.BasicDart>();   //The projectile shoot when your weapon using this ammo
+			Item.shootSpeed = 16f;                  //The speed of the projectile
+			Item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
 		// Give each bullet consumed a 20% chance of granting the Wrath buff for 5 seconds
@@ -36,11 +36,10 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddRecipeGroup("IronBar", 1);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this, 100);
-			recipe.AddRecipe();
+			CreateRecipe(100)
+				.AddRecipeGroup("IronBar", 1)
+				.AddTile(TileID.WorkBenches)
+				.Register();
 		}
 	}
 	public class EndlessDartCase : BasicDart
@@ -52,24 +51,23 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void SetDefaults()
 		{
-			item.CloneDefaults(ModContent.ItemType<BasicDart>());
-			item.width = 30;
-			item.height = 36;
-			item.maxStack = 1;
-			item.consumable = false;             //You need to set the item consumable so that the ammo would automatically consumed
-			item.value = 5000;
-			item.rare = ItemRarityID.Green;
-			item.shoot = ModContent.ProjectileType<Projectiles.BasicDart>();   //The projectile shoot when your weapon using this ammo
-			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+			Item.CloneDefaults(ModContent.ItemType<BasicDart>());
+			Item.width = 30;
+			Item.height = 36;
+			Item.maxStack = 1;
+			Item.consumable = false;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.value = 5000;
+			Item.rare = ItemRarityID.Green;
+			Item.shoot = ModContent.ProjectileType<Projectiles.BasicDart>();   //The projectile shoot when your weapon using this ammo
+			Item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ModContent.ItemType<BasicDart>(), 3996);
-			recipe.AddTile(TileID.CrystalBall);
-			recipe.SetResult(this, 1);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<BasicDart>(), 3996)
+				.AddTile(TileID.CrystalBall)
+				.Register();
 		}
 	}
 
@@ -82,26 +80,25 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void SetDefaults()
 		{
-			item.damage = 14;
-			item.ranged = true;
-			item.width = 14;
-			item.height = 28;
-			item.maxStack = 999;
-			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
-			item.knockBack = 2f;
-			item.value = 8;
-			item.rare = ItemRarityID.LightRed;
-			item.shoot = ModContent.ProjectileType<Projectiles.SulfurDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 3.5f;                  //The speed of the projectile
-			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+			Item.damage = 14;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 14;
+			Item.height = 28;
+			Item.maxStack = 999;
+			Item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.knockBack = 2f;
+			Item.value = 8;
+			Item.rare = ItemRarityID.LightRed;
+			Item.shoot = ModContent.ProjectileType<Projectiles.SulfurDart>();   //The projectile shoot when your weapon using this ammo
+			Item.shootSpeed = 3.5f;                  //The speed of the projectile
+			Item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1);
-			recipe.SetResult(this, 100);
-			recipe.AddRecipe();
+			CreateRecipe(100)
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.Register();
 		}
 	}
 
@@ -109,27 +106,27 @@ namespace RijamsMod.Items.Weapons.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Grants Dryad's Blessing\n10% damage penalty per enemy pierced");
+			Tooltip.SetDefault("Grants Dryad's Blessing if consumed\n10% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()
 		{
-			item.damage = 16;
-			item.ranged = true;
-			item.width = 14;
-			item.height = 28;
-			item.maxStack = 999;
-			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
-			item.knockBack = 4f;
-			item.value = 1000;
-			item.rare = ItemRarityID.Lime;
-			item.shoot = ModContent.ProjectileType<Projectiles.ChlorophyteDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 8f;                  //The speed of the projectile
-			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+			Item.damage = 16;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 14;
+			Item.height = 28;
+			Item.maxStack = 999;
+			Item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.knockBack = 4f;
+			Item.value = 1000;
+			Item.rare = ItemRarityID.Lime;
+			Item.shoot = ModContent.ProjectileType<Projectiles.ChlorophyteDart>();   //The projectile shoot when your weapon using this ammo
+			Item.shootSpeed = 8f;                  //The speed of the projectile
+			Item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
 		// Give each bullet consumed grants the Dryad's Blessing buff for 2 seconds
-		public override void OnConsumeAmmo(Player player)
+		public override void OnConsumedAsAmmo(Item weapon, Player player)
 		{
 			//if (Main.rand.NextBool(2)) {
 			player.AddBuff(BuffID.DryadsWard, 120);
@@ -138,12 +135,11 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 1);
-			recipe.AddIngredient(ModContent.ItemType<BasicDart>(), 100);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this, 100);
-			recipe.AddRecipe();
+			CreateRecipe(100)
+				.AddIngredient(ItemID.ChlorophyteBar, 1)
+				.AddIngredient(ModContent.ItemType<BasicDart>(), 100)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 	public class SpectreDart : ModItem
@@ -155,28 +151,27 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void SetDefaults()
 		{
-			item.damage = 15;
-			item.ranged = true;
-			item.width = 14;
-			item.height = 30;
-			item.maxStack = 999;
-			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
-			item.knockBack = 4f;
-			item.value = 1500;
-			item.rare = ItemRarityID.Yellow;
-			item.shoot = ModContent.ProjectileType<Projectiles.SpectreDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 10f;                  //The speed of the projectile
-			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+			Item.damage = 15;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 14;
+			Item.height = 30;
+			Item.maxStack = 999;
+			Item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.knockBack = 4f;
+			Item.value = 1500;
+			Item.rare = ItemRarityID.Yellow;
+			Item.shoot = ModContent.ProjectileType<Projectiles.SpectreDart>();   //The projectile shoot when your weapon using this ammo
+			Item.shootSpeed = 10f;                  //The speed of the projectile
+			Item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.SpectreBar, 1);
-			recipe.AddIngredient(ModContent.ItemType<BasicDart>(), 100);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this, 100);
-			recipe.AddRecipe();
+			CreateRecipe(100)
+				.AddIngredient(ItemID.SpectreBar, 1)
+				.AddIngredient(ModContent.ItemType<BasicDart>(), 100)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 	public class ShroomiteDart : ModItem
@@ -188,28 +183,27 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void SetDefaults()
 		{
-			item.damage = 19;
-			item.ranged = true;
-			item.width = 14;
-			item.height = 30;
-			item.maxStack = 999;
-			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
-			item.knockBack = 4f;
-			item.value = 1500;
-			item.rare = ItemRarityID.Yellow;
-			item.shoot = ModContent.ProjectileType<Projectiles.ShroomiteDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 16f;                  //The speed of the projectile
-			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+			Item.damage = 19;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 14;
+			Item.height = 30;
+			Item.maxStack = 999;
+			Item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.knockBack = 4f;
+			Item.value = 1500;
+			Item.rare = ItemRarityID.Yellow;
+			Item.shoot = ModContent.ProjectileType<Projectiles.ShroomiteDart>();   //The projectile shoot when your weapon using this ammo
+			Item.shootSpeed = 16f;                  //The speed of the projectile
+			Item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.ShroomiteBar, 1);
-			recipe.AddIngredient(ModContent.ItemType<BasicDart>(), 100);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this, 100);
-			recipe.AddRecipe();
+			CreateRecipe(100)
+				.AddIngredient(ItemID.ShroomiteBar, 1)
+				.AddIngredient(ModContent.ItemType<BasicDart>(), 100)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 	public class LuminiteDart : ModItem
@@ -221,27 +215,26 @@ namespace RijamsMod.Items.Weapons.Ammo
 
 		public override void SetDefaults()
 		{
-			item.damage = 20;
-			item.ranged = true;
-			item.width = 18;
-			item.height = 36;
-			item.maxStack = 999;
-			item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
-			item.knockBack = 4f;
-			item.value = 1500;
-			item.rare = ItemRarityID.Yellow;
-			item.shoot = ModContent.ProjectileType<Projectiles.LuminiteDart>();   //The projectile shoot when your weapon using this ammo
-			item.shootSpeed = 16f;                  //The speed of the projectile
-			item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
+			Item.damage = 20;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 18;
+			Item.height = 36;
+			Item.maxStack = 999;
+			Item.consumable = true;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.knockBack = 4f;
+			Item.value = 1500;
+			Item.rare = ItemRarityID.Yellow;
+			Item.shoot = ModContent.ProjectileType<Projectiles.LuminiteDart>();   //The projectile shoot when your weapon using this ammo
+			Item.shootSpeed = 16f;                  //The speed of the projectile
+			Item.ammo = AmmoID.Dart;              //The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.LunarBar, 1);
-			recipe.AddTile(TileID.LunarCraftingStation);
-			recipe.SetResult(this, 333);
-			recipe.AddRecipe();
+			CreateRecipe(333)
+				.AddIngredient(ItemID.LunarBar, 1)
+				.AddTile(TileID.LunarCraftingStation)
+				.Register();
 		}
 	}
 }

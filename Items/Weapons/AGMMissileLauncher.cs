@@ -11,26 +11,23 @@ namespace RijamsMod.Items.Weapons
 		{
 			DisplayName.SetDefault("AGM Missile Launcher");
 			Tooltip.SetDefault("10% chance not to consume ammo");
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]", "[c/474747:and Cyborg is present]" } );
 		}
 
 		public override void SetDefaults()
 		{
-			item.CloneDefaults(ItemID.RocketLauncher);
-			item.damage = 58;
-			//item.ranged = true;
-			item.width = 70;
-			item.height = 28;
-			item.useTime = 25;
-			item.useAnimation = 25;
+			Item.CloneDefaults(ItemID.RocketLauncher);
+			Item.damage = 58;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 70;
+			Item.height = 28;
+			Item.useTime = 25;
+			Item.useAnimation = 25;
 			//item.noMelee = true; //so the item's animation doesn't do damage
-			item.knockBack = 5;
-			item.value = 300000;
-			item.rare = ItemRarityID.Yellow; //8
-			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
-			{
-				item.UseSound = mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/AGMMissileLauncher").WithVolume(.7f);
-			}
+			Item.knockBack = 5;
+			Item.value = 300000;
+			Item.rare = ItemRarityID.Yellow; //8
+			Item.UseSound = new(Mod.Name + "/Sounds/Item/AGMMissileLauncher") { Volume = 0.7f, MaxInstances = 5 };
 			//item.autoReuse = true;
 			//item.shootSpeed = 16f;
 			//item.shoot = AmmoID.Rocket;
@@ -38,7 +35,7 @@ namespace RijamsMod.Items.Weapons
 		}
 
 		//What if I wanted this gun to have a 10% chance not to consume ammo?
-		public override bool ConsumeAmmo(Player player)
+		public override bool CanConsumeAmmo(Item ammo, Player player)
 		{
 			return Main.rand.NextFloat() >= 0.10f;
 		}

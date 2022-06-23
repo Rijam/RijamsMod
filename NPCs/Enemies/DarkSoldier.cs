@@ -3,6 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.Audio;
+using Terraria.GameContent.Bestiary;
 
 namespace RijamsMod.NPCs.Enemies
 {
@@ -13,58 +16,67 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Dark Soldier");
-			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.BoneThrowingSkeleton];
+			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BoneThrowingSkeleton];
+
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+			{
+				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+				Direction = -1
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
 		public override void SetDefaults()
 		{
-			npc.CloneDefaults(NPCID.BoneThrowingSkeleton);
-			npc.width = 18;
-			npc.height = 40;
-			npc.damage = 14;
-			npc.defense = 6;
-			npc.lifeMax = 200;
-			npc.lavaImmune = true;
-			npc.buffImmune[BuffID.OnFire] = true;
-			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
-            {
-				npc.HitSound = mod.GetLegacySoundSlot(SoundType.NPCHit, "Sounds/NPCHit/DarkSoldierHurt").WithVolume(.7f);
-				npc.DeathSound = mod.GetLegacySoundSlot(SoundType.NPCKilled, "Sounds/NPCKilled/DarkSoldierDeath").WithVolume(.7f);
-			}
-			npc.value = 6000f;
-			npc.knockBackResist = 0.5f;
-			npc.aiStyle = -1;
-			aiType = NPCID.BoneThrowingSkeleton;
-			animationType = NPCID.BoneThrowingSkeleton;
-			banner = npc.type;
-			bannerItem = ModContent.ItemType<Items.Placeable.DarkSoldierBanner>();
+			NPC.CloneDefaults(NPCID.BoneThrowingSkeleton);
+			NPC.width = 18;
+			NPC.height = 40;
+			NPC.damage = 14;
+			NPC.defense = 6;
+			NPC.lifeMax = 200;
+			NPC.lavaImmune = true;
+			NPC.buffImmune[BuffID.OnFire] = true;
+			NPC.HitSound = new(Mod.Name + "/Sounds/NPCHit/DarkSoldierHurt") { Volume = 0.7f, MaxInstances = 5 };
+			NPC.DeathSound = new(Mod.Name + "/Sounds/NPCKilled/DarkSoldierDeath") { Volume = 0.7f, MaxInstances = 5 };
+			NPC.value = 6000f;
+			NPC.knockBackResist = 0.5f;
+			NPC.aiStyle = -1;
+			AIType = NPCID.BoneThrowingSkeleton;
+			AnimationType = NPCID.BoneThrowingSkeleton;
+			Banner = NPC.type;
+			BannerItem = ModContent.ItemType<Items.Placeable.DarkSoldierBanner>();
+		}
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		{
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+			{
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
+				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
+			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void OnKill()
 		{
-			if (npc.life <= 0)
+			Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
+			for (int k = 0; k < 2; k++)
 			{
-				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/DarkSoldier_Gore_Head"), 1f);
-				for (int k = 0; k < 1; k++)
-				{
-					Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/DarkSoldier_Gore_Arm"), 1f);
-					Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/DarkSoldier_Gore_Leg"), 1f);
-				}
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
 			}
 		}
-		public override void NPCLoot()
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			if (Main.rand.Next(1000) == 0) //0.1% chance
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.BreadAndJelly>(), 1000)); //0.1% chance
+			if (!NPC.downedBoss3) 
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Quest.BreadAndJelly>());
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.HissyStaff>(), 1000)); //0.1% chance & not defeated Skeletron
 			}
-			if (Main.rand.Next(1000) == 0 && !NPC.downedBoss3) //0.1% chance & not defeated Skeletron
+			else
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Weapons.HissyStaff>());
-			}
-			if (Main.rand.Next(20) == 0 && NPC.downedBoss3) //5% chance & defeated Skeletron
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Weapons.HissyStaff>());
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.HissyStaff>(), 20)); //5% chance & defeated Skeletron
 			}
 		}
 
@@ -80,18 +92,18 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			//Main.NewText("alertSoundCounter is currenty: " + alertSoundCounter);
 			bool flagVelocityX0OrJustHit = false;
-			if (npc.velocity.X == 0f)
+			if (NPC.velocity.X == 0f)
 			{
 				flagVelocityX0OrJustHit = true;
 			}
-			if (npc.justHit)
+			if (NPC.justHit)
 			{
 				flagVelocityX0OrJustHit = false;
 			}
 			int numIs60 = 60;
 			bool flagVelocityY0 = false;
 			bool flagIfCorrectEnemyFalse;
-			if (npc.type >= NPCID.BoneThrowingSkeleton && npc.type <= NPCID.BoneThrowingSkeleton4 || true)
+			if (NPC.type >= NPCID.BoneThrowingSkeleton && NPC.type <= NPCID.BoneThrowingSkeleton4 || true)
 			{
 				flagIfCorrectEnemyFalse = false;
 			}
@@ -100,138 +112,138 @@ namespace RijamsMod.NPCs.Enemies
 			bool flag7True = true;
 			if (!flag6False && flag7True)
 			{
-				if (npc.velocity.Y == 0f && ((npc.velocity.X > 0f && npc.direction < 0) || (npc.velocity.X < 0f && npc.direction > 0)))
+				if (NPC.velocity.Y == 0f && ((NPC.velocity.X > 0f && NPC.direction < 0) || (NPC.velocity.X < 0f && NPC.direction > 0)))
 				{
 					flagVelocityY0 = true;
 				}
-				if (npc.position.X == npc.oldPosition.X || npc.ai[3] >= (float)numIs60 || flagVelocityY0)
+				if (NPC.position.X == NPC.oldPosition.X || NPC.ai[3] >= (float)numIs60 || flagVelocityY0)
 				{
-					npc.ai[3] += 1f;
+					NPC.ai[3] += 1f;
 				}
-				else if ((double)Math.Abs(npc.velocity.X) > 0.9 && npc.ai[3] > 0f)
+				else if ((double)Math.Abs(NPC.velocity.X) > 0.9 && NPC.ai[3] > 0f)
 				{
-					npc.ai[3] -= 1f;
+					NPC.ai[3] -= 1f;
 				}
-				if (npc.ai[3] > (float)(numIs60 * 10))
+				if (NPC.ai[3] > (float)(numIs60 * 10))
 				{
-					npc.ai[3] = 0f;
+					NPC.ai[3] = 0f;
 				}
-				if (npc.justHit)
+				if (NPC.justHit)
 				{
-					npc.ai[3] = 0f;
+					NPC.ai[3] = 0f;
 				}
-				if (npc.ai[3] == (float)numIs60)
+				if (NPC.ai[3] == (float)numIs60)
 				{
-					npc.netUpdate = true;
+					NPC.netUpdate = true;
 				}
 			}
-			if (npc.ai[3] < (float)numIs60 && (Main.eclipse || !Main.dayTime || (double)npc.position.Y > Main.worldSurface * 16.0 ))
+			if (NPC.ai[3] < (float)numIs60 && (Main.eclipse || !Main.dayTime || (double)NPC.position.Y > Main.worldSurface * 16.0 ))
 			{
-				if ( (npc.type >= NPCID.BoneThrowingSkeleton && npc.type <= NPCID.BoneThrowingSkeleton4 || true) && Main.rand.Next(800) == 0)
+				if ( (NPC.type >= NPCID.BoneThrowingSkeleton && NPC.type <= NPCID.BoneThrowingSkeleton4 || true) && Main.rand.NextBool(800))
 				{
-					Main.PlaySound(SoundLoader.customSoundType, (int)npc.position.X, (int)npc.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/DarkSoldierIdle"));
+					SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/DarkSoldierIdle") { MaxInstances = 5 }, NPC.position);
 				}
-				npc.TargetClosest();
+				NPC.TargetClosest();
 			}
-			else if (!(npc.ai[2] > 0f))
+			else if (!(NPC.ai[2] > 0f))
 			{
-				if (Main.dayTime && (double)(npc.position.Y / 16f) < Main.worldSurface && npc.timeLeft > 10)
+				if (Main.dayTime && (double)(NPC.position.Y / 16f) < Main.worldSurface && NPC.timeLeft > 10)
 				{
-					npc.timeLeft = 10;
+					NPC.timeLeft = 10;
 				}
-				if (npc.velocity.X == 0f)
+				if (NPC.velocity.X == 0f)
 				{
-					if (npc.velocity.Y == 0f)
+					if (NPC.velocity.Y == 0f)
 					{
 						//stand still and then turns around only for walking
-						npc.ai[0] += 1f;
-						if (npc.ai[0] >= 2f)
+						NPC.ai[0] += 1f;
+						if (NPC.ai[0] >= 2f)
 						{
-							npc.direction *= -1;
-							npc.spriteDirection = npc.direction;
-							npc.ai[0] = 0f;
+							NPC.direction *= -1;
+							NPC.spriteDirection = NPC.direction;
+							NPC.ai[0] = 0f;
 						}
 					}
 				}
 				else
 				{
-					npc.ai[0] = 0f;
+					NPC.ai[0] = 0f;
 				}
-				if (npc.direction == 0)
+				if (NPC.direction == 0)
 				{
-					npc.direction = 1;
+					NPC.direction = 1;
 				}
 			}
-			if (!(npc.type < NPCID.BoneThrowingSkeleton || npc.type > NPCID.BoneThrowingSkeleton4 || false))
+			if (!(NPC.type < NPCID.BoneThrowingSkeleton || NPC.type > NPCID.BoneThrowingSkeleton4 || false))
 			{
 				float numIs1f = 1f;
-				if (npc.velocity.X < 0f - numIs1f || npc.velocity.X > numIs1f)
+				if (NPC.velocity.X < 0f - numIs1f || NPC.velocity.X > numIs1f)
 				{
-					if (npc.velocity.Y == 0f)
+					if (NPC.velocity.Y == 0f)
 					{
-						npc.velocity *= 0.8f;//0.8f;
+						NPC.velocity *= 0.8f;//0.8f;
 					}
 				}
-				else if (npc.velocity.X < numIs1f && npc.direction == 1)
+				else if (NPC.velocity.X < numIs1f && NPC.direction == 1)
 				{
-					npc.velocity.X += 0.07f;
-					if (npc.velocity.X > numIs1f)
+					NPC.velocity.X += 0.07f;
+					if (NPC.velocity.X > numIs1f)
 					{
-						npc.velocity.X = numIs1f;
+						NPC.velocity.X = numIs1f;
 					}
 				}
-				else if (npc.velocity.X > 0f - numIs1f && npc.direction == -1)
+				else if (NPC.velocity.X > 0f - numIs1f && NPC.direction == -1)
 				{
-					npc.velocity.X -= 0.07f;
-					if (npc.velocity.X < 0f - numIs1f)
+					NPC.velocity.X -= 0.07f;
+					if (NPC.velocity.X < 0f - numIs1f)
 					{
-						npc.velocity.X = 0f - numIs1f;
+						NPC.velocity.X = 0f - numIs1f;
 					}
 				}
 			}
-			if ((npc.type >= NPCID.BoneThrowingSkeleton && npc.type <= NPCID.BoneThrowingSkeleton4 || true) )
+			if ((NPC.type >= NPCID.BoneThrowingSkeleton && NPC.type <= NPCID.BoneThrowingSkeleton4 || true) )
 			{
-				bool flagIfMartians = npc.type == NPCID.BrainScrambler || npc.type == NPCID.RayGunner || npc.type == NPCID.MartianWalker;
-				bool flagIfVortexQueen = npc.type == NPCID.VortexHornetQueen;
+				bool flagIfMartians = NPC.type == NPCID.BrainScrambler || NPC.type == NPCID.RayGunner || NPC.type == NPCID.MartianWalker;
+				bool flagIfVortexQueen = NPC.type == NPCID.VortexHornetQueen;
 				bool flag18True = true;
 				int numIsNeg1 = -1;
 				int numIsAlsoNeg1 = -1;
-				if (npc.confused)
+				if (NPC.confused)
 				{
-					npc.ai[2] = 0f;
+					NPC.ai[2] = 0f;
 				}
 				else
 				{
-					if (npc.ai[1] > 0f)
+					if (NPC.ai[1] > 0f)
 					{
-						npc.ai[1] -= 1f;
+						NPC.ai[1] -= 1f;
 					}
-					if (npc.justHit)
+					if (NPC.justHit)
 					{
-						npc.ai[1] = 30f;
-						npc.ai[2] = 0f;
+						NPC.ai[1] = 30f;
+						NPC.ai[2] = 0f;
 					}
 					int numIs70 = 70;
 					int numIs35 = numIs70 / 2;
-					if (npc.ai[2] > 0f)
+					if (NPC.ai[2] > 0f)
 					{
 						if (flag18True)
 						{
-							npc.TargetClosest();
+							NPC.TargetClosest();
 						}
-						if (npc.ai[1] == (float)numIs35)
+						if (NPC.ai[1] == (float)numIs35)
 						{
 							float numIs7f = 7f;
-							Vector2 vectoryForProj = new Vector2(npc.position.X + (float)npc.width * 0.5f, npc.position.Y + (float)npc.height * 0.5f);
-							float projSpeedX = Main.player[npc.target].position.X + (float)Main.player[npc.target].width * 0.5f - vectoryForProj.X;
+							Vector2 vectoryForProj = new(NPC.position.X + (float)NPC.width * 0.5f, NPC.position.Y + (float)NPC.height * 0.5f);
+							float projSpeedX = Main.player[NPC.target].position.X + (float)Main.player[NPC.target].width * 0.5f - vectoryForProj.X;
 							float projSpeedXAbs; //= Math.Abs(projSpeedX) * 0.1f;
-							if (npc.type >= NPCID.BoneThrowingSkeleton && npc.type <= NPCID.BoneThrowingSkeleton4 || true)
+							if (NPC.type >= NPCID.BoneThrowingSkeleton && NPC.type <= NPCID.BoneThrowingSkeleton4 || true)
 							{
 								projSpeedXAbs = Math.Abs(projSpeedX) * (float)Main.rand.Next(10, 20) * 0.01f;
 							}
-							float projSpeedY = Main.player[npc.target].position.Y + (float)Main.player[npc.target].height * 0.5f - vectoryForProj.Y - projSpeedXAbs;
+							float projSpeedY = Main.player[NPC.target].position.Y + (float)Main.player[NPC.target].height * 0.5f - vectoryForProj.Y - projSpeedXAbs;
 							float sqrtXto2PlusYto2 = (float)Math.Sqrt(projSpeedX * projSpeedX + projSpeedY * projSpeedY);
-							npc.netUpdate = true;
+							NPC.netUpdate = true;
 							sqrtXto2PlusYto2 = numIs7f / sqrtXto2PlusYto2;
 							projSpeedX *= sqrtXto2PlusYto2;
 							projSpeedY *= sqrtXto2PlusYto2;
@@ -241,58 +253,58 @@ namespace RijamsMod.NPCs.Enemies
 							vectoryForProj.Y += projSpeedY;
 							if (!Main.dedServ)
 							{
-								Main.PlaySound(SoundLoader.customSoundType, (int)npc.position.X, (int)npc.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/DarkSoldierShoot"));
-								Projectile.NewProjectile(vectoryForProj.X, vectoryForProj.Y, projSpeedX, projSpeedY, projType, projDamage, 0f, Main.myPlayer);
+								SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/DarkSoldierShoot") { MaxInstances = 10 }, NPC.position);
+								Projectile.NewProjectile(Entity.GetSource_FromAI(), vectoryForProj.X, vectoryForProj.Y, projSpeedX, projSpeedY, projType, projDamage, 0f, Main.myPlayer);
 							}
 							if (Math.Abs(projSpeedY) > Math.Abs(projSpeedX) * 2f)
 							{
 								if (projSpeedY > 0f)
 								{
-									npc.ai[2] = 1f;
+									NPC.ai[2] = 1f;
 								}
 								else
 								{
-									npc.ai[2] = 5f;
+									NPC.ai[2] = 5f;
 								}
 							}
 							else if (Math.Abs(projSpeedX) > Math.Abs(projSpeedY) * 2f)
 							{
-								npc.ai[2] = 3f;
+								NPC.ai[2] = 3f;
 							}
 							else if (projSpeedY > 0f)
 							{
-								npc.ai[2] = 2f;
+								NPC.ai[2] = 2f;
 							}
 							else
 							{
-								npc.ai[2] = 4f;
+								NPC.ai[2] = 4f;
 							}
 						}
-						if ((npc.velocity.Y != 0f && !flagIfVortexQueen) || npc.ai[1] <= 0f)
+						if ((NPC.velocity.Y != 0f && !flagIfVortexQueen) || NPC.ai[1] <= 0f)
 						{
-							npc.ai[2] = 0f;
-							npc.ai[1] = 0f;
+							NPC.ai[2] = 0f;
+							NPC.ai[1] = 0f;
 						}
-						else if (!flagIfMartians || (numIsNeg1 != -1 && npc.ai[1] >= (float)numIsNeg1 && npc.ai[1] < (float)(numIsNeg1 + numIsAlsoNeg1) && (!flagIfVortexQueen || npc.velocity.Y == 0f)))
+						else if (!flagIfMartians || (numIsNeg1 != -1 && NPC.ai[1] >= (float)numIsNeg1 && NPC.ai[1] < (float)(numIsNeg1 + numIsAlsoNeg1) && (!flagIfVortexQueen || NPC.velocity.Y == 0f)))
 						{
-							npc.velocity.X *= 0.9f;//0.9f;
-							npc.spriteDirection = npc.direction;
+							NPC.velocity.X *= 0.9f;//0.9f;
+							NPC.spriteDirection = NPC.direction;
 						}
 					}
-					else if ((npc.ai[2] <= 0f || flagIfMartians) && (npc.velocity.Y == 0f || flagIfVortexQueen) && npc.ai[1] <= 0f && !Main.player[npc.target].dead)
+					else if ((NPC.ai[2] <= 0f || flagIfMartians) && (NPC.velocity.Y == 0f || flagIfVortexQueen) && NPC.ai[1] <= 0f && !Main.player[NPC.target].dead)
 					{
-						bool flag20 = Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height);
-						if (Main.player[npc.target].stealth == 0f && Main.player[npc.target].itemAnimation == 0)
+						bool flag20 = Collision.CanHit(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height);
+						if (Main.player[NPC.target].stealth == 0f && Main.player[NPC.target].itemAnimation == 0)
 						{
 							flag20 = false;
 						}
 						if (flag20)//about to attack
 						{
 							float numIs10f = 10f;
-							Vector2 vector32 = new Vector2(npc.position.X + (float)npc.width * 0.5f, npc.position.Y + (float)npc.height * 0.5f);
-							float numPosXPlusWitdth = Main.player[npc.target].position.X + (float)Main.player[npc.target].width * 0.5f - vector32.X;
+							Vector2 vector32 = new (NPC.position.X + (float)NPC.width * 0.5f, NPC.position.Y + (float)NPC.height * 0.5f);
+							float numPosXPlusWitdth = Main.player[NPC.target].position.X + (float)Main.player[NPC.target].width * 0.5f - vector32.X;
 							float numPosXPlusWitdthAbs = Math.Abs(numPosXPlusWitdth) * 0.1f;
-							float numPosYPlusHeight = Main.player[npc.target].position.Y + (float)Main.player[npc.target].height * 0.5f - vector32.Y - numPosXPlusWitdthAbs;
+							float numPosYPlusHeight = Main.player[NPC.target].position.Y + (float)Main.player[NPC.target].height * 0.5f - vector32.Y - numPosXPlusWitdthAbs;
 							numPosXPlusWitdth += (float)Main.rand.Next(-40, 41);
 							numPosYPlusHeight += (float)Main.rand.Next(-40, 41);
 							float numSqrtPosX2PlusPosY2 = (float)Math.Sqrt(numPosXPlusWitdth * numPosXPlusWitdth + numPosYPlusHeight * numPosYPlusHeight);
@@ -301,7 +313,7 @@ namespace RijamsMod.NPCs.Enemies
 							{
 								if (!Main.dedServ && alertSoundCounter == 0)
 								{
-									Main.PlaySound(SoundLoader.customSoundType, (int)npc.position.X, (int)npc.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/DarkSoldierAlert"));
+									SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/DarkSoldierAlert") { MaxInstances = 5 }, NPC.position);
 									alertSoundCounter += 5;
 								}
 								if (alertSoundCounter > 0)
@@ -312,154 +324,172 @@ namespace RijamsMod.NPCs.Enemies
 								{
 									alertSoundCounter = 0;
 								}
-								npc.netUpdate = true;
-								npc.velocity.X *= 0.5f;
+								NPC.netUpdate = true;
+								NPC.velocity.X *= 0.5f;
 								numSqrtPosX2PlusPosY2 = numIs10f / numSqrtPosX2PlusPosY2;
 								numPosXPlusWitdth *= numSqrtPosX2PlusPosY2;
 								numPosYPlusHeight *= numSqrtPosX2PlusPosY2;
-								npc.ai[2] = 3f;
-								npc.ai[1] = numIs70;
+								NPC.ai[2] = 3f;
+								NPC.ai[1] = numIs70;
 								if (Math.Abs(numPosYPlusHeight) > Math.Abs(numPosXPlusWitdth) * 2f)
 								{
 									if (numPosYPlusHeight > 0f)
 									{
-										npc.ai[2] = 1f;
+										NPC.ai[2] = 1f;
 									}
 									else
 									{
-										npc.ai[2] = 5f;
+										NPC.ai[2] = 5f;
 									}
 								}
 								else if (Math.Abs(numPosXPlusWitdth) > Math.Abs(numPosYPlusHeight) * 2f)
 								{
-									npc.ai[2] = 3f;
+									NPC.ai[2] = 3f;
 								}
 								else if (numPosYPlusHeight > 0f)
 								{
-									npc.ai[2] = 2f;
+									NPC.ai[2] = 2f;
 								}
 								else
 								{
-									npc.ai[2] = 4f;
+									NPC.ai[2] = 4f;
 								}
 							}
 						}
 					}
-					if (npc.ai[2] <= 0f || (flagIfMartians && (numIsNeg1 == -1 || !(npc.ai[1] >= (float)numIsNeg1) || !(npc.ai[1] < (float)(numIsNeg1 + numIsAlsoNeg1)))))
+					if (NPC.ai[2] <= 0f || (flagIfMartians && (numIsNeg1 == -1 || !(NPC.ai[1] >= (float)numIsNeg1) || !(NPC.ai[1] < (float)(numIsNeg1 + numIsAlsoNeg1)))))
 					{
 						float numIs1f = 1f;
 						float numIs007f = 0.07f;
 						float numIs08f = 0.8f;
-						if (npc.velocity.X < 0f - numIs1f || npc.velocity.X > numIs1f)
+						if (NPC.velocity.X < 0f - numIs1f || NPC.velocity.X > numIs1f)
 						{
-							if (npc.velocity.Y == 0f)
+							if (NPC.velocity.Y == 0f)
 							{
-								npc.velocity *= numIs08f;//When jumping and lands
+								NPC.velocity *= numIs08f;//When jumping and lands
 							}
 						}
-						else if (npc.velocity.X < numIs1f && npc.direction == 1)
+						else if (NPC.velocity.X < numIs1f && NPC.direction == 1)
 						{
-							npc.velocity.X += numIs007f;
-							if (npc.velocity.X > numIs1f)
+							NPC.velocity.X += numIs007f;
+							if (NPC.velocity.X > numIs1f)
 							{
-								npc.velocity.X = numIs1f; //Moving right. Setting a higher value does make them walk faster, but its super jittery
+								NPC.velocity.X = numIs1f; //Moving right. Setting a higher value does make them walk faster, but its super jittery
 							}
 						}
-						else if (npc.velocity.X > 0f - numIs1f && npc.direction == -1)
+						else if (NPC.velocity.X > 0f - numIs1f && NPC.direction == -1)
 						{
-							npc.velocity.X -= numIs007f;
-							if (npc.velocity.X < 0f - numIs1f)
+							NPC.velocity.X -= numIs007f;
+							if (NPC.velocity.X < 0f - numIs1f)
 							{
-								npc.velocity.X = 0f - numIs1f; //moving left
+								NPC.velocity.X = 0f - numIs1f; //moving left
 							}
 						}
 					}
 				}
 			}
 			bool flagTileChecker = false;
-			if (npc.velocity.Y == 0f)
+			if (NPC.velocity.Y == 0f)
 			{
-				int numNPCPosYAndHeight = (int)(npc.position.Y + (float)npc.height + 7f) / 16;
-				int numNPCPosX = (int)npc.position.X / 16;
-				int numNPCPosXAndWidth = (int)(npc.position.X + (float)npc.width) / 16;
+				int numNPCPosYAndHeight = (int)(NPC.position.Y + (float)NPC.height + 7f) / 16;
+				int numNPCPosX = (int)NPC.position.X / 16;
+				int numNPCPosXAndWidth = (int)(NPC.position.X + (float)NPC.width) / 16;
 				for (int num174 = numNPCPosX; num174 <= numNPCPosXAndWidth; num174++)
 				{
 					if (Main.tile[num174, numNPCPosYAndHeight] == null)
 					{
 						return;
 					}
-					if (Main.tile[num174, numNPCPosYAndHeight].nactive() && Main.tileSolid[Main.tile[num174, numNPCPosYAndHeight].type])
+					if (Main.tile[num174, numNPCPosYAndHeight].HasUnactuatedTile && Main.tileSolid[Main.tile[num174, numNPCPosYAndHeight].TileType])
 					{
 						flagTileChecker = true;
 						break;
 					}
 				}
 			}
-			if (npc.velocity.Y >= 0f)
+			if (NPC.velocity.Y >= 0f)
 			{
 				int numNPCVelocityX = 0;
-				if (npc.velocity.X < 0f)
+				if (NPC.velocity.X < 0f)
 				{
 					numNPCVelocityX = -1;//-1
 				}
-				if (npc.velocity.X > 0f)
+				if (NPC.velocity.X > 0f)
 				{
 					numNPCVelocityX = 1;//1
 				}
-				Vector2 vectorNPCPos = npc.position;
-				vectorNPCPos.X += npc.velocity.X;
-				int numNPCPosXAndStuff = (int)((vectorNPCPos.X + (float)(npc.width / 2) + (float)((npc.width / 2 + 1) * numNPCVelocityX)) / 16f);
-				int numNPCPosYAndStuff = (int)((vectorNPCPos.Y + (float)npc.height - 1f) / 16f);
-				if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff] == null)
+				Vector2 vectorNPCPos = NPC.position;
+				vectorNPCPos.X += NPC.velocity.X;
+				int numNPCPosXAndStuff = (int)((vectorNPCPos.X + (float)(NPC.width / 2) + (float)((NPC.width / 2 + 1) * numNPCVelocityX)) / 16f);
+				int numNPCPosYAndStuff = (int)((vectorNPCPos.Y + (float)NPC.height - 1f) / 16f);
+				if (WorldGen.InWorld(numNPCPosXAndStuff, numNPCPosYAndStuff, 4))
 				{
-					Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff] = new Tile();
-				}
-				if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1] == null)
-				{
-					Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1] = new Tile();
-				}
-				if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2] == null)
-				{
-					Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2] = new Tile();
-				}
-				if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3] == null)
-				{
-					Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3] = new Tile();
-				}
-				if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff + 1] == null)
-				{
-					Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff + 1] = new Tile();
-				}
-				if (Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3] == null)
-				{
-					Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3] = new Tile();
-				}
-				if ((float)(numNPCPosXAndStuff * 16) < vectorNPCPos.X + (float)npc.width && (float)(numNPCPosXAndStuff * 16 + 16) > vectorNPCPos.X && ((Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].nactive() && !Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].topSlope() && !Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].topSlope() && Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].type] && !Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].type]) || (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].halfBrick() && Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].nactive())) && (!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].nactive() || !Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].type] || Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].type] || (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].halfBrick() && (!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 4].nactive() || !Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 4].type] || Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 4].type]))) && (!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2].nactive() || !Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2].type] || Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2].type]) && (!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3].nactive() || !Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3].type] || Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3].type]) && (!Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3].nactive() || !Main.tileSolid[Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3].type]))
-				{
-					float numNPCPosYTimes16 = numNPCPosYAndStuff * 16;
-					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].halfBrick())
+					// readonly?
+					/*if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff] == null)
 					{
-						numNPCPosYTimes16 += 8f;
+						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff] = default(Tile);
 					}
-					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].halfBrick())
+					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1] == null)
 					{
-						numNPCPosYTimes16 -= 8f;
+						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1] = default(Tile);
 					}
-					if (numNPCPosYTimes16 < vectorNPCPos.Y + (float)npc.height)
+					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2] == null)
 					{
-						float numNPCPosYPlusHeight = vectorNPCPos.Y + (float)npc.height - numNPCPosYTimes16;
-						float numIs16_1f = 16.1f;
-						if (numNPCPosYPlusHeight <= numIs16_1f)
+						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2] = default(Tile);
+					}
+					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3] == null)
+					{
+						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3] = default(Tile);
+					}
+					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff + 1] == null)
+					{
+						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff + 1] = default(Tile);
+					}
+					if (Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3] == null)
+					{
+						Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3] = default(Tile);
+					}*/
+					if ((float)(numNPCPosXAndStuff * 16) < vectorNPCPos.X + (float)NPC.width && (float)(numNPCPosXAndStuff * 16 + 16) > vectorNPCPos.X && 
+						((Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].HasUnactuatedTile && !Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].TopSlope && 
+						!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].TopSlope && Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].TileType] && 
+						!Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].TileType]) || (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].IsHalfBlock && 
+						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].HasUnactuatedTile)) && (!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].HasUnactuatedTile || 
+						!Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].TileType] || 
+						Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].TileType] || (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].IsHalfBlock && 
+						(!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 4].HasUnactuatedTile || !Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 4].TileType] || 
+						Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 4].TileType]))) && (!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2].HasUnactuatedTile || 
+						!Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2].TileType] || 
+						Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2].TileType]) && (!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3].HasUnactuatedTile || 
+						!Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3].TileType] || 
+						Main.tileSolidTop[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3].TileType]) && 
+						(!Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3].HasUnactuatedTile || 
+						!Main.tileSolid[Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3].TileType]))
+					{
+						float num82 = numNPCPosYAndStuff * 16;
+						if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].IsHalfBlock)
 						{
-							npc.gfxOffY += npc.position.Y + (float)npc.height - numNPCPosYTimes16;
-							npc.position.Y = numNPCPosYTimes16 - (float)npc.height;
-							if (numNPCPosYPlusHeight < 9f)
+							num82 += 8f;
+						}
+						if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].IsHalfBlock)
+						{
+							num82 -= 8f;
+						}
+						if (num82 < vectorNPCPos.Y + (float)NPC.height)
+						{
+							float num83 = vectorNPCPos.Y + (float)NPC.height - num82;
+							float num84 = 16.1f;
+							if (num83 <= num84)
 							{
-								npc.stepSpeed = 1f;//1f;
-							}
-							else
-							{
-								npc.stepSpeed = 2f;//2f;
+								NPC.gfxOffY += NPC.position.Y + (float)NPC.height - num82;
+								NPC.position.Y = num82 - (float)NPC.height;
+								if (num83 < 9f)
+								{
+									NPC.stepSpeed = 1f;
+								}
+								else
+								{
+									NPC.stepSpeed = 2f;
+								}
 							}
 						}
 					}
@@ -467,88 +497,95 @@ namespace RijamsMod.NPCs.Enemies
 			}
 			if (flagTileChecker)
 			{
-				int numNPCPosXWidthDirect = (int)((npc.position.X + (float)(npc.width / 2) + (float)(15 * npc.direction)) / 16f);
-				int numNPCPosYandHeight = (int)((npc.position.Y + (float)npc.height - 15f) / 16f);
-				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight] == null)
+				int numNPCPosXWidthDirect = (int)((NPC.position.X + (float)(NPC.width / 2) + (float)(15 * NPC.direction)) / 16f);
+				int numNPCPosYandHeight = (int)((NPC.position.Y + (float)NPC.height - 15f) / 16f);
+				// readonly?
+				/*if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight] = new Tile();
+					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight] = default(Tile);
 				}
 				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1] = new Tile();
+					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1] = default(Tile);
 				}
 				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2] = new Tile();
+					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2] = default(Tile);
 				}
 				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3] = new Tile();
+					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3] = default(Tile);
 				}
 				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1] = new Tile();
+					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1] = default(Tile);
 				}
-				if (Main.tile[numNPCPosXWidthDirect + npc.direction, numNPCPosYandHeight - 1] == null)
+				if (Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight - 1] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect + npc.direction, numNPCPosYandHeight - 1] = new Tile();
+					Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight - 1] = default(Tile);
 				}
-				if (Main.tile[numNPCPosXWidthDirect + npc.direction, numNPCPosYandHeight + 1] == null)
+				if (Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight + 1] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect + npc.direction, numNPCPosYandHeight + 1] = new Tile();
+					Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight + 1] = default(Tile);
 				}
-				if (Main.tile[numNPCPosXWidthDirect - npc.direction, numNPCPosYandHeight + 1] == null)
+				if (Main.tile[numNPCPosXWidthDirect - NPC.direction, numNPCPosYandHeight + 1] == null)
 				{
-					Main.tile[numNPCPosXWidthDirect - npc.direction, numNPCPosYandHeight + 1] = new Tile();
+					Main.tile[numNPCPosXWidthDirect - NPC.direction, numNPCPosYandHeight + 1] = default(Tile);
 				}
-				Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1].halfBrick();
-				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].nactive() && (TileLoader.IsClosedDoor(Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1]) || Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].type == 388) && flagIfCorrectEnemyFalse)
+				Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1].IsHalfBlock;*/
+				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].HasUnactuatedTile && (TileLoader.IsClosedDoor(Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1]) || Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].TileType == TileID.TallGateClosed) && flagIfCorrectEnemyFalse)
 				{
-					npc.ai[2] += 1f;
-					npc.ai[3] = 0f;
-					if (npc.ai[2] >= 60f)
+					NPC.ai[2] += 1f;
+					NPC.ai[3] = 0f;
+					if (NPC.ai[2] >= 60f)
 					{
-						npc.velocity.X = 0.5f * (float)(-npc.direction);
-						int num183 = 5;
-						if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].type == 388) //Tall Gate Closed
+						bool flag14 = true;
+						bool flag15 = Main.player[NPC.target].ZoneGraveyard && Main.rand.NextBool(60);
+						if ((!Main.bloodMoon || Main.getGoodWorld) && !flag15 && flag14)
 						{
-							num183 = 2;
+							NPC.ai[1] = 0f;
 						}
-						npc.ai[1] += num183;
-						npc.ai[2] = 0f;
-						bool flag23AI = false;
-						if (npc.ai[1] >= 10f)
+						NPC.velocity.X = 0.5f * (float)(-NPC.direction);
+						int num87 = 5;
+						if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].TileType == TileID.TallGateClosed)
 						{
-							flag23AI = true;
-							npc.ai[1] = 10f;
+							num87 = 2;
+						}
+						NPC.ai[1] += num87;
+						NPC.ai[2] = 0f;
+						bool flag16 = false;
+						if (NPC.ai[1] >= 10f)
+						{
+							flag16 = true;
+							NPC.ai[1] = 10f;
 						}
 						WorldGen.KillTile(numNPCPosXWidthDirect, numNPCPosYandHeight - 1, fail: true);
-						if ((Main.netMode != NetmodeID.MultiplayerClient || !flag23AI) && flag23AI && Main.netMode != NetmodeID.MultiplayerClient)
+						if ((Main.netMode != NetmodeID.MultiplayerClient || !flag16) && flag16 && Main.netMode != NetmodeID.MultiplayerClient)
 						{
 							if (TileLoader.OpenDoorID(Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1]) >= 0)
 							{
-								bool flag24 = WorldGen.OpenDoor(numNPCPosXWidthDirect, numNPCPosYandHeight - 1, npc.direction);
-								if (!flag24)
+								bool flag17 = WorldGen.OpenDoor(numNPCPosXWidthDirect, numNPCPosYandHeight - 1, NPC.direction);
+								if (!flag17)
 								{
-									npc.ai[3] = numIs60;
-									npc.netUpdate = true;
+									NPC.ai[3] = numIs60;
+									NPC.netUpdate = true;
 								}
-								if (Main.netMode == NetmodeID.Server && flag24)
+								if (Main.netMode == NetmodeID.Server && flag17)
 								{
-									NetMessage.SendData(MessageID.ChangeDoor, -1, -1, null, 0, numNPCPosXWidthDirect, numNPCPosYandHeight - 1, npc.direction); 
+									NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 0, numNPCPosXWidthDirect, numNPCPosYandHeight - 1, NPC.direction);
 								}
 							}
-							if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].type == 388) //Tall Gate Closed
+							if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].TileType == TileID.TallGateClosed)
 							{
-								bool flag25 = WorldGen.ShiftTallGate(numNPCPosXWidthDirect, numNPCPosYandHeight - 1, closing: false);
-								if (!flag25)
+								bool flag18 = WorldGen.ShiftTallGate(numNPCPosXWidthDirect, numNPCPosYandHeight - 1, closing: false);
+								if (!flag18)
 								{
-									npc.ai[3] = numIs60;
-									npc.netUpdate = true;
+									NPC.ai[3] = numIs60;
+									NPC.netUpdate = true;
 								}
-								if (Main.netMode == NetmodeID.Server && flag25)
+								if (Main.netMode == NetmodeID.Server && flag18)
 								{
-									NetMessage.SendData(MessageID.ChangeDoor, -1, -1, null, 4, numNPCPosXWidthDirect, numNPCPosYandHeight - 1);
+									NetMessage.SendData(MessageID.ToggleDoorState, -1, -1, null, 4, numNPCPosXWidthDirect, numNPCPosYandHeight - 1);
 								}
 							}
 						}
@@ -556,82 +593,82 @@ namespace RijamsMod.NPCs.Enemies
 				}
 				else
 				{
-					int spriteDirection = npc.spriteDirection;
-					if ((npc.velocity.X < 0f && spriteDirection == -1) || (npc.velocity.X > 0f && spriteDirection == 1))
+					int spriteDirection = NPC.spriteDirection;
+					if ((NPC.velocity.X < 0f && spriteDirection == -1) || (NPC.velocity.X > 0f && spriteDirection == 1))
 					{
-						if (npc.height >= 32 && Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2].nactive() && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2].type])
+						if (NPC.height >= 32 && Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2].HasUnactuatedTile && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2].TileType])
 						{
-							if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3].nactive() && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3].type])
+							if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3].HasUnactuatedTile && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3].TileType])
 							{
-								npc.velocity.Y = -8f;
-								npc.netUpdate = true;
+								NPC.velocity.Y = -8f;
+								NPC.netUpdate = true;
 							}
 							else
 							{
-								npc.velocity.Y = -7f;
-								npc.netUpdate = true;
+								NPC.velocity.Y = -7f;
+								NPC.netUpdate = true;
 							}
 						}
-						else if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].nactive() && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].type])
+						else if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].HasUnactuatedTile && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].TileType])
 						{
-							npc.velocity.Y = -6f;
-							npc.netUpdate = true;
+							NPC.velocity.Y = -6f;
+							NPC.netUpdate = true;
 						}
-						else if (npc.position.Y + (float)npc.height - (float)(numNPCPosYandHeight * 16) > 20f && Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight].nactive() && !Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight].topSlope() && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight].type])
+						else if (NPC.position.Y + (float)NPC.height - (float)(numNPCPosYandHeight * 16) > 20f && Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight].HasUnactuatedTile && !Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight].TopSlope && Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight].TileType])
 						{
-							npc.velocity.Y = -5f;
-							npc.netUpdate = true;
+							NPC.velocity.Y = -5f;
+							NPC.netUpdate = true;
 						}
-						else if (npc.directionY < 0 && (!Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1].nactive() || !Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1].type]) && (!Main.tile[numNPCPosXWidthDirect + npc.direction, numNPCPosYandHeight + 1].nactive() || !Main.tileSolid[Main.tile[numNPCPosXWidthDirect + npc.direction, numNPCPosYandHeight + 1].type]))
+						else if (NPC.directionY < 0 && (!Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1].HasUnactuatedTile || !Main.tileSolid[Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1].TileType]) && (!Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight + 1].HasUnactuatedTile || !Main.tileSolid[Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight + 1].TileType]))
 						{
-							npc.velocity.Y = -8f;
-							npc.velocity.X *= 3f;//1.5
-							npc.netUpdate = true;
+							NPC.velocity.Y = -8f;
+							NPC.velocity.X *= 3f;//1.5
+							NPC.netUpdate = true;
 						}
 						else if (flagIfCorrectEnemyFalse)
 						{
-							npc.ai[1] = 0f;
-							npc.ai[2] = 0f;
+							NPC.ai[1] = 0f;
+							NPC.ai[2] = 0f;
 						}
-						if (npc.velocity.Y == 0f && flagVelocityX0OrJustHit && npc.ai[3] == 1f)
+						if (NPC.velocity.Y == 0f && flagVelocityX0OrJustHit && NPC.ai[3] == 1f)
 						{
-							npc.velocity.Y = -5f;
+							NPC.velocity.Y = -5f;
 						}
 					}
 					//The little jumpy thing when the player is close and the enemy is standing still
-					if (npc.velocity.Y == 0f && Math.Abs(npc.position.X + (float)(npc.width / 2) - (Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2))) < 100f && Math.Abs(npc.position.Y + (float)(npc.height / 2) - (Main.player[npc.target].position.Y + (float)(Main.player[npc.target].height / 2))) < 50f && ((npc.direction > 0 && npc.velocity.X >= 1f) || (npc.direction < 0 && npc.velocity.X <= -1f)))
+					if (NPC.velocity.Y == 0f && Math.Abs(NPC.position.X + (float)(NPC.width / 2) - (Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2))) < 100f && Math.Abs(NPC.position.Y + (float)(NPC.height / 2) - (Main.player[NPC.target].position.Y + (float)(Main.player[NPC.target].height / 2))) < 50f && ((NPC.direction > 0 && NPC.velocity.X >= 1f) || (NPC.direction < 0 && NPC.velocity.X <= -1f)))
 					{
-						npc.velocity.X *= 2f;
-						if (npc.velocity.X > 3f)
+						NPC.velocity.X *= 2f;
+						if (NPC.velocity.X > 3f)
 						{
-							npc.velocity.X = 3f;
+							NPC.velocity.X = 3f;
 						}
-						if (npc.velocity.X < -3f)
+						if (NPC.velocity.X < -3f)
 						{
-							npc.velocity.X = -3f;
+							NPC.velocity.X = -3f;
 						}
-						npc.velocity.Y = -4f;
-						npc.netUpdate = true;
+						NPC.velocity.Y = -4f;
+						NPC.netUpdate = true;
 					}
 				}
 			}
 			else if (flagIfCorrectEnemyFalse)
 			{
-				npc.ai[1] = 0f;
-				npc.ai[2] = 0f;
+				NPC.ai[1] = 0f;
+				NPC.ai[2] = 0f;
 			}
-			if (Main.netMode == NetmodeID.MultiplayerClient || true || !(npc.ai[3] >= (float)numIs60))
+			if (Main.netMode == NetmodeID.MultiplayerClient || true || !(NPC.ai[3] >= (float)numIs60))
 			{
 				return;
 			}
-			int numPlayerTargetX = (int)Main.player[npc.target].position.X / 16;
-			int numPlayerTargetY = (int)Main.player[npc.target].position.Y / 16;
-			int numIsNPCPosX = (int)npc.position.X / 16;
-			int numIsNPCPosY = (int)npc.position.Y / 16;
+			int numPlayerTargetX = (int)Main.player[NPC.target].position.X / 16;
+			int numPlayerTargetY = (int)Main.player[NPC.target].position.Y / 16;
+			int numIsNPCPosX = (int)NPC.position.X / 16;
+			int numIsNPCPosY = (int)NPC.position.Y / 16;
 			int numIs20 = 20;
 			int numIs0 = 0;
 			bool flag26False = false;
-			if (Math.Abs(npc.position.X - Main.player[npc.target].position.X) + Math.Abs(npc.position.Y - Main.player[npc.target].position.Y) > 2000f)
+			if (Math.Abs(NPC.position.X - Main.player[NPC.target].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.target].position.Y) > 2000f)
 			{
 				numIs0 = 100;
 				flag26False = true;
@@ -642,19 +679,19 @@ namespace RijamsMod.NPCs.Enemies
 				int numIsRandPlrTarX = Main.rand.Next(numPlayerTargetX - numIs20, numPlayerTargetX + numIs20);
 				for (int numIsRandPlrTarY = Main.rand.Next(numPlayerTargetY - numIs20, numPlayerTargetY + numIs20); numIsRandPlrTarY < numPlayerTargetY + numIs20; numIsRandPlrTarY++)
 				{
-					if ((numIsRandPlrTarY < numPlayerTargetY - 4 || numIsRandPlrTarY > numPlayerTargetY + 4 || numIsRandPlrTarX < numPlayerTargetX - 4 || numIsRandPlrTarX > numPlayerTargetX + 4) && (numIsRandPlrTarY < numIsNPCPosY - 1 || numIsRandPlrTarY > numIsNPCPosY + 1 || numIsRandPlrTarX < numIsNPCPosX - 1 || numIsRandPlrTarX > numIsNPCPosX + 1) && Main.tile[numIsRandPlrTarX, numIsRandPlrTarY].nactive())
+					if ((numIsRandPlrTarY < numPlayerTargetY - 4 || numIsRandPlrTarY > numPlayerTargetY + 4 || numIsRandPlrTarX < numPlayerTargetX - 4 || numIsRandPlrTarX > numPlayerTargetX + 4) && (numIsRandPlrTarY < numIsNPCPosY - 1 || numIsRandPlrTarY > numIsNPCPosY + 1 || numIsRandPlrTarX < numIsNPCPosX - 1 || numIsRandPlrTarX > numIsNPCPosX + 1) && Main.tile[numIsRandPlrTarX, numIsRandPlrTarY].HasUnactuatedTile)
 					{
 						bool flagLava = true;
-						if (Main.tile[numIsRandPlrTarX, numIsRandPlrTarY - 1].lava())
+						if (Main.tile[numIsRandPlrTarX, numIsRandPlrTarY - 1].LiquidType == LiquidID.Lava)
 						{
 							flagLava = false;
 						}
-						if (flagLava && Main.tileSolid[Main.tile[numIsRandPlrTarX, numIsRandPlrTarY].type] && !Collision.SolidTiles(numIsRandPlrTarX - 1, numIsRandPlrTarX + 1, numIsRandPlrTarY - 4, numIsRandPlrTarY - 1))
+						if (flagLava && Main.tileSolid[Main.tile[numIsRandPlrTarX, numIsRandPlrTarY].TileType] && !Collision.SolidTiles(numIsRandPlrTarX - 1, numIsRandPlrTarX + 1, numIsRandPlrTarY - 4, numIsRandPlrTarY - 1))
 						{
-							npc.position.X = numIsRandPlrTarX * 16 - npc.width / 2;
-							npc.position.Y = numIsRandPlrTarY * 16 - npc.height;
-							npc.netUpdate = true;
-							npc.ai[3] = -120f;
+							NPC.position.X = numIsRandPlrTarX * 16 - NPC.width / 2;
+							NPC.position.Y = numIsRandPlrTarY * 16 - NPC.height;
+							NPC.netUpdate = true;
+							NPC.ai[3] = -120f;
 						}
 					}
 				}
@@ -663,11 +700,11 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (spawnInfo.player.ZoneUnderworldHeight) //Underworld
+			if (spawnInfo.Player.ZoneUnderworldHeight) //Underworld
 			{
 				return 0.3f;
 			}
-			if ((spawnInfo.spawnTileY <= Main.maxTilesY - 200 && spawnInfo.spawnTileY > (Main.rockLayer + Main.maxTilesY - 200) / 2)) //lower half of the caverns?
+			if ((spawnInfo.SpawnTileY <= Main.maxTilesY - 200 && spawnInfo.SpawnTileY > (Main.rockLayer + Main.maxTilesY - 200) / 2)) //lower half of the caverns?
             {
 				return 0.08f;
             }

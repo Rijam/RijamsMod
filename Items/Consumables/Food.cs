@@ -12,8 +12,16 @@ namespace RijamsMod.Items.Consumables
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Strange Roll");
-			Tooltip.SetDefault("Minor improvements to all stats\n'A strange food from an unknown place'\n'What's inside?'");
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Traveling Merchant]");
+			Tooltip.SetDefault("{$CommonItemTooltip.MediumStats}\n'A strange food from an unknown place'\n'What's inside?'");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Traveling Merchant]", "[c/474747:After defeating Eye of Cthulhu]", null } );
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
+			{
+				new Color(187, 76, 218),
+				new Color(168, 35, 12),
+				new Color(211, 172, 98)
+			};
+			ItemID.Sets.IsFood[Type] = true;
 		}
 		/*public override bool CanUseItem(Player player)
 		{
@@ -22,19 +30,9 @@ namespace RijamsMod.Items.Consumables
 
 		public override void SetDefaults()
 		{
-			item.width = 20;
-			item.height = 24;
-			item.maxStack = 30;
-			item.rare = ItemRarityID.Yellow;
-			item.value = 10000;
-			item.consumable = true;
-			item.useStyle = ItemUseStyleID.EatingUsing;
-			item.useAnimation = 15;
-			item.useTime = 15;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item2;
-			item.buffType = BuffID.WellFed; //Specify an existing buff to be applied when used.
-			item.buffTime = 72000; //20 minutes
+			Item.DefaultToFood(20, 24, BuffID.WellFed2, 72000);
+			Item.rare = ItemRarityID.Yellow;
+			Item.value = 10000;
 		}
 	}
 	public class RyeJam : ModItem
@@ -43,6 +41,14 @@ namespace RijamsMod.Items.Consumables
 		{
 			DisplayName.SetDefault("Rye Jam");
 			Tooltip.SetDefault("Extreme improvements to all stats\n'Wait, how do you pronounce it?'");
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
+			{
+				new Color(242, 225, 23),
+				new Color(195, 181, 155),
+				new Color(105, 56, 15)
+			};
+			ItemID.Sets.IsFood[Type] = true;
 		}
 		/*public override bool CanUseItem(Player player)
 		{
@@ -51,19 +57,9 @@ namespace RijamsMod.Items.Consumables
 
 		public override void SetDefaults()
 		{
-			item.width = 26;
-			item.height = 28;
-			item.maxStack = 30;
-			item.rare = ItemRarityID.Cyan;
-			item.value = 200000;
-			item.consumable = true;
-			item.useStyle = ItemUseStyleID.EatingUsing;
-			item.useAnimation = 15;
-			item.useTime = 15;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item2;
-			item.buffType = ModContent.BuffType<Buffs.ExceptionalFeast>(); //Specify an existing buff to be applied when used.
-			item.buffTime = 18000; //5 minutes
+			Item.DefaultToFood(26, 28, ModContent.BuffType<Buffs.ExceptionalFeast>(), 18000);
+			Item.rare = ItemRarityID.Cyan;
+			Item.value = 200000;
 		}
 		//Tool tip set in GlobalItems
 	}
@@ -73,23 +69,86 @@ namespace RijamsMod.Items.Consumables
 		{
 			DisplayName.SetDefault("Reef-Cola");
 			Tooltip.SetDefault("Move freely in liquids\n'Taste the ocean, with Reef-Cola.'");
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Duke Fishron]", null } );
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
+			{
+				new Color(85, 136, 212),
+				new Color(52, 68, 149),
+				new Color(26, 28, 81)
+			};
+			ItemID.Sets.IsFood[Type] = true;
 		}
 		public override void SetDefaults()
 		{
-			item.width = 16;
-			item.height = 28;
-			item.maxStack = 30;
-			item.rare = ItemRarityID.Blue;
-			item.value = 4000;
-			item.consumable = true;
-			item.useStyle = ItemUseStyleID.EatingUsing;
-			item.useAnimation = 15;
-			item.useTime = 15;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item3;
-			item.buffType = ModContent.BuffType<Buffs.SwimBoostBuff>();
-			item.buffTime = 3600; //1 minute
+			Item.DefaultToFood(16, 28, ModContent.BuffType<Buffs.SwimBoostBuff>(), 3600, true); //The extra true here tells it the item is a drink.
+			Item.rare = ItemRarityID.Blue;
+			Item.value = 4000;
+		}
+	}
+	public class RoastedMushroom : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Roasted Mushroom");
+			Tooltip.SetDefault("Minuscule improvements to all stats");
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
+			{
+				new Color(237, 160, 69),
+				new Color(115, 57, 15),
+				new Color(57, 25, 3)
+			};
+			ItemID.Sets.IsFood[Type] = true;
+		}
+		public override void SetDefaults()
+		{
+			Item.DefaultToFood(16, 28, ModContent.BuffType<Buffs.Satiated>(), 3600);
+			Item.rare = ItemRarityID.White;
+			Item.value = 300;
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.Mushroom)
+				.AddTile(TileID.Campfire)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.GreenMushroom)
+				.AddTile(TileID.Campfire)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.TealMushroom)
+				.AddTile(TileID.Campfire)
+				.Register();
+		}
+	}
+	public class FreshBlueberry : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Fresh Blueberry");
+			Tooltip.SetDefault("Minuscule improvements to all stats");
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
+			{
+				new Color(93, 115, 196),
+				new Color(44, 60, 114),
+				new Color(15, 9, 44)
+			};
+			ItemID.Sets.IsFood[Type] = true;
+		}
+		public override void SetDefaults()
+		{
+			Item.DefaultToFood(16, 28, ModContent.BuffType<Buffs.Satiated>(), 1200);
+			Item.rare = ItemRarityID.White;
+			Item.value = 650;
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe(3)
+				.AddIngredient(ItemID.BlueBerries)
+				.Register();
 		}
 	}
 }

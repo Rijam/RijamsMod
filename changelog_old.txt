@@ -1,0 +1,130 @@
+Version 1.0.5.3
+- Added a config option to enable/disable the Town NPCs' cross mod dialog and selling cross mod items.
+- Fixed an issue with the Harpy's dialog.
+
+Version 1.0.5.0
+- Hell Trader now only spawns on Obsidian Brick, Hellstone Brick, or platforms
+- Hell Trader's spawn rate is decreased if Eye of Cthulhu or Skeletron have not been defeated.
+- Fixed Sir Slush's AI in multiplayer.
+- Fixed Eye of Cthulhu and the Treasure Bag dropping Bloody Arrows in Corruption worlds.
+- Corrected one of the recipes for the Citadel.
+- Buffed the Solyo, now spawns a projectile in the sky when it hits something.
+- Added Hailfire Boots
+- Added Quietus magic sword
+- Fixed Timon's Axe's projectiles dealing double the damage and knockback as they should have.
+- Added six "whips": Belt, Vile Whip, Vicious Whip, Sulfuric Whip, Festive Whip, and Stardust Whip
+- Made the Slime Rain ever so slightly more interesting in Hardmode by adding a Spiked Green Slime and Flying Purple Slime.
+- Gave the Unconscious Harpy knockback resistance.
+- Added Evil Arrows, a combination of Unholy and Bloody Arrows.
+- Added Fire Breathing Pack
+- Added Charm of Life
+- Fixed Snowman Muscle and Sir Slush showing the Frost Moon icon instead of the Frost Legion icon (just a visual bug).
+- Added Sunplate Pillar Block
+- Added Reef-Cola
+
+Version 1.0.4.0
+- Added Sulfur Torch, Sulfur Arrow, Sulfur Dart, Sulfur Bullet, Flask of Sulfuric Acid
+- Added Flower of Hailfire
+- Added two new accessories: Stellar Shield and Citadel
+- Nerfed Spectre Dart. Now pierces 2 times instead of 4 and has a 30% damage reduction per pierce. 
+- Nerfed Luminite Dart. Now pierces 4 times instead of 6 and has a 25% damage reduction per pierce.
+- Nerfed Shroomite Dart. Now has a 10% damage reduction per pierce.
+- Nerfed Chlorophyte Dart. Now has a 10% damage reduction per pierce.
+- Added a new pet: Fluffalo summoned with a Fluffalo Egg
+- Added a banner for Sir Slush
+- Fixed banners missing their tooltips
+
+Version 1.0.3.1
+- Nerfed Spectre Dart. Now pierces 4 times instead of 6 and has a 25% damage reduction per pierce. 
+- Nerfed Luminite Dart. Now pierces 6 times instead of 9.
+- Made Burglar's Ring harder to craft.
+- Hell Trader now sells the Lava Charm and Plummer's Hat.
+
+Version 1.0.3.0
+- Hell Trader now sells the Unholy Trident
+- Pharaoh set and Ancient set are now armor sets instead of vanity
+- New armor set: Infernic armor. A magic focused armor with some summoner support
+- New magic weapon: Sulfuric Incursion
+- Two new melee weapons: Timon's Axe and Hammer of Retribution
+- Five new accessories: Rose of Fire and Ice, Different Bundle of Balloons, Too Many Balloons, Too Many Horseshoe Balloons, and Yoyo Backpack
+- A new pet: Snugget summoned with an Interesting Sphere
+
+Version 1.0.2.0
+- Arms Dealer now sells Bloody Arrows
+- Eye of Cthulhu Treasure Bag now drops Bloody Arrows while in a Crimson world
+- Bloody Arrows now do 2 more damage than Unholy Arrows, but have a 7% damage penalty when piercing.
+- Nerfed the Interstellar Pistol: Damaged reduced to 23 from 25
+- Added a new enemy: Sir Slush. Spawns in during the Frost Legion.
+- Added a new vanity item: Sir Slush's Top Hat.
+- Harpy now sells White Feather from Shadows of Abaddon and Talon from Thorium
+- Strange Rolls no longer give Exceptional Feast. Now gives Well Fed for 20 minutes.
+- Pink Prickly Pears can now be eaten and give Satiated for 1 minute.
+- Exceptional Feast and Well Fed (and Satiated) no longer stack.
+- New accessory: Gelid Skull Rose
+- New Town NPC: Hell Trader. Spawns randomly in Pre-Hardmode, moves in in Hardmode. Still WIP.
+- Two new materials: Infernic Fabric and Sulfur. 
+- A new block: Living Sulfur Fire Block
+
+Version 1.0.1.0
+- Updated the Fisherman's Pants item sprite
+- Added a new quest to the Interstellar Traveler (Prime Thruster)
+- Two new magic accessories: Destroyer Cuffs and Cosmic Sorcery
+- Two new ranged accessories: Rocket Booster and Gamut Apparatus
+- One new summoner accessory: Hailfire Pygmy Scarf
+- Assemble Assemble is moved to later in the game and updated its sprite.
+- Added a new material, Crawler Chelicera, dropped by Blood Crawlers
+- Added a new arrow: Bloody Arrow (Exactly the same as the Unholy Arrow, but Crimson themed)
+- Changed the added a recipes for the Putrid Scent/Flesh Knuckles and added recipes for the Band of Starpower/Panic Necklace.
+- Fixed a bug with the Snowman Cannon shooting Rocket IVs if using the Endless Rocket Box.
+- Updated the Chlorophyte Dart, Spectre Dart, Shroomite Dart, and Luminite Dart to be better.
+- Added a new system to only display the source of certain items if you don't already own the item.
+- Added a new tile: Life Fruit Sanctuary. Gives +20 max life while nearby.
+- Updated the sprite of the Daybreak Gauntlet
+
+Version 1.0.0.8
+- The Fisherman's shop config options can be changed without having to reload! ("Parity" change)
+- Added a visual trail to the Cresceptre Spheres.
+- Added a new light pet. LED Lumoth summoned by an LED Lumoth Bulb. 
+
+Version 1.0.0.7
+- Added a new magic weapon: Cresceptre
+- Made the Pumpkin Hat ever so slightly more expensive (requires a Fallen Star now).
+- Items held in the cursor can now be used on the Recycling Machine.
+- Coal now stacks to 99
+- Dilapidated Crimson Armor now properly draws.
+- Added a new enemy: Snowman Muscle. Spawns in during the Frost Legion, armed with a Shotgun.
+- The Town NPCs can be picked up with a Bug Net if the config is turned on.
+
+Version 1.0.0.6
+- Added a new summon weapon: Meatball Staff
+
+Version 1.0.0.5
+- Added an icon to the bottom right of the Interstellar Traveler's Quest Checklist.
+- Added a new light pet. Lumoth summoned by a Lumoth Bulb.
+- Flipped the buff icon for the Hissy Demon.
+- Added a new accessory: Burglar's Ring. Causes enemies to drop double loot.
+- Fixed the first Interstellar Traveler quest automatically being completed in multiplayer.
+- Added a new early game magic weapon: Hot Stick.
+
+Version 1.0.0.4
+- Harpy sprite updated
+- Rebalanced The Shredder: +10 damage, +4% critical strike chance, Red Harpy Feathers now only split twice instead of three times. Red Harpy Feathers only last 3 seconds instead of 5.
+- Added a quest checklist to the Interstellar Traveler. Hold left shift and click Quest Checklist to see it.
+- Added Daybreak Gauntlet (Pre-Moon Lord accessory)
+- Updated sprite for Daybreak Stone
+- Gave the Music Box (Outer Storage Warehouse) its own sprite and changed its internal name. (Pre-existing items/tiles will become unloaded.)
+- Changed the mod homepage to the GitHub Wiki.
+
+Version 1.0.0.3
+- Added three armor dyes: Yella Dye, Beam Dye, and Orange Beam Dye.
+
+Version 1.0.0.2
+- Three new summon sentry weapons: Slime Trap Staff, Spike Trap Staff, and Super Spike Trap Staff
+- Fixed the Interstellar Traveler's quest system in multiplayer! There is a new bug that causes the first quest to be automatically completed in multiplayer, but the other quests work.
+- Added a config option to disable/enable the debug items in the mod. Disabled by default.
+
+Version 1.0.0.1
+- GitHub Integration
+
+Version 1.0.0.0
+- Uploaded to the Mod Browser!

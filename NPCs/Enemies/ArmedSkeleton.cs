@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,47 +14,48 @@ namespace RijamsMod.NPCs.Enemies
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Armed Skeleton");
-            Main.npcFrameCount[npc.type] = 7;
+            Main.npcFrameCount[NPC.type] = 7;
+            NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+            {
+                Hide = true // Hides this NPC from the bestiary
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
         }
 
         public override void SetDefaults()
         {
-            npc.width = 24;
-            npc.height = 48;
-            npc.damage = 50;
-            npc.defense = 7;
-            npc.lifeMax = 80;
-            npc.value = 100f;
-            npc.aiStyle = 3;
-            npc.knockBackResist = 0.5f;
-            aiType = NPCID.ArmedZombie;
-            animationType = NPCID.ArmedZombie;
-            npc.HitSound = SoundID.NPCHit2;
-            npc.DeathSound = SoundID.NPCDeath2;
+            NPC.width = 24;
+            NPC.height = 48;
+            NPC.damage = 50;
+            NPC.defense = 7;
+            NPC.lifeMax = 80;
+            NPC.value = 100f;
+            NPC.aiStyle = 3;
+            NPC.knockBackResist = 0.5f;
+            AIType = NPCID.ArmedZombie;
+            AnimationType = NPCID.ArmedZombie;
+            NPC.HitSound = SoundID.NPCHit2;
+            NPC.DeathSound = SoundID.NPCDeath2;
             //banner = npc.type;
             //bannerItem = mod.ItemType("ArmedSkeletonBanner");
         }
 
-        public override void HitEffect(int hitDirection, double damage)
-        {
-            if (npc.life < 1)
-            {
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * 16, 0), npc.velocity, 42, 1f); //Skeleton head gore
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * -16, 0), npc.velocity, 43, 1f); //Skeleton arm gore
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * 8, 0), npc.velocity, 43, 1f); //Skeleton arm gore
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * 8, 0), npc.velocity, 44, 1f); //Skeleton leg gore
-
-            }
+		public override void OnKill()
+		{
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 16, 0), NPC.velocity, 42, 1f); //Skeleton head gore
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * -16, 0), NPC.velocity, 43, 1f); //Skeleton arm gore
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 43, 1f); //Skeleton arm gore
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 44, 1f); //Skeleton leg gore
         }
         //For some reason, cloning the Armed Zombie doesn't include the extra melee reach. Copied from vanilla.
         public override void AI()
         {
             //Main.NewText("npc.ai[2] " + npc.ai[2]);
-            Rectangle npcRect = npc.Hitbox;
-            if (npc.ai[2] > 5f)
+            Rectangle npcRect = NPC.Hitbox;
+            if (NPC.ai[2] > 5f)
             {
                 int num = 34;
-                if (npc.spriteDirection < 0)
+                if (NPC.spriteDirection < 0)
                 {
                     npcRect.X -= num;
                     npcRect.Width += num;
@@ -86,31 +88,14 @@ namespace RijamsMod.NPCs.Enemies
             }
         }*/
 
-        public override void NPCLoot()
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            if (Main.rand.Next(25) == 0) //4% chance
+            // Copy the same drops as a normal skeleton
+            var skeletonDropRules = Main.ItemDropsDB.GetRulesForNPCID(NPCID.Skeleton, false); // false is important here
+            foreach (var skeletonDropRule in skeletonDropRules)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Hook);
-            }
-            /*if (Main.rand.Next(150) == 0) //0.67% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CartonOfMilk);
-            }*/
-            if (Main.rand.Next(100) == 0) //1% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AncientIronHelmet);
-            }
-            if (Main.rand.Next(200) == 0) //0.5% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AncientGoldHelmet);
-            }
-            if (Main.rand.Next(201) == 0) //0.49% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.BoneSword);
-            }
-            if (Main.rand.Next(500) == 0) //0.2% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Skull);
+                // In this foreach loop, we simple add each drop to the PartyZombie drop pool. 
+                npcLoot.Add(skeletonDropRule);
             }
         }
 

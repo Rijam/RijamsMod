@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace RijamsMod.Items.Weapons
 {
@@ -12,55 +13,60 @@ namespace RijamsMod.Items.Weapons
 		{
 			DisplayName.SetDefault("Meatball Staff");
 			Tooltip.SetDefault("Summons a Meatball Demon to fight for you");
-			ItemID.Sets.GamepadWholeScreenUseRange[item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-			ItemID.Sets.LockOnIgnoresCollision[item.type] = true;
+			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
+			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			item.damage = 45;
-			item.knockBack = 1f;
-			item.mana = 10;
-			item.width = 48;
-			item.height = 44;
-			item.useTime = 20;
-			item.useAnimation = 20;
-			item.useStyle = ItemUseStyleID.SwingThrow;
-			item.value = Item.sellPrice(gold: 3);
-			item.rare = ItemRarityID.Yellow;
-			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
-			{
-				item.UseSound = mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/MeatballStaff").WithVolume(.8f);
-			}
-			item.autoReuse = true;
+			Item.damage = 45;
+			Item.knockBack = 1f;
+			Item.mana = 10;
+			Item.width = 48;
+			Item.height = 44;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.value = Item.sellPrice(gold: 3);
+			Item.rare = ItemRarityID.Yellow;
+			Item.UseSound = new(Mod.Name + "/Sounds/Item/MeatballStaff") { Volume = 0.8f, MaxInstances = 5 };
+			Item.autoReuse = true;
 			
 			// These below are needed for a minion weapon
-			item.noMelee = true;
-			item.summon = true;
+			Item.noMelee = true;
+			Item.DamageType = DamageClass.Summon;
 			//item.buffType = ModContent.BuffType<HissyDemonBuff>();
-			item.buffType = ModContent.BuffType<Buffs.MeatballDemonBuff>();
+			Item.buffType = ModContent.BuffType<Buffs.MeatballDemonBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			item.shoot = ModContent.ProjectileType<MeatballDemon>();
+			Item.shoot = ModContent.ProjectileType<MeatballDemon>();
 		}
 
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-			player.AddBuff(item.buffType, 2);
+			player.AddBuff(Item.buffType, 2);
 
-			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
+			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			projectile.originalDamage = Item.damage;
+
+			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
+			return false;
+		}
+
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		{
+			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
 			position = Main.MouseWorld;
-			return true;
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ModContent.ItemType<HissyStaff>());
-			recipe.AddIngredient(ItemID.Ectoplasm, 3);
-			recipe.AddIngredient(ModContent.ItemType<Items.Materials.SunEssence>(), 10);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<HissyStaff>())
+				.AddIngredient(ItemID.Ectoplasm, 3)
+				.AddIngredient(ModContent.ItemType<Items.Materials.SunEssence>(), 10)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using ReLogic.Content;
 
 namespace RijamsMod.UI
 {
@@ -11,8 +12,8 @@ namespace RijamsMod.UI
 	internal class UIHoverImageButton : UIImageButton
 	{
 		internal string HoverText;
-
-		public UIHoverImageButton(Texture2D texture, string hoverText) : base(texture)
+		
+		public UIHoverImageButton(Asset<Texture2D> texture, string hoverText) : base(texture)
 		{
 			HoverText = hoverText;
 		}

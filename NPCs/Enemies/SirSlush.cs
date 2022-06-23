@@ -3,6 +3,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.ModLoader.Utilities;
+using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Bestiary;
 
 namespace RijamsMod.NPCs.Enemies
 {
@@ -11,45 +15,50 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Sir Slush");
-			Main.npcFrameCount[npc.type] = 12;
+			Main.npcFrameCount[NPC.type] = 12;
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+			{
+				PortraitPositionYOverride = 3
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
 		public override void SetDefaults()
 		{
-			npc.width = 28;
-			npc.height = 52;
-			npc.damage = 1;
-			npc.defense = 0;
-			npc.lifeMax = 600;
-			npc.buffImmune[BuffID.Confused] = false;
-			npc.HitSound = SoundID.NPCHit11; //16 for hat
-			npc.DeathSound = SoundID.NPCDeath15;
-			npc.value = 10000f;
-			npc.knockBackResist = 0f;
-			npc.aiStyle = 0; //0 will face the player
+			NPC.width = 28;
+			NPC.height = 52;
+			NPC.damage = 1;
+			NPC.defense = 0;
+			NPC.lifeMax = 600;
+			NPC.buffImmune[BuffID.Confused] = false;
+			NPC.HitSound = SoundID.NPCHit11; //16 for hat
+			NPC.DeathSound = SoundID.NPCDeath15;
+			NPC.value = 10000f;
+			NPC.knockBackResist = 0f;
+			NPC.aiStyle = 0; //0 will face the player
 			//npc.dontTakeDamage = true;
-			banner = npc.type;
-			bannerItem = ModContent.ItemType<Items.Placeable.SirSlushBanner>();
+			Banner = NPC.type;
+			BannerItem = ModContent.ItemType<Items.Placeable.SirSlushBanner>();
 		}
-		public override void NPCLoot()
+
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
-			if (Main.rand.Next(25) == 0)
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.FrostyRose>());
-			}
-			if (Main.rand.Next(50) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present);
-			}
-			if (Main.rand.Next(50) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.HandWarmer);
-			}
-			if (Main.rand.Next(3) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.Vanity.SirSlushsTopHat>());
-			}
-			Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SlushBlock, Main.rand.Next(10, 20));
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions.FrostLegion,
+				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
+			});
+		}
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Accessories.Defense.FrostyRose>(), 25));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Present, 50));
+			npcLoot.Add(ItemDropRule.Common(ItemID.HandWarmer, 50));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.Vanity.SirSlushsTopHat>(), 3));
+			npcLoot.Add(ItemDropRule.Common(ItemID.SlushBlock, 1, 10, 20));
 
 			//From Spirit Mod FrostSaucer.cs
 			if (Main.invasionType == InvasionID.SnowLegion)
@@ -83,15 +92,12 @@ namespace RijamsMod.NPCs.Enemies
 			}
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void OnKill()
 		{
-			if (npc.life <= 0)
+			Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Hat").Type, 1f);
+			for (int k = 0; k < 5; k++)
 			{
-				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/SirSlush_Gore_Hat"), 1f);
-				for (int k = 0; k < 5; k++)
-				{
-					Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/SirSlush_Gore"), 1f);
-				}
+				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
 			}
 		}
 
@@ -103,53 +109,53 @@ namespace RijamsMod.NPCs.Enemies
 		
         public override void AI()
         {
-			npc.ai[0]++;
+			NPC.ai[0]++;
 			//Main.NewText("npc.ai[0] " + npc.ai[0]);
 			//Main.NewText("AIState " + AIState);
 			if (AIState == 0) //idle
 			{
-				npc.TargetClosest();
-				npc.FaceTarget();
-				bool lineOfSight = Collision.CanHitLine(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height);
-				float distance = Math.Abs(npc.position.X - Main.player[npc.target].position.X) + Math.Abs(npc.position.Y - Main.player[npc.target].position.Y);
-				if (npc.ai[0] >= 30 && npc.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f && lineOfSight)
+				NPC.TargetClosest();
+				NPC.FaceTarget();
+				bool lineOfSight = Collision.CanHitLine(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height);
+				float distance = Math.Abs(NPC.position.X - Main.player[NPC.target].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.target].position.Y);
+				if (NPC.ai[0] >= 30 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f && lineOfSight)
                 {
-					npc.ai[0] = 0;
-					Main.PlaySound(SoundLoader.customSoundType, (int)npc.position.X, (int)npc.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/SirSlushAlert"));
+					NPC.ai[0] = 0;
+					SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/SirSlushAlert") { MaxInstances = 5 }, NPC.position);
 					AIState = 1;
-					npc.netUpdate = true;
+					NPC.netUpdate = true;
 				}
 			}
 			else if (AIState == 1) //alert
 			{
-				npc.FaceTarget();
-				float distance = Math.Abs(npc.position.X - Main.player[npc.target].position.X) + Math.Abs(npc.position.Y - Main.player[npc.target].position.Y);
-				if (npc.ai[0] == 80 && npc.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f)
+				NPC.FaceTarget();
+				float distance = Math.Abs(NPC.position.X - Main.player[NPC.target].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.target].position.Y);
+				if (NPC.ai[0] == 80 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f)
                 {
-					npc.ai[0] = 0;
-					npc.frameCounter = 0;
+					NPC.ai[0] = 0;
+					NPC.frameCounter = 0;
 					AIState = 2;
-					npc.netUpdate = true;
+					NPC.netUpdate = true;
 				}
-				else if (npc.ai[0] > 80 || distance > 1000f)
+				else if (NPC.ai[0] > 80 || distance > 1000f)
                 {
-					npc.ai[0] = 0;
+					NPC.ai[0] = 0;
 					AIState = 0;
-					npc.netUpdate = true;
+					NPC.netUpdate = true;
 				}
 			}
 			else if (AIState == 2) //attack
 			{
-				npc.FaceTarget();
-				if (npc.ai[0] == 20)
+				NPC.FaceTarget();
+				if (NPC.ai[0] == 20)
                 {
-					Vector2 vectoryForProj = new Vector2(npc.position.X + npc.width * 0.5f, npc.position.Y + npc.height * 0.5f);
-					float projSpeedX = Main.player[npc.target].position.X + Main.player[npc.target].width * 0.5f - vectoryForProj.X;
+					Vector2 vectoryForProj = new(NPC.position.X + NPC.width * 0.5f, NPC.position.Y + NPC.height * 0.5f);
+					float projSpeedX = Main.player[NPC.target].position.X + Main.player[NPC.target].width * 0.5f - vectoryForProj.X;
 					float projSpeedXAbs; //= Math.Abs(projSpeedX) * 0.1f;
 					projSpeedXAbs = Math.Abs(projSpeedX) * Main.rand.Next(10, 20) * 0.01f;
-					float projSpeedY = Main.player[npc.target].position.Y + Main.player[npc.target].height * 0.5f - vectoryForProj.Y - projSpeedXAbs;
+					float projSpeedY = Main.player[NPC.target].position.Y + Main.player[NPC.target].height * 0.5f - vectoryForProj.Y - projSpeedXAbs;
 					float sqrtXto2PlusYto2 = (float)Math.Sqrt(projSpeedX * projSpeedX + projSpeedY * projSpeedY);
-					npc.netUpdate = true;
+					NPC.netUpdate = true;
 					sqrtXto2PlusYto2 = 10f / sqrtXto2PlusYto2;
 					projSpeedX *= sqrtXto2PlusYto2;
 					projSpeedY *= sqrtXto2PlusYto2;
@@ -159,21 +165,21 @@ namespace RijamsMod.NPCs.Enemies
 					vectoryForProj.Y += projSpeedY;
 					if (!Main.dedServ)
 					{
-						Main.PlaySound(SoundLoader.customSoundType, (int)npc.position.X, (int)npc.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/SirSlushThrow"));
-						Projectile.NewProjectile(vectoryForProj.X, vectoryForProj.Y, projSpeedX, projSpeedY, projType, projDamage, 4f, Main.myPlayer);
+						SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/SirSlushThrow") { MaxInstances = 10 }, NPC.position);
+						Projectile.NewProjectile(Entity.GetSource_FromAI(), vectoryForProj.X, vectoryForProj.Y, projSpeedX, projSpeedY, projType, projDamage, 4f, Main.myPlayer);
 					}
 				}
-				if (npc.ai[0] >= 40)
+				if (NPC.ai[0] >= 40)
                 {
-					npc.ai[0] = 0;
+					NPC.ai[0] = 0;
 					AIState = 0;
-					npc.netUpdate = true;
+					NPC.netUpdate = true;
 				}
 			}
 			else
 			{
 				AIState = 0;
-				npc.netUpdate = true;
+				NPC.netUpdate = true;
 			}
 		}
 
@@ -197,74 +203,74 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void FindFrame(int frameHeight)
 		{
-			npc.frameCounter++;
+			NPC.frameCounter++;
 			if (AIState == 0) //idle
 			{
-				if (npc.frameCounter < 10)
+				if (NPC.frameCounter < 10)
                 {
-					npc.frame.Y = Frame_Idle1 * frameHeight;
+					NPC.frame.Y = Frame_Idle1 * frameHeight;
 				}
-				else if (npc.frameCounter < 20)
+				else if (NPC.frameCounter < 20)
 				{
-					npc.frame.Y = Frame_Idle2 * frameHeight;
+					NPC.frame.Y = Frame_Idle2 * frameHeight;
 				}
-				else if (npc.frameCounter < 30)
+				else if (NPC.frameCounter < 30)
 				{
-					npc.frame.Y = Frame_Idle3 * frameHeight;
+					NPC.frame.Y = Frame_Idle3 * frameHeight;
 				}
-				else if (npc.frameCounter < 40)
+				else if (NPC.frameCounter < 40)
 				{
-					npc.frame.Y = Frame_Idle4 * frameHeight;
+					NPC.frame.Y = Frame_Idle4 * frameHeight;
 				}
 				else
                 {
-					npc.frameCounter = 0;
+					NPC.frameCounter = 0;
 				}
 			}
 			else if (AIState == 1) //alert
 			{
-				if (npc.frameCounter < 10)
+				if (NPC.frameCounter < 10)
 				{
-					npc.frame.Y = Frame_Alert1 * frameHeight;
+					NPC.frame.Y = Frame_Alert1 * frameHeight;
 				}
-				else if (npc.frameCounter < 20)
+				else if (NPC.frameCounter < 20)
 				{
-					npc.frame.Y = Frame_Alert2 * frameHeight;
+					NPC.frame.Y = Frame_Alert2 * frameHeight;
 				}
-				else if (npc.frameCounter < 30)
+				else if (NPC.frameCounter < 30)
 				{
-					npc.frame.Y = Frame_Alert3 * frameHeight;
+					NPC.frame.Y = Frame_Alert3 * frameHeight;
 				}
-				else if (npc.frameCounter <= 40)
+				else if (NPC.frameCounter <= 40)
 				{
-					npc.frame.Y = Frame_Alert4 * frameHeight;
+					NPC.frame.Y = Frame_Alert4 * frameHeight;
 				}
 				else
 				{
-					npc.frameCounter = 0;
+					NPC.frameCounter = 0;
 				}
 			}
 			else if (AIState == 2) //attack
 			{
-				if (npc.frameCounter < 10)
+				if (NPC.frameCounter < 10)
 				{
-					npc.frame.Y = Frame_Attack1 * frameHeight;
+					NPC.frame.Y = Frame_Attack1 * frameHeight;
 				}
-				else if (npc.frameCounter < 20)
+				else if (NPC.frameCounter < 20)
 				{
-					npc.frame.Y = Frame_Attack2 * frameHeight;
+					NPC.frame.Y = Frame_Attack2 * frameHeight;
 				}
-				else if (npc.frameCounter < 30)
+				else if (NPC.frameCounter < 30)
 				{
-					npc.frame.Y = Frame_Attack3 * frameHeight;
+					NPC.frame.Y = Frame_Attack3 * frameHeight;
 				}
-				else if (npc.frameCounter < 40)
+				else if (NPC.frameCounter < 40)
 				{
-					npc.frame.Y = Frame_Attack4 * frameHeight;
+					NPC.frame.Y = Frame_Attack4 * frameHeight;
 				}
 				else
 				{
-					npc.frameCounter = 0;
+					NPC.frameCounter = 0;
 				}
 			}
 		}
@@ -275,17 +281,17 @@ namespace RijamsMod.NPCs.Enemies
 	}
 	public class SirSlushHat : ModNPC
     {
-        public override bool Autoload(ref string name)
-        {
-            return false;
-        }
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return false;
+		}
         public override string Texture => "Terraria/NPC_0";
 
 		public override void SetDefaults()
 		{
-			npc.aiStyle = -1;
-			npc.width = 20;
-			npc.height = 30;
+			NPC.aiStyle = -1;
+			NPC.width = 20;
+			NPC.height = 30;
 		}
         public override void AI()
         {

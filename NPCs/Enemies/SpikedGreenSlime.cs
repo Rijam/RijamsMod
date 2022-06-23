@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,220 +13,226 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Spiked Green Slime");
-			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.SlimeSpiked];
+			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SlimeSpiked];
 		}
 
 		public override void SetDefaults()
 		{
-			npc.CloneDefaults(NPCID.SlimeSpiked);
-			npc.damage = 40;
-			npc.defense = 6;
-			npc.lifeMax = NPC.downedPlantBoss ? 300 : 200; //Doubled in Expert Mode
-			npc.value = NPC.downedPlantBoss ? 400 : 200;
-			npc.knockBackResist = 0.1f;
-			npc.aiStyle = -1;
-			//aiType = NPCID.SlimeSpiked;
-			animationType = NPCID.SlimeSpiked;
+			NPC.CloneDefaults(NPCID.SlimeSpiked);
+			NPC.damage = 40;
+			NPC.defense = 6;
+			NPC.lifeMax = NPC.downedPlantBoss ? 300 : 200; //Doubled in Expert Mode
+			NPC.value = NPC.downedPlantBoss ? 400 : 200;
+			NPC.knockBackResist = 0.1f;
+			NPC.aiStyle = -1;
+			//AIType = NPCID.SlimeSpiked;
+			AnimationType = NPCID.SlimeSpiked;
 			//banner = Item.NPCtoBanner(NPCID.GreenSlime);
 			//bannerItem = Item.BannerToItem(banner);
-			npc.npcSlots = 0.5f;
+			NPC.npcSlots = 0.5f;
 		}
 
-        public override void AI()
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		{
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+			{
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.SlimeRain,
+				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
+			});
+		}
+
+		public override void AI()
         {
 			bool flag = true;
-			if (npc.localAI[0] > 0f)
+			if (NPC.localAI[0] > 0f)
 			{
-				npc.localAI[0] -= 1f;
+				NPC.localAI[0] -= 1f;
 			}
-			if (!npc.wet && !Main.player[npc.target].npcTypeNoAggro[npc.type])
+			if (!NPC.wet && !Main.player[NPC.target].npcTypeNoAggro[NPC.type])
 			{
-				Vector2 vector3 = new Vector2(npc.position.X + (float)npc.width * 0.5f, npc.position.Y + (float)npc.height * 0.5f);
-				float num11 = Main.player[npc.target].position.X + (float)Main.player[npc.target].width * 0.5f - vector3.X;
-				float num12 = Main.player[npc.target].position.Y - vector3.Y;
+				Vector2 vector3 = new(NPC.position.X + (float)NPC.width * 0.5f, NPC.position.Y + (float)NPC.height * 0.5f);
+				float num11 = Main.player[NPC.target].position.X + (float)Main.player[NPC.target].width * 0.5f - vector3.X;
+				float num12 = Main.player[NPC.target].position.Y - vector3.Y;
 				float num13 = (float)Math.Sqrt(num11 * num11 + num12 * num12);
-				if (Main.expertMode && num13 < 120f && Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height) && npc.velocity.Y == 0f)
+				if (Main.expertMode && num13 < 120f && Collision.CanHit(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height) && NPC.velocity.Y == 0f)
 				{
-					npc.ai[0] = -40f;
-					if (npc.velocity.Y == 0f)
+					NPC.ai[0] = -40f;
+					if (NPC.velocity.Y == 0f)
 					{
-						npc.velocity.X *= 0.9f;
+						NPC.velocity.X *= 0.9f;
 					}
-					if (Main.netMode != NetmodeID.MultiplayerClient && npc.localAI[0] == 0f)
+					if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[0] == 0f)
 					{
 						for (int j = 0; j < 5; j++)
 						{
-							Vector2 vector4 = new Vector2(j - 2, -4f);
+							Vector2 vector4 = new(j - 2, -4f);
 							vector4.X *= 1f + (float)Main.rand.Next(-50, 51) * 0.005f;
 							vector4.Y *= 1f + (float)Main.rand.Next(-50, 51) * 0.005f;
 							vector4.Normalize();
 							vector4 *= 4f + (float)Main.rand.Next(-50, 51) * 0.01f;
-							Projectile.NewProjectile(vector3.X, vector3.Y, vector4.X, vector4.Y, ModContent.ProjectileType<Projectiles.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
-							npc.localAI[0] = 30f;
+							Projectile.NewProjectile(Entity.GetSource_FromAI(), vector3.X, vector3.Y, vector4.X, vector4.Y, ModContent.ProjectileType<Projectiles.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
+							NPC.localAI[0] = 30f;
 						}
 					}
 				}
-				else if (num13 < 200f && Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height) && npc.velocity.Y == 0f)
+				else if (num13 < 200f && Collision.CanHit(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height) && NPC.velocity.Y == 0f)
 				{
-					npc.ai[0] = -40f;
-					if (npc.velocity.Y == 0f)
+					NPC.ai[0] = -40f;
+					if (NPC.velocity.Y == 0f)
 					{
-						npc.velocity.X *= 0.9f;
+						NPC.velocity.X *= 0.9f;
 					}
-					if (Main.netMode != NetmodeID.MultiplayerClient && npc.localAI[0] == 0f)
+					if (Main.netMode != NetmodeID.MultiplayerClient && NPC.localAI[0] == 0f)
 					{
-						num12 = Main.player[npc.target].position.Y - vector3.Y - (float)Main.rand.Next(0, 200);
+						num12 = Main.player[NPC.target].position.Y - vector3.Y - (float)Main.rand.Next(0, 200);
 						num13 = (float)Math.Sqrt(num11 * num11 + num12 * num12);
 						num13 = 4.5f / num13;
 						num11 *= num13;
 						num12 *= num13;
-						npc.localAI[0] = 50f;
-						Projectile.NewProjectile(vector3.X, vector3.Y, num11, num12, ModContent.ProjectileType<Projectiles.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
+						NPC.localAI[0] = 50f;
+						Projectile.NewProjectile(Entity.GetSource_FromAI(), vector3.X, vector3.Y, num11, num12, ModContent.ProjectileType<Projectiles.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
 					}
 				}
 			}
-			if (npc.wet)
+			if (NPC.wet)
 			{
-				if (npc.collideY)
+				if (NPC.collideY)
 				{
-					npc.velocity.Y = -2f;
+					NPC.velocity.Y = -2f;
 				}
-				if (npc.velocity.Y < 0f && npc.ai[3] == npc.position.X)
+				if (NPC.velocity.Y < 0f && NPC.ai[3] == NPC.position.X)
 				{
-					npc.direction *= -1;
-					npc.ai[2] = 200f;
+					NPC.direction *= -1;
+					NPC.ai[2] = 200f;
 				}
-				if (npc.velocity.Y > 0f)
+				if (NPC.velocity.Y > 0f)
 				{
-					npc.ai[3] = npc.position.X;
+					NPC.ai[3] = NPC.position.X;
 				}
 				else
 				{
-					if (npc.velocity.Y > 2f)
+					if (NPC.velocity.Y > 2f)
 					{
-						npc.velocity.Y *= 0.9f;
+						NPC.velocity.Y *= 0.9f;
 					}
-					npc.velocity.Y -= 0.5f;
-					if (npc.velocity.Y < -4f)
+					NPC.velocity.Y -= 0.5f;
+					if (NPC.velocity.Y < -4f)
 					{
-						npc.velocity.Y = -4f;
+						NPC.velocity.Y = -4f;
 					}
 				}
-				if (npc.ai[2] == 1f && flag)
+				if (NPC.ai[2] == 1f && flag)
 				{
-					npc.TargetClosest();
+					NPC.TargetClosest();
 				}
 			}
-			npc.aiAction = 0;
-			if (npc.ai[2] == 0f)
+			NPC.aiAction = 0;
+			if (NPC.ai[2] == 0f)
 			{
-				npc.ai[0] = -100f;
-				npc.ai[2] = 1f;
-				npc.TargetClosest();
+				NPC.ai[0] = -100f;
+				NPC.ai[2] = 1f;
+				NPC.TargetClosest();
 			}
-			if (npc.velocity.Y == 0f)
+			if (NPC.velocity.Y == 0f)
 			{
-				if (npc.collideY && npc.oldVelocity.Y != 0f && Collision.SolidCollision(npc.position, npc.width, npc.height))
+				if (NPC.collideY && NPC.oldVelocity.Y != 0f && Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
 				{
-					npc.position.X -= npc.velocity.X + (float)npc.direction;
+					NPC.position.X -= NPC.velocity.X + (float)NPC.direction;
 				}
-				if (npc.ai[3] == npc.position.X)
+				if (NPC.ai[3] == NPC.position.X)
 				{
-					npc.direction *= -1;
-					npc.ai[2] = 200f;
+					NPC.direction *= -1;
+					NPC.ai[2] = 200f;
 				}
-				npc.ai[3] = 0f;
-				npc.velocity.X *= 0.8f;
-				if ((double)npc.velocity.X > -0.1 && (double)npc.velocity.X < 0.1)
+				NPC.ai[3] = 0f;
+				NPC.velocity.X *= 0.8f;
+				if ((double)NPC.velocity.X > -0.1 && (double)NPC.velocity.X < 0.1)
 				{
-					npc.velocity.X = 0f;
+					NPC.velocity.X = 0f;
 				}
 				if (flag)
 				{
-					npc.ai[0] += 1f;
+					NPC.ai[0] += 1f;
 				}
-				npc.ai[0] += 1f;
+				NPC.ai[0] += 1f;
 				int num19 = 0;
-				if (npc.ai[0] >= 0f)
+				if (NPC.ai[0] >= 0f)
 				{
 					num19 = 1;
 				}
-				if (npc.ai[0] >= -1000f && npc.ai[0] <= -500f)
+				if (NPC.ai[0] >= -1000f && NPC.ai[0] <= -500f)
 				{
 					num19 = 2;
 				}
-				if (npc.ai[0] >= -2000f && npc.ai[0] <= -1500f)
+				if (NPC.ai[0] >= -2000f && NPC.ai[0] <= -1500f)
 				{
 					num19 = 3;
 				}
 				if (num19 > 0)
 				{
-					npc.netUpdate = true;
-					if (flag && npc.ai[2] == 1f)
+					NPC.netUpdate = true;
+					if (flag && NPC.ai[2] == 1f)
 					{
-						npc.TargetClosest();
+						NPC.TargetClosest();
 					}
 					if (num19 == 3)
 					{
-						npc.velocity.Y = -8f;
-						npc.velocity.X += 3 * npc.direction;
-						npc.ai[0] = -200f;
-						npc.ai[3] = npc.position.X;
+						NPC.velocity.Y = -8f;
+						NPC.velocity.X += 3 * NPC.direction;
+						NPC.ai[0] = -200f;
+						NPC.ai[3] = NPC.position.X;
 					}
 					else
 					{
-						npc.velocity.Y = -6f;
-						npc.velocity.X += 2 * npc.direction;
-						npc.ai[0] = -120f;
+						NPC.velocity.Y = -6f;
+						NPC.velocity.X += 2 * NPC.direction;
+						NPC.ai[0] = -120f;
 						if (num19 == 1)
 						{
-							npc.ai[0] -= 1000f;
+							NPC.ai[0] -= 1000f;
 						}
 						else
 						{
-							npc.ai[0] -= 2000f;
+							NPC.ai[0] -= 2000f;
 						}
 					}
 				}
-				else if (npc.ai[0] >= -30f)
+				else if (NPC.ai[0] >= -30f)
 				{
-					npc.aiAction = 1;
+					NPC.aiAction = 1;
 				}
 			}
-			else if (npc.target < 255 && ((npc.direction == 1 && npc.velocity.X < 3f) || (npc.direction == -1 && npc.velocity.X > -3f)))
+			else if (NPC.target < 255 && ((NPC.direction == 1 && NPC.velocity.X < 3f) || (NPC.direction == -1 && NPC.velocity.X > -3f)))
 			{
-				if (npc.collideX && Math.Abs(npc.velocity.X) == 0.2f)
+				if (NPC.collideX && Math.Abs(NPC.velocity.X) == 0.2f)
 				{
-					npc.position.X -= 1.4f * (float)npc.direction;
+					NPC.position.X -= 1.4f * (float)NPC.direction;
 				}
-				if (npc.collideY && npc.oldVelocity.Y != 0f && Collision.SolidCollision(npc.position, npc.width, npc.height))
+				if (NPC.collideY && NPC.oldVelocity.Y != 0f && Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
 				{
-					npc.position.X -= npc.velocity.X + (float)npc.direction;
+					NPC.position.X -= NPC.velocity.X + (float)NPC.direction;
 				}
-				if ((npc.direction == -1 && (double)npc.velocity.X < 0.01) || (npc.direction == 1 && (double)npc.velocity.X > -0.01))
+				if ((NPC.direction == -1 && (double)NPC.velocity.X < 0.01) || (NPC.direction == 1 && (double)NPC.velocity.X > -0.01))
 				{
-					npc.velocity.X += 0.2f * (float)npc.direction;
+					NPC.velocity.X += 0.2f * (float)NPC.direction;
 				}
 				else
 				{
-					npc.velocity.X *= 0.93f;
+					NPC.velocity.X *= 0.93f;
 				}
 			}
 		}
-		public override void NPCLoot()
-        {
-			if (Main.rand.Next(2) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Gel, Main.rand.Next(1, 4));
-			}
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
+		{
+			npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 2, 1, 4));
 		}
 
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (Main.slimeRain && Main.hardMode && spawnInfo.player.ZoneOverworldHeight)
+			if (Main.slimeRain && Main.hardMode && spawnInfo.Player.ZoneOverworldHeight)
             {
-				if (spawnInfo.playerInTown)
+				if (spawnInfo.PlayerInTown)
 				{
 					return 1.25f;
 				}

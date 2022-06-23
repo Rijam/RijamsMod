@@ -12,137 +12,99 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.World.Generation;
+using Terraria.WorldBuilding;
 using System.Linq;
 
 namespace RijamsMod
 { 
-    public class RijamsModWorld : ModWorld
+    public class RijamsModWorld : ModSystem
     {
 		public static bool savedHarpy = false;
-        public static bool intTravArived = false; //oops typo
+        public static bool intTravArrived = false;
         public static bool intTravQuestOddDevice = false;
         public static bool intTravQuestBlankDisplay = false;
         public static bool intTravQuestTPCore = false;
-        public static bool intTravQuestRyeJam = false;
+        public static bool intTravQuestBreadAndJelly = false;
         public static bool intTravQuestMagicOxygenizer = false;
         public static bool intTravQuestPrimeThruster = false;
         public static bool hellTraderArrivable = false;
 
-        public override void Initialize()
+        public override void OnWorldLoad()
         {
 			savedHarpy = false;
-            intTravArived = false;
+            intTravArrived = false;
             intTravQuestOddDevice = false;
             intTravQuestBlankDisplay = false;
             intTravQuestTPCore = false;
-            intTravQuestRyeJam = false;
+            intTravQuestBreadAndJelly = false;
             intTravQuestMagicOxygenizer = false;
             intTravQuestPrimeThruster = false;
             hellTraderArrivable = false;
         }
 
-        public override TagCompound Save()
+        public override void OnWorldUnload()
         {
-            var downed = new List<string>();
-            //var rescueNPCs = new List<string>();
-            //var intTravQuest = new List<string>();
+            savedHarpy = false;
+            intTravArrived = false;
+            intTravQuestOddDevice = false;
+            intTravQuestBlankDisplay = false;
+            intTravQuestTPCore = false;
+            intTravQuestBreadAndJelly = false;
+            intTravQuestMagicOxygenizer = false;
+            intTravQuestPrimeThruster = false;
+            hellTraderArrivable = false;
+        }
+
+        public override void SaveWorldData(TagCompound tag)
+        {
             if (savedHarpy)
             {
-                downed.Add("savedHarpy");
+                tag["savedHarpy"] = true;
             }
-            if (intTravArived)
+            if (intTravArrived)
             {
-                downed.Add("intTravArived");
+                tag["intTravArived"] = true;
             }
             if (intTravQuestOddDevice)
             {
-                downed.Add("intTravQuestOddDevice");
+                tag["intTravQuestOddDevice"] = true;
             }
             if (intTravQuestBlankDisplay)
             {
-                downed.Add("intTravQuestBlankDisplay");
+                tag["intTravQuestBlankDisplay"] = true;
             }
             if (intTravQuestTPCore)
             {
-                downed.Add("intTravQuestTPCore");
+                tag["intTravQuestTPCore"] = true;
             }
-            if (intTravQuestRyeJam)
+            if (intTravQuestBreadAndJelly)
             {
-                downed.Add("intTravQuestRyeJam");
+                tag["intTravQuestRyeJam"] = true;
             }
             if (intTravQuestMagicOxygenizer)
             {
-                downed.Add("intTravQuestBreathingPack");
+                tag["intTravQuestBreathingPack"] = true;
             }
             if (intTravQuestPrimeThruster)
             {
-                downed.Add("intTravQuestPrimeThruster");
+                tag["intTravQuestPrimeThruster"] = true;
             }
             if (hellTraderArrivable)
             {
-                downed.Add("hellTraderArrivable");
+                tag["hellTraderArrivable"] = true;
             }
-
-
-            return new TagCompound
-            {
-
-                ["downed"] = downed
-                //["rescueNPCs"] = rescueNPCs
-                //["intTravQuest"] = intTravQuest
-            };
-
-            /*TagCompound tag = new TagCompound();
-            tag["savedHarpy"] = savedHarpy;
-            tag["intTravArived"] = intTravArived;
-            tag["intTravQuestOddDevice"] = intTravQuestOddDevice;
-            tag["intTravQuestBlankDisplay"] = intTravQuestBlankDisplay;
-
-            return tag;*/
         }
-        public override void Load(TagCompound tag)
+        public override void LoadWorldData(TagCompound tag)
         {
-            var downed = tag.GetList<string>("downed");
-            //var rescueNPCs = tag.GetList<string>("rescueNPCs");
-            //var intTravQuest = tag.GetList<string>("intTravQuest");
-            savedHarpy = downed.Contains("savedHarpy");
-            intTravArived = downed.Contains("intTravArived");
-            intTravQuestOddDevice = downed.Contains("intTravQuestOddDevice");
-            intTravQuestBlankDisplay = downed.Contains("intTravQuestBlankDisplay");
-            intTravQuestTPCore = downed.Contains("intTravQuestTPCore");
-            intTravQuestRyeJam = downed.Contains("intTravQuestRyeJam");
-            intTravQuestMagicOxygenizer = downed.Contains("intTravQuestBreathingPack");
-            intTravQuestPrimeThruster = downed.Contains("intTravQuestPrimeThruster");
-            hellTraderArrivable = downed.Contains("hellTraderArrivable");
-
-            /*savedHarpy = tag.GetBool("savedHarpy");
-            intTravArived = tag.GetBool("intTravArived");
-            intTravQuestOddDevice = tag.GetBool("intTravQuestOddDevice");
-            intTravQuestBlankDisplay = tag.GetBool("intTravQuestBlankDisplay");*/
-        }
-        public override void LoadLegacy(BinaryReader reader)
-        {
-            int loadVersion = reader.ReadInt32();
-            if (loadVersion == 0)
-            {
-                BitsByte flags = reader.ReadByte();
-                savedHarpy = flags[0];
-                intTravArived = flags[1];
-                intTravQuestOddDevice = flags[2];
-                intTravQuestBlankDisplay = flags[3];
-                intTravQuestTPCore = flags[4];
-                intTravQuestRyeJam = flags[5];
-                intTravQuestMagicOxygenizer = flags[6];
-                intTravQuestPrimeThruster = flags[7];
-
-                BitsByte flags2 = reader.ReadByte();
-                hellTraderArrivable = flags2[0];
-            }
-            else
-            {
-                mod.Logger.WarnFormat("RijamsMod: Unknown loadVersion: {0}", loadVersion);
-            }
+            savedHarpy = tag.ContainsKey("savedHarpy");
+            intTravArrived = tag.ContainsKey("intTravArived");
+            intTravQuestOddDevice = tag.ContainsKey("intTravQuestOddDevice");
+            intTravQuestBlankDisplay = tag.ContainsKey("intTravQuestBlankDisplay");
+            intTravQuestTPCore = tag.ContainsKey("intTravQuestTPCore");
+            intTravQuestBreadAndJelly = tag.ContainsKey("intTravQuestRyeJam");
+            intTravQuestMagicOxygenizer = tag.ContainsKey("intTravQuestBreathingPack");
+            intTravQuestPrimeThruster = tag.ContainsKey("intTravQuestPrimeThruster");
+            hellTraderArrivable = tag.ContainsKey("hellTraderArrivable");
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -150,11 +112,11 @@ namespace RijamsMod
             //Remember that Bytes/BitsByte only have 8 entries. If you have more than 8 flags you want to sync, use multiple BitsByte
             var flags = new BitsByte();
             flags[0] = savedHarpy;
-            flags[1] = intTravArived;
+            flags[1] = intTravArrived;
             flags[2] = intTravQuestOddDevice;
             flags[3] = intTravQuestBlankDisplay;
             flags[4] = intTravQuestTPCore;
-            flags[5] = intTravQuestRyeJam;
+            flags[5] = intTravQuestBreadAndJelly;
             flags[6] = intTravQuestMagicOxygenizer;
             flags[7] = intTravQuestPrimeThruster;
             writer.Write(flags);
@@ -162,31 +124,21 @@ namespace RijamsMod
             var flags2 = new BitsByte();
             flags2[0] = hellTraderArrivable;
             writer.Write(flags2);
-
-            /*writer.Write(savedHarpy);
-            writer.Write(intTravArived);*/
-            //writer.Write(intTravQuestOddDevice);
-            //writer.Write(intTravQuestBlankDisplay);
         }
         public override void NetReceive(BinaryReader reader)
         {
             BitsByte flags = reader.ReadByte();
             savedHarpy = flags[0];
-            intTravArived = flags[1];
+            intTravArrived = flags[1];
             intTravQuestOddDevice = flags[2];
             intTravQuestBlankDisplay = flags[3];
             intTravQuestTPCore = flags[4];
-            intTravQuestRyeJam = flags[5];
+            intTravQuestBreadAndJelly = flags[5];
             intTravQuestMagicOxygenizer = flags[6];
             intTravQuestPrimeThruster = flags[7];
 
             BitsByte flags2 = reader.ReadByte();
             hellTraderArrivable = flags2[0];
-
-            /*savedHarpy = reader.ReadBoolean();
-            intTravArived = reader.ReadBoolean();*/
-            //intTravQuestOddDevice = reader.ReadBoolean();
-            //intTravQuestBlankDisplay = reader.ReadBoolean();
         }
 
         public static void UpdateWorldBool() //from Calamity's Vanities
@@ -198,7 +150,7 @@ namespace RijamsMod
         }
         public static void SetIntTravArived()
         {
-            intTravArived = true;
+            intTravArrived = true;
             UpdateWorldBool();
         }
         public override void PostWorldGen()
@@ -211,7 +163,7 @@ namespace RijamsMod
                     Chest chest = Main.chest[chestIndex];
                     if (i == 0 && chest != null)
                     {
-                        if (WorldGen.genRand.Next(0, 100) < (Main.tile[chest.x, chest.y].frameX / 36 == 17 ? 50 : (Main.tile[chest.x, chest.y].frameX / 36 == 1 ? 15 : Main.tile[chest.x, chest.y].frameX / 36 == 0 ? 10 : 5)))
+                        if (WorldGen.genRand.Next(0, 100) < (Main.tile[chest.x, chest.y].TileFrameX / 36 == 17 ? 50 : (Main.tile[chest.x, chest.y].TileFrameX / 36 == 1 ? 15 : Main.tile[chest.x, chest.y].TileFrameX / 36 == 0 ? 10 : 5)))
                         {
                             for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
                             {

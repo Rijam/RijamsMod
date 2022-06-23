@@ -8,7 +8,7 @@ namespace RijamsMod.Buffs
 {
 	public class MeatballDemonBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Meatball Demon");
 			Description.SetDefault("The Meatball Demon will fight for you");
@@ -18,7 +18,7 @@ namespace RijamsMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			if (player.ownedProjectileCounts[mod.ProjectileType("MeatballDemon")] > 0)
+			if (player.ownedProjectileCounts[Mod.Find<ModProjectile>("MeatballDemon").Type] > 0)
 			{
 				player.buffTime[buffIndex] = 18000;
 			}

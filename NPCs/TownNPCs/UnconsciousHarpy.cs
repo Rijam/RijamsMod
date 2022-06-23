@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent.Bestiary;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -15,30 +16,48 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			DisplayName.SetDefault("Unconscious Harpy");
 			//NPCID.Sets.TownCritter[npc.type] = true;
-			Main.npcFrameCount[npc.type] = 1;
+			Main.npcFrameCount[NPC.type] = 1;
+			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+			{
+				Hide = true // Hides this NPC from the bestiary
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
 		}
 
 		public override void SetDefaults()
 		{
-			npc.friendly = true;
-			npc.npcSlots = 5f;
+			NPC.friendly = true;
+			NPC.npcSlots = 5f;
 			//npc.townNPC = true;
 			//npc.dontTakeDamage = true;
-			npc.width = 72;
-			npc.height = 22;
-			npc.aiStyle = 0;
-			npc.damage = 0;
-			npc.defense = 15;
-			npc.lifeMax = 250;
-			npc.HitSound = SoundID.NPCHit1;
-			npc.DeathSound = SoundID.NPCDeath1;
-			npc.knockBackResist = 0.1f;
-			npc.rarity = 1;
+			NPC.width = 72;
+			NPC.height = 22;
+			NPC.aiStyle = 0;
+			NPC.damage = 0;
+			NPC.defense = 15;
+			NPC.lifeMax = 250;
+			NPC.HitSound = SoundID.NPCHit1;
+			NPC.DeathSound = SoundID.NPCDeath1;
+			NPC.knockBackResist = 0.1f;
+			NPC.rarity = 1;
 		}
 		/*public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
 		{
 			return true;
 		}*/
+
+		/*public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		{
+			int associatedNPCType = ModContent.NPCType<Harpy>();
+			bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);
+
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+			{
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
+				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
+			});
+		}*/
+
 		public override bool CanChat() //from Calamity's Vanities
 		{
 			return true;
@@ -46,21 +65,21 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void AI()
 		{
-			npc.breath += 2;
-			npc.TargetClosest(false);
-			npc.spriteDirection = 1;//npc.direction;
+			NPC.breath += 2;
+			NPC.TargetClosest(false);
+			NPC.spriteDirection = 1;//npc.direction;
 			//From Spirit mod
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				npc.homeless = false;
-				npc.homeTileX = -1;
-				npc.homeTileY = -1;
-				npc.netUpdate = true;
+				NPC.homeless = false;
+				NPC.homeTileX = -1;
+				NPC.homeTileY = -1;
+				NPC.netUpdate = true;
 			}
 			foreach (var player in Main.player)
 			{
 				if (!player.active) continue;
-				if (player.talkNPC == npc.whoAmI)
+				if (player.talkNPC == NPC.whoAmI)
 				{
 					Rescue();
 					return;
@@ -74,7 +93,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			//RijamsModWorld.savedHarpy = true;
 			//RijamsModWorld.UpdateWorldBool();
 			//npc.Transform(ModContent.NPCType<Harpy>());
-			mod.Logger.Debug("RijamsMod: Harpy NPC rescued.");
+			Mod.Logger.Debug("RijamsMod: Harpy NPC rescued.");
 			return "Ow, my head hurts... AHH! Don't attack me, please! I'm friendly... you too?";
 		}
 		
@@ -85,29 +104,29 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public void Rescue()
         {
-			npc.dontTakeDamage = false;
+			NPC.dontTakeDamage = false;
 			RijamsModWorld.savedHarpy = true;
 			RijamsModWorld.UpdateWorldBool();
-			npc.Transform(ModContent.NPCType<Harpy>());
+			NPC.Transform(ModContent.NPCType<Harpy>());
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) //from Calamity's Vanities
 		{
-			if (spawnInfo.player.ZoneSkyHeight && !RijamsModWorld.savedHarpy && !NPC.AnyNPCs(ModContent.NPCType<UnconsciousHarpy>()) && !NPC.AnyNPCs(ModContent.NPCType<Harpy>()))
+			if (spawnInfo.Player.ZoneSkyHeight && !RijamsModWorld.savedHarpy && !NPC.AnyNPCs(ModContent.NPCType<UnconsciousHarpy>()) && !NPC.AnyNPCs(ModContent.NPCType<Harpy>()))
 			{
-				if (spawnInfo.spawnTileType == TileID.Cloud || spawnInfo.spawnTileType == TileID.RainCloud || spawnInfo.spawnTileType == TileID.Grass || spawnInfo.spawnTileType == TileID.Sunplate || spawnInfo.spawnTileType == TileID.SnowCloud || spawnInfo.spawnTileType == TileID.Dirt)
+				if (spawnInfo.SpawnTileType == TileID.Cloud || spawnInfo.SpawnTileType == TileID.RainCloud || spawnInfo.SpawnTileType == TileID.Grass || spawnInfo.SpawnTileType == TileID.Sunplate || spawnInfo.SpawnTileType == TileID.SnowCloud || spawnInfo.SpawnTileType == TileID.Dirt)
 				{
 					return 0.75f;
 				}				
 			}
 			return 0f;
 		}
-		public override void HitEffect(int hitDirection, double damage)
+		public override void OnKill()
 		{
-			if (npc.life <= 0)
+			Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Head").Type, 1f);
+			for (int k = 0; k < 2; k++)
 			{
-				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/Harpy_Gore_Head"), 1f);
-				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/Harpy_Gore_Arm"), 1f);
-				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/Harpy_Gore_Leg"), 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Arm").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Leg").Type, 1f);
 			}
 		}
 	}

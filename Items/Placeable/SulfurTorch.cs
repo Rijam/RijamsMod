@@ -14,25 +14,25 @@ namespace RijamsMod.Items.Placeable
 		}
         public override void SetDefaults()
 		{
-			item.width = 10;
-			item.height = 12;
-			item.maxStack = 999;
-			item.holdStyle = 1;
-			item.noWet = false;
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.SwingThrow;
-			item.consumable = true;
-			item.createTile = ModContent.TileType<Tiles.SulfurTorch>();
-			item.flame = true;
-			item.value = 31;
+			Item.width = 10;
+			Item.height = 12;
+			Item.maxStack = 999;
+			Item.holdStyle = 1;
+			Item.noWet = false;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+			Item.createTile = ModContent.TileType<Tiles.SulfurTorch>();
+			Item.flame = true;
+			Item.value = 31;
 		}
 
 		public override void HoldItem(Player player)
 		{
-			if (Main.rand.Next(player.itemAnimation > 0 ? 40 : 80) == 0)
+			if (Main.rand.NextBool(player.itemAnimation > 0 ? 40 : 80))
 			{
 				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<SulfurDust>());
 			}
@@ -42,7 +42,7 @@ namespace RijamsMod.Items.Placeable
 
 		public override void PostUpdate()
 		{
-			Lighting.AddLight((int)((item.position.X + item.width / 2) / 16f), (int)((item.position.Y + item.height / 2) / 16f), 0.5f, 0.5f, 0f);
+			Lighting.AddLight((int)((Item.position.X + Item.width / 2) / 16f), (int)((Item.position.Y + Item.height / 2) / 16f), 0.5f, 0.5f, 0f);
 		}
 
 		public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
@@ -53,11 +53,10 @@ namespace RijamsMod.Items.Placeable
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.Torch, 33);
-			recipe.AddIngredient(ModContent.ItemType<Materials.Sulfur>());
-			recipe.SetResult(this, 33);
-			recipe.AddRecipe();
+			CreateRecipe(33)
+				.AddIngredient(ItemID.Torch, 33)
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.Register();
 		}
 	}
 }

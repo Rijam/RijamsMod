@@ -1,153 +1,250 @@
-﻿//From Qwerty's random content mod
-//https://github.com/qwerty3-14/QwertysRandomContent/blob/master/ItemUseGlow.cs github source
-//Has been modifed by IDGCaptainRussia94
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
+
 namespace RijamsMod
 {
-    public class ItemUseGlow : GlobalItem
-    {
-        public Texture2D glowTexture = null;
-        public int glowOffsetY = 0;
-        public int glowOffsetX = 0;
-        public float angleAdd = 0f;
-        public override bool InstancePerEntity => true;
-        public override bool CloneNewInstances => true;
+	///Adapted from Qwerty's random content mod
+	///https://github.com/qwerty3-14/QwertyMod/blob/main/Common/Playerlayers/ItemUseGlow.cs github source
+	///Usage: In the item's SetDefaults(), Check for !Main.dedServ first, then add:
+	///```
+	///Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+	///```
+	///Additionally,
+	///Item.GetGlobalItem<ItemUseGlow>().glowOffsetX = int
+	///Item.GetGlobalItem<ItemUseGlow>().glowOffsetY = int
+	///Item.GetGlobalItem<ItemUseGlow>().angleAdd = float
+	///Item.GetGlobalItem<ItemUseGlow>().blendAlpha = bool
+	///Can be set as well.
+	public class ItemUseGlow : GlobalItem
+	{
+		public Texture2D glowTexture = null;
+		public int glowOffsetY = 0;
+		public int glowOffsetX = 0;
+		public float angleAdd = 0f;
+		public bool blendAlpha = false;
+		public override bool InstancePerEntity => true;
+		public override GlobalItem Clone(Item item, Item itemClone)
+		{
+			return base.Clone(item, itemClone);
+		}
+		public override void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+		{
+			if (glowTexture != null)
+			{
+				Texture2D texture = glowTexture;
+				spriteBatch.Draw
+				(
+					texture,
+					new Vector2
+					(
+						item.position.X - Main.screenPosition.X + item.width * 0.5f,
+						item.position.Y - Main.screenPosition.Y + item.height - texture.Height * 0.5f
+					),
+					new Rectangle(0, 0, texture.Width, texture.Height),
+					Color.White,
+					rotation,
+					texture.Size() * 0.5f,
+					scale,
+					SpriteEffects.None,
+					0f
+				);
+			}
+		}
+	}
+	class ItemGlowLayer : PlayerDrawLayer
+	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+		{
+			return true;
+		}
+		public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.HeldItem);
 
-        public Func<Item, Player, Color> GlowColor = delegate (Item item, Player player)
-        {
-            return Color.White;
-        };
+		protected override void Draw(ref PlayerDrawSet drawInfo)
+		{
+			if (drawInfo.drawPlayer.JustDroppedAnItem)
+			{
+				return;
+			}
+			if (drawInfo.drawPlayer.heldProj >= 0 && drawInfo.shadow == 0f && !drawInfo.heldProjOverHand)
+			{
+				drawInfo.projectileDrawPosition = drawInfo.DrawDataCache.Count;
+			}
+			Item heldItem = drawInfo.heldItem;
+			int itemID = heldItem.type;
+			float adjustedItemScale = drawInfo.drawPlayer.GetAdjustedItemScale(heldItem);
+			Main.instance.LoadItem(itemID);
 
-        public Action<Item, PlayerDrawInfo, Vector2,float, Color> CustomDraw = delegate (Item item, PlayerDrawInfo drawInfo,Vector2 position,float angle,Color glowcolor)
-        {
+			if (heldItem.TryGetGlobalItem(out ItemUseGlow result))
+			{
+				Texture2D glowTexture = result.glowTexture;
 
-        };
-    }
-    public class PlayerUseGlow : ModPlayer
-    {
-        public static readonly PlayerLayer ItemUseGlow = new PlayerLayer("RijamsMod", "ItemUseGlow", PlayerLayer.HeldItem, delegate (PlayerDrawInfo drawInfo)
-        {
-            Player drawPlayer = drawInfo.drawPlayer;
-            
-            //Mod mod = ModLoader.GetMod("QwertysRandomContent");
-            if (!drawPlayer.HeldItem.IsAir)
-            {
-                Item item = drawPlayer.HeldItem;
-                Texture2D texture = item.GetGlobalItem<ItemUseGlow>().glowTexture;
-                Color glowcolor = item.GetGlobalItem<ItemUseGlow>().GlowColor(item, drawPlayer);
-                Action<Item, PlayerDrawInfo, Vector2, float, Color> costomDraw = item.GetGlobalItem<ItemUseGlow>().CustomDraw;
-                Vector2 zero2 = Vector2.Zero;
+				if (glowTexture != null)
+				{
+					Texture2D itemTexture = TextureAssets.Item[itemID].Value;
+					Vector2 position = new((int)(drawInfo.ItemLocation.X - Main.screenPosition.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y));
+					Rectangle? sourceRect = new Rectangle(0, 0, itemTexture.Width, itemTexture.Height);
 
+					if (ItemID.Sets.IsFood[itemID])
+					{
+						sourceRect = itemTexture.Frame(1, 3, 0, 1);
+					}
+					drawInfo.itemColor = Lighting.GetColor((int)(drawInfo.Position.X + drawInfo.drawPlayer.width * 0.5) / 16, (int)((drawInfo.Position.Y + drawInfo.drawPlayer.height * 0.5) / 16.0));
+					if (drawInfo.drawPlayer.shroomiteStealth && heldItem.CountsAsClass(DamageClass.Ranged))
+					{
+						float num2 = drawInfo.drawPlayer.stealth;
+						if (num2 < 0.03)
+						{
+							num2 = 0.03f;
+						}
+						float num3 = (1f + num2 * 10f) / 11f;
+						drawInfo.itemColor = new Color((byte)(drawInfo.itemColor.R * num2), (byte)(drawInfo.itemColor.G * num2), (byte)(drawInfo.itemColor.B * num3), (byte)(drawInfo.itemColor.A * num2));
+					}
+					if (drawInfo.drawPlayer.setVortex && heldItem.CountsAsClass(DamageClass.Ranged))
+					{
+						float num4 = drawInfo.drawPlayer.stealth;
+						if (num4 < 0.03)
+						{
+							num4 = 0.03f;
+						}
+						//_ = (1f + num4 * 10f) / 11f;
+						drawInfo.itemColor = drawInfo.itemColor.MultiplyRGBA(new Color(Vector4.Lerp(Vector4.One, new Vector4(0f, 0.12f, 0.16f, 0f), 1f - num4)));
+					}
+					bool flag = drawInfo.drawPlayer.itemAnimation > 0 && heldItem.useStyle != ItemUseStyleID.None;
+					bool flag2 = heldItem.holdStyle != 0 && !drawInfo.drawPlayer.pulley;
+					if (!drawInfo.drawPlayer.CanVisuallyHoldItem(heldItem))
+					{
+						flag2 = false;
+					}
+					if (drawInfo.shadow != 0f || drawInfo.drawPlayer.frozen || !(flag || flag2) || itemID <= 0 || drawInfo.drawPlayer.dead || heldItem.noUseGraphic || (drawInfo.drawPlayer.wet && heldItem.noWet) || (drawInfo.drawPlayer.happyFunTorchTime && drawInfo.drawPlayer.inventory[drawInfo.drawPlayer.selectedItem].createTile == TileID.Torches && drawInfo.drawPlayer.itemAnimation == 0))
+					{
+						return;
+					}
+					//Special check for the Timon's Axe, Hammer of Retribution, Quietus. Only draw the glowmask if the player has enough mana.
+					if (heldItem.ModItem != null && heldItem.ModItem is Items.MagicMeleeGlow && !drawInfo.drawPlayer.CheckMana(20, false))
+					{
+						return;
+					}
+					//_ = drawInfo.drawPlayer.name;
+					//Color color = new(250, 250, 250, heldItem.alpha);
+					//Vector2 vector = Vector2.Zero;
 
-                if (texture != null && drawPlayer.itemAnimation > 0)
-                {
-                    if (drawPlayer.frozen)
-                    {
-                        return;
-                    }
-                    Vector2 value2 = drawInfo.itemLocation;
-                    if (item.useStyle == ItemUseStyleID.HoldingOut)
-                    {
-                        bool flag14 = Item.staff[item.type];
-                        if (flag14)
-                        {
-                            float num104 = drawPlayer.itemRotation + 0.785f * (float)drawPlayer.direction;
-                            int num105 = 0;
-                            int num106 = 0;
-                            Vector2 zero3 = new Vector2(0f, (float)Main.itemTexture[item.type].Height);
+					Color drawColor;
+					if (heldItem.GetGlobalItem<ItemUseGlow>().blendAlpha)
+					{
+						drawColor = new(255, 255, 255, heldItem.alpha);
+					}
+					else
+					{
+						drawColor = Color.White;
+					}
 
-                            if (drawPlayer.gravDir == -1f)
-                            {
-                                if (drawPlayer.direction == -1)
-                                {
-                                    num104 += 1.57f;
-                                    zero3 = new Vector2((float)Main.itemTexture[item.type].Width, 0f);
-                                    num105 -= Main.itemTexture[item.type].Width;
-                                }
-                                else
-                                {
-                                    num104 -= 1.57f;
-                                    zero3 = Vector2.Zero;
-                                }
-                            }
-                            else if (drawPlayer.direction == -1)
-                            {
-                                zero3 = new Vector2((float)Main.itemTexture[item.type].Width, (float)Main.itemTexture[item.type].Height);
-                                num105 -= Main.itemTexture[item.type].Width;
-                            }
+					Vector2 origin = new((float)sourceRect.Value.Width * 0.5f - (float)sourceRect.Value.Width * 0.5f * (float)drawInfo.drawPlayer.direction, sourceRect.Value.Height);
+					if (heldItem.useStyle == ItemUseStyleID.DrinkLiquid && drawInfo.drawPlayer.itemAnimation > 0)
+					{
+						Vector2 value2 = new(0.5f, 0.4f);
+						origin = sourceRect.Value.Size() * value2;
+					}
+					if (drawInfo.drawPlayer.gravDir == -1f)
+					{
+						origin.Y = sourceRect.Value.Height - origin.Y;
+					}
+					//origin += vector;
+					float itemRotation = drawInfo.drawPlayer.itemRotation;
+					if (heldItem.useStyle == ItemUseStyleID.GolfPlay)
+					{
+						ref float x = ref position.X;
+						float num6 = x;
+						//_ = drawInfo.drawPlayer.direction;
+						x = num6 - 0f;
+						itemRotation -= (float)Math.PI / 2f * (float)drawInfo.drawPlayer.direction;
+						origin.Y = 2f;
+						origin.X += 2 * drawInfo.drawPlayer.direction;
+					}
+					ItemSlot.GetItemLight(ref drawInfo.itemColor, heldItem);
+					DrawData drawData;
 
-                            Vector2 drawPos = new Vector2((float)((int)(value2.X - Main.screenPosition.X + zero3.X + (float)num105)), (float)((int)(value2.Y - Main.screenPosition.Y + (float)num106)));
-                            float drawAngle = num104 + item.GetGlobalItem<ItemUseGlow>().angleAdd * drawPlayer.direction;
-                            DrawData value = new DrawData(texture, drawPos, new Microsoft.Xna.Framework.Rectangle?(new Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), glowcolor, drawAngle, zero3, item.scale, drawInfo.spriteEffects, 0);
-                            costomDraw(item, drawInfo, drawPos, drawAngle, glowcolor);
-                            Main.playerDrawData.Add(value);
-                        }
-                        else
-                        {
-                            Vector2 vector10 = new Vector2((float)(Main.itemTexture[item.type].Width / 2), (float)(Main.itemTexture[item.type].Height / 2));
-
-                            //Vector2 vector11 = this.DrawPlayerItemPos(drawPlayer.gravDir, item.type);
-                            Vector2 vector11 = new Vector2(10, texture.Height / 2);
-                            if (item.GetGlobalItem<ItemUseGlow>().glowOffsetX != 0)
-                            {
-                                vector11.X = item.GetGlobalItem<ItemUseGlow>().glowOffsetX;
-                            }
-                            vector11.Y += item.GetGlobalItem<ItemUseGlow>().glowOffsetY * drawPlayer.gravDir;
-                            int num107 = (int)vector11.X;
-                            vector10.Y = vector11.Y;
-                            Vector2 origin5 = new Vector2((float)(-(float)num107), (float)(Main.itemTexture[item.type].Height / 2));
-                            if (drawPlayer.direction == -1)
-                            {
-                                origin5 = new Vector2((float)(Main.itemTexture[item.type].Width + num107), (float)(Main.itemTexture[item.type].Height / 2));
-                            }
-
-                            //value = new DrawData(Main.itemTexture[item.type], new Vector2((float)((int)(value2.X - Main.screenPosition.X + vector10.X)), (float)((int)(value2.Y - Main.screenPosition.Y + vector10.Y))), new Microsoft.Xna.Framework.Rectangle?(new Microsoft.Xna.Framework.Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), item.GetAlpha(color37), drawPlayer.itemRotation, origin5, item.scale, effect, 0);
-                            //Main.playerDrawData.Add(value);
-
-                            Vector2 drawPos = new Vector2((float)((int)(value2.X - Main.screenPosition.X + vector10.X)), (float)((int)(value2.Y - Main.screenPosition.Y + vector10.Y)));
-                            float drawAngle = drawPlayer.itemRotation + item.GetGlobalItem<ItemUseGlow>().angleAdd * drawPlayer.direction;
-                            DrawData value = new DrawData(texture, drawPos, new Microsoft.Xna.Framework.Rectangle?(new Rectangle(0, 0, Main.itemTexture[item.type].Width, Main.itemTexture[item.type].Height)), glowcolor, drawAngle, origin5, item.scale, drawInfo.spriteEffects, 0);
-                            costomDraw(item, drawInfo, drawPos, drawAngle, glowcolor);
-                            Main.playerDrawData.Add(value);
-                        }
-                    }
-                    else
-                    {
-                        DrawData value = new DrawData(texture,
-                            new Vector2((float)((int)(value2.X + (item.GetGlobalItem<ItemUseGlow>().glowOffsetX *drawPlayer.direction) - Main.screenPosition.X)),
-                            (float)((int)(value2.Y + (item.GetGlobalItem<ItemUseGlow>().glowOffsetY * drawPlayer.gravDir) - Main.screenPosition.Y))), new Rectangle?(new Rectangle(0, 0, texture.Width, texture.Height)),
-                            glowcolor,
-                            drawPlayer.itemRotation+ item.GetGlobalItem<ItemUseGlow>().angleAdd* drawPlayer.direction,
-                             new Vector2(texture.Width * 0.5f - texture.Width * 0.5f * (float)drawPlayer.direction, drawPlayer.gravDir == -1 ? 0f : texture.Height),
-                            item.scale,
-                            drawInfo.spriteEffects,
-                            0);
-                        if (item.modItem != null && item.modItem is Items.MagicMeleeGlow && !drawPlayer.CheckMana(20, false)) //Special check for the Timon's Axe and Hammer of Retribution. Only draw the glowmask if the player has enough mana.
-                        {
-                            return;
-                        }
-                        Main.playerDrawData.Add(value);
-                    }
-                }
-            }
-        });
-        public override void ModifyDrawLayers(List<PlayerLayer> layers)
-        {
-            int itemLayer = layers.FindIndex(PlayerLayer => PlayerLayer.Name.Equals("HeldItem"));
-            if (itemLayer != -1)
-            {
-                ItemUseGlow.visible = true;
-                layers.Insert(itemLayer + 1, ItemUseGlow);
-            }
-
-        }
-    }
+					if (heldItem.useStyle == ItemUseStyleID.Shoot)
+					{
+						if (Item.staff[itemID])
+						{
+							float rotation = drawInfo.drawPlayer.itemRotation + 0.785f * (float)drawInfo.drawPlayer.direction;
+							int posX = 0;
+							int posY = 0;
+							Vector2 origin5 = new(0f, itemTexture.Height);
+							if (drawInfo.drawPlayer.gravDir == -1f)
+							{
+								if (drawInfo.drawPlayer.direction == -1)
+								{
+									rotation += 1.57f;
+									origin5 = new Vector2(itemTexture.Width, 0f);
+									posX -= itemTexture.Width;
+								}
+								else
+								{
+									rotation -= 1.57f;
+									origin5 = Vector2.Zero;
+								}
+							}
+							else if (drawInfo.drawPlayer.direction == -1)
+							{
+								origin5 = new Vector2(itemTexture.Width, itemTexture.Height);
+								posX -= itemTexture.Width;
+							}
+							drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)posX), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + (float)posY)), sourceRect, drawColor, rotation, origin5, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawInfo.DrawDataCache.Add(drawData);
+							return;
+						}
+						int vector4X;
+						Vector2 vector3 = new(itemTexture.Width / 2, itemTexture.Height / 2);
+						Vector2 vector4 = Main.DrawPlayerItemPos(drawInfo.drawPlayer.gravDir, itemID);
+						vector4X = (int)vector4.X;
+						vector3.Y = vector4.Y;
+						Vector2 origin6 = new(-vector4X, itemTexture.Height / 2);
+						if (drawInfo.drawPlayer.direction == -1)
+						{
+							origin6 = new Vector2(itemTexture.Width + vector4X, itemTexture.Height / 2);
+						}
+						drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+						drawInfo.DrawDataCache.Add(drawData);
+						if (heldItem.color != default)
+						{
+							drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawInfo.DrawDataCache.Add(drawData);
+						}
+						return;
+					}
+					if (drawInfo.drawPlayer.gravDir == -1f)
+					{
+						drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+						drawInfo.DrawDataCache.Add(drawData);
+						if (heldItem.color != default)
+						{
+							drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawInfo.DrawDataCache.Add(drawData);
+						}
+						return;
+					}
+					drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+					drawInfo.DrawDataCache.Add(drawData);
+					if (heldItem.color != default)
+					{
+						drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+						drawInfo.DrawDataCache.Add(drawData);
+					}
+				}
+			}
+		}
+	}
 }

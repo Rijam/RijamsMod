@@ -6,7 +6,7 @@ namespace RijamsMod.Buffs
 {
     public class LifeFruitSanctuaryBuff : ModBuff
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Life Fruit Sanctuary");
             Description.SetDefault("+20 max life");

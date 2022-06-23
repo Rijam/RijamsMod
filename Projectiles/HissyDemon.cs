@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -18,47 +19,49 @@ namespace RijamsMod.Projectiles
 		{
 			DisplayName.SetDefault("Hissy Demon");
 			// Sets the amount of frames projectile minion has on its spritesheet
-			Main.projFrames[projectile.type] = 8;
+			Main.projFrames[Projectile.type] = 8;
 			// projectile is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
+			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 
 			// These below are needed for a minion
 			// Denotes that projectile projectile is a pet or minion
-			Main.projPet[projectile.type] = true;
+			Main.projPet[Projectile.type] = true;
 			// projectile is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
+			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
 			// Don't mistake projectile with "if projectile is true, then it will automatically home". It is just for damage reduction for certain NPCs
-			ProjectileID.Sets.Homing[projectile.type] = false;
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = false;
 		}
 
 		public sealed override void SetDefaults()
 		{
 			//projectile.CloneDefaults(ProjectileID.FlyingImp);
-			projectile.width = 30;
-			projectile.height = 30;
+			Projectile.width = 30;
+			Projectile.height = 30;
 			// Makes the minion go through tiles freely
-			projectile.tileCollide = false;
-			projectile.ignoreWater = true;
+			Projectile.tileCollide = false;
+			Projectile.ignoreWater = true;
 
 			// These below are needed for a minion weapon
 			// Only controls if it deals damage to enemies on contact (more on that later)
-			projectile.friendly = true;
+			Projectile.friendly = true;
 			// Only determines the damage type
-			projectile.minion = true;
+			Projectile.minion = true;
+			// Declares the damage type (needed for it to deal damage)
+			Projectile.DamageType = DamageClass.Summon;
 			// Amount of slots projectile minion occupies from the total minion slots available to the player (more on that later)
-			projectile.minionSlots = 1f;
+			Projectile.minionSlots = 1f;
 			// Needed so the minion doesn't despawn on collision with enemies or tiles
-			projectile.penetrate = -1;
-			projectile.netImportant = true;
-			//aiType = ProjectileID.FlyingImp;
-			projectile.minionSlots = 1f;
+			Projectile.penetrate = -1;
+			Projectile.netImportant = true;
+			//AIType = ProjectileID.FlyingImp;
+			Projectile.minionSlots = 1f;
 
 			// Using local NPC immunity allows each to strike independently from one another.
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 30;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 30;
 
-			drawOffsetX = -10;
-			drawOriginOffsetY -= 8;
+			DrawOffsetX = -10;
+			DrawOriginOffsetY -= 16;
 		}
 
 		// Here you can decide if your minion breaks things like grass or pots
@@ -79,7 +82,7 @@ namespace RijamsMod.Projectiles
 		bool shooting = false;
 		public override void AI()
 		{
-			Player player = Main.player[projectile.owner];
+			Player player = Main.player[Projectile.owner];
 
 
 			#region Active check
@@ -90,49 +93,47 @@ namespace RijamsMod.Projectiles
 			}
 			if (player.HasBuff(ModContent.BuffType<Buffs.HissyDemonBuff>()))
 			{
-				projectile.timeLeft = 2;
+				Projectile.timeLeft = 2;
 			}
 			#endregion
 			//Copied from AIStyle 62
 			float num5 = 0.07f;
-			float num6 = projectile.width;
+			float num6 = Projectile.width;
 			for (int m = 0; m < 1000; m++)
 			{
-				if (m != projectile.whoAmI && Main.projectile[m].active && Main.projectile[m].owner == projectile.owner && Main.projectile[m].type == projectile.type && Math.Abs(projectile.position.X - Main.projectile[m].position.X) + Math.Abs(projectile.position.Y - Main.projectile[m].position.Y) < num6)
+				if (m != Projectile.whoAmI && Main.projectile[m].active && Main.projectile[m].owner == Projectile.owner && Main.projectile[m].type == Projectile.type && Math.Abs(Projectile.position.X - Main.projectile[m].position.X) + Math.Abs(Projectile.position.Y - Main.projectile[m].position.Y) < num6)
 				{
-					if (projectile.position.X < Main.projectile[m].position.X)
+					if (Projectile.position.X < Main.projectile[m].position.X)
 					{
-						projectile.velocity.X -= num5;
+						Projectile.velocity.X -= num5;
 					}
 					else
 					{
-						projectile.velocity.X += num5;
+						Projectile.velocity.X += num5;
 					}
-					if (projectile.position.Y < Main.projectile[m].position.Y)
+					if (Projectile.position.Y < Main.projectile[m].position.Y)
 					{
-						projectile.velocity.Y -= num5;
+						Projectile.velocity.Y -= num5;
 					}
 					else
 					{
-						projectile.velocity.Y += num5;
+						Projectile.velocity.Y += num5;
 					}
 				}
 			}
-			Vector2 vector = projectile.position;
+			Vector2 vector = Projectile.position;
 			float num7 = 400f;
 			bool flag = false;
-			int num8 = -1;
-			projectile.tileCollide = true;
-			NPC ownerMinionAttackTargetNPC2 = projectile.OwnerMinionAttackTargetNPC;
-			if (ownerMinionAttackTargetNPC2 != null && ownerMinionAttackTargetNPC2.CanBeChasedBy(projectile))
+			Projectile.tileCollide = true;
+			NPC ownerMinionAttackTargetNPC2 = Projectile.OwnerMinionAttackTargetNPC;
+			if (ownerMinionAttackTargetNPC2 != null && ownerMinionAttackTargetNPC2.CanBeChasedBy(Projectile))
 			{
-				float num11 = Vector2.Distance(ownerMinionAttackTargetNPC2.Center, projectile.Center);
-				if (((Vector2.Distance(projectile.Center, vector) > num11 && num11 < num7) || !flag) && Collision.CanHitLine(projectile.position, projectile.width, projectile.height, ownerMinionAttackTargetNPC2.position, ownerMinionAttackTargetNPC2.width, ownerMinionAttackTargetNPC2.height))
+				float num11 = Vector2.Distance(ownerMinionAttackTargetNPC2.Center, Projectile.Center);
+				if (((Vector2.Distance(Projectile.Center, vector) > num11 && num11 < num7) || !flag) && Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, ownerMinionAttackTargetNPC2.position, ownerMinionAttackTargetNPC2.width, ownerMinionAttackTargetNPC2.height))
 				{
 					num7 = num11;
 					vector = ownerMinionAttackTargetNPC2.Center;
 					flag = true;
-					num8 = ownerMinionAttackTargetNPC2.whoAmI;
 				}
 			}
 			if (!flag)
@@ -140,15 +141,14 @@ namespace RijamsMod.Projectiles
 				for (int num12 = 0; num12 < 200; num12++)
 				{
 					NPC nPC2 = Main.npc[num12];
-					if (nPC2.CanBeChasedBy(projectile))
+					if (nPC2.CanBeChasedBy(Projectile))
 					{
-						float num13 = Vector2.Distance(nPC2.Center, projectile.Center);
-						if (((Vector2.Distance(projectile.Center, vector) > num13 && num13 < num7) || !flag) && Collision.CanHitLine(projectile.position, projectile.width, projectile.height, nPC2.position, nPC2.width, nPC2.height))
+						float num13 = Vector2.Distance(nPC2.Center, Projectile.Center);
+						if (((Vector2.Distance(Projectile.Center, vector) > num13 && num13 < num7) || !flag) && Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, nPC2.position, nPC2.width, nPC2.height))
 						{
 							num7 = num13;
 							vector = nPC2.Center;
 							flag = true;
-							num8 = num12;
 						}
 					}
 				}
@@ -158,21 +158,21 @@ namespace RijamsMod.Projectiles
 			{
 				num14 = 1000;
 			}
-			if (Vector2.Distance(player.Center, projectile.Center) > (float)num14)
+			if (Vector2.Distance(player.Center, Projectile.Center) > (float)num14)
 			{
-				projectile.ai[0] = 1f;
-				projectile.netUpdate = true;
+				Projectile.ai[0] = 1f;
+				Projectile.netUpdate = true;
 			}
-			if (projectile.ai[0] == 1f)
+			if (Projectile.ai[0] == 1f)
 			{
-				projectile.tileCollide = false;
+				Projectile.tileCollide = false;
 			}
-			if (flag && projectile.ai[0] == 0f)
+			if (flag && Projectile.ai[0] == 0f)
 			{
-				Vector2 vector5 = vector - projectile.Center;
+				Vector2 vector5 = vector - Projectile.Center;
 				float num15 = vector5.Length();
 				vector5.Normalize();
-				if (projectile.type == 423)
+				if (Projectile.type == 423)
 				{
 					vector5 = vector - Vector2.UnitY * 80f;
 					int num16 = (int)vector5.Y / 16;
@@ -181,25 +181,25 @@ namespace RijamsMod.Projectiles
 						num16 = 0;
 					}
 					Tile tile = Main.tile[(int)vector5.X / 16, num16];
-					if (tile != null && tile.active() && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type])
+					if (tile != null && tile.HasTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType])
 					{
 						vector5 += Vector2.UnitY * 16f;
 						tile = Main.tile[(int)vector5.X / 16, (int)vector5.Y / 16];
-						if (tile != null && tile.active() && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type])
+						if (tile != null && tile.HasTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType])
 						{
 							vector5 += Vector2.UnitY * 16f;
 						}
 					}
-					vector5 -= projectile.Center;
+					vector5 -= Projectile.Center;
 					num15 = vector5.Length();
 					vector5.Normalize();
-					if (num15 > 300f && num15 <= 800f && projectile.localAI[0] == 0f)
+					if (num15 > 300f && num15 <= 800f && Projectile.localAI[0] == 0f)
 					{
-						projectile.ai[0] = 2f;
-						projectile.ai[1] = (int)(num15 / 10f);
-						projectile.extraUpdates = (int)projectile.ai[1];
-						projectile.velocity = vector5 * 10f;
-						projectile.localAI[0] = 60f;
+						Projectile.ai[0] = 2f;
+						Projectile.ai[1] = (int)(num15 / 10f);
+						Projectile.extraUpdates = (int)Projectile.ai[1];
+						Projectile.velocity = vector5 * 10f;
+						Projectile.localAI[0] = 60f;
 						return;
 					}
 				}
@@ -207,56 +207,56 @@ namespace RijamsMod.Projectiles
 				{
 					float num19 = 6f;
 					vector5 *= num19;
-					projectile.velocity.X = (projectile.velocity.X * 40f + vector5.X) / 41f;
-					projectile.velocity.Y = (projectile.velocity.Y * 40f + vector5.Y) / 41f;
+					Projectile.velocity.X = (Projectile.velocity.X * 40f + vector5.X) / 41f;
+					Projectile.velocity.Y = (Projectile.velocity.Y * 40f + vector5.Y) / 41f;
 				}
-				else if ((projectile.type == 375 || true))
+				else if ((Projectile.type == 375 || true))
 				{
 					if (num15 < 150f)
 					{
 						float num21 = 4f;
 						vector5 *= 0f - num21;
-						projectile.velocity.X = (projectile.velocity.X * 40f + vector5.X) / 41f;
-						projectile.velocity.Y = (projectile.velocity.Y * 40f + vector5.Y) / 41f;
+						Projectile.velocity.X = (Projectile.velocity.X * 40f + vector5.X) / 41f;
+						Projectile.velocity.Y = (Projectile.velocity.Y * 40f + vector5.Y) / 41f;
 					}
 					else
 					{
-						projectile.velocity *= 0.97f;
+						Projectile.velocity *= 0.97f;
 					}
 				}
-				else if (projectile.velocity.Y > -1f)
+				else if (Projectile.velocity.Y > -1f)
 				{
-					projectile.velocity.Y -= 0.1f;
+					Projectile.velocity.Y -= 0.1f;
 				}
 			}
 			else
 			{
-				if (!Collision.CanHitLine(projectile.Center, 1, 1, Main.player[projectile.owner].Center, 1, 1))
+				if (!Collision.CanHitLine(Projectile.Center, 1, 1, Main.player[Projectile.owner].Center, 1, 1))
 				{
-					projectile.ai[0] = 1f;
+					Projectile.ai[0] = 1f;
 				}
 				float num22 = 6f;
-				if (projectile.ai[0] == 1f)
+				if (Projectile.ai[0] == 1f)
 				{
 					num22 = 15f;
 				}
-				Vector2 center2 = projectile.Center;
-				Vector2 vector7 = player.Center - center2 + new Vector2(0f, -60f);
-				if (((projectile.type == 375 || true) || true))
+				Vector2 center2 = Projectile.Center;
+				Vector2 vector7;
+				if (((Projectile.type == 375 || true) || true))
 				{
-					projectile.ai[1] = 3600f;
-					projectile.netUpdate = true;
+					Projectile.ai[1] = 3600f;
+					Projectile.netUpdate = true;
 					vector7 = player.Center - center2;
 					int num23 = 1;
-					for (int num24 = 0; num24 < projectile.whoAmI; num24++)
+					for (int num24 = 0; num24 < Projectile.whoAmI; num24++)
 					{
-						if (Main.projectile[num24].active && Main.projectile[num24].owner == projectile.owner && Main.projectile[num24].type == projectile.type)
+						if (Main.projectile[num24].active && Main.projectile[num24].owner == Projectile.owner && Main.projectile[num24].type == Projectile.type)
 						{
 							num23++;
 						}
 					}
-					vector7.X -= 15 * Main.player[projectile.owner].direction;
-					vector7.X -= num23 * 41 * Main.player[projectile.owner].direction;
+					vector7.X -= 15 * Main.player[Projectile.owner].direction;
+					vector7.X -= num23 * 41 * Main.player[Projectile.owner].direction;
 					vector7.Y -= 15f;
 				}
 				float num25 = vector7.Length();
@@ -264,21 +264,21 @@ namespace RijamsMod.Projectiles
 				{
 					num22 = 9f;
 				}
-				if ((projectile.type == 375 || true))
+				if ((Projectile.type == 375 || true))
 				{
 					num22 = (int)((double)num22 * 0.75);
 				}
-				if (num25 < 100f && projectile.ai[0] == 1f && !Collision.SolidCollision(projectile.position, projectile.width, projectile.height))
+				if (num25 < 100f && Projectile.ai[0] == 1f && !Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
 				{
-					projectile.ai[0] = 0f;
-					projectile.netUpdate = true;
+					Projectile.ai[0] = 0f;
+					Projectile.netUpdate = true;
 				}
 				if (num25 > 2000f)
 				{
-					projectile.position.X = Main.player[projectile.owner].Center.X - (float)(projectile.width / 2);
-					projectile.position.Y = Main.player[projectile.owner].Center.Y - (float)(projectile.width / 2);
+					Projectile.position.X = Main.player[Projectile.owner].Center.X - (float)(Projectile.width / 2);
+					Projectile.position.Y = Main.player[Projectile.owner].Center.Y - (float)(Projectile.width / 2);
 				}
-				if ((projectile.type == 375 || true))
+				if ((Projectile.type == 375 || true))
 				{
 					if (num25 > 10f)
 					{
@@ -288,81 +288,81 @@ namespace RijamsMod.Projectiles
 							num22 /= 2f;
 						}
 						vector7 *= num22;
-						projectile.velocity = (projectile.velocity * 20f + vector7) / 21f;
+						Projectile.velocity = (Projectile.velocity * 20f + vector7) / 21f;
 					}
 					else
 					{
-						projectile.direction = Main.player[projectile.owner].direction;
-						projectile.velocity *= 0.9f;
+						Projectile.direction = Main.player[Projectile.owner].direction;
+						Projectile.velocity *= 0.9f;
 					}
 				}
 				else if (num25 > 70f)
 				{
 					vector7.Normalize();
 					vector7 *= num22;
-					projectile.velocity = (projectile.velocity * 20f + vector7) / 21f;
+					Projectile.velocity = (Projectile.velocity * 20f + vector7) / 21f;
 				}
 				else
 				{
-					if (projectile.velocity.X == 0f && projectile.velocity.Y == 0f)
+					if (Projectile.velocity.X == 0f && Projectile.velocity.Y == 0f)
 					{
-						projectile.velocity.X = -0.15f;
-						projectile.velocity.Y = -0.05f;
+						Projectile.velocity.X = -0.15f;
+						Projectile.velocity.Y = -0.05f;
 					}
-					projectile.velocity *= 1.01f;
+					Projectile.velocity *= 1.01f;
 				}
 			}
-			projectile.rotation = projectile.velocity.X * 0.05f;
+			Projectile.rotation = Projectile.velocity.X * 0.05f;
 
 			//Main.NewText("projectile.frameCounter " + projectile.frameCounter);
-			//Main.NewText("projectile.ai[1] " + projectile.ai[1]);
+			//Main.NewText("projectile.ai[1] " + Projectile.ai[1]);
 			//Main.NewText("shooting " + shooting);
 
 			int frameSpeed = 32;
 			
-			projectile.frameCounter++;
+			Projectile.frameCounter++;
 			//if (projectile.ai[1] > 0f && projectile.ai[1] < 16f) //If shooting
 			if (shooting == true)
 			{
-				if (projectile.frameCounter > 32 && projectile.frameCounter <= 40)
+				if (Projectile.frameCounter > 32 && Projectile.frameCounter <= 40)
 				{
-					projectile.frame = 4;
+					Projectile.frame = 4;
 				}
-				if (projectile.frameCounter > 40 && projectile.frameCounter <= 48)
+				if (Projectile.frameCounter > 40 && Projectile.frameCounter <= 48)
                 {
-					projectile.frame = 5;
+					Projectile.frame = 5;
 				}
-				if (projectile.frameCounter > 48 && projectile.frameCounter <= 56)
+				if (Projectile.frameCounter > 48 && Projectile.frameCounter <= 56)
 				{
-					projectile.frame = 6;
+					Projectile.frame = 6;
 				}
-				if (projectile.frameCounter > 56 && projectile.frameCounter <= 64)
+				if (Projectile.frameCounter > 56 && Projectile.frameCounter <= 64)
 				{
-					projectile.frame = 7;
+					Projectile.frame = 7;
 				}
-				if (projectile.frameCounter > 64)
+				if (Projectile.frameCounter > 64)
 				{
-					projectile.frameCounter = 0;
-					projectile.frame = 0;
+					Projectile.frameCounter = 0;
+					Projectile.frame = 0;
 					shooting = false;
-					projectile.netUpdate = true;
+					Projectile.netUpdate = true;
 				}
-				if (projectile.frame >= 8)
+				if (Projectile.frame >= 8)
 				{
-					projectile.frame = 0;
+					Projectile.frame = 0;
 				}
 			}
-			else if (projectile.frameCounter >= frameSpeed && shooting == false) //if not shooting
+			else if (Projectile.frameCounter >= frameSpeed && shooting == false) //if not shooting
 			{
-				projectile.frameCounter = 0;
-				projectile.frame++;
-				if (shooting == false && projectile.frame >= 4)
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (shooting == false && Projectile.frame >= 4)
 				{
-					projectile.frame = 0;
+					Projectile.frame = 0;
 				}
-				if (projectile.frame >= 8)
+				if (Projectile.frame >= 8)
 				{
-					projectile.frame = 0;
+					Projectile.frame = 0;
 				}
 			}
 			/*projectile.frameCounter++;
@@ -378,28 +378,29 @@ namespace RijamsMod.Projectiles
 					projectile.frame += 4;
 				}
 			}*/
-			if (projectile.velocity.X > 0f)
+			if (Projectile.velocity.X > 0f)
 			{
-				projectile.spriteDirection = (projectile.direction = -1);
+				Projectile.spriteDirection = (Projectile.direction = -1);
 			}
-			else if (projectile.velocity.X < 0f)
+			else if (Projectile.velocity.X < 0f)
 			{
-				projectile.spriteDirection = (projectile.direction = 1);
+				Projectile.spriteDirection = (Projectile.direction = 1);
 			}
-			if (projectile.ai[1] > 0f)
+			if (Projectile.ai[1] > 0f)
 			{
-				projectile.ai[1] += 1f;
-				if (Main.rand.Next(3) == 0)
+				Projectile.ai[1] += 1f;
+				if (Main.rand.NextBool(3))
 				{
-					projectile.ai[1] += 1f;
+					Projectile.ai[1] += 1f;
 				}
 			}
-			if (projectile.ai[1] > (float)Main.rand.Next(180, 240))
+			if (Projectile.ai[1] > Main.rand.Next(180, 240))
 			{
-				projectile.ai[1] = 0f;
-				projectile.netUpdate = true;
+				//Main.NewText("projectile.ai[1] " + Projectile.ai[1]);
+				Projectile.ai[1] = 0f;
+				Projectile.netUpdate = true;
 			}
-			if (projectile.ai[0] != 0f)
+			if (Projectile.ai[0] != 0f)
 			{
 				return;
 			}
@@ -408,32 +409,32 @@ namespace RijamsMod.Projectiles
 			{
 				return;
 			}
-			if ((vector - projectile.Center).X > 0f)
+			if ((vector - Projectile.Center).X > 0f)
 			{
-				projectile.spriteDirection = (projectile.direction = -1);
+				Projectile.spriteDirection = (Projectile.direction = -1);
 			}
-			else if ((vector - projectile.Center).X < 0f)
+			else if ((vector - Projectile.Center).X < 0f)
 			{
-				projectile.spriteDirection = (projectile.direction = 1);
+				Projectile.spriteDirection = (Projectile.direction = 1);
 			}
-			if (projectile.ai[1] == 0f)
+			if (Projectile.ai[1] == 0f)
 			{
-				projectile.ai[1] += 1f;
-				if (Main.myPlayer == projectile.owner)
+				Projectile.ai[1] += 1f;
+				if (Main.myPlayer == Projectile.owner)
 				{
 					shooting = true;
-					projectile.netUpdate = true;
-					projectile.frameCounter = 32;
-					Vector2 vector11 = vector - projectile.Center;
+					Projectile.netUpdate = true;
+					Projectile.frameCounter = 32;
+					Vector2 vector11 = vector - Projectile.Center;
 					vector11.Normalize();
 					vector11 *= num30;
-					int num36 = Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, vector11.X, vector11.Y, ModContent.ProjectileType<LightningBall>(), projectile.damage, 0f, Main.myPlayer);
+					int num36 = Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, vector11.X, vector11.Y, ModContent.ProjectileType<LightningBall>(), Projectile.damage, 0f, Main.myPlayer);
 					Main.projectile[num36].timeLeft = 300;
 					Main.projectile[num36].netUpdate = true;
-					projectile.netUpdate = true;
+					Projectile.netUpdate = true;
 					if (!Main.dedServ)
 					{
-						Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/HissyDemonShoot").WithVolume(0.8f), (int)projectile.position.X, (int)projectile.position.Y);
+						SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/HissyDemonShoot") { Volume = 0.8f, MaxInstances = 10 }, Projectile.position);
 					}
 				}
 			}

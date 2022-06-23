@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,43 +11,44 @@ namespace RijamsMod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			Main.projFrames[projectile.type] = 2;
+			Main.projFrames[Projectile.type] = 2;
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 24;
-			projectile.height = 24;
+			Projectile.arrow = false;
+			Projectile.width = 24;
+			Projectile.height = 24;
 			//projectile.alpha = 255;
-			projectile.friendly = true;
-			projectile.tileCollide = true;
-			projectile.ignoreWater = true;
-			projectile.minion = true;
-			projectile.penetrate = 3;
-			aiType = -1;
-			projectile.timeLeft = 600;
+			Projectile.friendly = true;
+			Projectile.tileCollide = true;
+			Projectile.ignoreWater = true;
+			//Projectile.minion = true;
+			Projectile.DamageType = DamageClass.Summon;
+			Projectile.penetrate = 3;
+			AIType = -1;
+			Projectile.timeLeft = 600;
 		}
 
 		public override void AI()
 		{
-			projectile.ai[0]++;
-			if (projectile.ai[0] == 30) //Wait 0.5 seconds
+			Projectile.ai[0]++;
+			if (Projectile.ai[0] == 30) //Wait 0.5 seconds
             {
 				int newTarget = FindTargetWithLineOfSight();
 				if (newTarget != -1) //fly to the target
 				{
 					NPC nPC2 = Main.npc[newTarget];
-					projectile.Distance(nPC2.Center);
-					projectile.velocity = projectile.DirectionTo(nPC2.Center).SafeNormalize(-Vector2.UnitY) * projectile.velocity.Length();
-					projectile.netUpdate = true;
+					Projectile.Distance(nPC2.Center);
+					Projectile.velocity = Projectile.DirectionTo(nPC2.Center).SafeNormalize(-Vector2.UnitY) * Projectile.velocity.Length();
+					Projectile.netUpdate = true;
 					if (!Main.dedServ)
 					{
-						Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/MeatballDemonShoot").WithVolume(0.5f), (int)projectile.position.X, (int)projectile.position.Y);
+						SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/MeatballDemonShoot") { Volume = 0.5f, MaxInstances = 10 }, Projectile.position);
 					}
 				}
-				projectile.ai[0] = 0;
-				projectile.netUpdate = true;
+				Projectile.ai[0] = 0;
+				Projectile.netUpdate = true;
 			}
 
 			#region Animation and visuals
@@ -55,56 +57,56 @@ namespace RijamsMod.Projectiles
 
 			// Set both direction and spriteDirection to 1 or -1 (right and left respectively)
 			// projectile.direction is automatically set correctly in Projectile.Update, but we need to set it here or the textures will draw incorrectly on the 1st frame.
-			projectile.spriteDirection = projectile.direction = (projectile.velocity.X > 0).ToDirectionInt();
+			Projectile.spriteDirection = Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
 			// Adding Pi to rotation if facing left corrects the drawing
-			projectile.rotation = projectile.velocity.ToRotation() + (projectile.spriteDirection == 1 ? 0f : MathHelper.Pi);
-			if (projectile.spriteDirection == 1) // facing right
+			Projectile.rotation = Projectile.velocity.ToRotation() + (Projectile.spriteDirection == 1 ? 0f : MathHelper.Pi);
+			if (Projectile.spriteDirection == 1) // facing right
 			{
-				drawOffsetX = -14; // These values match the values in SetDefaults
-				drawOriginOffsetY = 0;
-				drawOriginOffsetX = 7;
+				DrawOffsetX = -14; // These values match the values in SetDefaults
+				DrawOriginOffsetY = 0;
+				DrawOriginOffsetX = 7;
 			}
 			else
 			{
 				// Facing left.
 				// You can figure these values out if you flip the sprite in your drawing program.
-				drawOffsetX = 0; // 0 since now the top left corner of the hitbox is on the far left pixel.
-				drawOriginOffsetY = 0; // doesn't change
-				drawOriginOffsetX = -7; // Math works out that this is negative of the other value.
+				DrawOffsetX = 0; // 0 since now the top left corner of the hitbox is on the far left pixel.
+				DrawOriginOffsetY = 0; // doesn't change
+				DrawOriginOffsetX = -7; // Math works out that this is negative of the other value.
 			}
 
 			// This is a simple "loop through all frames from top to bottom" animation
 			int frameSpeed = 3;
-			projectile.frameCounter++;
-			if (projectile.frameCounter >= frameSpeed)
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= frameSpeed)
 			{
-				projectile.frameCounter = 0;
-				projectile.frame++;
-				if (projectile.frame >= Main.projFrames[projectile.type])
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Projectile.type])
 				{
-					projectile.frame = 0;
+					Projectile.frame = 0;
 				}
 			}
 
 			// Some visuals here
-			Lighting.AddLight(projectile.Center, Color.Orange.ToVector3() * 0.85f);
+			Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 0.85f);
 			#endregion
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			if (projectile.penetrate <= 0)
+			if (Projectile.penetrate <= 0)
 			{
-				projectile.Kill();
+				Projectile.Kill();
 			}
 			else //bounce off of tiles
 			{
-				if (projectile.velocity.X != oldVelocity.X)
+				if (Projectile.velocity.X != oldVelocity.X)
 				{
-					projectile.velocity.X = oldVelocity.X * -1f;
+					Projectile.velocity.X = oldVelocity.X * -1f;
 				}
-				if (projectile.velocity.Y != oldVelocity.Y)
+				if (Projectile.velocity.Y != oldVelocity.Y)
 				{
-					projectile.velocity.Y = oldVelocity.Y * -1f;
+					Projectile.velocity.Y = oldVelocity.Y * -1f;
 				}
 			}
 			return false;
@@ -118,14 +120,14 @@ namespace RijamsMod.Projectiles
 			{
 				NPC nPC = Main.npc[i];
 				bool nPCCanBeChased = nPC.CanBeChasedBy(this);
-				if (projectile.localNPCImmunity[i] != 0)
+				if (Projectile.localNPCImmunity[i] != 0)
 				{
 					nPCCanBeChased = false;
 				}
 				if (nPCCanBeChased)
 				{
-					float projDist = projectile.Distance(Main.npc[i].Center);
-					if (projDist < newMaxRange && Collision.CanHit(projectile.position, projectile.width, projectile.height, nPC.position, nPC.width, nPC.height))
+					float projDist = Projectile.Distance(Main.npc[i].Center);
+					if (projDist < newMaxRange && Collision.CanHit(Projectile.position, Projectile.width, Projectile.height, nPC.position, nPC.width, nPC.height))
 					{
 						newMaxRange = projDist;
 						result = i;
@@ -138,9 +140,9 @@ namespace RijamsMod.Projectiles
 		{
 			for (int i = 0; i < 30; i++)
 			{
-				Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, DustID.Fire);
+				Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 1, 1, DustID.Torch);
 			}
-			Main.PlaySound(SoundID.Item14, projectile.position);
+			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 		}
 
 		public override Color? GetAlpha(Color lightColor) => Color.White; //Fullbright

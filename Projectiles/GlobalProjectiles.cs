@@ -13,13 +13,13 @@ namespace RijamsMod.Projectiles
 			Player owner = Main.player[projectile.owner];
 			if (owner != null)
 			{
-				if (projectile.melee)
+				if (projectile.CountsAsClass(DamageClass.Melee))
 				{
 					RijamsModPlayer moddedplayer = owner.GetModPlayer<RijamsModPlayer>();
 
 					if (moddedplayer.daybreakStone)
 					{
-						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantments && Main.rand.Next(2 * (1 + projectile.extraUpdates)) == 0)
+						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantments && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 						{
 							int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.SolarFlare, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
 							Main.dust[dust].noGravity = true;
@@ -30,7 +30,7 @@ namespace RijamsMod.Projectiles
 					}
 					if (moddedplayer.frostburnStone)
 					{
-						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantments && Main.rand.Next(2 * (1 + projectile.extraUpdates)) == 0)
+						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantments && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 						{
 							int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.Frost, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
 							Main.dust[dust].noGravity = true;
@@ -41,7 +41,7 @@ namespace RijamsMod.Projectiles
 					}
 					if (moddedplayer.flaskBuff == 1)
 					{
-						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantments && Main.rand.Next(2 * (1 + projectile.extraUpdates)) == 0)
+						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantments && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 						{
 							int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<Dusts.SulfurDust>(), projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
 							Main.dust[dust].noGravity = true;

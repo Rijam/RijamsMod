@@ -16,26 +16,26 @@ namespace RijamsMod.Projectiles
 
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 10;
-			projectile.height = 10;
-			projectile.aiStyle = 1;
-			projectile.friendly = true;
-			projectile.ranged = true;
-			aiType = ProjectileID.Bullet;
+			Projectile.arrow = false;
+			Projectile.width = 10;
+			Projectile.height = 10;
+			Projectile.aiStyle = 1;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Ranged;
+			AIType = ProjectileID.Bullet;
 			if (!Main.hardMode)
 			{
-				projectile.penetrate = 1;
+				Projectile.penetrate = 1;
 			}
 			if (Main.hardMode)
 			{
-				projectile.penetrate = 2;
+				Projectile.penetrate = 2;
 			}
-			projectile.timeLeft = 600;
+			Projectile.timeLeft = 600;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 			return true;
 		}
 	}
@@ -48,25 +48,25 @@ namespace RijamsMod.Projectiles
 
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 10;
-			projectile.height = 10;
-			projectile.aiStyle = 1;
-			projectile.friendly = true;
-			projectile.ranged = true;
-			projectile.light = 0.1f;            //How much light emit around the projectile
-			aiType = ProjectileID.Bullet;
-			projectile.penetrate = 5;
-			projectile.timeLeft = 180;
+			Projectile.arrow = false;
+			Projectile.width = 10;
+			Projectile.height = 10;
+			Projectile.aiStyle = 1;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.light = 0.1f;            //How much light emit around the projectile
+			AIType = ProjectileID.Bullet;
+			Projectile.penetrate = 5;
+			Projectile.timeLeft = 180;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 			return true;
 		}
 		public override void AI()
 		{
-			Lighting.AddLight(projectile.Center, 0.5f, 0.1f, 0.18f);
+			Lighting.AddLight(Projectile.Center, 0.5f, 0.1f, 0.18f);
 
 			/*projectile.localAI[0] += 1f;
 			if (projectile.localAI[0] > 3f)
@@ -83,35 +83,35 @@ namespace RijamsMod.Projectiles
 			}*/
 			
 			//Taken from Ichor Dart
-			if (Main.myPlayer == projectile.owner)
+			if (Main.myPlayer == Projectile.owner)
 			{
-				if (projectile.ai[1] >= 0f)
+				if (Projectile.ai[1] >= 0f)
 				{
-					projectile.penetrate = -1;
+					Projectile.penetrate = -1;
 				}
-				else if (projectile.penetrate < 0)
+				else if (Projectile.penetrate < 0)
 				{
-					projectile.penetrate = 1;
+					Projectile.penetrate = 1;
 				}
-				if (projectile.ai[1] >= 0f)
+				if (Projectile.ai[1] >= 0f)
 				{
-					projectile.ai[1] += 1f;
+					Projectile.ai[1] += 1f;
 				}
-				if (projectile.ai[1] > (float)Main.rand.Next(5, 30))
+				if (Projectile.ai[1] > (float)Main.rand.Next(5, 30))
 				{
-					projectile.ai[1] = -1000f;
-					float num196 = projectile.velocity.Length();
-					Vector2 vector28 = projectile.velocity;
+					Projectile.ai[1] = -1000f;
+					float num196 = Projectile.velocity.Length();
+					Vector2 vector28 = Projectile.velocity;
 					vector28.Normalize();
 					int num197 = 2;
 					for (int num198 = 0; num198 < num197; num198++)
 					{
-						Vector2 vector29 = new Vector2(Main.rand.Next(-100, 101), Main.rand.Next(-100, 101));
+						Vector2 vector29 = new(Main.rand.Next(-100, 101), Main.rand.Next(-100, 101));
 						vector29.Normalize();
 						vector29 += vector28 * 2f;
 						vector29.Normalize();
 						vector29 *= num196 * 3f;
-						Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, vector29.X, vector29.Y, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, 0f, -1000f);
+						Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center.X, Projectile.Center.Y, vector29.X, vector29.Y, Projectile.type, Projectile.damage, Projectile.knockBack, Projectile.owner, 0f, -1000f);
 					}
 				}
 			}
@@ -126,48 +126,48 @@ namespace RijamsMod.Projectiles
 
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 10;
-			projectile.height = 10;
-			projectile.aiStyle = 1;
-			projectile.friendly = true;
-			projectile.ranged = true;
-			projectile.light = 0.5f;            //How much light emit around the projectile
-			aiType = ProjectileID.Bullet;
-			projectile.penetrate = 5;
-			projectile.timeLeft = 600;
+			Projectile.arrow = false;
+			Projectile.width = 10;
+			Projectile.height = 10;
+			Projectile.aiStyle = 1;
+			Projectile.friendly = true;
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.light = 0.5f;            //How much light emit around the projectile
+			AIType = ProjectileID.Bullet;
+			Projectile.penetrate = 5;
+			Projectile.timeLeft = 600;
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 			return true;
 		}
 		public override void AI()
 		{
-			Lighting.AddLight(projectile.Center, 0.65f, 0.56f, 0.56f);
+			Lighting.AddLight(Projectile.Center, 0.65f, 0.56f, 0.56f);
 
-			projectile.localAI[0] += 1f;
-			if (projectile.localAI[0] > 3f)
+			Projectile.localAI[0] += 1f;
+			if (Projectile.localAI[0] > 3f)
 			{
-				projectile.alpha = 0;
+				Projectile.alpha = 0;
 			}
-			if (projectile.ai[0] >= 20f)
+			if (Projectile.ai[0] >= 20f)
 			{
-				projectile.ai[0] = 20f;
-				if (projectile.type != 477)
+				Projectile.ai[0] = 20f;
+				if (Projectile.type != 477)
 				{
-					projectile.velocity.Y += 0.05f;
+					Projectile.velocity.Y += 0.05f;
 				}
 			}
-			if (projectile.alpha < 170)
+			if (Projectile.alpha < 170)
 			{
 				for (int num164 = 0; num164 < 10; num164++)
 				{
-					float x2 = projectile.position.X - projectile.velocity.X / 10f * (float)num164;
-					float y2 = projectile.position.Y - projectile.velocity.Y / 10f * (float)num164;
+					float x2 = Projectile.Center.X - Projectile.velocity.X / 10f * (float)num164;
+					float y2 = Projectile.Center.Y - Projectile.velocity.Y / 10f * (float)num164;
 					int newDust = Dust.NewDust(new Vector2(x2, y2), 1, 1, DustID.Iron);
-					Main.dust[newDust].alpha = projectile.alpha;
+					Main.dust[newDust].alpha = Projectile.alpha;
 					Main.dust[newDust].position.X = x2;
 					Main.dust[newDust].position.Y = y2;
 					Main.dust[newDust].velocity *= 0f;

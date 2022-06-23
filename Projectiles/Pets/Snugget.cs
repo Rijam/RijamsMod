@@ -11,30 +11,30 @@ namespace RijamsMod.Projectiles.Pets
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Snugget");
-			Main.projFrames[projectile.type] = 11;
-			Main.projPet[projectile.type] = true;
+			Main.projFrames[Projectile.type] = 11;
+			Main.projPet[Projectile.type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.CloneDefaults(ProjectileID.BlackCat);
-			projectile.width = 32;
-			projectile.height = 32;
-			aiType = ProjectileID.BlackCat;
-			drawOffsetX = -10;
-			drawOriginOffsetY -= 12;
+			Projectile.CloneDefaults(ProjectileID.BlackCat);
+			Projectile.width = 32;
+			Projectile.height = 32;
+			AIType = ProjectileID.BlackCat;
+			DrawOffsetX = -10;
+			DrawOriginOffsetY -= 24;
 		}
 
 		public override bool PreAI()
 		{
-			Player player = Main.player[projectile.owner];
-			player.blackCat = false; // Relic from aiType
+			Player player = Main.player[Projectile.owner];
+			player.blackCat = false; // Relic from AIType
 			return true;
 		}
 
 		public override void AI()
 		{
-			Player player = Main.player[projectile.owner];
+			Player player = Main.player[Projectile.owner];
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
@@ -42,7 +42,7 @@ namespace RijamsMod.Projectiles.Pets
 			}
 			if (modPlayer.snuggetPet)
 			{
-				projectile.timeLeft = 2;
+				Projectile.timeLeft = 2;
 			}
 		}
 		public override Color? GetAlpha(Color lightColor)

@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,41 +12,41 @@ namespace RijamsMod.Projectiles
 	{
         public override void SetStaticDefaults()
         {
-			Main.projFrames[projectile.type] = 4;
+			Main.projFrames[Projectile.type] = 4;
 		}
         public override void SetDefaults()
 		{
-			projectile.width = 48;
-			projectile.height = 48;
-			projectile.alpha = 100;
-			projectile.friendly = true;
-			projectile.tileCollide = false;
-			projectile.ignoreWater = true;
-			projectile.minion = true;
-			projectile.penetrate = -1;
-			aiType = -1;
-			projectile.timeLeft = 16;
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 32;
-			drawOffsetX = 8;
-			drawOriginOffsetY += 4;
+			Projectile.width = 48;
+			Projectile.height = 48;
+			Projectile.alpha = 100;
+			Projectile.friendly = true;
+			Projectile.tileCollide = false;
+			Projectile.ignoreWater = true;
+			Projectile.DamageType = DamageClass.Summon;
+			Projectile.penetrate = -1;
+			AIType = -1;
+			Projectile.timeLeft = 16;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 32;
+			DrawOffsetX = 8;
+			DrawOriginOffsetY += 8;
 		}
 
 		public override Color? GetAlpha(Color lightColor) => Color.White;
 
 		public override void AI()
 		{
-			Lighting.AddLight(projectile.Center, Color.Lerp(Color.Yellow, Color.LightBlue, projectile.frameCounter / 16f).ToVector3() * 0.2f);
+			Lighting.AddLight(Projectile.Center, Color.Lerp(Color.Yellow, Color.LightBlue, Projectile.frameCounter / 16f).ToVector3() * 0.2f);
 			// This is a simple "loop through all frames from top to bottom" animation
 			int frameSpeed = 4;
-			projectile.frameCounter++;
-			if (projectile.frameCounter >= frameSpeed)
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= frameSpeed)
 			{
-				projectile.frameCounter = 0;
-				projectile.frame++;
-				if (projectile.frame >= Main.projFrames[projectile.type])
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Projectile.type])
 				{
-					projectile.Kill();
+					Projectile.Kill();
 				}
 			}
 		}
@@ -54,10 +55,10 @@ namespace RijamsMod.Projectiles
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				int dust = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, DustID.BlueTorch);
+				int dust = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.BlueTorch);
 				Main.dust[dust].noGravity = true;
 			}
-			Main.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 29, 0.25f);
+			SoundEngine.PlaySound(new("Terraria/Sounds/Item_29") { Volume = 0.25f }, Projectile.position);
 		}
 	}
 }

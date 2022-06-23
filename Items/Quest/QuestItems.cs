@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Quest
 {
 	public class QuestTrackerIncomplete : ModItem
 	{
-		public override string Texture => "Terraria/UI/Cursor_2";
+		public override string Texture => "Terraria/Images/UI/Cursor_2";
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Keep searching!");
@@ -18,16 +18,16 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 1;
-			item.width = 22;
-			item.height = 24;
-			item.value = 0;
-			item.rare = ItemRarityID.White;
+			Item.maxStack = 1;
+			Item.width = 22;
+			Item.height = 24;
+			Item.value = 0;
+			Item.rare = ItemRarityID.White;
 		}
 	}
 	public class QuestTrackerComplete : ModItem
 	{
-		public override string Texture => "Terraria/UI/Cursor_3";
+		public override string Texture => "Terraria/Images/UI/Cursor_3";
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("You have completed all of the quests!");
@@ -36,11 +36,11 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 1;
-			item.width = 22;
-			item.height = 24;
-			item.value = 0;
-			item.rare = ItemRarityID.White;
+			Item.maxStack = 1;
+			Item.width = 22;
+			Item.height = 24;
+			Item.value = 0;
+			Item.rare = ItemRarityID.White;
 		}
 	}
 	public class OddDevice : ModItem
@@ -52,43 +52,46 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults() 
 		{
-			item.maxStack = 99;
-			item.width = 16;
-			item.height = 34;
-			item.value = 100;
-			item.rare = ItemRarityID.Quest;
+			Item.maxStack = 99;
+			Item.width = 16;
+			Item.height = 34;
+			Item.value = 100;
+			Item.rare = ItemRarityID.Quest;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
+			int index = 1;
+			if (Item.favorited)
+			{
+				index += 2;
+			}
 			if (RijamsModWorld.intTravQuestOddDevice == false)
 			{
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "'It looks like something is tracking it...'"));
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "IncompleteQuest", "'It looks like something is tracking it...'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
 			}
 			if (RijamsModWorld.intTravQuestOddDevice == true)
 			{
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "'The Interstellar Traveler was tracking it.'"));
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "CompleteQuest", "'The Interstellar Traveler was tracking it.'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
 			}
 		}
 		public override void AddRecipes() 
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddRecipeGroup("IronBar", 5);
-			recipe.AddIngredient(ItemID.ShadowScale, 2);
-			recipe.AddIngredient(ItemID.Glass, 1);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddRecipeGroup("IronBar", 5)
+				.AddIngredient(ItemID.ShadowScale, 2)
+				.AddIngredient(ItemID.Glass, 1)
+				.AddTile(TileID.WorkBenches)
+				.Register();
 			
-			recipe = new ModRecipe(mod);
-			recipe.AddRecipeGroup("IronBar", 5);
-			recipe.AddIngredient(ItemID.TissueSample, 2);
-			recipe.AddIngredient(ItemID.Glass, 1);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddRecipeGroup("IronBar", 5)
+				.AddIngredient(ItemID.TissueSample, 2)
+				.AddIngredient(ItemID.Glass, 1)
+				.AddTile(TileID.WorkBenches)
+				.Register();
 		}
 	}
 	public class BlankDisplay : ModItem
@@ -100,64 +103,73 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 99;
-			item.width = 32;
-			item.height = 24;
-			item.value = 100;
-			item.rare = ItemRarityID.Quest;
+			Item.maxStack = 99;
+			Item.width = 32;
+			Item.height = 24;
+			Item.value = 100;
+			Item.rare = ItemRarityID.Quest;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
+			int index = 1;
+			if (Item.favorited)
+			{
+				index += 2;
+			}
 			if (RijamsModWorld.intTravQuestBlankDisplay == false)
 			{
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "'It looks like it could be programmed...'"));
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "IncompleteQuest", "'It looks like it could be programmed...'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
 			}
 			if (RijamsModWorld.intTravQuestBlankDisplay == true)
 			{
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "'The Interstellar Traveler is now selling Information Displays.'"));
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "CompleteQuest", "'The Interstellar Traveler is now selling Information Displays.'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
 			}
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddRecipeGroup("RijamsMod:SilverBars", 5);
-			recipe.AddIngredient(ItemID.Lens, 1);
-			recipe.AddIngredient(ItemID.Glass, 2);
-			recipe.AddTile(TileID.TinkerersWorkbench);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddRecipeGroup("RijamsMod:SilverBars", 5)
+				.AddIngredient(ItemID.Lens, 1)
+				.AddIngredient(ItemID.Glass, 2)
+				.AddTile(TileID.TinkerersWorkbench)
+				.Register();
 		}
 	}
 	public class TeleportationCore : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Chaos Elementals and Enchanted Swords]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Chaos Elementals and Enchanted Swords]", null, null });
 		}
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 99;
-			item.width = 28;
-			item.height = 40;
-			item.value = 50000;
-			item.rare = ItemRarityID.Quest;
+			Item.maxStack = 99;
+			Item.width = 28;
+			Item.height = 40;
+			Item.value = 50000;
+			Item.rare = ItemRarityID.Quest;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
+			int index = 1;
+			if (Item.favorited)
+			{
+				index += 2;
+			}
 			if (RijamsModWorld.intTravQuestTPCore == false)
 			{
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "'It looks like it could be used to teleport...'"));
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "IncompleteQuest", "'It looks like it could be used to teleport...'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
 			}
 			if (RijamsModWorld.intTravQuestTPCore == true)
 			{
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "'The Interstellar Traveler is now selling the Rod of Discord.'"));
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "CompleteQuest", "'The Interstellar Traveler is now selling the Rod of Discord.'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
 			}
 		}
 	}
@@ -170,24 +182,29 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 99;
-			item.width = 42;
-			item.height = 24;
-			item.value = 5000;
-			item.rare = ItemRarityID.Quest;
+			Item.maxStack = 99;
+			Item.width = 42;
+			Item.height = 24;
+			Item.value = 5000;
+			Item.rare = ItemRarityID.Quest;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			if (RijamsModWorld.intTravQuestRyeJam == false)
+			int index = 1;
+			if (Item.favorited)
 			{
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "'It looks tasty...'"));
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "[c/a7a7a7: Quest item?]"));
+				index += 2;
 			}
-			if (RijamsModWorld.intTravQuestRyeJam == true)
+			if (RijamsModWorld.intTravQuestBreadAndJelly == false)
 			{
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "'The Interstellar Traveler is now selling Rye Jam.'"));
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "IncompleteQuest", "'It looks tasty...'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "IncompleteQuest", "[c/a7a7a7: Quest item?]"));
+			}
+			if (RijamsModWorld.intTravQuestBreadAndJelly == true)
+			{
+				tooltips.Insert(index, new TooltipLine(Mod, "CompleteQuest", "'The Interstellar Traveler is now selling Rye Jam.'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
 			}
 		}
 	}
@@ -200,35 +217,39 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 99;
-			item.width = 42;
-			item.height = 24;
-			item.value = 10000;
-			item.rare = ItemRarityID.Quest;
+			Item.maxStack = 99;
+			Item.width = 42;
+			Item.height = 24;
+			Item.value = 10000;
+			Item.rare = ItemRarityID.Quest;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
+			int index = 1;
+			if (Item.favorited)
+			{
+				index += 2;
+			}
 			if (RijamsModWorld.intTravQuestMagicOxygenizer == false)
 			{
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "'It can create a lot of oxygen...'"));
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "IncompleteQuest", "'It can create a lot of oxygen...'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
 			}
 			if (RijamsModWorld.intTravQuestMagicOxygenizer == true)
 			{
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "'The Interstellar Traveler is now selling the Breathing Pack.'"));
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "CompleteQuest", "'The Interstellar Traveler is now selling the Breathing Pack.'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
 			}
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.HallowedBar, 3);
-			recipe.AddIngredient(ItemID.CloudinaBottle, 1);
-			recipe.AddIngredient(ItemID.PixieDust, 1);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.HallowedBar, 3)
+				.AddIngredient(ItemID.CloudinaBottle, 1)
+				.AddIngredient(ItemID.PixieDust, 1)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 	public class PrimeThruster : ModItem
@@ -240,35 +261,39 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 99;
-			item.width = 60;
-			item.height = 36;
-			item.value = 15000;
-			item.rare = ItemRarityID.Quest;
+			Item.maxStack = 99;
+			Item.width = 60;
+			Item.height = 36;
+			Item.value = 15000;
+			Item.rare = ItemRarityID.Quest;
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
+			int index = 1;
+			if (Item.favorited)
+			{
+				index += 2;
+			}
 			if (RijamsModWorld.intTravQuestPrimeThruster == false)
 			{
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "'It can produce a lot of thrust...'"));
-				tooltips.Add(new TooltipLine(mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "IncompleteQuest", "'It can produce a lot of thrust...'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "IncompleteQuest", "[c/a7a7a7: Quest item]"));
 			}
 			if (RijamsModWorld.intTravQuestPrimeThruster == true)
 			{
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "'The Interstellar Traveler is now selling the Rocket Booster.'"));
-				tooltips.Add(new TooltipLine(mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
+				tooltips.Insert(index, new TooltipLine(Mod, "CompleteQuest", "'The Interstellar Traveler is now selling the Rocket Booster.'"));
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "CompleteQuest", "[c/ffc100: Quest Complete!]"));
 			}
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.RocketI, 10);
-			recipe.AddIngredient(ItemID.ChlorophyteBar, 5);
-			recipe.AddIngredient(ItemID.SoulofFright, 1);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.RocketI, 10)
+				.AddIngredient(ItemID.ChlorophyteBar, 5)
+				.AddIngredient(ItemID.SoulofFright, 1)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 }

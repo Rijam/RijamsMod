@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace RijamsMod.Items.Weapons
 {
@@ -14,73 +15,51 @@ namespace RijamsMod.Items.Weapons
 		{
 			DisplayName.SetDefault("Interstellar Carbine");
 			Tooltip.SetDefault("50% not to consume ammo\nConverts musket balls into Chlorophyte Bullets");
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Moon Lord]", null });
 		}
 
 		public override void SetDefaults()
 		{
-			item.damage = 76;
-			item.ranged = true;
-			item.width = 94;
-			item.height = 32;
-			item.useTime = 5;
-			item.useAnimation = 5;
-			item.useStyle = ItemUseStyleID.HoldingOut; //5
-			item.noMelee = true; //so the item's animation doesn't do damage
-			item.knockBack = 5;
-			item.value = 750000;
-			item.rare = ItemRarityID.Purple;//11
-			item.UseSound = SoundID.Item41;
-			item.autoReuse = true;
-			item.shoot = AmmoID.Bullet; //idk why but all the guns in the vanilla source have this
-			item.shootSpeed = 16f;
-			item.scale = 0.75f;
-			item.useAmmo = AmmoID.Bullet;
+			Item.damage = 76;
+			Item.DamageType = DamageClass.Ranged;
+			Item.width = 94;
+			Item.height = 32;
+			Item.useTime = 5;
+			Item.useAnimation = 5;
+			Item.useStyle = ItemUseStyleID.Shoot; //5
+			Item.noMelee = true; //so the item's animation doesn't do damage
+			Item.knockBack = 5;
+			Item.value = 750000;
+			Item.rare = ItemRarityID.Purple;//11
+			Item.UseSound = SoundID.Item41;
+			Item.autoReuse = true;
+			Item.shoot = AmmoID.Bullet; //idk why but all the guns in the vanilla source have this
+			Item.shootSpeed = 16f;
+			Item.scale = 0.75f;
+			Item.useAmmo = AmmoID.Bullet;
 			if (!Main.dedServ)
             {
-                item.GetGlobalItem<ItemUseGlow>().glowTexture = mod.GetTexture("Items/GlowMasks/InterstellarCarbine_Glow");
-				item.GetGlobalItem<ItemUseGlow>().glowOffsetX = -16;
-				item.GetGlobalItem<ItemUseGlow>().glowOffsetY = 0;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowOffsetX = -16;
+				Item.GetGlobalItem<ItemUseGlow>().glowOffsetY = 0;
             }
 		}
-		
-		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-        {
-            Texture2D texture = mod.GetTexture("Items/GlowMasks/InterstellarCarbine_Glow");
-            spriteBatch.Draw
-            (
-                texture,
-                new Vector2
-                (
-                    item.position.X - Main.screenPosition.X + item.width * 0.5f,
-                    item.position.Y - Main.screenPosition.Y + item.height - texture.Height * 0.5f + 2f
-                ),
-                new Rectangle(0, 0, texture.Width, texture.Height),
-                Color.White,
-                rotation,
-                texture.Size() * 0.5f,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
-        }
 
 
 		// What if I wanted this gun to have a 50% chance not to consume ammo?
-		public override bool ConsumeAmmo(Player player)
+		public override bool CanConsumeAmmo(Item ammo, Player player)
 		{
 			return Main.rand.NextFloat() >= .50f;
 		}
 
 		// What if I wanted it to work like Uzi, replacing regular bullets with High Velocity Bullets?
 		// Uzi/Molten Fury style: Replace normal Bullets with Highvelocity
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
 			if (type == ProjectileID.Bullet) // or ProjectileID.WoodenArrowFriendly
 			{
 				type = ProjectileID.ChlorophyteBullet; // or ProjectileID.FireArrow;
 			}
-			return true; // return true to allow tmodloader to call Projectile.NewProjectile as normal
 		}
 
 		// Help, my gun isn't being held at the handle! Adjust these 2 numbers until it looks right.

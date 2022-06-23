@@ -8,7 +8,7 @@ namespace RijamsMod.Buffs
 {
 	public class HissyDemonBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Hissy Demon");
 			Description.SetDefault("The Hissy Demon will fight for you");
@@ -18,7 +18,7 @@ namespace RijamsMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			if (player.ownedProjectileCounts[mod.ProjectileType("HissyDemon")] > 0)
+			if (player.ownedProjectileCounts[Mod.Find<ModProjectile>("HissyDemon").Type] > 0)
 			{
 				player.buffTime[buffIndex] = 18000;
 			}

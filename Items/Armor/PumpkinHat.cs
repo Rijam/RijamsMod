@@ -16,11 +16,11 @@ namespace RijamsMod.Items.Armor
 
 		public override void SetDefaults()
 		{
-			item.width = 22;
-			item.height = 18;
-			item.value = 10;
-			item.rare = ItemRarityID.White;
-			item.defense = 1;
+			Item.width = 22;
+			Item.height = 18;
+			Item.value = 10;
+			Item.rare = ItemRarityID.White;
+			Item.defense = 1;
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -32,17 +32,16 @@ namespace RijamsMod.Items.Armor
 		{
 			player.maxMinions += 1;
 			player.setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
-			player.allDamage += 0.1f;
+			player.GetDamage(DamageClass.Generic) += 0.1f;
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.Pumpkin, 20);
-			recipe.AddIngredient(ItemID.FallenStar, 1);
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.Pumpkin, 20)
+				.AddIngredient(ItemID.FallenStar, 1)
+				.AddTile(TileID.WorkBenches)
+				.Register();
 		}
 	}
 }

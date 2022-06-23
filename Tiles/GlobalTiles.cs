@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.DataStructures;
 
 namespace RijamsMod.Tiles
 {
@@ -12,9 +13,9 @@ namespace RijamsMod.Tiles
         {
             if (type == TileID.Pots)
             {
-                if (Main.hardMode && Main.rand.Next(100) == 0)
+                if (Main.hardMode && Main.rand.NextBool(100))
                 {
-                    Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 41));
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 41));
                 }
             }
             return base.Drop(i, j, type);

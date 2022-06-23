@@ -6,13 +6,14 @@ using Terraria.ID;
 using Terraria.UI;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using ReLogic.Content;
 
 namespace RijamsMod.UI
 {
     class TheUI : UIState
     {
         public DragableUIPanel TheUIPanel;
-        public UIHoverImageButton TheUIButton;
+        //public UIHoverImageButton TheUIButton;
         public static bool Visible;
         public int ItemType = ModContent.ItemType<Items.Tools.TestMM>();
         private bool pick;
@@ -38,7 +39,7 @@ namespace RijamsMod.UI
             TheUIPanel.Height.Set(50f, 0f);
             TheUIPanel.BackgroundColor = new Color(73, 94, 171) * 0.5f;
 
-            Texture2D buttonPickaxeTextureOff = ModContent.GetTexture("RijamsMod/UI/UIPickaxeOff");
+            Asset<Texture2D> buttonPickaxeTextureOff = ModContent.Request<Texture2D>("RijamsMod/UI/UIPickaxeOff");
             UIHoverImageButton pickaxe = new UIHoverImageButton(buttonPickaxeTextureOff, "Pickaxe Mode");
             pickaxe.Left.Set(5, 0f);
             pickaxe.Top.Set(5, 0f);
@@ -47,7 +48,7 @@ namespace RijamsMod.UI
             pickaxe.OnClick += new MouseEvent(PickButtonClicked);
             TheUIPanel.Append(pickaxe);
 
-            Texture2D buttonAxeTextureOff = ModContent.GetTexture("RijamsMod/UI/UIAxeOff");
+            Asset<Texture2D> buttonAxeTextureOff = ModContent.Request<Texture2D>("RijamsMod/UI/UIAxeOff");
             UIHoverImageButton axe = new UIHoverImageButton(buttonAxeTextureOff, "Axe Mode");
             axe.Left.Set(50, 0f);
             axe.Top.Set(5, 0f);
@@ -56,7 +57,7 @@ namespace RijamsMod.UI
             axe.OnClick += new MouseEvent(AxeButtonClicked);
             TheUIPanel.Append(axe);
 
-            Texture2D buttonHammerTextureOff = ModContent.GetTexture("RijamsMod/UI/UIHammerOff");
+            Asset<Texture2D> buttonHammerTextureOff = ModContent.Request<Texture2D>("RijamsMod/UI/UIHammerOff");
             UIHoverImageButton hammer = new UIHoverImageButton(buttonHammerTextureOff, "Hammer Mode");
             hammer.Left.Set(95, 0f);
             hammer.Top.Set(5, 0f);
@@ -84,9 +85,9 @@ namespace RijamsMod.UI
             base.Draw(spriteBatch);
             //if (!Visible) { return; }
             panelOffeset = TheUIPanel.GetOffset();
-            Texture2D buttonPickaxeTextureOn = ModContent.GetTexture("RijamsMod/UI/UIPickaxeOn");
-            Texture2D buttonAxeTextureOn = ModContent.GetTexture("RijamsMod/UI/UIAxeOn");
-            Texture2D buttonHammerTextureOn = ModContent.GetTexture("RijamsMod/UI/UIHammerOn");
+            Texture2D buttonPickaxeTextureOn = ModContent.Request<Texture2D>("RijamsMod/UI/UIPickaxeOn").Value;
+            Texture2D buttonAxeTextureOn = ModContent.Request<Texture2D>("RijamsMod/UI/UIAxeOn").Value;
+            Texture2D buttonHammerTextureOn = ModContent.Request<Texture2D>("RijamsMod/UI/UIHammerOn").Value;
 
             if (pick)
             {

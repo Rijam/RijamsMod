@@ -9,11 +9,11 @@ namespace RijamsMod.Items
 {
 	public class DebugDisplayStates : ModItem
 	{
-		public override bool Autoload(ref string name)
+		public override bool IsLoadingEnabled(Mod mod)
 		{
 			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
 		}
-		public override string Texture => "Terraria/Item_" + ItemID.PurpleSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.PurpleSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Display States");
@@ -22,39 +22,39 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			item.width = 14;
-			item.height = 14;
-			item.maxStack = 999;
-			item.rare = ItemRarityID.White;
-			item.value = 0;
-			item.useStyle = ItemUseStyleID.EatingUsing;
-			item.useAnimation = 20;
-			item.useTime = 20;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item9;
-			item.consumable = true;
+			Item.width = 14;
+			Item.height = 14;
+			Item.maxStack = 999;
+			Item.rare = ItemRarityID.White;
+			Item.value = 0;
+			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useAnimation = 20;
+			Item.useTime = 20;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item9;
+			Item.consumable = true;
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			Main.NewText("intTravQuestOddDevice is currenty: " + RijamsModWorld.intTravQuestOddDevice);
 			Main.NewText("intTravQuestBlankDisplay is currenty: " + RijamsModWorld.intTravQuestBlankDisplay);
 			Main.NewText("intTravQuestTPCore is currenty: " + RijamsModWorld.intTravQuestTPCore);
-			Main.NewText("intTravQuestRyeJam is currenty: " + RijamsModWorld.intTravQuestRyeJam);
+			Main.NewText("intTravQuestRyeJam is currenty: " + RijamsModWorld.intTravQuestBreadAndJelly);
 			Main.NewText("intTravQuestMagicOxygenizer is currenty: " + RijamsModWorld.intTravQuestMagicOxygenizer);
 			Main.NewText("intTravQuestPrimeThruster is currenty: " + RijamsModWorld.intTravQuestPrimeThruster);
 			Main.NewText("savedHarpy is currenty: " + RijamsModWorld.savedHarpy);
-			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArived);
+			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArrived);
 			Main.NewText("hellTraderArrivable is currenty: " + RijamsModWorld.hellTraderArrivable);
 			return true;
 		}
 	}
 	public class DebugIntTravQuestOddDevice : ModItem
 	{
-		public override bool Autoload(ref string name)
+		public override bool IsLoadingEnabled(Mod mod)
 		{
 			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
 		}
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Odd Device Quest");
@@ -63,20 +63,20 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			item.color = Color.Orange;
-			item.width = 14;
-			item.height = 14;
-			item.maxStack = 999;
-			item.rare = ItemRarityID.White;
-			item.value = 0;
-			item.useStyle = ItemUseStyleID.EatingUsing;
-			item.useAnimation = 20;
-			item.useTime = 20;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item9;
-			item.consumable = true;
+			Item.color = Color.Orange;
+			Item.width = 14;
+			Item.height = 14;
+			Item.maxStack = 999;
+			Item.rare = ItemRarityID.White;
+			Item.value = 0;
+			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useAnimation = 20;
+			Item.useTime = 20;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item9;
+			Item.consumable = true;
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestOddDevice = false;
 			RijamsModWorld.UpdateWorldBool();
@@ -94,18 +94,18 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
 			string currentState = RijamsModWorld.intTravQuestOddDevice.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestOddDevice == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravQuestOddDevice == " + currentState));
 		}
 	}
 	public class DebugIntTravQuestBlankDisplay : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Blank Display Quest");
 			Tooltip.SetDefault("Changes the states of the Blank Display quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestBlankDisplay = false;
 			RijamsModWorld.UpdateWorldBool();
@@ -119,18 +119,18 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.intTravQuestBlankDisplay.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestBlankDisplay == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravQuestBlankDisplay == " + currentState));
 		}
 	}
 	public class DebugIntTravQuestTPCore : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Teleportation Core Quest");
 			Tooltip.SetDefault("Changes the states of the Teleportation Core quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestTPCore = false;
 			RijamsModWorld.UpdateWorldBool();
@@ -144,43 +144,43 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.intTravQuestTPCore.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestTPCore == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravQuestTPCore == " + currentState));
 		}
 	}
 	public class DebugIntTravQuestRyeJam : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Rye Jam");
 			Tooltip.SetDefault("Changes the states of the Rye Jam quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
-			RijamsModWorld.intTravQuestRyeJam = false;
+			RijamsModWorld.intTravQuestBreadAndJelly = false;
 			RijamsModWorld.UpdateWorldBool();
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
-			RijamsModWorld.intTravQuestRyeJam = true;
+			RijamsModWorld.intTravQuestBreadAndJelly = true;
 			RijamsModWorld.UpdateWorldBool();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			string currentState = RijamsModWorld.intTravQuestRyeJam.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestRyeJam == " + currentState));
+			string currentState = RijamsModWorld.intTravQuestBreadAndJelly.ToString();
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravQuestRyeJam == " + currentState));
 		}
 	}
 	public class DebugIntTravQuestMagicOxygenizer : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Magic Oxygenizer");
 			Tooltip.SetDefault("Changes the states of the Magic Oxygenizer quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestMagicOxygenizer = false;
 			RijamsModWorld.UpdateWorldBool();
@@ -194,18 +194,18 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.intTravQuestMagicOxygenizer.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestMagicOxygenizer == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravQuestMagicOxygenizer == " + currentState));
 		}
 	}
 	public class DebugIntTravQuestPrimeThruster : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Prime Thruster");
 			Tooltip.SetDefault("Changes the states of the Prime Thruster quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestPrimeThruster = false;
 			RijamsModWorld.UpdateWorldBool();
@@ -219,12 +219,12 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.intTravQuestPrimeThruster.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravQuestPrimeThruster == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravQuestPrimeThruster == " + currentState));
 		}
 	}
 	public class DebugIntTravArived : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Interstellar Traveler Arrived Flag");
@@ -233,26 +233,26 @@ namespace RijamsMod.Items
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.color = Color.Red;
+			Item.color = Color.Red;
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
-			RijamsModWorld.intTravArived = false;
+			RijamsModWorld.intTravArrived = false;
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
-			RijamsModWorld.intTravArived = true;
+			RijamsModWorld.intTravArrived = true;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			string currentState = RijamsModWorld.intTravArived.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "intTravArived == " + currentState));
+			string currentState = RijamsModWorld.intTravArrived.ToString();
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravArived == " + currentState));
 		}
 	}
 	public class DebugSavedHarpy : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Saved Harpy Flag");
@@ -261,9 +261,9 @@ namespace RijamsMod.Items
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.color = Color.Red;
+			Item.color = Color.Red;
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.savedHarpy = false;
 			return true;
@@ -275,12 +275,12 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.savedHarpy.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "savedHarpy == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "savedHarpy == " + currentState));
 		}
 	}
 	public class DebugHellTraderArrivable : DebugIntTravQuestOddDevice
 	{
-		public override string Texture => "Terraria/Item_" + ItemID.GreenSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Hell Trader Arrivable Flag");
@@ -289,9 +289,9 @@ namespace RijamsMod.Items
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			item.color = Color.Red;
+			Item.color = Color.Red;
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.hellTraderArrivable = false;
 			return true;
@@ -303,16 +303,16 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.hellTraderArrivable.ToString();
-			tooltips.Add(new TooltipLine(mod, "CurrentState", "hellTraderArrivable == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "hellTraderArrivable == " + currentState));
 		}
 	}
 	public class DebugMethodTester : ModItem
 	{
-		public override bool Autoload(ref string name)
+		public override bool IsLoadingEnabled(Mod mod)
 		{
 			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
 		}
-		public override string Texture => "Terraria/Item_" + ItemID.PurpleSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.PurpleSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Method Tester");
@@ -321,19 +321,19 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			item.width = 14;
-			item.height = 14;
-			item.maxStack = 999;
-			item.rare = ItemRarityID.White;
-			item.value = 0;
-			item.useStyle = ItemUseStyleID.EatingUsing;
-			item.useAnimation = 20;
-			item.useTime = 20;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item9;
-			item.consumable = true;
+			Item.width = 14;
+			Item.height = 14;
+			Item.maxStack = 999;
+			Item.rare = ItemRarityID.White;
+			Item.value = 0;
+			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useAnimation = 20;
+			Item.useTime = 20;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item9;
+			Item.consumable = true;
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			Main.NewText("Main.player[Main.myPlayer].lastCreatureHit is currenty: " + Main.player[Main.myPlayer].lastCreatureHit);
 			Main.NewText("NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] is currenty: " + NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)]);
@@ -343,17 +343,18 @@ namespace RijamsMod.Items
 			Main.NewText("CellPhone is currenty: " + Main.LocalPlayer.HasItem(ItemID.CellPhone));
 			Main.NewText("player.GetModPlayer<RijamsModPlayer>().summonersGlove is currenty: " + player.GetModPlayer<RijamsModPlayer>().summonersGlove);
 			Main.NewText("player.GetModPlayer<RijamsModPlayer>().breathingPack is currenty: " + player.GetModPlayer<RijamsModPlayer>().breathingPack);
+			Main.NewText("GetType().Namespace.ToString(): " + GetType().Namespace.ToString());
 			//Main.NewText("player.GetModPlayer<RijamsModPlayer>().breathingPackUsed is currenty: " + player.GetModPlayer<RijamsModPlayer>().breathingPackUsed);
 			return true;
 		}
 	}
 	public class DebugAnglerQuestChanger : ModItem
 	{
-		public override bool Autoload(ref string name)
+		public override bool IsLoadingEnabled(Mod mod)
 		{
 			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
 		}
-		public override string Texture => "Terraria/Item_" + ItemID.BlueSolution;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.BlueSolution;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("[c/ff0000:Debug] - Angler Quest Changer");
@@ -362,20 +363,20 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			item.color = Color.RoyalBlue;
-			item.width = 14;
-			item.height = 14;
-			item.maxStack = 999;
-			item.rare = ItemRarityID.White;
-			item.value = 0;
-			item.useStyle = ItemUseStyleID.EatingUsing;
-			item.useAnimation = 10;
-			item.useTime = 10;
-			item.useTurn = true;
-			item.UseSound = SoundID.Item9;
-			item.consumable = true;
+			Item.color = Color.RoyalBlue;
+			Item.width = 14;
+			Item.height = 14;
+			Item.maxStack = 999;
+			Item.rare = ItemRarityID.White;
+			Item.value = 0;
+			Item.useStyle = ItemUseStyleID.EatFood;
+			Item.useAnimation = 10;
+			Item.useTime = 10;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item9;
+			Item.consumable = true;
 		}
-		public override bool UseItem(Player player)
+		public override bool? UseItem(Player player)
 		{
 			Main.player[Main.myPlayer].anglerQuestsFinished++;
 			return true;
@@ -395,7 +396,7 @@ namespace RijamsMod.Items
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string anglerQuestsCompleted = Main.player[Main.myPlayer].anglerQuestsFinished.ToString();
-			tooltips.Add(new TooltipLine(mod, "AnglerQuestsCompleted", "You have completed " + anglerQuestsCompleted + " Angler quests"));
+			tooltips.Add(new TooltipLine(Mod, "AnglerQuestsCompleted", "You have completed " + anglerQuestsCompleted + " Angler quests"));
 		}
 	}
 }

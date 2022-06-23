@@ -16,11 +16,11 @@ namespace RijamsMod.Items.Armor
 
 		public override void SetDefaults()
 		{
-			item.width = 20;
-			item.height = 22;
-			item.value = 375000;
-			item.rare = ItemRarityID.Yellow;
-			item.defense = 11;
+			Item.width = 20;
+			Item.height = 22;
+			Item.value = 375000;
+			Item.rare = ItemRarityID.Yellow;
+			Item.defense = 11;
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -32,8 +32,8 @@ namespace RijamsMod.Items.Armor
 		{
 			player.setBonus = Language.GetTextValue("ArmorSetBonus.Shroomite");
 			player.shroomiteStealth = true;
-			player.rangedCrit += 5;
-			player.rangedDamage += 0.1f;
+			player.GetCritChance(DamageClass.Ranged) += 5;
+			player.GetDamage(DamageClass.Ranged) += 0.1f;
 		}
 		public override void ArmorSetShadows(Player player)
         {
@@ -42,11 +42,10 @@ namespace RijamsMod.Items.Armor
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.ShroomiteBar, 12);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.ShroomiteBar, 12)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 }

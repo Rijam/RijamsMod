@@ -5,7 +5,7 @@ namespace RijamsMod.Buffs
 {
 	public class ImbueSulfuricAcid : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Weapon Imbue: Sulfuric Acid");
 			Description.SetDefault("Melee attacks inflict Sulfuric Acid");

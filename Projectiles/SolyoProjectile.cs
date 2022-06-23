@@ -13,26 +13,26 @@ namespace RijamsMod.Projectiles
 			// The following sets are only applicable to yoyo that use aiStyle 99.
 			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
 			// Vanilla values range from 3f(Wood) to 16f(Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
-			ProjectileID.Sets.YoyosLifeTimeMultiplier[projectile.type] = -1f; //Infinite time
+			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = -1f; //Infinite time
 			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
 			// Vanilla values range from 130f(Wood) to 400f(Terrarian), and defaults to 200f
-			ProjectileID.Sets.YoyosMaximumRange[projectile.type] = 384f; //Should be 24 tiles
+			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 384f; //Should be 24 tiles
 			// YoyosTopSpeed is top speed of the yoyo projectile. 
 			// Vanilla values range from 9f(Wood) to 17.5f(Terrarian), and defaults to 10f
-			ProjectileID.Sets.YoyosTopSpeed[projectile.type] = 16f;
+			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 16f;
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.extraUpdates = 0;
-			projectile.width = 16;
-			projectile.height = 16;
+			Projectile.extraUpdates = 0;
+			Projectile.width = 16;
+			Projectile.height = 16;
 			// aiStyle 99 is used for all yoyos, and is Extremely suggested, as yoyo are extremely difficult without them
-			projectile.aiStyle = 99;
-			projectile.friendly = true;
-			projectile.penetrate = -1;
-			projectile.melee = true;
-			projectile.scale = 1f;
+			Projectile.aiStyle = 99;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.scale = 1f;
 		}
 		// notes for aiStyle 99: 
 		// localAI[0] is used for timing up to YoyosLifeTimeMultiplier
@@ -46,17 +46,17 @@ namespace RijamsMod.Projectiles
 		{
 			if (Main.rand.NextBool())
 			{
-				Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.SolarFlare);
+				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SolarFlare);
 				dust.noGravity = true;
 				dust.scale = 1.0f;
 			}
-			Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.875f);
+			Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.875f);
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
 			target.AddBuff(BuffID.Daybreak, 60);
 
-			Projectile.NewProjectile(new Vector2(projectile.position.X, projectile.position.Y - Main.screenHeight - 100), new Vector2(Main.rand.NextFloat(-1, 1f), Main.rand.NextFloat(5f, 7f)), ModContent.ProjectileType<SolarFlare>(), projectile.damage / 2, projectile.knockBack / 2, projectile.owner);
+			Projectile.NewProjectile(Entity.GetSource_FromThis(), new Vector2(Projectile.position.X, Projectile.position.Y - Main.screenHeight - 100), new Vector2(Main.rand.NextFloat(-1, 1f), Main.rand.NextFloat(5f, 7f)), ModContent.ProjectileType<SolarFlare>(), Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner);
 		}
 	}
 }

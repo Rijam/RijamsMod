@@ -6,7 +6,7 @@ namespace RijamsMod.Buffs
 {
     public class SwimBoostBuff : ModBuff
     {
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Swim Boost");
             Description.SetDefault("Move freely in liquids");

@@ -10,7 +10,7 @@ namespace RijamsMod.Tiles
 {
 	public class InformationInterfaceTile : ModTile
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			Main.tileFrameImportant[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3);
@@ -19,13 +19,13 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(255, 255, 255));
-			dustType = DustID.Stone;
-			animationFrameHeight = 54;
+			DustType = DustID.Stone;
+			AnimationFrameHeight = 54;
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(i * 16, j * 16, 48, 48, ModContent.ItemType<Items.Placeable.InformationInterfaceTile>());
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 48, 48, ModContent.ItemType<Items.Placeable.InformationInterfaceTile>());
 		}
 
 		public override void AnimateTile(ref int frame, ref int frameCounter)
@@ -63,19 +63,19 @@ namespace RijamsMod.Tiles
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			Tile tile = Main.tile[i, j];
-			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
+			Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
 			if (Main.drawToScreen)
 			{
 				zero = Vector2.Zero;
 			}
-			int height = tile.frameY == 36 ? 18 : 16;
-			int animate = Main.tileFrame[Type] * animationFrameHeight;
-			Main.spriteBatch.Draw(mod.GetTexture("Tiles/InformationInterfaceTile_Glow"), new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.frameX, tile.frameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			int height = tile.TileFrameY == 36 ? 18 : 16;
+			int animate = Main.tileFrame[Type] * AnimationFrameHeight;
+			Main.spriteBatch.Draw(Mod.Assets.Request<Texture2D>("Tiles/InformationInterfaceTile_Glow").Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 		}
 
 		/*public override bool NewRightClick(int i, int j)
 		{
-			Main.PlaySound(SoundID.Mech, i * 16, j * 16, 0);
+			SoundEngine.PlaySound(SoundID.Mech, i * 16, j * 16, 0);
 			HitWire(i, j);
 			return true;
 		}*/

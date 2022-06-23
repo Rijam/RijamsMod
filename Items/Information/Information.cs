@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,33 +15,24 @@ namespace RijamsMod.Items.Information
 		{
 			DisplayName.SetDefault("Life Display");
 			Tooltip.SetDefault("Displays your current life bonuses");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(60, 2));
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
 		}
 
 		public override void SetDefaults()
 		{
 			//item.color = Color.Red; //colors the inventory sprite
-			item.width = 32;
-			item.height = 28;
-			item.maxStack = 1;
-			item.rare = ItemRarityID.Blue;
-			item.value = 100;
+			Item.width = 32;
+			Item.height = 28;
+			Item.maxStack = 1;
+			Item.rare = ItemRarityID.Blue;
+			Item.value = 100;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int statLifeMax = Main.player[Main.myPlayer].statLifeMax;
-			string statLifeMaxString = statLifeMax.ToString();
-			int statLifeMax2 = Main.player[Main.myPlayer].statLifeMax2;
-			string statLifeMax2String = statLifeMax2.ToString();
-			int lifeRegen = Main.player[Main.myPlayer].lifeRegen;
-			string lifeRegenString = lifeRegen.ToString();
-			int lifeRegenTime = Main.player[Main.myPlayer].lifeRegenTime;
-			string lifeRegenTimeString = lifeRegenTime.ToString();
-
-			tooltips.Add(new TooltipLine(mod, "MaxLife", "Maximum life: " + statLifeMaxString));
-			tooltips.Add(new TooltipLine(mod, "MaxTempLife", "Maximum temporary life: " + statLifeMax2String));
-			tooltips.Add(new TooltipLine(mod, "lifeRegen", "Life regeneration: " + lifeRegenString));
-			tooltips.Add(new TooltipLine(mod, "lifeRegenTime", "Life regeneration time: " + lifeRegenTimeString));
+			tooltips.Add(new TooltipLine(Mod, "MaxLife", "Maximum life: " + StatCalc.StatLifeMax()));
+			tooltips.Add(new TooltipLine(Mod, "MaxTempLife", "Maximum temporary life: " + StatCalc.StatLifeMax2()));
+			tooltips.Add(new TooltipLine(Mod, "lifeRegen", "Life regeneration: " + StatCalc.LifeRegen()));
+			tooltips.Add(new TooltipLine(Mod, "lifeRegenTime", "Life regeneration time: " + StatCalc.LifeRegenTime()));
 		}
 	}
 	public class ManaDisplay : LifeDisplay
@@ -49,26 +41,15 @@ namespace RijamsMod.Items.Information
 		{
 			DisplayName.SetDefault("Mana Display");
 			Tooltip.SetDefault("Displays your current mana bonuses");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(60, 2));
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int statManaMax = Main.player[Main.myPlayer].statManaMax;
-			string statManaMaxString = statManaMax.ToString();
-			int statManaMax2 = Main.player[Main.myPlayer].statManaMax2;
-			string statManaMax2String = statManaMax2.ToString();
-			float manaCost = Main.player[Main.myPlayer].manaCost;
-			string manaCostString = manaCost.ToString();
-			int manaRegen = Main.player[Main.myPlayer].manaRegen;
-			string manaRegenString = manaRegen.ToString();
-			int manaRegenBonus = Main.player[Main.myPlayer].manaRegenBonus;
-			string manaRegenBonusString = manaRegenBonus.ToString();
-
-			tooltips.Add(new TooltipLine(mod, "statManaMax", "Maximum mana: " + statManaMaxString));
-			tooltips.Add(new TooltipLine(mod, "statManaMax2", "Maximum temporary mana: " + statManaMax2String));
-			tooltips.Add(new TooltipLine(mod, "manaCost", "Mana cost multiplier: " + manaCostString));
-			tooltips.Add(new TooltipLine(mod, "manaRegen", "Mana regeneration: " + manaRegenString));
-			tooltips.Add(new TooltipLine(mod, "manaRegenBonus", "Mana regeneration bonus: " + manaRegenBonusString));
+			tooltips.Add(new TooltipLine(Mod, "statManaMax", "Maximum mana: " + StatCalc.StatManaMax()));
+			tooltips.Add(new TooltipLine(Mod, "statManaMax2", "Maximum temporary mana: " + StatCalc.StatManaMax2()));
+			tooltips.Add(new TooltipLine(Mod, "manaCost", "Mana cost multiplier: " + StatCalc.ManaCost()));
+			tooltips.Add(new TooltipLine(Mod, "manaRegen", "Mana regeneration: " + StatCalc.ManaRegen()));
+			tooltips.Add(new TooltipLine(Mod, "manaRegenBonus", "Mana regeneration bonus: " + StatCalc.ManaRegenBonus()));
 		}
 	}
 	public class DefenseDisplay : LifeDisplay
@@ -76,18 +57,18 @@ namespace RijamsMod.Items.Information
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Defense Display");
-			Tooltip.SetDefault("Displays your current defense bonuses");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(60, 2));
+			Tooltip.SetDefault("Displays your current defense and knockback bonuses");
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			float statDefense = Main.player[Main.myPlayer].statDefense;
-			string statDefenseString = statDefense.ToString();
-			float endurance = Main.player[Main.myPlayer].endurance;
-			string enduranceString = endurance.ToString();
-
-			tooltips.Add(new TooltipLine(mod, "StatDefense", "Defense: " + statDefenseString));
-			tooltips.Add(new TooltipLine(mod, "Endurance", "Damage Reduction: " + enduranceString + "%"));
+			tooltips.Add(new TooltipLine(Mod, "StatDefense", "Defense: " + StatCalc.StatDefense()));
+			tooltips.Add(new TooltipLine(Mod, "Endurance", "Damage Reduction: " + StatCalc.Endurance() + "%"));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
 		}
 	}
 	public class MovementDisplay : LifeDisplay
@@ -96,37 +77,20 @@ namespace RijamsMod.Items.Information
 		{
 			DisplayName.SetDefault("Movement Display");
 			Tooltip.SetDefault("Displays your current movement bonuses");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(60, 2));
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			float moveSpeed = Main.player[Main.myPlayer].moveSpeed;
-			string moveSpeedString = moveSpeed.ToString();
-			float maxRunSpeed = Main.player[Main.myPlayer].maxRunSpeed;
-			string maxRunSpeedString = maxRunSpeed.ToString();
-			float runAcceleration = Main.player[Main.myPlayer].runAcceleration;
-			string runAccelerationString = runAcceleration.ToString();
-			float runSlowdown = Main.player[Main.myPlayer].runSlowdown;
-			string runSlowdownString = runSlowdown.ToString();
-			float wingTimeMax = Main.player[Main.myPlayer].wingTimeMax;
-			string wingTimeMaxString = wingTimeMax.ToString();
-			bool noKnockback = Main.player[Main.myPlayer].noKnockback;
-			string noKnockbackString = noKnockback.ToString();
-			bool noFallDmg = Main.player[Main.myPlayer].noFallDmg;
-			int wings = Main.player[Main.myPlayer].wings;
-			string realFallDmgString = "False";
-			if (noFallDmg || wings > 0)
-            {
-				realFallDmgString = "True";
-			}
-
-			tooltips.Add(new TooltipLine(mod, "moveSpeed", "Movement speed multiplier: " + moveSpeedString));
-			tooltips.Add(new TooltipLine(mod, "moveSpeed", "Maximum Running speed: " + maxRunSpeedString));
-			tooltips.Add(new TooltipLine(mod, "runAcceleration", "Running acceleration speed: " + runAccelerationString));
-			tooltips.Add(new TooltipLine(mod, "runSlowdown", "Running deceleration speed: " + runSlowdownString));
-			tooltips.Add(new TooltipLine(mod, "wingTimeMax", "Wing flight time: " + wingTimeMaxString));
-			tooltips.Add(new TooltipLine(mod, "noKnockback", "Knockback immunity: " + noKnockbackString));
-			tooltips.Add(new TooltipLine(mod, "noFallDmg", "Fall damage immunity: " + realFallDmgString));
+			tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Movement speed multiplier: " + StatCalc.MoveSpeed()));
+			tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Maximum Running speed: " + StatCalc.MaxRunSpeed()));
+			tooltips.Add(new TooltipLine(Mod, "runAcceleration", "Running acceleration speed: " + StatCalc.RunAcceleration()));
+			tooltips.Add(new TooltipLine(Mod, "runSlowdown", "Running deceleration speed: " + StatCalc.RunSlowdown()));
+			tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "Wing flight time: " + StatCalc.WingTimeMax()));
+			tooltips.Add(new TooltipLine(Mod, "wingTime", "Current wing flight time: " + StatCalc.WingTime()));
+			tooltips.Add(new TooltipLine(Mod, "rocketTimeMax", "Rocket Boots flight time: " + StatCalc.RocketTimeMax()));
+			tooltips.Add(new TooltipLine(Mod, "rocketTime", "Current Rocket Boots flight time: " + StatCalc.RocketTime()));
+			tooltips.Add(new TooltipLine(Mod, "noKnockback", "Knockback immunity: " + StatCalc.NoKnockback()));
+			tooltips.Add(new TooltipLine(Mod, "noFallDmg", "Fall damage immunity: " + StatCalc.NoFallDmg()));
 		}
 	}
 	public class DamageDisplay : LifeDisplay
@@ -135,32 +99,22 @@ namespace RijamsMod.Items.Information
 		{
 			DisplayName.SetDefault("Damage Display");
 			Tooltip.SetDefault("Displays your current damage bonuses\nValues greater than 1 means increased damage");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(60, 2));
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			float meleeDamage = Main.player[Main.myPlayer].meleeDamage;
-			string meleeDamageString = meleeDamage.ToString();
-			float rangedDamage = Main.player[Main.myPlayer].rangedDamage;
-			string rangedDamageString = rangedDamage.ToString();
-			float magicDamage = Main.player[Main.myPlayer].magicDamage;
-			string magicDamageString = magicDamage.ToString();
-			float minionDamage = Main.player[Main.myPlayer].minionDamage;
-			string minionDamageString = minionDamage.ToString();
-			float thrownDamage = Main.player[Main.myPlayer].thrownDamage;
-			string thrownDamageString = thrownDamage.ToString();
-			float allDamage = Main.player[Main.myPlayer].allDamage;
-			string allDamageString = allDamage.ToString();
-			float meleeSpeed = Main.player[Main.myPlayer].meleeSpeed;
-			string meleeSpeedString = meleeSpeed.ToString();
-
-			tooltips.Add(new TooltipLine(mod, "Melee", "Melee damage multiplier: " + meleeDamageString));
-			tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged damage multiplier: " + rangedDamageString));
-			tooltips.Add(new TooltipLine(mod, "Magic", "Magic damage multiplier: " + magicDamageString));
-			tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multiplier: " + minionDamageString));
-			tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multiplier: " + thrownDamageString));
-			tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
-			tooltips.Add(new TooltipLine(mod, "MeleeSpeed", "Melee speed: " + meleeSpeedString));
+			tooltips.Add(new TooltipLine(Mod, "Melee", "Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "Ranged", "Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "Magic", "Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "Summon", "Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "Throwing", "Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "All", "All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
+			tooltips.Add(new TooltipLine(Mod, "MeleeSpeed", "Melee speed: " + StatCalc.AttackSpeed(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "RangedSpeed", "Ranged speed: " + StatCalc.AttackSpeed(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "MagicSpeed", "Magic speed: " + StatCalc.AttackSpeed(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "SummonSpeed", "Summon speed: " + StatCalc.AttackSpeed(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "ThrowingSpeed", "Throwing speed: " + StatCalc.AttackSpeed(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "AllSpeed", "All speed: " + StatCalc.AttackSpeed(DamageClass.Generic)));
 		}
 	}
 	public class CritDisplay : LifeDisplay
@@ -169,23 +123,16 @@ namespace RijamsMod.Items.Information
 		{
 			DisplayName.SetDefault("Critical Hit Display");
 			Tooltip.SetDefault("Displays your current critical hit bonuses");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(60, 2));
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int meleeCrit = Main.player[Main.myPlayer].meleeCrit;
-			string meleeCritString = meleeCrit.ToString();
-			int rangedCrit = Main.player[Main.myPlayer].rangedCrit;
-			string rangedCritString = rangedCrit.ToString();
-			int magicCrit = Main.player[Main.myPlayer].magicCrit;
-			string magicCritString = magicCrit.ToString();
-			int thrownCrit = Main.player[Main.myPlayer].thrownCrit;
-			string thrownCritString = thrownCrit.ToString();
-
-			tooltips.Add(new TooltipLine(mod, "Melee", "Melee critical hit: " + meleeCritString));
-			tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged critical hit: " + rangedCritString));
-			tooltips.Add(new TooltipLine(mod, "Magic", "Magic critical hit: " + magicCritString));
-			tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing critical hit: " + thrownCritString));
+			tooltips.Add(new TooltipLine(Mod, "Melee", "Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "Ranged", "Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "Magic", "Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "Summon", "Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "Throwing", "Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "All", "Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
 		}
 	}
 	public class SummonsDisplay : LifeDisplay
@@ -195,23 +142,15 @@ namespace RijamsMod.Items.Information
 		{
 			DisplayName.SetDefault("Summons Display");
 			Tooltip.SetDefault("Displays your current summons capacity and bonus");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(60, 2));
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int summonTotal = Main.player[Main.myPlayer].maxMinions;
-			string summonTotalString = summonTotal.ToString();
-			int sentryTotal = Main.player[Main.myPlayer].maxTurrets;
-			string sentryTotalString = sentryTotal.ToString();
-			float minionKB = Main.player[Main.myPlayer].minionKB;
-			string minionKBString = minionKB.ToString();
-			int numMinions = Main.player[Main.myPlayer].numMinions;
-			string numMinionsString = numMinions.ToString();
-
-			tooltips.Add(new TooltipLine(mod, "MinionCount", "Maximum minions: " + summonTotalString));
-			tooltips.Add(new TooltipLine(mod, "SentryCount", "Maximum sentries: " + sentryTotalString));
-			tooltips.Add(new TooltipLine(mod, "SummonKB", "Minion knockback: " + minionKBString));
-			tooltips.Add(new TooltipLine(mod, "SummonCountCurrent", "Current minion count: " + numMinionsString));
+			tooltips.Add(new TooltipLine(Mod, "MinionCount", "Maximum minions: " + StatCalc.MaxMinions()));
+			tooltips.Add(new TooltipLine(Mod, "SentryCount", "Maximum sentries: " + StatCalc.MaxTurrets()));
+			tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
+			tooltips.Add(new TooltipLine(Mod, "SummonKB", "Summon knockback: " + StatCalc.Knockback(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "Current minion count: " + StatCalc.NumMinions()));
 		}
 	}
 	public class InformationInterface : ModItem
@@ -221,214 +160,219 @@ namespace RijamsMod.Items.Information
 		{
 			DisplayName.SetDefault("Information Interface");
 			Tooltip.SetDefault("Displays your stats and bonuses\nHold Left Shift to see all player stats\nHold Left Control to see all damage stats");
-			Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(30, 12));
-			/*if (!Main.dedServ)
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(30, 12));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
+			if (!Main.dedServ)
 			{
-				item.GetGlobalItem<ItemUseGlow>().glowTexture = mod.GetTexture("Items/GlowMasks/InformationInterface_Glow");
-				item.GetGlobalItem<ItemUseGlow>().glowOffsetX = 0;
-				item.GetGlobalItem<ItemUseGlow>().glowOffsetY = 0;
-			}*/
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+			}
 		}
 
 		public override void SetDefaults()
 		{
 			//item.color = Color.Gold; //colors the inventory sprite
-			item.width = 48;
-			item.height = 48;
-			item.maxStack = 1;
-			item.rare = ItemRarityID.Orange;
-			item.value = 1000;
+			Item.width = 48;
+			Item.height = 48;
+			Item.maxStack = 1;
+			Item.rare = ItemRarityID.Orange;
+			Item.value = 1000;
 		}
-		/*public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-		{
-			Texture2D texture = mod.GetTexture("Items/GlowMasks/InformationInterface_Glow");
-			spriteBatch.Draw
-			(
-				texture,
-				new Vector2
-				(
-					item.position.X - Main.screenPosition.X + item.width * 0.5f,
-					item.position.Y - Main.screenPosition.Y + item.height - texture.Height * 0.5f + 2f
-				),
-				new Rectangle(0, 0, texture.Width, texture.Height),
-				Color.White,
-				rotation,
-				texture.Size() * 0.5f,
-				scale,
-				SpriteEffects.None,
-				0f
-			);
-		}*/
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			bool isLeftCtrlHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
 			bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 			bool isRightShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightShift);
 
-			//Life
-			string statLifeMaxString = Main.player[Main.myPlayer].statLifeMax.ToString();
-			string statLifeMax2String = Main.player[Main.myPlayer].statLifeMax2.ToString();
-			string lifeRegenString = Main.player[Main.myPlayer].lifeRegen.ToString();
-			string lifeRegenTimeString = Main.player[Main.myPlayer].lifeRegenTime.ToString();
-
-			//Mana
-			string statManaMaxString = Main.player[Main.myPlayer].statManaMax.ToString();
-			string statManaMax2String = Main.player[Main.myPlayer].statManaMax2.ToString();
-			string manaCostString = Main.player[Main.myPlayer].manaCost.ToString();
-			string manaRegenString = Main.player[Main.myPlayer].manaRegen.ToString();
-			string manaRegenBonusString = Main.player[Main.myPlayer].manaRegenBonus.ToString();
-
-			//Defense
-			string statDefenseString = Main.player[Main.myPlayer].statDefense.ToString();
-			string enduranceString = Main.player[Main.myPlayer].endurance.ToString();
-
-			//Movement
-			string moveSpeedString = Main.player[Main.myPlayer].moveSpeed.ToString();
-			string maxRunSpeedString = Main.player[Main.myPlayer].maxRunSpeed.ToString();
-			string runAccelerationString = Main.player[Main.myPlayer].runAcceleration.ToString();
-			string runSlowdownString = Main.player[Main.myPlayer].runSlowdown.ToString();
-			string wingTimeMaxString = Main.player[Main.myPlayer].wingTimeMax.ToString();
-			string wingTimeString = Main.player[Main.myPlayer].wingTime.ToString();
-			string rocketTimeMaxString = Main.player[Main.myPlayer].rocketTimeMax.ToString();
-			string rocketTimeString = Main.player[Main.myPlayer].rocketTime.ToString();
-			string noKnockbackString = Main.player[Main.myPlayer].noKnockback.ToString();
-			bool noFallDmg = Main.player[Main.myPlayer].noFallDmg;
-			int wings = Main.player[Main.myPlayer].wings;
-			string realFallDmgString = "False";
-			if (noFallDmg || wings > 0) //Having wings prevents fall damage but doesn't change the noFallDmg bool
-			{
-				realFallDmgString = "True";
-			}
-
-			//Damage
-			string meleeDamageString = Main.player[Main.myPlayer].meleeDamage.ToString();
-			string rangedDamageString = Main.player[Main.myPlayer].rangedDamage.ToString();
-			string magicDamageString = Main.player[Main.myPlayer].magicDamage.ToString();
-			string minionDamageString = Main.player[Main.myPlayer].minionDamage.ToString();
-			string thrownDamageString = Main.player[Main.myPlayer].thrownDamage.ToString();
-			string allDamageString = Main.player[Main.myPlayer].allDamage.ToString();
-			string meleeSpeedString = Main.player[Main.myPlayer].meleeSpeed.ToString();
-
-			//Crit
-			string meleeCritString = Main.player[Main.myPlayer].meleeCrit.ToString();
-			string rangedCritString = Main.player[Main.myPlayer].rangedCrit.ToString();
-			string magicCritString = Main.player[Main.myPlayer].magicCrit.ToString();
-			string thrownCritString = Main.player[Main.myPlayer].thrownCrit.ToString();
-
-			//Summmons
-			string summonTotalString = Main.player[Main.myPlayer].maxMinions.ToString();
-			string sentryTotalString = Main.player[Main.myPlayer].maxTurrets.ToString();
-			string minionKBString = Main.player[Main.myPlayer].minionKB.ToString();
-			string numMinionsString = Main.player[Main.myPlayer].numMinions.ToString();
-
-			//Other
-			string taxMoneyString = Main.player[Main.myPlayer].taxMoney.ToString();
-			string taxTimerString = Main.player[Main.myPlayer].taxTimer.ToString();
-			//string taxRateString = Player.taxRate.ToString();
-			string anglerQuestsFinishedString = Main.player[Main.myPlayer].anglerQuestsFinished.ToString();
-			string breathString = Main.player[Main.myPlayer].breath.ToString();
-			string breathCDString = Main.player[Main.myPlayer].breathCD.ToString();
-			string breathMaxString = Main.player[Main.myPlayer].breathMax.ToString();
-			string lavaImmuneString = Main.player[Main.myPlayer].lavaImmune.ToString();
-			string pickSpeedString = Main.player[Main.myPlayer].pickSpeed.ToString();
-			string ZoneWaterCandleString = Main.player[Main.myPlayer].ZoneWaterCandle.ToString();
-			string ZonePeaceCandleString = Main.player[Main.myPlayer].ZonePeaceCandle.ToString();
-
 			if (isLeftShiftHeld)
             {
 				//Life
-				tooltips.Add(new TooltipLine(mod, "MaxLife", "Maximum life: " + statLifeMaxString));
-				tooltips.Add(new TooltipLine(mod, "MaxTempLife", "Maximum temporary life: " + statLifeMax2String));
-				tooltips.Add(new TooltipLine(mod, "lifeRegen", "Life regeneration: " + lifeRegenString));
-				tooltips.Add(new TooltipLine(mod, "lifeRegenTime", "Life regeneration time: " + lifeRegenTimeString));
+				tooltips.Add(new TooltipLine(Mod, "MaxLife", "Maximum life: " + StatCalc.StatLifeMax()));
+				tooltips.Add(new TooltipLine(Mod, "MaxTempLife", "Maximum temporary life: " + StatCalc.StatLifeMax2()));
+				tooltips.Add(new TooltipLine(Mod, "lifeRegen", "Life regeneration: " + StatCalc.LifeRegen()));
+				tooltips.Add(new TooltipLine(Mod, "lifeRegenTime", "Life regeneration time: " + StatCalc.LifeRegenTime()));
 
 				//Mana
-				tooltips.Add(new TooltipLine(mod, "statManaMax", "Maximum mana: " + statManaMaxString));
-				tooltips.Add(new TooltipLine(mod, "statManaMax2", "Maximum temporary mana: " + statManaMax2String));
-				tooltips.Add(new TooltipLine(mod, "manaCost", "Mana cost multiplier: " + manaCostString));
-				tooltips.Add(new TooltipLine(mod, "manaRegen", "Mana regeneration: " + manaRegenString));
-				tooltips.Add(new TooltipLine(mod, "manaRegenBonus", "Mana regeneration bonus: " + manaRegenBonusString));
+				tooltips.Add(new TooltipLine(Mod, "statManaMax", "Maximum mana: " + StatCalc.StatManaMax()));
+				tooltips.Add(new TooltipLine(Mod, "statManaMax2", "Maximum temporary mana: " + StatCalc.StatManaMax2()));
+				tooltips.Add(new TooltipLine(Mod, "manaCost", "Mana cost multiplier: " + StatCalc.ManaCost()));
+				tooltips.Add(new TooltipLine(Mod, "manaRegen", "Mana regeneration: " + StatCalc.ManaRegen()));
+				tooltips.Add(new TooltipLine(Mod, "manaRegenBonus", "Mana regeneration bonus: " + StatCalc.ManaRegenBonus()));
 
 				//Defense
-				tooltips.Add(new TooltipLine(mod, "StatDefense", "Defense: " + statDefenseString));
-				tooltips.Add(new TooltipLine(mod, "Endurance", "Damage Reduction: " + enduranceString + "%"));
+				tooltips.Add(new TooltipLine(Mod, "StatDefense", "Defense: " + StatCalc.StatDefense()));
+				tooltips.Add(new TooltipLine(Mod, "Endurance", "Damage Reduction: " + StatCalc.Endurance() + "%"));
 
 				//Movement
-				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Movement speed multiplier: " + moveSpeedString));
-				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Maximum Running speed: " + maxRunSpeedString));
-				tooltips.Add(new TooltipLine(mod, "runAcceleration", "Running acceleration speed: " + runAccelerationString));
-				tooltips.Add(new TooltipLine(mod, "runSlowdown", "Running deceleration speed: " + runSlowdownString));
-				tooltips.Add(new TooltipLine(mod, "wingTimeMax", "Wing flight time: " + wingTimeMaxString));
-				tooltips.Add(new TooltipLine(mod, "wingTime", "Current wing flight time: " + wingTimeString));
-				tooltips.Add(new TooltipLine(mod, "rocketTimeMax", "Rocket Boots flight time: " + rocketTimeMaxString));
-				tooltips.Add(new TooltipLine(mod, "rocketTime", "Current Rocket Boots flight time: " + rocketTimeString));
-				tooltips.Add(new TooltipLine(mod, "noKnockback", "Knockback immunity: " + noKnockbackString));
-				tooltips.Add(new TooltipLine(mod, "noFallDmg", "Fall damage immunity: " + realFallDmgString));
+				tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Movement speed multiplier: " + StatCalc.MoveSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Maximum Running speed: " + StatCalc.MaxRunSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "runAcceleration", "Running acceleration speed: " + StatCalc.RunAcceleration()));
+				tooltips.Add(new TooltipLine(Mod, "runSlowdown", "Running deceleration speed: " + StatCalc.RunSlowdown()));
+				tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "Wing flight time: " + StatCalc.WingTimeMax()));
+				tooltips.Add(new TooltipLine(Mod, "wingTime", "Current wing flight time: " + StatCalc.WingTime()));
+				tooltips.Add(new TooltipLine(Mod, "rocketTimeMax", "Rocket Boots flight time: " + StatCalc.RocketTimeMax()));
+				tooltips.Add(new TooltipLine(Mod, "rocketTime", "Current Rocket Boots flight time: " + StatCalc.RocketTime()));
+				tooltips.Add(new TooltipLine(Mod, "noKnockback", "Knockback immunity: " + StatCalc.NoKnockback()));
+				tooltips.Add(new TooltipLine(Mod, "noFallDmg", "Fall damage immunity: " + StatCalc.NoFallDmg()));
+
+				//Summons
+				tooltips.Add(new TooltipLine(Mod, "MinionCount", "Maximum minions: " + StatCalc.MaxMinions()));
+				tooltips.Add(new TooltipLine(Mod, "SentryCount", "Maximum sentries: " + StatCalc.MaxTurrets()));
+				tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "Current minion count: " + StatCalc.NumMinions()));
 			}
 
 			if (isLeftCtrlHeld)
 			{
 				//Damage
-				tooltips.Add(new TooltipLine(mod, "Melee", "Melee damage multiplier: " + meleeDamageString));
-				tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged damage multiplier: " + rangedDamageString));
-				tooltips.Add(new TooltipLine(mod, "Magic", "Magic damage multiplier: " + magicDamageString));
-				tooltips.Add(new TooltipLine(mod, "Summon", "Summon damage multiplier: " + minionDamageString));
-				tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing damage multiplier: " + thrownDamageString));
-				tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
-				tooltips.Add(new TooltipLine(mod, "MeleeSpeed", "Melee speed: " + meleeSpeedString));
+				tooltips.Add(new TooltipLine(Mod, "Melee", "Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "Ranged", "Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "Magic", "Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "Summon", "Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "Throwing", "Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "All", "All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "MeleeSpeed", "Melee speed: " + StatCalc.AttackSpeed(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "RangedSpeed", "Ranged speed: " + StatCalc.AttackSpeed(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "MagicSpeed", "Magic speed: " + StatCalc.AttackSpeed(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "SummonSpeed", "Summon speed: " + StatCalc.AttackSpeed(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
+				tooltips.Add(new TooltipLine(Mod, "ThrowingSpeed", "Throwing speed: " + StatCalc.AttackSpeed(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "AllSpeed", "All speed: " + StatCalc.AttackSpeed(DamageClass.Generic)));
 
 				//Crit
-				tooltips.Add(new TooltipLine(mod, "Melee", "Melee critical hit: " + meleeCritString));
-				tooltips.Add(new TooltipLine(mod, "Ranged", "Ranged critical hit: " + rangedCritString));
-				tooltips.Add(new TooltipLine(mod, "Magic", "Magic critical hit: " + magicCritString));
-				tooltips.Add(new TooltipLine(mod, "Throwing", "Throwing critical hit: " + thrownCritString));
+				tooltips.Add(new TooltipLine(Mod, "Melee", "Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "Ranged", "Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "Magic", "Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "Summon", "Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "Throwing", "Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "All", "Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
 
-				//Summons
-				tooltips.Add(new TooltipLine(mod, "MinionCount", "Maximum minions: " + summonTotalString));
-				tooltips.Add(new TooltipLine(mod, "SentryCount", "Maximum sentries: " + sentryTotalString));
-				tooltips.Add(new TooltipLine(mod, "SummonKB", "Minion knockback: " + minionKBString));
-				tooltips.Add(new TooltipLine(mod, "SummonCountCurrent", "Current minion count: " + numMinionsString));
+				//Knockback
+				tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "SummonKB", "Summon knockback: " + StatCalc.Knockback(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
 			}
 			if (isRightShiftHeld)
 			{
 				//Other
-				tooltips.Add(new TooltipLine(mod, "taxMoney", "Tax money: " + taxMoneyString));
-				tooltips.Add(new TooltipLine(mod, "taxTimer", "Tax timer: " + taxTimerString));
-				//tooltips.Add(new TooltipLine(mod, "taxRate", "Tax rate: " + taxRateString));
-				tooltips.Add(new TooltipLine(mod, "anglerQuestsFinished", "Angler quests finished: " + anglerQuestsFinishedString));
-				tooltips.Add(new TooltipLine(mod, "breath", "Current breath: " + breathString));
-				tooltips.Add(new TooltipLine(mod, "breathCD", "Drowning damage: " + breathCDString));
-				tooltips.Add(new TooltipLine(mod, "breathMax", "Max breath: " + breathMaxString));
-				tooltips.Add(new TooltipLine(mod, "lavaImmune", "Lava immunity: " + lavaImmuneString));
-				tooltips.Add(new TooltipLine(mod, "pickSpeed", "Mining speed: " + pickSpeedString));
-				tooltips.Add(new TooltipLine(mod, "ZoneWaterCandle", "Near Water Candle: " + ZoneWaterCandleString));
-				tooltips.Add(new TooltipLine(mod, "ZonePeaceCandle", "Near Peace Candle: " + ZonePeaceCandleString));
+				tooltips.Add(new TooltipLine(Mod, "taxMoney", "Tax money: " + StatCalc.TaxMoney()));
+				tooltips.Add(new TooltipLine(Mod, "taxTimer", "Tax timer: " + StatCalc.TaxTimer()));
+				//tooltips.Add(new TooltipLine(Mod, "taxRate", "Tax rate: " + taxRateString));
+				tooltips.Add(new TooltipLine(Mod, "anglerQuestsFinished", "Angler quests finished: " + StatCalc.AnglerQuestsFinished()));
+				tooltips.Add(new TooltipLine(Mod, "breath", "Current breath: " + StatCalc.Breath()));
+				tooltips.Add(new TooltipLine(Mod, "breathCD", "Drowning damage: " + StatCalc.BreathCD()));
+				tooltips.Add(new TooltipLine(Mod, "breathMax", "Max breath: " + StatCalc.BreathMax()));
+				tooltips.Add(new TooltipLine(Mod, "lavaImmune", "Lava immunity: " + StatCalc.LavaImmune()));
+				tooltips.Add(new TooltipLine(Mod, "pickSpeed", "Mining speed: " + StatCalc.PickSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "ZoneWaterCandle", "Near Water Candle: " + StatCalc.ZoneWaterCandle()));
+				tooltips.Add(new TooltipLine(Mod, "ZonePeaceCandle", "Near Peace Candle: " + StatCalc.ZonePeaceCandle()));
+				tooltips.Add(new TooltipLine(Mod, "InZonePurity", "In Purity biome: " + StatCalc.PlayerInZonePurity()));
+				tooltips.Add(new TooltipLine(Mod, "InZoneCorrupt", "In Corruption biome: " + StatCalc.PlayerInZoneCorrupt()));
+				tooltips.Add(new TooltipLine(Mod, "InZoneCrimson", "In Crimson biome: " + StatCalc.PlayerInZoneCrimson()));
+				tooltips.Add(new TooltipLine(Mod, "InZoneHallow", "In Hallow biome: " + StatCalc.PlayerInZoneHallow()));
+				tooltips.Add(new TooltipLine(Mod, "GolfScore", "Golf score: " + StatCalc.GolferScoreAccumulated()));
+				tooltips.Add(new TooltipLine(Mod, "Luck", "Luck: " + StatCalc.Luck()));
 			}
 			if (!isLeftShiftHeld && !isLeftCtrlHeld && !isRightShiftHeld)
 			{
-				tooltips.Add(new TooltipLine(mod, "lifeRegen", "Life regeneration: " + lifeRegenString));
-				tooltips.Add(new TooltipLine(mod, "manaRegen", "Mana regeneration: " + manaRegenString));
-				tooltips.Add(new TooltipLine(mod, "Endurance", "Damage Reduction: " + enduranceString + "%"));
-				tooltips.Add(new TooltipLine(mod, "moveSpeed", "Movement speed multiplier: " + moveSpeedString));
-				tooltips.Add(new TooltipLine(mod, "wingTimeMax", "Wing flight time: " + wingTimeMaxString));
-				tooltips.Add(new TooltipLine(mod, "All", "All damage multiplier: " + allDamageString));
-				tooltips.Add(new TooltipLine(mod, "MinionCount", "Maximum minions: " + summonTotalString));
-				tooltips.Add(new TooltipLine(mod, "SentryCount", "Maximum sentries: " + sentryTotalString));
+				tooltips.Add(new TooltipLine(Mod, "lifeRegen", "Life regeneration: " + StatCalc.LifeRegen()));
+				tooltips.Add(new TooltipLine(Mod, "manaRegen", "Mana regeneration: " + StatCalc.ManaRegen()));
+				tooltips.Add(new TooltipLine(Mod, "Endurance", "Damage Reduction: " + StatCalc.Endurance() + "%"));
+				tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Movement speed multiplier: " + StatCalc.MoveSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "Wing flight time: " + StatCalc.WingTimeMax()));
+				tooltips.Add(new TooltipLine(Mod, "All", "All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "MinionCount", "Maximum minions: " + StatCalc.MaxMinions()));
+				tooltips.Add(new TooltipLine(Mod, "SentryCount", "Maximum sentries: " + StatCalc.MaxTurrets()));
 			}
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ModContent.ItemType<LifeDisplay>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<ManaDisplay>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<DefenseDisplay>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<MovementDisplay>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<DamageDisplay>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<CritDisplay>(), 1);
-			recipe.AddIngredient(ModContent.ItemType<SummonsDisplay>(), 1);
-			recipe.AddTile(TileID.TinkerersWorkbench);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<LifeDisplay>(), 1)
+				.AddIngredient(ModContent.ItemType<ManaDisplay>(), 1)
+				.AddIngredient(ModContent.ItemType<DefenseDisplay>(), 1)
+				.AddIngredient(ModContent.ItemType<MovementDisplay>(), 1)
+				.AddIngredient(ModContent.ItemType<DamageDisplay>(), 1)
+				.AddIngredient(ModContent.ItemType<CritDisplay>(), 1)
+				.AddIngredient(ModContent.ItemType<SummonsDisplay>(), 1)
+				.AddTile(TileID.TinkerersWorkbench)
+				.Register();
 		}
+	}
+	public class StatCalc
+	{
+		static readonly Player player = Main.LocalPlayer;
+
+		//Life
+		public static string StatLifeMax() => player.statLifeMax.ToString();
+		public static string StatLifeMax2() => player.statLifeMax2.ToString();
+		public static string LifeRegen() => player.lifeRegen.ToString();
+		public static string LifeRegenTime() => player.lifeRegenTime.ToString();
+
+		//Mana
+		public static string StatManaMax() => player.statManaMax.ToString();
+		public static string StatManaMax2() => player.statManaMax2.ToString();
+		public static string ManaCost() => player.manaCost.ToString();
+		public static string ManaRegen() => player.manaRegen.ToString();
+		public static string ManaRegenBonus() => player.manaRegenBonus.ToString();
+
+		//Defense
+		public static string StatDefense() => player.statDefense.ToString();
+		public static string Endurance() => player.endurance.ToString();
+
+		//Movement
+		public static string MoveSpeed() => player.moveSpeed.ToString();
+		public static string MaxRunSpeed() => player.maxRunSpeed.ToString();
+		public static string RunAcceleration() => player.runAcceleration.ToString();
+		public static string RunSlowdown() => player.runSlowdown.ToString();
+		public static string WingTimeMax() => player.wingTimeMax.ToString();
+		public static string WingTime() => player.wingTime.ToString();
+		public static string RocketTimeMax() => player.rocketTimeMax.ToString();
+		public static string RocketTime() => player.rocketTime.ToString();
+		public static string NoKnockback() => player.noKnockback.ToString();
+
+		public static bool NoFallDmg() //Having wings prevents fall damage but doesn't change the noFallDmg bool
+		{
+			return player.noFallDmg || player.wings > 0;
+		}
+
+		//Damage
+		public static string Damage(DamageClass damageClass) //Adapted from Fargo's Mutant Mod: https://github.com/Fargowilta/Fargowiltas/blob/master/UI/StatSheetUI.cs#L75
+		{
+			return Math.Round(player.GetTotalDamage(damageClass).Additive * player.GetTotalDamage(damageClass).Multiplicative, 2).ToString();
+		}
+		public static string AttackSpeed(DamageClass damageClass) => player.GetAttackSpeed(damageClass).ToString();
+
+		//Crit
+		public static string CritChance(DamageClass damageClass) => player.GetCritChance(damageClass).ToString();
+
+		public static string Knockback(DamageClass damageClass)
+		{
+			return Math.Round(player.GetKnockback(damageClass).Additive * player.GetKnockback(damageClass).Multiplicative, 2).ToString();
+		}
+
+		//Summons
+		public static string MaxMinions() => player.maxMinions.ToString();
+		public static string MaxTurrets() => player.maxTurrets.ToString();
+		public static string NumMinions() => player.numMinions.ToString();
+
+		//Other
+		public static string TaxMoney() => player.taxMoney.ToString();
+		public static string TaxTimer() => player.taxTimer.ToString();
+		public static string AnglerQuestsFinished() => player.anglerQuestsFinished.ToString();
+		public static string Breath() => player.breath.ToString();
+		public static string BreathCD() => player.breathCD.ToString();
+		public static string BreathMax() => player.breathMax.ToString();
+		public static string LavaImmune() => player.lavaImmune.ToString();
+		public static string PickSpeed() => player.pickSpeed.ToString();
+		public static string ZoneWaterCandle() => player.ZoneWaterCandle.ToString();
+		public static string ZonePeaceCandle() => player.ZonePeaceCandle.ToString();
+		public static string PlayerInZonePurity() => player.InZonePurity().ToString();
+		public static string PlayerInZoneCorrupt() => player.ZoneCorrupt.ToString();
+		public static string PlayerInZoneCrimson() => player.ZoneCrimson.ToString();
+		public static string PlayerInZoneHallow() => player.ZoneHallow.ToString();
+		public static string GolferScoreAccumulated() => player.golferScoreAccumulated.ToString();
+		public static string Luck() => player.luck.ToString();
 	}
 }

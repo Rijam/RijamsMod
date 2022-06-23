@@ -12,19 +12,18 @@ namespace RijamsMod.Items.Weapons.Ammo
 		}
         public override void SetDefaults()
 		{
-			item.CloneDefaults(ItemID.UnholyArrow);
-			item.damage = 14;
-			item.shoot = ModContent.ProjectileType<Projectiles.BloodyArrow>();   //The projectile shoot when your weapon using this ammo
+			Item.CloneDefaults(ItemID.UnholyArrow);
+			Item.damage = 14;
+			Item.shoot = ModContent.ProjectileType<Projectiles.BloodyArrow>();   //The projectile shoot when your weapon using this ammo
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.WoodenArrow, 5);
-			recipe.AddIngredient(ModContent.ItemType<Materials.CrawlerChelicera>(), 1);
-			recipe.AddTile(TileID.Anvils);
-			recipe.SetResult(this, 5);
-			recipe.AddRecipe();
+			CreateRecipe(5)
+				.AddIngredient(ItemID.WoodenArrow, 5)
+				.AddIngredient(ModContent.ItemType<Materials.CrawlerChelicera>(), 1)
+				.AddTile(TileID.Anvils)
+				.Register();
 		}
 	}
 	public class SulfurArrow : ModItem
@@ -35,25 +34,24 @@ namespace RijamsMod.Items.Weapons.Ammo
 		}
 		public override void SetDefaults()
 		{
-			item.CloneDefaults(ItemID.WoodenArrow);
-			item.damage = 14;
-			item.knockBack = 3f;
-			item.value = 10;
-			item.width = 14;
-			item.height = 36;
-			item.rare = ItemRarityID.LightRed;
-			item.shootSpeed = 4f;
-			item.shoot = ModContent.ProjectileType<Projectiles.SulfurArrow>();   //The projectile shoot when your weapon using this ammo
+			Item.CloneDefaults(ItemID.WoodenArrow);
+			Item.damage = 14;
+			Item.knockBack = 3f;
+			Item.value = 10;
+			Item.width = 14;
+			Item.height = 36;
+			Item.rare = ItemRarityID.LightRed;
+			Item.shootSpeed = 4f;
+			Item.shoot = ModContent.ProjectileType<Projectiles.SulfurArrow>();   //The projectile shoot when your weapon using this ammo
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.WoodenArrow, 150);
-			recipe.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1);
-			recipe.AddTile(TileID.MythrilAnvil);
-			recipe.SetResult(this, 150);
-			recipe.AddRecipe();
+			CreateRecipe(150)
+				.AddIngredient(ItemID.WoodenArrow, 150)
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 	public class EvilArrows : ModItem
@@ -64,20 +62,19 @@ namespace RijamsMod.Items.Weapons.Ammo
 		}
 		public override void SetDefaults()
 		{
-			item.CloneDefaults(ItemID.UnholyArrow);
-			item.damage = 13;
-			item.shoot = ModContent.ProjectileType<Projectiles.EvilArrows>();   //The projectile shoot when your weapon using this ammo
+			Item.CloneDefaults(ItemID.UnholyArrow);
+			Item.damage = 13;
+			Item.shoot = ModContent.ProjectileType<Projectiles.EvilArrows>();   //The projectile shoot when your weapon using this ammo
 		}
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.UnholyArrow, 50);
-			recipe.AddIngredient(ModContent.ItemType<BloodyArrow>(), 50);
-			recipe.AddIngredient(ItemID.SoulofNight, 1);
-			recipe.AddTile(TileID.Anvils);
-			recipe.SetResult(this, 100);
-			recipe.AddRecipe();
+			CreateRecipe(100)
+				.AddIngredient(ItemID.UnholyArrow, 50)
+				.AddIngredient(ModContent.ItemType<BloodyArrow>(), 50)
+				.AddIngredient(ItemID.SoulofNight, 1)
+				.AddTile(TileID.Anvils)
+				.Register();
 		}
 	}
 }

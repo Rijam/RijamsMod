@@ -3,6 +3,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.ModLoader.Utilities;
+using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Bestiary;
 
 namespace RijamsMod.NPCs.Enemies
 {
@@ -13,51 +17,52 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Snowman Muscle");
-			Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.SnowmanGangsta];
+			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SnowmanGangsta];
+
+			// Influences how the NPC looks in the Bestiary
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+			{
+				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+				Direction = -1
+			};
+
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 
 		public override void SetDefaults()
 		{
-			npc.CloneDefaults(NPCID.SnowmanGangsta);
-			npc.damage = 30;
-			npc.defense = 0;
-			npc.lifeMax = 250;
-			npc.lavaImmune = true;
-			npc.buffImmune[BuffID.Confused] = false;
-			npc.value = 500f;
-			npc.knockBackResist = 0.5f;
-			npc.aiStyle = -1;
-			aiType = NPCID.SnowmanGangsta;
-			animationType = NPCID.SnowmanGangsta;
-			banner = npc.type;
-			bannerItem = ModContent.ItemType<Items.Placeable.SnowmanMuscleBanner>();
+			NPC.CloneDefaults(NPCID.SnowmanGangsta);
+			NPC.damage = 30;
+			NPC.defense = 0;
+			NPC.lifeMax = 250;
+			NPC.lavaImmune = true;
+			NPC.buffImmune[BuffID.Confused] = false;
+			NPC.value = 500f;
+			NPC.knockBackResist = 0.5f;
+			NPC.aiStyle = -1;
+			AIType = NPCID.SnowmanGangsta;
+			AnimationType = NPCID.SnowmanGangsta;
+			Banner = NPC.type;
+			BannerItem = ModContent.ItemType<Items.Placeable.SnowmanMuscleBanner>();
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
-			if (npc.life <= 0)
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
 			{
-			}
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions.FrostLegion,
+				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
+			});
 		}
-		public override void NPCLoot()
+
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			if (Main.rand.Next(20) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Shotgun);
-			}
-			if (Main.rand.Next(25) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.Vanity.CarrotNose>());
-			}
-			if (Main.rand.Next(25) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Accessories.FrostyRose>());
-			}
-			if (Main.rand.Next(150) == 0)
-			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present);
-			}
-			Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SnowBlock, Main.rand.Next(5, 10));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Shotgun, 20));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Accessories.Vanity.CarrotNose>(), 25));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Accessories.Defense.FrostyRose>(), 25));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Present, 150));
+			npcLoot.Add(ItemDropRule.Common(ItemID.SnowBlock, 1, 5, 10));
+			npcLoot.Add(ItemDropRule.Common(ItemID.Fedora, 50));
 
 			//From Spirit Mod FrostSaucer.cs
 			if (Main.invasionType == InvasionID.SnowLegion)
@@ -88,17 +93,17 @@ namespace RijamsMod.NPCs.Enemies
 			float num526 = 0.6f;
 			if (true)
 			{
-				npc.ai[2] += 1f;
-				if (npc.ai[2] >= 180f)
+				NPC.ai[2] += 1f;
+				if (NPC.ai[2] >= 180f)
 				{
-					npc.ai[2] = 0f;
+					NPC.ai[2] = 0f;
 					if (Main.netMode != NetmodeID.MultiplayerClient)
 					{
-						Vector2 projectileVector = new Vector2(npc.position.X + (float)npc.width * 0.5f - (float)(npc.direction * 12), npc.position.Y + (float)npc.height * 0.5f);
-						float speedX = Main.player[npc.target].position.X + (float)Main.player[npc.target].width * 0.5f - projectileVector.X;
-						float speedY = Main.player[npc.target].position.Y + (float)Main.player[npc.target].height * 0.5f - projectileVector.Y;
+						Vector2 projectileVector = new(NPC.position.X + (float)NPC.width * 0.5f - (float)(NPC.direction * 12), NPC.position.Y + (float)NPC.height * 0.5f);
+						float speedX = Main.player[NPC.target].position.X + (float)Main.player[NPC.target].width * 0.5f - projectileVector.X;
+						float speedY = Main.player[NPC.target].position.Y + (float)Main.player[NPC.target].height * 0.5f - projectileVector.Y;
 						float sqrtX2Y2 = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
-						npc.netUpdate = true;
+						NPC.netUpdate = true;
 						sqrtX2Y2 = 9f / sqrtX2Y2;
 						speedX *= sqrtX2Y2;
 						speedY *= sqrtX2Y2;
@@ -108,15 +113,15 @@ namespace RijamsMod.NPCs.Enemies
 						{
 							int projectileDamage = 15;
 							int projectileType = ProjectileID.BulletSnowman;
-							Main.PlaySound(SoundID.Item36, (int)npc.position.X, (int)npc.position.Y);
+							SoundEngine.PlaySound(SoundID.Item36, NPC.position);
 							for (int i=0; i < 3; i++)
                             {
-								int newProjectile = Projectile.NewProjectile(projectileVector.X, projectileVector.Y, speedX, speedY, projectileType, projectileDamage, 0.5f, Main.myPlayer);
+								int newProjectile = Projectile.NewProjectile(Entity.GetSource_FromAI(), projectileVector.X, projectileVector.Y, speedX, speedY, projectileType, projectileDamage, 0.5f, Main.myPlayer);
 								Main.projectile[newProjectile].ai[0] = 2f;
 								Main.projectile[newProjectile].timeLeft = 300;
 								Main.projectile[newProjectile].friendly = false;
 								NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, newProjectile);
-								npc.netUpdate = true;
+								NPC.netUpdate = true;
 								speedY += Main.rand.Next(-60, 60) * sqrtX2Y2;
 								speedX += Main.rand.Next(-20, 20) * sqrtX2Y2;
 							}
@@ -126,46 +131,46 @@ namespace RijamsMod.NPCs.Enemies
 			}
 			if (true)
 			{
-				if (npc.velocity.Y == 0f)
+				if (NPC.velocity.Y == 0f)
 				{
-					if (npc.localAI[2] == npc.position.X)
+					if (NPC.localAI[2] == NPC.position.X)
 					{
-						npc.direction *= -1;
-						npc.ai[3] = 60f;
+						NPC.direction *= -1;
+						NPC.ai[3] = 60f;
 					}
-					npc.localAI[2] = npc.position.X;
-					if (npc.ai[3] == 0f)
+					NPC.localAI[2] = NPC.position.X;
+					if (NPC.ai[3] == 0f)
 					{
-						npc.TargetClosest();
+						NPC.TargetClosest();
 					}
-					npc.ai[0] += 1f;
-					if (npc.ai[0] > 2f)
+					NPC.ai[0] += 1f;
+					if (NPC.ai[0] > 2f)
 					{
-						npc.ai[0] = 0f;
-						npc.ai[1] += 1f;
-						npc.velocity.Y = -8.2f;
-						npc.velocity.X += (float)npc.direction * num526 * 1.1f;
+						NPC.ai[0] = 0f;
+						NPC.ai[1] += 1f;
+						NPC.velocity.Y = -8.2f;
+						NPC.velocity.X += (float)NPC.direction * num526 * 1.1f;
 					}
 					else
 					{
-						npc.velocity.Y = -6f;
-						npc.velocity.X += (float)npc.direction * num526 * 0.9f;
+						NPC.velocity.Y = -6f;
+						NPC.velocity.X += (float)NPC.direction * num526 * 0.9f;
 					}
-					npc.spriteDirection = npc.direction;
+					NPC.spriteDirection = NPC.direction;
 				}
-				npc.velocity.X += (float)npc.direction * num526 * 0.01f;
+				NPC.velocity.X += (float)NPC.direction * num526 * 0.01f;
 			}
-			if (npc.ai[3] > 0f)
+			if (NPC.ai[3] > 0f)
 			{
-				npc.ai[3] -= 1f;
+				NPC.ai[3] -= 1f;
 			}
-			if (npc.velocity.X > speed && npc.direction > 0)
+			if (NPC.velocity.X > speed && NPC.direction > 0)
 			{
-				npc.velocity.X = 4f;
+				NPC.velocity.X = 4f;
 			}
-			if (npc.velocity.X < -speed && npc.direction < 0)
+			if (NPC.velocity.X < -speed && NPC.direction < 0)
 			{
-				npc.velocity.X = -4f;
+				NPC.velocity.X = -4f;
 			}
 		}
 

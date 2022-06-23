@@ -10,33 +10,33 @@ namespace RijamsMod.Projectiles
 	{
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 6;
-			projectile.height = 6;
-			projectile.alpha = 1;
-			projectile.friendly = true;
-			projectile.tileCollide = true;
-			projectile.ignoreWater = true;
-			projectile.melee = true;
-			projectile.penetrate = -1;
-			aiType = ProjectileID.Bullet;
-			projectile.timeLeft = 10;
-			projectile.extraUpdates = 1;
+			Projectile.arrow = false;
+			Projectile.width = 6;
+			Projectile.height = 6;
+			Projectile.alpha = 1;
+			Projectile.friendly = true;
+			Projectile.tileCollide = true;
+			Projectile.ignoreWater = true;
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.penetrate = -1;
+			AIType = ProjectileID.Bullet;
+			Projectile.timeLeft = 10;
+			Projectile.extraUpdates = 1;
 		}
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return Color.Blue * projectile.timeLeft;
+			return Color.Blue * Projectile.timeLeft;
 		}
 
 		public override void AI()
 		{
-			projectile.rotation += 0.4f * projectile.direction;
-			projectile.alpha += 25;
+			Projectile.rotation += 0.4f * Projectile.direction;
+			Projectile.alpha += 25;
 		}
 		public override void Kill(int timeLeft)
 		{
-			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 		}
 	}
 }

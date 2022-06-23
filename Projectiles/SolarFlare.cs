@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 
 namespace RijamsMod.Projectiles
 {
@@ -14,39 +15,39 @@ namespace RijamsMod.Projectiles
 	{
         public override void SetStaticDefaults()
         {
-			ProjectileID.Sets.TrailCacheLength[projectile.type] = 5;    //The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[projectile.type] = 0;        //The recording mode
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;    //The length of old position to be recorded
+			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
 		}
         public override void SetDefaults()
 		{
-			projectile.width = 14;
-			projectile.height = 14;
-			projectile.penetrate = 1;
-			projectile.melee = true;
-			projectile.friendly = true;
-			projectile.hostile = false;
-			projectile.tileCollide = true;
-			projectile.usesLocalNPCImmunity = true;
-			projectile.localNPCHitCooldown = 60;
-			projectile.timeLeft = 500;
-			projectile.alpha = 200;
-			aiType = -1;
+			Projectile.width = 14;
+			Projectile.height = 14;
+			Projectile.penetrate = 1;
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.friendly = true;
+			Projectile.hostile = false;
+			Projectile.tileCollide = true;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 60;
+			Projectile.timeLeft = 500;
+			Projectile.alpha = 200;
+			AIType = -1;
 		}
 
         public override void AI()
         {
-			projectile.rotation = projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			projectile.velocity.Y += 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
-			if (projectile.velocity.Y > 16f)
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			Projectile.velocity.Y += 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
+			if (Projectile.velocity.Y > 16f)
 			{
-				projectile.velocity.Y = 16f;
+				Projectile.velocity.Y = 16f;
 			}
 		}
 
-        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
 		{
-			int selectRand = Utils.SelectRandom(Main.rand, DustID.OrangeTorch, DustID.SolarFlare, DustID.Fire);
-			Dust killDust = Main.dust[Dust.NewDust(projectile.position, projectile.width, projectile.height, selectRand)];
+			int selectRand = Utils.SelectRandom(Main.rand, DustID.OrangeTorch, DustID.SolarFlare, DustID.Torch);
+			Dust killDust = Main.dust[Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, selectRand)];
 			killDust.noGravity = true;
 			killDust.fadeIn = 0.25f;
 			Dust killDust3 = killDust;
@@ -54,12 +55,12 @@ namespace RijamsMod.Projectiles
 			killDust.noLight = true;
 
 			//Redraw the projectile with the color not influenced by light
-			Vector2 drawOrigin = new Vector2(Main.projectileTexture[projectile.type].Width * 0.5f, projectile.height * 0.5f);
-			for (int k = 0; k < projectile.oldPos.Length; k++)
+			Vector2 drawOrigin = new(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
+			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
-				Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, projectile.gfxOffY);
-				Color color = projectile.GetAlpha(lightColor) * ((float)(projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-				spriteBatch.Draw(Main.projectileTexture[projectile.type], drawPos, null, color, projectile.rotation, drawOrigin, projectile.scale, SpriteEffects.None, 0f);
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}
 			return true;
 		}
@@ -68,8 +69,8 @@ namespace RijamsMod.Projectiles
 		{
 			for (int i = 0; i < 30; i++)
 			{
-				int selectRand = Utils.SelectRandom(Main.rand, DustID.OrangeTorch, DustID.SolarFlare, DustID.Fire);
-				Dust killDust = Main.dust[Dust.NewDust(projectile.position, projectile.width, projectile.height, selectRand)];
+				int selectRand = Utils.SelectRandom(Main.rand, DustID.OrangeTorch, DustID.SolarFlare, DustID.Torch);
+				Dust killDust = Main.dust[Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, selectRand)];
 				killDust.noGravity = true;
 				killDust.scale = 1.25f + Main.rand.NextFloat();
 				killDust.fadeIn = 0.25f;

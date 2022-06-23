@@ -11,31 +11,31 @@ namespace RijamsMod.Projectiles.Pets
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Lumoth");
-			Main.projFrames[projectile.type] = 4;
-			Main.projPet[projectile.type] = true;
-			ProjectileID.Sets.LightPet[projectile.type] = true;
+			Main.projFrames[Projectile.type] = 4;
+			Main.projPet[Projectile.type] = true;
+			ProjectileID.Sets.LightPet[Projectile.type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.CloneDefaults(ProjectileID.ZephyrFish);
-			projectile.width = 18;
-			projectile.height = 18;
-			aiType = ProjectileID.ZephyrFish;
-			drawOffsetX = -9;
-			drawOriginOffsetY -= 8;
+			Projectile.CloneDefaults(ProjectileID.ZephyrFish);
+			Projectile.width = 18;
+			Projectile.height = 18;
+			AIType = ProjectileID.ZephyrFish;
+			DrawOffsetX = -9;
+			DrawOriginOffsetY -= 16;
 		}
 
 		public override bool PreAI()
 		{
-			Player player = Main.player[projectile.owner];
-			player.zephyrfish = false; // Relic from aiType
+			Player player = Main.player[Projectile.owner];
+			player.zephyrfish = false; // Relic from AIType
 			return true;
 		}
 
 		public override void AI()
 		{
-			Player player = Main.player[projectile.owner];
+			Player player = Main.player[Projectile.owner];
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
@@ -43,21 +43,21 @@ namespace RijamsMod.Projectiles.Pets
 			}
 			if (modPlayer.lumothPet)
 			{
-				projectile.timeLeft = 2;
+				Projectile.timeLeft = 2;
 			}
 
 			//Teleport if too far away
-			Vector2 PlayPosProjPos = player.position - projectile.position;
+			Vector2 PlayPosProjPos = player.position - Projectile.position;
 			float distance = PlayPosProjPos.Length();
 			if (Main.myPlayer == player.whoAmI && distance > 1000f)
 			{
 				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
 				// and then set netUpdate to true
-				projectile.position = player.position;
-				projectile.velocity *= 0.1f;
-				projectile.netUpdate = true;
+				Projectile.position = player.position;
+				Projectile.velocity *= 0.1f;
+				Projectile.netUpdate = true;
 			}
-			Lighting.AddLight(projectile.Center, 1f, 1f, 0.5f);
+			Lighting.AddLight(Projectile.Center, 1f, 1f, 0.5f);
 		}
 	}
 	public class LEDLumoth : ModProjectile
@@ -65,32 +65,32 @@ namespace RijamsMod.Projectiles.Pets
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("LED Lumoth");
-			Main.projFrames[projectile.type] = 4;
-			Main.projPet[projectile.type] = true;
-			ProjectileID.Sets.LightPet[projectile.type] = true;
+			Main.projFrames[Projectile.type] = 4;
+			Main.projPet[Projectile.type] = true;
+			ProjectileID.Sets.LightPet[Projectile.type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.CloneDefaults(ProjectileID.ZephyrFish);
-			projectile.width = 18;
-			projectile.height = 18;
-			aiType = -1;
-			projectile.aiStyle = -1;
-			drawOffsetX = -9;
-			drawOriginOffsetY -= 8;
+			Projectile.CloneDefaults(ProjectileID.ZephyrFish);
+			Projectile.width = 18;
+			Projectile.height = 18;
+			AIType = -1;
+			Projectile.aiStyle = -1;
+			DrawOffsetX = -9;
+			DrawOriginOffsetY -= 16;
 		}
 
 		public override bool PreAI()
 		{
-			Player player = Main.player[projectile.owner];
-			player.zephyrfish = false; // Relic from aiType
+			Player player = Main.player[Projectile.owner];
+			player.zephyrfish = false; // Relic from AIType
 			return true;
 		}
 
 		public override void AI()
 		{
-			Player player = Main.player[projectile.owner];
+			Player player = Main.player[Projectile.owner];
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
@@ -98,32 +98,32 @@ namespace RijamsMod.Projectiles.Pets
 			}
 			if (modPlayer.lEDLumothPet)
 			{
-				projectile.timeLeft = 2;
+				Projectile.timeLeft = 2;
 			}
 
 			float smallFloat = 0.3f;
-			projectile.tileCollide = false;
-			Vector2 vectorPos = new Vector2(projectile.position.X + projectile.width * 0.5f, projectile.position.Y + projectile.height * 0.5f);
-			float posNewX = Main.player[projectile.owner].position.X + (Main.player[projectile.owner].width / 2) - vectorPos.X;
-			float posNewY = Main.player[projectile.owner].position.Y + (Main.player[projectile.owner].height / 2) - vectorPos.Y;
+			Projectile.tileCollide = false;
+			Vector2 vectorPos = new(Projectile.position.X + Projectile.width * 0.5f, Projectile.position.Y + Projectile.height * 0.5f);
+			float posNewX = Main.player[Projectile.owner].position.X + (Main.player[Projectile.owner].width / 2) - vectorPos.X;
+			float posNewY = Main.player[Projectile.owner].position.Y + (Main.player[Projectile.owner].height / 2) - vectorPos.Y;
 			posNewY += Main.rand.Next(-5, 15);
 			posNewX += Main.rand.Next(-5, 15);
-			posNewX += (30 * -Main.player[projectile.owner].direction);
+			posNewX += (30 * -Main.player[Projectile.owner].direction);
 			posNewY -= 30f;
 			float posNewXY = (float)Math.Sqrt(posNewX * posNewX + posNewY * posNewY);
-			if (posNewXY < 100f && Main.player[projectile.owner].velocity.Y == 0f && projectile.position.Y + projectile.height <= Main.player[projectile.owner].position.Y + Main.player[projectile.owner].height && !Collision.SolidCollision(projectile.position, projectile.width, projectile.height))
+			if (posNewXY < 100f && Main.player[Projectile.owner].velocity.Y == 0f && Projectile.position.Y + Projectile.height <= Main.player[Projectile.owner].position.Y + Main.player[Projectile.owner].height && !Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
 			{
-				projectile.ai[0] = 0f;
-				if (projectile.velocity.Y < -12f)
+				Projectile.ai[0] = 0f;
+				if (Projectile.velocity.Y < -12f)
 				{
-					projectile.velocity.Y = -12f;
+					Projectile.velocity.Y = -12f;
 				}
 			}
 			if (posNewXY < 50f)
 			{
-				if (Math.Abs(projectile.velocity.X) > 1f || Math.Abs(projectile.velocity.Y) > 1f)
+				if (Math.Abs(Projectile.velocity.X) > 1f || Math.Abs(Projectile.velocity.Y) > 1f)
 				{
-					projectile.velocity *= 0.9f;
+					Projectile.velocity *= 0.9f;
 				}
 				smallFloat = 0.01f;
 			}
@@ -141,56 +141,56 @@ namespace RijamsMod.Projectiles.Pets
 				posNewX *= posNewXY;
 				posNewY *= posNewXY;
 			}
-			if (projectile.velocity.X < posNewX)
+			if (Projectile.velocity.X < posNewX)
 			{
-				projectile.velocity.X += smallFloat;
+				Projectile.velocity.X += smallFloat;
 			}
-			if (projectile.velocity.X > posNewX)
+			if (Projectile.velocity.X > posNewX)
 			{
-				projectile.velocity.X -= smallFloat;
+				Projectile.velocity.X -= smallFloat;
 			}
-			if (projectile.velocity.Y < posNewY)
+			if (Projectile.velocity.Y < posNewY)
 			{
-				projectile.velocity.Y += smallFloat;
+				Projectile.velocity.Y += smallFloat;
 			}
-			if (projectile.velocity.Y > posNewY)
+			if (Projectile.velocity.Y > posNewY)
 			{
-				projectile.velocity.Y -= smallFloat;
+				Projectile.velocity.Y -= smallFloat;
 			}
-			if (projectile.velocity.X > 0.25)
+			if (Projectile.velocity.X > 0.25)
 			{
-				projectile.direction = -1;
+				Projectile.direction = -1;
 			}
-			else if (projectile.velocity.X < -0.25)
+			else if (Projectile.velocity.X < -0.25)
 			{
-				projectile.direction = 1;
+				Projectile.direction = 1;
 			}
-			projectile.spriteDirection = projectile.direction;
-			projectile.rotation = projectile.velocity.X * 0.05f;
-			projectile.frameCounter++;
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.rotation = Projectile.velocity.X * 0.05f;
+			Projectile.frameCounter++;
 			int frameAmount = 5;
-			if (projectile.frameCounter > frameAmount)
+			if (Projectile.frameCounter > frameAmount)
 			{
-				projectile.frame++;
-				projectile.frameCounter = 0;
+				Projectile.frame++;
+				Projectile.frameCounter = 0;
 			}
-			if (projectile.frame > 3)
+			if (Projectile.frame > 3)
 			{
-				projectile.frame = 0;
+				Projectile.frame = 0;
 			}
 
 			//Teleport if too far away
-			Vector2 PlayPosProjPos = player.position - projectile.position;
+			Vector2 PlayPosProjPos = player.position - Projectile.position;
 			float distance = PlayPosProjPos.Length();
 			if (Main.myPlayer == player.whoAmI && distance > 750f)
 			{
 				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
 				// and then set netUpdate to true
-				projectile.position = player.position;
-				projectile.velocity *= 0.1f;
-				projectile.netUpdate = true;
+				Projectile.position = player.position;
+				Projectile.velocity *= 0.1f;
+				Projectile.netUpdate = true;
 			}
-			Lighting.AddLight(projectile.Center, 2f, 2f, 2f);
+			Lighting.AddLight(Projectile.Center, 2f, 2f, 2f);
 		}
 	}
 }

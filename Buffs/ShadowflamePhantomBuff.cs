@@ -8,7 +8,7 @@ namespace RijamsMod.Buffs
 {
 	public class ShadowflamePhantomBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Shadowflame Phantom");
 			Description.SetDefault("The Shadowflame Phantom will fight for you");
@@ -24,7 +24,7 @@ namespace RijamsMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			if (player.ownedProjectileCounts[mod.ProjectileType("ShadowflamePhantom")] > 0)
+			if (player.ownedProjectileCounts[Mod.Find<ModProjectile>("ShadowflamePhantom").Type] > 0)
 			{
 				player.buffTime[buffIndex] = 18000;
 			}

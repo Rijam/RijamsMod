@@ -6,8 +6,12 @@ using Terraria.ModLoader;
 using RijamsMod.Items;
 using RijamsMod.Items.Weapons;
 using RijamsMod.Items.Accessories;
+using RijamsMod.Items.Accessories.Defense;
+using RijamsMod.Items.Accessories.Misc;
 using RijamsMod.Items.Accessories.Vanity;
 using RijamsMod.Items.Materials;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.Audio;
 
 namespace RijamsMod
 {
@@ -20,8 +24,7 @@ namespace RijamsMod
 		{
 			sulfuricAcid = false;
 		}
-
-		public override bool SpecialNPCLoot(NPC npc)
+		public override bool SpecialOnKill(NPC npc)
         {
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
 			//Player player = Main.LocalPlayer;
@@ -35,221 +38,119 @@ namespace RijamsMod
                 {
 					/*if (Main.netMode != NetmodeID.Server && Main.myPlayer == player.whoAmI)
                     {
-						Main.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
+						SoundEngine.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
 					}
 					else
                     {
-						Main.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
+						SoundEngine.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
 					}*/
-					Main.PlaySound(SoundID.Item, -1, -1, 35, 0.75f, 0.5f);
+					SoundEngine.PlaySound(new("Terraria/Sounds/Item_35", 0, 1) { Volume = 0.5f, PitchRange = (0.75f, 0.75f)} );
 
-					//Main.PlaySound(SoundLoader.customSoundType, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/beep"), 0.25f, 2f);
+					//SoundEngine.PlaySound(SoundLoader.customSoundType, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/beep"), 0.25f, 2f);
 				}
 			}
-			return base.SpecialNPCLoot(npc);
+			return base.SpecialOnKill(npc);
         }
-		public override void NPCLoot(NPC npc)
+		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 			if (npc.type == NPCID.SnowmanGangsta)
 			{
-				if (Main.rand.Next(15) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Thompson>());
-				}
-				if (Main.rand.Next(25) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CarrotNose>());
-				}
-				if (Main.rand.Next(25) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FrostyRose>());
-				}
-				if (Main.rand.Next(50) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GangstaHat);
-				}
-				if (Main.rand.Next(150) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present);
-				}
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Thompson>(), 15));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CarrotNose>(), 25));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrostyRose>(), 25));
+				npcLoot.Add(ItemDropRule.Common(ItemID.GangstaHat, 50));
+				npcLoot.Add(ItemDropRule.Common(ItemID.Present, 150));
 			}
 			if (npc.type == NPCID.SnowBalla)
 			{
-				if (Main.rand.Next(15) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<LegionScarf>());
-				}
-				if (Main.rand.Next(25) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CarrotNose>());
-				}
-				if (Main.rand.Next(25) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FrostyRose>());
-				}
-				if (Main.rand.Next(50) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.BallaHat);
-				}
-				if (Main.rand.Next(150) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present);
-				}
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LegionScarf>(), 15));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CarrotNose>(), 25));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrostyRose>(), 25));
+				npcLoot.Add(ItemDropRule.Common(ItemID.BallaHat, 50));
+				npcLoot.Add(ItemDropRule.Common(ItemID.Present, 150));
 			}
 			if (npc.type == NPCID.MisterStabby)
 			{
-				if (Main.rand.Next(15) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<LegionScarf>());
-				}
-				if (Main.rand.Next(25) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CarrotNose>());
-				}
-				if (Main.rand.Next(15) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<StabbyShiv>());
-				}
-				if (Main.rand.Next(25) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FrostyRose>());
-				}
-				if (Main.rand.Next(150) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present);
-				}
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LegionScarf>(), 15));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CarrotNose>(), 25));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StabbyShiv>(), 15));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrostyRose>(), 25));
+				npcLoot.Add(ItemDropRule.Common(ItemID.Present, 150));
 			}
 			if (npc.type == NPCID.GoblinSummoner)
 			{
-				if (Main.rand.Next(3) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<ShadowflameStaff>());
-				}
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadowflameStaff>(), 3));
 			}
 			if (npc.type == NPCID.ArmoredViking)
 			{
-				if (Main.expertMode)
-				{
-					if (Main.rand.Next(50) == 0)
-					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.ArmorPolish);
-					}
-				}
-				if (!Main.expertMode)
-                {
-					if (Main.rand.Next(100) == 0)
-					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.ArmorPolish);
-					}
-				}
+				npcLoot.Add(ItemDropRule.NormalvsExpert(ItemID.ArmorPolish, 100, 50));
 			}
 			if (npc.type == NPCID.SantaNK1)
 			{
-				if (Main.expertMode)
-				{
-					if (Main.rand.Next(10) == 0)
-					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<NaughtyList>());
-					}
-				}
-				if (!Main.expertMode)
-				{
-					if (Main.rand.Next(20) == 0)
-					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<NaughtyList>());
-					}
-				}
+				npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), 20, 10));
+				npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<FestivePlating>(), 1, 1, 5));
+				npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<FestivePlating>(), 1, 2, 8));
 			}
 			if (npc.type == NPCID.ChaosElemental || npc.type == NPCID.EnchantedSword)
 			{
-				if (Main.rand.Next(20) == 0) //5% chance, compared with the RoD's 0.2%
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Quest.TeleportationCore>());
-				}
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.TeleportationCore>(), 20));
 			}
-			Mod consolaria = ModLoader.GetMod("Consolaria"); //Consolaria's Spectral Elemental can also drop it
-			if (consolaria != null)
-            {
-				if (npc.type == consolaria.NPCType("SpectralElemental"))
+			if (ModLoader.TryGetMod("Consolaria", out Mod consolaria)) //Consolaria's Spectral Elemental can also drop it
+			{
+				if (npc.type == consolaria.Find<ModNPC>("SpectralElemental").Type)
 				{
-					if (Main.rand.Next(20) == 0)
-					{
-						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Quest.TeleportationCore>());
-					}
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.TeleportationCore>(), 20));
 				}
 			}
 			if (npc.type == NPCID.Crimera)
             {
-				if (Main.rand.Next(525) == 0) //0.19% chance
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.DilapidatedCrimsonHelmet>());
-				}
-				if (Main.rand.Next(525) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.DilapidatedCrimsonScalemail>());
-				}
-				if (Main.rand.Next(525) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Armor.DilapidatedCrimsonGreaves>());
-				}
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.DilapidatedCrimson.DilapidatedCrimsonHelmet>(), 525)); //0.19% chance
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.DilapidatedCrimson.DilapidatedCrimsonScalemail>(), 525));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.DilapidatedCrimson.DilapidatedCrimsonGreaves>(), 525));
 			}
 			if (npc.type == NPCID.PresentMimic)
             {
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 6));
+				npcLoot.Add(ItemDropRule.Common(ItemID.Present, 3, 1, 6));
 			}
 			if (npc.type == NPCID.Nutcracker)
 			{
-				if (Main.rand.Next(5) == 0)
-                {
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 4));
-				}
+				npcLoot.Add(ItemDropRule.Common(ItemID.Present, 5, 1, 4));
 			}
 			if (npc.type == NPCID.Everscream)
 			{
-				if (Main.rand.Next(2) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Present, Main.rand.Next(1, 4));
-				}
+				npcLoot.Add(ItemDropRule.Common(ItemID.Present, 2, 1, 4));
 			}
 			if (npc.type == NPCID.IceQueen)
 			{
-				if (Main.rand.Next(4) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<FestiveWhip>(), 1);
-				}
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FestiveWhip>(), 4));
 			}
 			if (npc.type == NPCID.Poltergeist)
 			{
-				if (Main.rand.Next(5) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 4));
-				}
+				npcLoot.Add(ItemDropRule.Common(ItemID.GoodieBag, 5, 1, 4));
 			}
 			if (npc.type == NPCID.MourningWood)
 			{
-				if (Main.rand.Next(2) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 4));
-				}
+				npcLoot.Add(ItemDropRule.Common(ItemID.GoodieBag, 2, 1, 4));
 			}
 			if (npc.type == NPCID.Pumpking)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoodieBag, Main.rand.Next(1, 6));
+				npcLoot.Add(ItemDropRule.Common(ItemID.GoodieBag, 1, 1, 3));
 			}
 			if (npc.type == NPCID.BloodCrawler || npc.type == NPCID.BloodCrawlerWall)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<CrawlerChelicera>(), Main.rand.Next(1, 3));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CrawlerChelicera>(), 1, 1, 2));
 			}
 			if (npc.type == NPCID.EyeofCthulhu && !Main.expertMode && WorldGen.crimson)
 			{
-				Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), Main.rand.Next(20, 51));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), 1, 20, 51));
 			}
 			if (npc.type == NPCID.DesertGhoul || npc.type == NPCID.DesertGhoulCorruption || npc.type == NPCID.DesertGhoulCrimson || npc.type == NPCID.DesertGhoulHallow)
 			{
-				if (Main.rand.Next(10) == 0)
-				{
-					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AncientCloth, Main.rand.Next(1, 3));
-				}
+				npcLoot.Add(ItemDropRule.Common(ItemID.AncientCloth, 10, 1, 3));
+			}
+			if (npc.type == NPCID.GiantTortoise || npc.type == NPCID.IceTortoise)
+			{
+				npcLoot.Add(ItemDropRule.NormalvsExpert(ItemID.TurtleShell, 34, 17));
 			}
 		}
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
@@ -257,7 +158,7 @@ namespace RijamsMod
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
 			if (projectile != null)
 			{
-				if (moddedplayer.daybreakStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.melee)
+				if (moddedplayer.daybreakStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.DamageType == DamageClass.Melee)
 				{
 					//Same chances as Magma Stone, but half duration
 					if (Main.rand.Next(8) <= 2)
@@ -273,7 +174,7 @@ namespace RijamsMod
 						npc.AddBuff(BuffID.Daybreak, 60);
 					}
 				}
-				if (moddedplayer.frostburnStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.melee)
+				if (moddedplayer.frostburnStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.DamageType == DamageClass.Melee)
 				{
 					//Same chances as Magma Stone, but half duration
 					if (Main.rand.Next(8) <= 2)
@@ -289,7 +190,7 @@ namespace RijamsMod
 						npc.AddBuff(BuffID.Frostburn, 120);
 					}
 				}
-				if (moddedplayer.flaskBuff == 1 && projectile.owner == Main.LocalPlayer.whoAmI && projectile.melee)
+				if (moddedplayer.flaskBuff == 1 && projectile.owner == Main.LocalPlayer.whoAmI && projectile.DamageType == DamageClass.Melee)
 				{
 					npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 				}
@@ -298,7 +199,7 @@ namespace RijamsMod
 		public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
 		{
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
-			if (moddedplayer.daybreakStone && item.owner == Main.LocalPlayer.whoAmI && item.melee)
+			if (moddedplayer.daybreakStone && item.playerIndexTheItemIsReservedFor == player.whoAmI && item.CountsAsClass(DamageClass.Melee))
 			{
 				//Same chances as Magma Stone, but half duration
 				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
@@ -315,7 +216,7 @@ namespace RijamsMod
 					npc.AddBuff(BuffID.Daybreak, 60);
 				}
 			}
-			if (moddedplayer.frostburnStone && item.owner == Main.LocalPlayer.whoAmI && item.melee)
+			if (moddedplayer.frostburnStone && item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && item.DamageType == DamageClass.Melee)
 			{
 				//Same chances as Magma Stone
 				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
@@ -332,14 +233,14 @@ namespace RijamsMod
 					npc.AddBuff(BuffID.Frostburn, 120);
 				}
 			}
-			if (moddedplayer.flaskBuff == 1 && item.owner == Main.LocalPlayer.whoAmI && item.melee)
+			if (moddedplayer.flaskBuff == 1 && item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && item.DamageType == DamageClass.Melee)
 			{
 				npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			}
 		}
-		public override void SetupShop(int type, Chest shop, ref int nextSlot)
+		/*public override void SetupShop(int type, Chest shop, ref int nextSlot)
 		{
-			int shopPriceScaling = ModContent.GetInstance<RijamsModConfigServer>().ShopPriceScaling;
+			/*int shopPriceScaling = ModContent.GetInstance<RijamsModConfigServer>().ShopPriceScaling;
 			float shopMulti = (shopPriceScaling / 100f);
 			if (type == ModContent.NPCType<NPCs.TownNPCs.Fisherman>())
 			{
@@ -349,23 +250,7 @@ namespace RijamsMod
 					item.shopCustomPrice = (int?)Math.Round(shopPrice * shopMulti);
 				}
 			}
-			Mod pboneUtils = ModLoader.GetMod("PboneUtils");
-			if (pboneUtils != null)
-            {
-				if (type == pboneUtils.NPCType("Miner"))
-				{
-					if (Main.hardMode)
-					{
-						shop.item[nextSlot].SetDefaults(ItemID.MiningShirt);
-						shop.item[nextSlot].shopCustomPrice = 100000;
-						nextSlot++;
-						shop.item[nextSlot].SetDefaults(ItemID.MiningPants);
-						shop.item[nextSlot].shopCustomPrice = 100000;
-						nextSlot++;
-					}
-				}
-			}
-		}
+		}*/
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
 			if (sulfuricAcid)

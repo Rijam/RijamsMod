@@ -8,6 +8,9 @@ namespace RijamsMod.Buffs
     {
         public override void Update(int type, Player player, ref int buffIndex)
         {
+            // Not needed anymore. The last Well Fed buff overrides any previous Well Fed buff.
+            // Precedence: ExceptionalFeast > WellFed3 > WellFed2 > WellFed > Satiated
+            /*
             if (player.HasBuff(ModContent.BuffType<ExceptionalFeast>()) && player.HasBuff(BuffID.WellFed))
             {
                 player.ClearBuff(BuffID.WellFed);
@@ -29,7 +32,7 @@ namespace RijamsMod.Buffs
                 player.ClearBuff(ModContent.BuffType<Satiated>());
                 buffIndex--;
             }
-            base.Update(type, player, ref buffIndex);
+            */
         }
     }
 }

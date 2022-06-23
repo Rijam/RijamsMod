@@ -8,80 +8,96 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults() 
 		{
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Harpy]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy]", "[c/474747:After defeating Golem]", null } );
 		}
 
 		public override void SetDefaults() 
 		{
-			item.maxStack = 99;
-			item.width = 14;
-			item.height = 34;
-			item.value = 125000;
-			item.rare = ItemRarityID.Yellow;
+			Item.maxStack = 99;
+			Item.width = 14;
+			Item.height = 34;
+			Item.value = 125000;
+			Item.rare = ItemRarityID.Yellow;
 		}
 	}
 	public class SunEssence : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Harpy]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy]", "[c/474747:After defeating Golem]", null } );
 		}
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 999;
-			item.width = 20;
-			item.height = 20;
-			item.value = 7500;
-			item.rare = ItemRarityID.Yellow;
+			Item.maxStack = 999;
+			Item.width = 20;
+			Item.height = 20;
+			Item.value = 7500;
+			Item.rare = ItemRarityID.Yellow;
 		}
 	}
 	public class CrawlerChelicera : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Dropped by Blood Crawlers]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Blood Crawlers]", null, null } );
 		}
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 99;
-			item.width = 20;
-			item.height = 10;
-			item.value = 25;
-			item.rare = ItemRarityID.White;
+			Item.maxStack = 99;
+			Item.width = 20;
+			Item.height = 10;
+			Item.value = 25;
+			Item.rare = ItemRarityID.White;
 		}
 	}
 	public class InfernicFabric : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Hell Trader]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Eye of Cthulhu]", null } );
 		}
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 999;
-			item.width = 24;
-			item.height = 24;
-			item.value = 5000;
-			item.rare = ItemRarityID.Orange;
+			Item.maxStack = 999;
+			Item.width = 24;
+			Item.height = 24;
+			Item.value = 5000;
+			Item.rare = ItemRarityID.Orange;
 		}
 	}
 	public class Sulfur : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Hell Trader]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:In Hardmode]", null } );
 		}
 
 		public override void SetDefaults()
 		{
-			item.maxStack = 999;
-			item.width = 20;
-			item.height = 20;
-			item.value = 7500;
-			item.rare = ItemRarityID.LightRed;
+			Item.maxStack = 999;
+			Item.width = 20;
+			Item.height = 20;
+			Item.value = 7500;
+			Item.rare = ItemRarityID.LightRed;
+		}
+	}
+	public class FestivePlating : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Santa NK1]", null, null } );
+		}
+
+		public override void SetDefaults()
+		{
+			Item.maxStack = 999;
+			Item.width = 22;
+			Item.height = 22;
+			Item.value = 8000;
+			Item.rare = ItemRarityID.Yellow;
 		}
 	}
 }

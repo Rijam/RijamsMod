@@ -8,7 +8,7 @@ namespace RijamsMod.Buffs
 {
 	public class AntlionBiterBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Antlion Biter");
 			Description.SetDefault("The Antlion Biter will fight for you");
@@ -18,7 +18,7 @@ namespace RijamsMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			if (player.ownedProjectileCounts[mod.ProjectileType("AntlionBiter")] > 0)
+			if (player.ownedProjectileCounts[Mod.Find<ModProjectile>("AntlionBiter").Type] > 0)
 			{
 				player.buffTime[buffIndex] = 18000;
 			}

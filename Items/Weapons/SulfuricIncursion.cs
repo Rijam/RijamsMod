@@ -15,34 +15,33 @@ namespace RijamsMod.Items.Weapons
 
 		public override void SetDefaults()
 		{
-			item.damage = 33;
-			item.noMelee = true;
-			item.magic = true;
-			item.channel = true; //Channel so that you can hold the weapon [Important]
-			item.mana = 8;
-			item.rare = ItemRarityID.LightRed;
-			item.width = 28;
-			item.height = 30;
-			item.useTime = 14;
-			item.knockBack = 2;
-			item.UseSound = SoundID.Item8;
-			item.useStyle = ItemUseStyleID.HoldingOut;
-			item.shootSpeed = 6f;
-			item.useAnimation = 14;
-			item.autoReuse = true;
-			item.shoot = ModContent.ProjectileType<SulfurSphere>();
-			item.value = Item.sellPrice(gold: 2);
+			Item.damage = 33;
+			Item.noMelee = true;
+			Item.DamageType = DamageClass.Magic;
+			Item.channel = true; //Channel so that you can hold the weapon [Important]
+			Item.mana = 8;
+			Item.rare = ItemRarityID.LightRed;
+			Item.width = 28;
+			Item.height = 30;
+			Item.useTime = 14;
+			Item.knockBack = 2;
+			Item.UseSound = SoundID.Item8;
+			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.shootSpeed = 6f;
+			Item.useAnimation = 14;
+			Item.autoReuse = true;
+			Item.shoot = ModContent.ProjectileType<SulfurSphere>();
+			Item.value = Item.sellPrice(gold: 2);
 		}
         public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.SpellTome, 1);
-			recipe.AddIngredient(ModContent.ItemType<Items.Materials.Sulfur>(), 20);
-			recipe.AddIngredient(ItemID.SoulofLight, 15);
-			recipe.AddIngredient(ModContent.ItemType<Items.Materials.InfernicFabric>(), 3);
-			recipe.AddTile(TileID.Bookcases);
-			recipe.SetResult(this);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.SpellTome, 1)
+				.AddIngredient(ModContent.ItemType<Items.Materials.Sulfur>(), 20)
+				.AddIngredient(ItemID.SoulofLight, 15)
+				.AddIngredient(ModContent.ItemType<Items.Materials.InfernicFabric>(), 3)
+				.AddTile(TileID.Bookcases)
+				.Register();
 		}
 
 		public override Vector2? HoldoutOffset()

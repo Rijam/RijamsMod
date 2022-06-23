@@ -28,7 +28,7 @@ namespace RijamsMod
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
 		[Header("[c/00FF00:Server Options]")]
-		[Label("[i:3122]   Sell Fisherman NPC Modded Items")]
+		/*[Label("[i:3122]   Sell Fisherman NPC Modded Items")]
 		[Tooltip("This option toggles if the Fisherman will sell the custom items added by this mod.\n" +
 			"  When On: The Fisherman WILL sell the custom items added by this mod.\n" +
 			"  When Off: The Fisherman WILL NOT sell the custom items added by this mod.\n" +
@@ -79,17 +79,6 @@ namespace RijamsMod
 		[DefaultValue(true)]
 		public bool SellExtraItems { get; set; }
 
-		[Label("[i:3121]   Sell Cross Mod Items")]
-		[Tooltip("This option toggles if the Town NPCs will sell items from other mods\n" +
-			"and if they will have cross mod dialog.\n" +
-			"  When On: The Town NPCs will sell cross mod items.\n" +
-			"  When Off: The Town NPCs WILL NOT sell cross mod items.\n" +
-			"    Turn Off to remove cross mod items from the shops and dialog.\n" +
-			"Default value: On\n" +
-			"Reload not required.")]
-		[DefaultValue(true)]
-		public bool SellCrossModItems { get; set; }
-
 		[Label("[i:87]   Shop Price Scaling")]
 		[Tooltip("This option sets the scaling for the prices in the Fisherman's shop.\n" +
 			"  50 means half the normal price\n" +
@@ -101,7 +90,33 @@ namespace RijamsMod
 		[Range(50, 200)]
 		[DefaultValue(100)]
 		[Slider]
-		public int ShopPriceScaling { get; set; }
+		public int ShopPriceScaling { get; set; }*/
+
+		[Label("[i:848]   Vanilla Vanity to Armor Changes")]
+		[Tooltip("This option toggles if certain vanilla vanity sets are changed into armor sets.\n" +
+			"  When On: The follow vanity sets will be changed to armor.\n" +
+			"  When Off: The follow vanity sets WILL NOT be changed to armor.\n" +
+			"    Turn Off to keep them as vanity or for cross mod compatibility.\n" +
+			"* Pharaoh's Set\n" +
+			"* Ancient Set\n" +
+			"* Buffs to Stardust set bonus\n" +
+			"Default value: On\n" +
+			"Reload required")]
+		[DefaultValue(true)]
+		[ReloadRequired]
+		public bool VanillaVanityToArmor { get; set; }
+
+		[Label("[i:3121]   Town NPCs Cross Mod Support")]
+		[Tooltip("This option toggles if the Town NPCs will sell items from other mods,\n" +
+			"if they will have cross mod dialog, and cross mod happiness.\n" +
+			"  When On: The Town NPCs will sell cross mod items.\n" +
+			"  When Off: The Town NPCs WILL NOT sell cross mod items.\n" +
+			"    Turn Off to remove cross mod items from the shops and dialog.\n" +
+			"Default value: On\n" +
+			"Reload not required for dialog and shop items.\n" +
+			"Reload required for happiness.")]
+		[DefaultValue(true)]
+		public bool TownNPCsCrossModSupport { get; set; }
 
 		[Label("[i:784]   Load Debug Items")]
 		[Tooltip("This option toggles if the debug items will be loaded.\n" +
@@ -171,7 +186,7 @@ namespace RijamsMod
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Header("[c/00FF00:Client Option]")]
-		[Label("$Mods.RijamsMod.Config.Ornithophobia")]
+		[Label("[i:RijamsMod/IntTrav_Helmet]   Ornithophobia")]
 		[Tooltip("This option toggles if the Interstellar Traveler will wear a helmet or not\n" +
 			"  When On: the Interstellar Traveler will wear a helmet.\n" +
 			"  When Off: the Interstellar Traveler will not wear a helmet.\n" +
@@ -182,7 +197,7 @@ namespace RijamsMod
 		[DefaultValue(false)]
 		public bool Ornithophobia { get; set; }
 
-		[Label("$Mods.RijamsMod.Config.BurglarsRingSound")]
+		[Label("[i:RijamsMod/BurglarsRing]   Burglar's Ring Notification Sound")]
 		[Tooltip("This option toggles if the Burglar's Ring will make a sound upon successfully working\n" +
 			"  When On: the Burglar's Ring will make a sound.\n" +
 			"  When Off: the Burglar's Ring will not make a sound.\n" +
@@ -191,16 +206,5 @@ namespace RijamsMod
 			"Reload not required.")]
 		[DefaultValue(true)]
 		public bool BurglarsRingSound { get; set; }
-
-		/*[Label("[i:1516]   Vanilla Harpy Enemy Resprite")]
-		[Tooltip("This option toggles if the vanilla Harpy enemy will use an updated sprite\n" +
-			"  When On: Harpies will be changed.\n" +
-			"  When Off: Harpies will not be changed.\n" +
-			"   Turn Off if you don't the new sprite or have a resource pack.\n" +
-			"Default value: On\n" +
-			"Requires Reload.")]
-		[ReloadRequired]
-		[DefaultValue(true)]
-		public bool HarpySpriteChange { get; set; }*/
 	}
 }

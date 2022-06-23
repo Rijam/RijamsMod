@@ -5,7 +5,7 @@ namespace RijamsMod.Buffs
 {
 	public class LumothBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Lumoth");
 			Description.SetDefault("The bulb only stays lit while the Lumoth flaps its wings.");
@@ -20,13 +20,13 @@ namespace RijamsMod.Buffs
 			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.Lumoth>()] <= 0;
 			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
 			{
-				Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Lumoth>(), 0, 0f, player.whoAmI, 0f, 0f);
+				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Lumoth>(), 0, 0f, player.whoAmI, 0f, 0f);
 			}
 		}
 	}
 	public class LEDLumothBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("LED Lumoth");
 			Description.SetDefault("This Lumoth is much more energy efficient!");
@@ -41,13 +41,13 @@ namespace RijamsMod.Buffs
 			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>()] <= 0;
 			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
 			{
-				Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>(), 0, 0f, player.whoAmI, 0f, 0f);
+				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>(), 0, 0f, player.whoAmI, 0f, 0f);
 			}
 		}
 	}
 	public class SnuggetBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Snugget");
 			Description.SetDefault("A fluff ball with legs");
@@ -62,13 +62,13 @@ namespace RijamsMod.Buffs
 			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.Snugget>()] <= 0;
 			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
 			{
-				Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Snugget>(), 0, 0f, player.whoAmI, 0f, 0f);
+				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Snugget>(), 0, 0f, player.whoAmI, 0f, 0f);
 			}
 		}
 	}
 	public class FluffaloBuff : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Fluffalo");
 			Description.SetDefault("A farm animal and steed");
@@ -83,7 +83,7 @@ namespace RijamsMod.Buffs
 			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.Fluffalo>()] <= 0;
 			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
 			{
-				Projectile.NewProjectile(player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Fluffalo>(), 0, 0f, player.whoAmI, 0f, 0f);
+				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Fluffalo>(), 0, 0f, player.whoAmI, 0f, 0f);
 			}
 		}
 	}

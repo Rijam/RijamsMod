@@ -15,15 +15,16 @@ namespace RijamsMod.Projectiles
 		}
 		public override void SetDefaults()
 		{
-			projectile.width = 48;
-			projectile.height = 16;
-			projectile.ignoreWater = true;
-			projectile.tileCollide = true;
-			projectile.sentry = true;
-			projectile.timeLeft = Projectile.SentryLifeTime;
-			projectile.penetrate = -1;
-			projectile.usesIDStaticNPCImmunity = true;
-			projectile.idStaticNPCHitCooldown = 30;
+			Projectile.width = 48;
+			Projectile.height = 16;
+			Projectile.ignoreWater = true;
+			Projectile.tileCollide = true;
+			Projectile.sentry = true;
+			Projectile.DamageType = DamageClass.Summon;
+			Projectile.timeLeft = Projectile.SentryLifeTime;
+			Projectile.penetrate = -1;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 30;
 			
 			//projectile.usesLocalNPCImmunity = true;
 			//projectile.localNPCHitCooldown = 30;
@@ -38,33 +39,37 @@ namespace RijamsMod.Projectiles
 			target.netUpdate = true;*/
 			//Dust.NewDust(target.position, target.width, target.height, DustID.Blood);
 		}
+		
+
 		public override void AI()
         {
+			
+			int damage = Main.DamageVar(Projectile.damage, Main.player[Projectile.owner].luck);
 			//Player player = Main.player[projectile.owner];
-			projectile.velocity.Y = projectile.velocity.Y + 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
-			if (projectile.velocity.Y > 16f)
+			Projectile.velocity.Y = Projectile.velocity.Y + 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
+			if (Projectile.velocity.Y > 16f)
 			{
-				projectile.velocity.Y = 16f;
+				Projectile.velocity.Y = 16f;
 			}
-			projectile.ai[0] += 1;
-			if (projectile.ai[0] % 30 == 0)
+			Projectile.ai[0] += 1;
+			if (Projectile.ai[0] % 30 == 0)
 			{
 				foreach (NPC npc in Main.npc)
 				{
-					if (!npc.dontTakeDamage && !npc.friendly && !npc.townNPC)
+					if (!npc.dontTakeDamage && !npc.friendly && !npc.townNPC && npc.active)
 					{
-						Rectangle rec1 = new Rectangle((int)projectile.position.X, (int)projectile.Center.Y, projectile.width, (int)projectile.height);
-						Rectangle rec2 = new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
+						Rectangle rec1 = new((int)Projectile.position.X, (int)Projectile.Center.Y, Projectile.width, (int)Projectile.height);
+						Rectangle rec2 = new((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
 						if (rec1.Intersects(rec2))
 						{
 							if (Main.netMode == NetmodeID.SinglePlayer)
 							{
-								npc.StrikeNPC(projectile.damage, 0f, npc.direction, false, true, true);
+								npc.StrikeNPC(damage, 0f, npc.direction, false, true, true);
 								npc.netUpdate = true;
 							}
 							else
                             {
-								NetMessage.SendData(MessageID.StrikeNPC, number: npc.whoAmI, number2: projectile.damage, number3: 0f, number4: npc.direction, number5: 0);
+								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage, number3: 0f, number4: npc.direction, number5: 0);
 								npc.netUpdate = true;
 							}
 							Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);
@@ -73,18 +78,18 @@ namespace RijamsMod.Projectiles
 				}
 			}
 		}
-		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
 		{
 			fallThrough = false;
 			return true;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			projectile.velocity = Vector2.Zero;
+			Projectile.velocity = Vector2.Zero;
 			return false;
 		}
 
-		public override bool CanDamage()
+		public override bool? CanDamage()
 		{
 			return false;
 		}
@@ -98,34 +103,35 @@ namespace RijamsMod.Projectiles
 		public override void SetDefaults()
         {
 			base.SetDefaults();
-			projectile.idStaticNPCHitCooldown = 15;
+			Projectile.idStaticNPCHitCooldown = 15;
 		}
 		public override void AI()
 		{
-			projectile.velocity.Y = projectile.velocity.Y + 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
-			if (projectile.velocity.Y > 16f)
+			int damage = Main.DamageVar(Projectile.damage, Main.player[Projectile.owner].luck);
+			Projectile.velocity.Y = Projectile.velocity.Y + 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
+			if (Projectile.velocity.Y > 16f)
 			{
-				projectile.velocity.Y = 16f;
+				Projectile.velocity.Y = 16f;
 			}
-			projectile.ai[0] += 1;
-			if (projectile.ai[0] % 15 == 0)
+			Projectile.ai[0] += 1;
+			if (Projectile.ai[0] % 15 == 0)
 			{
 				foreach (NPC npc in Main.npc)
 				{
-					if (!npc.dontTakeDamage && !npc.friendly && !npc.townNPC)
+					if (!npc.dontTakeDamage && !npc.friendly && !npc.townNPC && npc.active)
 					{
-						Rectangle rec1 = new Rectangle((int)projectile.position.X, (int)projectile.Center.Y, projectile.width, (int)projectile.height);
-						Rectangle rec2 = new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
+						Rectangle rec1 = new((int)Projectile.position.X, (int)Projectile.Center.Y, Projectile.width, (int)Projectile.height);
+						Rectangle rec2 = new((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
 						if (rec1.Intersects(rec2))
 						{
 							if (Main.netMode == NetmodeID.SinglePlayer)
 							{
-								npc.StrikeNPC(projectile.damage, 0f, npc.direction, false, true, true);
+								npc.StrikeNPC(damage, 0f, npc.direction, false, true, true);
 								npc.netUpdate = true;
 							}
 							else
 							{
-								NetMessage.SendData(MessageID.StrikeNPC, number: npc.whoAmI, number2: projectile.damage, number3: 0f, number4: npc.direction, number5: 0);
+								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage, number3: 0f, number4: npc.direction, number5: 0);
 								npc.netUpdate = true;
 							}
 							Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);
@@ -143,15 +149,16 @@ namespace RijamsMod.Projectiles
 		}
 		public override void SetDefaults()
 		{
-			projectile.width = 48;
-			projectile.height = 8;
-			projectile.ignoreWater = false;
-			projectile.tileCollide = true;
-			projectile.sentry = true;
-			projectile.timeLeft = Projectile.SentryLifeTime;
-			projectile.penetrate = -1;
-			projectile.usesIDStaticNPCImmunity = true;
-			projectile.idStaticNPCHitCooldown = 2;
+			Projectile.width = 48;
+			Projectile.height = 8;
+			Projectile.ignoreWater = false;
+			Projectile.tileCollide = true;
+			Projectile.sentry = true;
+			Projectile.DamageType = DamageClass.Summon;
+			Projectile.timeLeft = Projectile.SentryLifeTime;
+			Projectile.penetrate = -1;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 2;
 
 			//projectile.usesLocalNPCImmunity = true;
 			//projectile.localNPCHitCooldown = 30;
@@ -162,20 +169,20 @@ namespace RijamsMod.Projectiles
 		}
 		public override void AI()
 		{
-			projectile.velocity.Y = projectile.velocity.Y + 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
-			if (projectile.velocity.Y > 16f)
+			Projectile.velocity.Y = Projectile.velocity.Y + 0.4f; // 0.1f for arrow gravity, 0.4f for knife gravity
+			if (Projectile.velocity.Y > 16f)
 			{
-				projectile.velocity.Y = 16f;
+				Projectile.velocity.Y = 16f;
 			}
-			projectile.ai[0] += 1;
-			if (projectile.ai[0] % 2 == 0)
+			Projectile.ai[0] += 1;
+			if (Projectile.ai[0] % 2 == 0)
 			{
 				foreach (NPC npc in Main.npc)
 				{
-					if (!npc.dontTakeDamage && !npc.friendly && !npc.townNPC)
+					if (!npc.dontTakeDamage && !npc.friendly && !npc.townNPC && npc.active)
 					{
-						Rectangle rec1 = new Rectangle((int)projectile.position.X, (int)projectile.Center.Y, projectile.width, (int)projectile.height);
-						Rectangle rec2 = new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
+						Rectangle rec1 = new((int)Projectile.position.X, (int)Projectile.Center.Y, Projectile.width, (int)Projectile.height);
+						Rectangle rec2 = new((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
 						if (rec1.Intersects(rec2))
 						{
 							if (Main.netMode == NetmodeID.SinglePlayer)
@@ -193,7 +200,7 @@ namespace RijamsMod.Projectiles
 								NetMessage.SendData(MessageID.SendNPCBuffs, number: BuffID.Slimed, number2: 2);
 								npc.netUpdate = true;
 							}
-							if (projectile.ai[0] % 4 == 0)
+							if (Projectile.ai[0] % 4 == 0)
 							{
 								Dust.NewDust(npc.position, npc.width, npc.height, DustID.t_Slime, npc.velocity.X, default, 200, Color.Blue);
 							}
@@ -202,18 +209,18 @@ namespace RijamsMod.Projectiles
 				}
 			}
 		}
-		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough)
+		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
 		{
 			fallThrough = false;
 			return true;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			projectile.velocity = Vector2.Zero;
+			Projectile.velocity = Vector2.Zero;
 			return false;
 		}
 
-		public override bool CanDamage()
+		public override bool? CanDamage()
 		{
 			return false;
 		}

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,41 +11,41 @@ namespace RijamsMod.Projectiles
 	{
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 32;
-			projectile.height = 32;
-			projectile.alpha = 1;
-			projectile.friendly = true;
-			projectile.tileCollide = true;
-			projectile.ignoreWater = true;
-			projectile.melee = true;
-			projectile.penetrate = -1;
-			aiType = ProjectileID.Bullet;
-			projectile.timeLeft = 300;
+			Projectile.arrow = false;
+			Projectile.width = 32;
+			Projectile.height = 32;
+			Projectile.alpha = 1;
+			Projectile.friendly = true;
+			Projectile.tileCollide = true;
+			Projectile.ignoreWater = true;
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.penetrate = -1;
+			AIType = ProjectileID.Bullet;
+			Projectile.timeLeft = 300;
 			//projectile.extraUpdates = 1;
 		}
 
 		public override Color? GetAlpha(Color lightColor)
 		{
-			return Color.Red * (projectile.timeLeft / 100f);
+			return Color.Red * (Projectile.timeLeft / 100f);
 		}
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-			projectile.Kill();
+			Projectile.Kill();
         }
         public override void AI()
 		{
-			projectile.rotation += 0.4f * projectile.direction;
-			projectile.alpha += 25;
+			Projectile.rotation += 0.4f * Projectile.direction;
+			Projectile.alpha += 25;
 		}
 		public override bool PreKill(int timeLeft)
 		{
-			if (projectile.owner == Main.myPlayer)
+			if (Projectile.owner == Main.myPlayer)
 			{
-				projectile.position = projectile.Center;
-				projectile.width = 128;
-				projectile.height = 128;
-				projectile.Center = projectile.position;
+				Projectile.position = Projectile.Center;
+				Projectile.width = 128;
+				Projectile.height = 128;
+				Projectile.Center = Projectile.position;
 			}
 			return true;
 		}
@@ -52,11 +53,11 @@ namespace RijamsMod.Projectiles
 		{
 			for (int i = 0; i < 10; i++)
             {
-				Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1f);
-				Gore.NewGore(new Vector2(projectile.position.X + (projectile.width / 2), projectile.position.Y + (projectile.height / 2)), default, Main.rand.Next(61, 64), 1f);//Smoke gore
+				Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1f);
+				Gore.NewGore(Entity.GetSource_Death(), new Vector2(Projectile.position.X + (Projectile.width / 2), Projectile.position.Y + (Projectile.height / 2)), default, Main.rand.Next(61, 64), 1f);//Smoke gore
 			}
-			Main.PlaySound(SoundID.Item14, projectile.position);
-			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
+			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 		}
 	}
 }

@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 
 namespace RijamsMod.Items.Weapons
 {
@@ -11,31 +12,28 @@ namespace RijamsMod.Items.Weapons
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Plasma Rifle");
-			ItemOriginDesc.itemList.Add(item.type, "[c/474747:Sold by Interstellar Traveler]");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]", null });
 		}
 
 		public override void SetDefaults()
 		{
-			item.damage = 60;
-			item.noMelee = true;
-			item.magic = true;
-			item.channel = true; //Channel so that you can hold the weapon [Important]
-			item.mana = 5;
-			item.rare = ItemRarityID.Yellow; //8
-			item.width = 60;
-			item.height = 18;
-			item.useTime = 7;
-			item.knockBack = 2;
-			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
-            {
-				item.UseSound = mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/PlasmaRifleAlt").WithVolume(.8f).WithPitchVariance(.05f);
-			}
-			item.useStyle = ItemUseStyleID.HoldingOut;
-			item.shootSpeed = 16f;
-			item.useAnimation = 7;
-			item.autoReuse = true;
-			item.shoot = ModContent.ProjectileType<PlasmaBolt>();
-			item.value = Item.sellPrice(gold: 8);
+			Item.damage = 60;
+			Item.noMelee = true;
+			Item.DamageType = DamageClass.Magic;
+			Item.channel = true; //Channel so that you can hold the weapon [Important]
+			Item.mana = 5;
+			Item.rare = ItemRarityID.Yellow; //8
+			Item.width = 60;
+			Item.height = 18;
+			Item.useTime = 7;
+			Item.knockBack = 2;
+			Item.UseSound = new(Mod.Name + "/Sounds/Item/PlasmaRifleAlt") { Volume = 0.8f, PitchVariance = 0.05f, MaxInstances = 10 };
+			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.shootSpeed = 16f;
+			Item.useAnimation = 7;
+			Item.autoReuse = true;
+			Item.shoot = ModContent.ProjectileType<PlasmaBolt>();
+			Item.value = Item.sellPrice(gold: 8);
 		}
 		public override Vector2? HoldoutOffset()
 		{
@@ -43,9 +41,9 @@ namespace RijamsMod.Items.Weapons
 		}
 		// How can I make the shots appear out of the muzzle exactly?
 		// Also, when I do this, how do I prevent shooting through tiles?
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(speedX, speedY)) * 25f;
+			Vector2 muzzleOffset = Vector2.Normalize(velocity) * 25f;
 			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
 			{
 				position += muzzleOffset;

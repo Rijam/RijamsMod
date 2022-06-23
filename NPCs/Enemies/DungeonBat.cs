@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,56 +15,57 @@ namespace RijamsMod.NPCs.Enemies
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Dungeon Bat");
-            Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.CaveBat]; //5
+            Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.CaveBat]; //5
         }
 
         public override void SetDefaults()
         {
-            npc.width = 22;
-            npc.height = 18;
-            npc.damage = 20;
-            npc.defense = 0;
-            npc.lifeMax = 32;
-            npc.value = 100f;
-            npc.aiStyle = 14;
-            npc.knockBackResist = 0.3f;
-            npc.npcSlots = 0.5f;
-            aiType = NPCID.CaveBat;
-            animationType = NPCID.CaveBat;
-            npc.HitSound = SoundID.NPCHit2;
-            npc.DeathSound = SoundID.NPCDeath4;
-            banner = npc.type;
-            bannerItem = ModContent.ItemType<Items.Placeable.DungeonBatBanner>();
+            NPC.width = 22;
+            NPC.height = 18;
+            NPC.damage = 20;
+            NPC.defense = 0;
+            NPC.lifeMax = 32;
+            NPC.value = 100f;
+            NPC.aiStyle = 14;
+            NPC.knockBackResist = 0.3f;
+            NPC.npcSlots = 0.5f;
+            AIType = NPCID.CaveBat;
+            AnimationType = NPCID.CaveBat;
+            NPC.HitSound = SoundID.NPCHit2;
+            NPC.DeathSound = SoundID.NPCDeath4;
+            Banner = NPC.type;
+            BannerItem = ModContent.ItemType<Items.Placeable.DungeonBatBanner>();
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            if (npc.life < 1)
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
             {
-                //Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/DungeonBat_Gore"), 1f);
-                Gore.NewGore(npc.position, npc.velocity + new Vector2(npc.spriteDirection * -8, 0), mod.GetGoreSlot("Gores/DungeonBat_Gore"), 1f);
-            }
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheDungeon,
+                new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
+            });
         }
 
-        public override void NPCLoot()
+        public override void OnKill()
+		{
+            Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(NPC.spriteDirection * -8, 0), ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            if (Main.rand.Next(250) == 0) //0.4% chance
+            //Copy the drops from the normal cave bat (Chain Knife and Depth Meter)
+            var batDropRules = Main.ItemDropsDB.GetRulesForNPCID(NPCID.CaveBat, false); // false is important here
+            foreach (var batDropRule in batDropRules)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.ChainKnife);
+                // In this foreach loop, we simple add each drop to the PartyZombie drop pool. 
+                npcLoot.Add(batDropRule);
             }
-            if (Main.rand.Next(100) == 0) //1% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.DepthMeter);
-            }
-            if (Main.rand.Next(5) == 0) //20% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Bone);
-            }
+            npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 5)); //20% chance
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo) //would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
         {
-            return (spawnInfo.player.ZoneDungeon) ? 0.03f : 0f;
+            return (spawnInfo.Player.ZoneDungeon) ? 0.03f : 0f;
         }
     }
 }

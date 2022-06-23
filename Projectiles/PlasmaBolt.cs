@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,22 +11,22 @@ namespace RijamsMod.Projectiles
 	{
 		public override void SetStaticDefaults()
 		{
-			Main.projFrames[projectile.type] = 2;
+			Main.projFrames[Projectile.type] = 2;
 		}
 
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 14;
-			projectile.height = 14;
+			Projectile.arrow = false;
+			Projectile.width = 14;
+			Projectile.height = 14;
 			//projectile.alpha = 255;
-			projectile.friendly = true;
-			projectile.tileCollide = true;
-			projectile.ignoreWater = true;
-			projectile.magic = true;
-			projectile.penetrate = 1;
-			aiType = ProjectileID.Bullet;
-			projectile.timeLeft = 1200;
+			Projectile.friendly = true;
+			Projectile.tileCollide = true;
+			Projectile.ignoreWater = true;
+			Projectile.DamageType = DamageClass.Magic;
+			Projectile.penetrate = 1;
+			AIType = ProjectileID.Bullet;
+			Projectile.timeLeft = 1200;
 		}
 
 		/*public override Color? GetAlpha(Color lightColor)
@@ -37,33 +38,33 @@ namespace RijamsMod.Projectiles
 		public override void AI()
 		{
 			int frameSpeed = 2;
-			projectile.frameCounter++;
-			if (projectile.frameCounter >= frameSpeed)
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= frameSpeed)
 			{
-				projectile.frameCounter = 0;
-				projectile.frame++;
-				if (projectile.frame >= Main.projFrames[projectile.type])
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Projectile.type])
 				{
-					projectile.frame = 0;
+					Projectile.frame = 0;
 				}
 			}
-			Lighting.AddLight(projectile.Center, Color.Blue.ToVector3() * 0.78f);
+			Lighting.AddLight(Projectile.Center, Color.Blue.ToVector3() * 0.78f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			projectile.penetrate--;
-			if (projectile.penetrate <= 0)
+			Projectile.penetrate--;
+			if (Projectile.penetrate <= 0)
 			{
-				projectile.Kill();
+				Projectile.Kill();
 			}
 			return false;
 		}
 		public override void Kill(int timeLeft)
 		{
 			// This code and the similar code above in OnTileCollide spawn dust from the tiles collided with. SoundID.Item10 is the bounce sound you hear.
-			Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, DustID.DungeonWater_Old);// DustID.DungeonWater_Old
-			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-			Main.PlaySound(SoundID.Item118, projectile.position);
+			Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 1, 1, DustID.WaterCandle);// DustID.DungeonWater_Old
+			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
+			SoundEngine.PlaySound(SoundID.Item118, Projectile.position);
 		}
 	}
 }

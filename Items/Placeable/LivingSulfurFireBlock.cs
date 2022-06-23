@@ -13,25 +13,24 @@ namespace RijamsMod.Items.Placeable
 		}
 		public override void SetDefaults()
 		{
-			item.width = 18;
-			item.height = 20;
-			item.maxStack = 999;
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.SwingThrow;
-			item.consumable = true;
-			item.createTile = ModContent.TileType<Tiles.LivingSulfurFireBlock>();
+			Item.width = 18;
+			Item.height = 20;
+			Item.maxStack = 999;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+			Item.createTile = ModContent.TileType<Tiles.LivingSulfurFireBlock>();
 		}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.LivingFireBlock, 20);
-			recipe.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1);
-			recipe.AddTile(TileID.CrystalBall);
-			recipe.SetResult(this, 20);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.LivingFireBlock, 20)
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.AddTile(TileID.CrystalBall)
+				.Register();
 		}
 	}
 }

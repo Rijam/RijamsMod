@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Buffs
@@ -7,14 +8,14 @@ namespace RijamsMod.Buffs
 	// See ExamplePlayer.UpdateBadLifeRegen and ExampleGlobalNPC.UpdateLifeRegen for more information.
 	public class SulfuricAcid : ModBuff
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Sulfuric Acid");
 			Description.SetDefault("Your skin is burning!\n(-8 HP/Sec)\n(-10% damage)");
 			Main.debuff[Type] = true;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;
-			longerExpertDebuff = true;
+			BuffID.Sets.LongerExpertDebuff[Type] = true;
 		}
 
 		public override void Update(Player player, ref int buffIndex)

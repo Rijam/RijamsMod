@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,16 +15,16 @@ namespace RijamsMod.Projectiles
 
 		public override void SetDefaults()
 		{
-			projectile.arrow = false;
-			projectile.width = 16;
-			projectile.height = 16;
-			projectile.aiStyle = -1;
-			projectile.hostile = true;
-			projectile.friendly = false;
-			projectile.tileCollide = true;
-			projectile.ranged = true;
-			projectile.coldDamage = true;
-			aiType = -1;
+			Projectile.arrow = false;
+			Projectile.width = 16;
+			Projectile.height = 16;
+			Projectile.aiStyle = -1;
+			Projectile.hostile = true;
+			Projectile.friendly = false;
+			Projectile.tileCollide = true;
+			Projectile.DamageType = DamageClass.Ranged;
+			Projectile.coldDamage = true;
+			AIType = -1;
 		}
 
         public override void OnHitPlayer(Player target, int damage, bool crit)
@@ -45,21 +46,21 @@ namespace RijamsMod.Projectiles
 
         public override void AI()
         {
-			projectile.rotation += 0.4f * (float)projectile.direction;
-			projectile.ai[0]++;
-			if (projectile.ai[0] >= 20f)
+			Projectile.rotation += 0.4f * (float)Projectile.direction;
+			Projectile.ai[0]++;
+			if (Projectile.ai[0] >= 20f)
 			{
-				projectile.ai[0] = 120f;
-				projectile.velocity.Y += 0.1f;
-				projectile.velocity.X *= 0.99f;
+				Projectile.ai[0] = 120f;
+				Projectile.velocity.Y += 0.1f;
+				Projectile.velocity.X *= 0.99f;
 			}
-			if (projectile.velocity.Y > 16f)
+			if (Projectile.velocity.Y > 16f)
 			{
-				projectile.velocity.Y = 16f;
+				Projectile.velocity.Y = 16f;
 			}
-			if (projectile.ai[0] % 2 == 0)
+			if (Projectile.ai[0] % 2 == 0)
             {
-				Dust.NewDust(projectile.position, 2, 2, DustID.Snow, projectile.velocity.X * 0.5f, projectile.velocity.Y * 0.5f, 200, default, 0.5f);
+				Dust.NewDust(Projectile.position, 2, 2, DustID.Snow, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f, 200, default, 0.5f);
 			}
 		}
 
@@ -67,10 +68,10 @@ namespace RijamsMod.Projectiles
 		{
 			for (int i = 0; i < 10; i++)
             {
-				Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), 1, 1, DustID.SnowBlock);
+				Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 1, 1, DustID.SnowBlock);
 			}
-			Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-			Main.PlaySound(SoundLoader.customSoundType, (int)projectile.position.X, (int)projectile.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/SirSlushSnowballSplat"));
+			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
+			SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/SirSlushSnowballSplat") { MaxInstances = 5 }, Projectile.position);
 		}
 	}
 }

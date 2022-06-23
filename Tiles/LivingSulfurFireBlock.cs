@@ -7,12 +7,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.ObjectData;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using System;
 
 namespace RijamsMod.Tiles
 {
 	public class LivingSulfurFireBlock : ModTile
 	{
-		public override void SetDefaults()
+		public override void SetStaticDefaults()
 		{
 			Main.tileSolid[Type] = false;
 			Main.tileBlockLight[Type] = false;
@@ -28,18 +29,18 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new int[] { 16 };
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.HookCheck = new PlacementHook(CanPlace, -1, 0, true);
+			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(CanPlace, -1, 0, true);
 			TileObjectData.newTile.UsesCustomCanPlace = true;
 			TileObjectData.addTile(Type);
 
-			dustType = ModContent.DustType<Dusts.SulfurDust>();
-			drop = ModContent.ItemType<Items.Placeable.LivingSulfurFireBlock>();
+			DustType = ModContent.DustType<Dusts.SulfurDust>();
+			ItemDrop = ModContent.ItemType<Items.Placeable.LivingSulfurFireBlock>();
 			AddMapEntry(new Color(255, 255, 0));
-			animationFrameHeight = 90;
+			AnimationFrameHeight = 90;
 		}
 
 		//Adapted from Magic Storage StorageConnector.cs
-		public int CanPlace(int i, int j, int type, int style, int direction) { return 0; }
+		public int CanPlace(int i, int j, int type, int style, int direction, int alternative) => 0;
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
@@ -60,14 +61,14 @@ namespace RijamsMod.Tiles
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			Tile tile = Main.tile[i, j];
-			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
+			Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
 			if (Main.drawToScreen)
 			{
 				zero = Vector2.Zero;
 			}
-			int height = tile.frameY == 36 ? 18 : 16;
-			int animate = Main.tileFrame[Type] * animationFrameHeight;
-			Main.spriteBatch.Draw(mod.GetTexture("Tiles/LivingSulfurFireBlock"), new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.frameX, tile.frameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			int height = tile.TileFrameY == 36 ? 18 : 16;
+			int animate = Main.tileFrame[Type] * AnimationFrameHeight;
+			Main.spriteBatch.Draw(Mod.Assets.Request<Texture2D>("Tiles/LivingSulfurFireBlock").Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 		}
 	}
 }

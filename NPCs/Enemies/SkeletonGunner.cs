@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -13,75 +15,69 @@ namespace RijamsMod.NPCs.Enemies
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Skeleton Gunner");
-            Main.npcFrameCount[npc.type] = Main.npcFrameCount[NPCID.PirateDeadeye]; //20
+            Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.PirateDeadeye]; //20
+
+            // Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+            {
+                Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+                Direction = -1
+            };
+
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
 
         public override void SetDefaults()
         {
-            npc.width = 24;
-            npc.height = 48;
-            npc.damage = 40;
-            npc.defense = 9;
-            npc.lifeMax = 120;
-            npc.value = 500f;
-            npc.aiStyle = 3;
-            npc.knockBackResist = 0.4f;
-            aiType = NPCID.PirateDeadeye;
-            animationType = NPCID.PirateDeadeye;
-            npc.HitSound = SoundID.NPCHit2;
-            npc.DeathSound = SoundID.NPCDeath2;
-            banner = npc.type;
-            bannerItem = ModContent.ItemType<Items.Placeable.SkeletonGunnerBanner>();
+            NPC.width = 24;
+            NPC.height = 48;
+            NPC.damage = 40;
+            NPC.defense = 9;
+            NPC.lifeMax = 120;
+            NPC.value = 500f;
+            NPC.aiStyle = 3;
+            NPC.knockBackResist = 0.4f;
+            AIType = NPCID.PirateDeadeye;
+            AnimationType = NPCID.PirateDeadeye;
+            NPC.HitSound = SoundID.NPCHit2;
+            NPC.DeathSound = SoundID.NPCDeath2;
+            Banner = NPC.type;
+            BannerItem = ModContent.ItemType<Items.Placeable.SkeletonGunnerBanner>();
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            if (npc.life < 1)
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
             {
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * 16, 0), npc.velocity, 42, 1f); //Skeleton head gore
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * -16, 0), npc.velocity, 43, 1f); //Skeleton arm gore
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * 8, 0), npc.velocity, 43, 1f); //Skeleton arm gore
-                Gore.NewGore(npc.Center + new Vector2(npc.spriteDirection * 8, 0), npc.velocity, 44, 1f); //Skeleton leg gore
-
-            }
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheDungeon,
+                new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
+            });
         }
 
-        public override void NPCLoot()
+        public override void OnKill()
         {
-            if (Main.rand.Next(25) == 0) //4% chance
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 16, 0), NPC.velocity, 42, 1f); //Skeleton head gore
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * -16, 0), NPC.velocity, 43, 1f); //Skeleton arm gore
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 43, 1f); //Skeleton arm gore
+            Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 44, 1f); //Skeleton leg gore
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            // Copy the same drops as the angry bones
+            var angryBonesDropRules = Main.ItemDropsDB.GetRulesForNPCID(NPCID.AngryBones, false); // false is important here
+            foreach (var angryBonesDropRule in angryBonesDropRules)
             {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Hook);
-            }
-            /*if (Main.rand.Next(150) == 0) //0.67% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CartonOfMilk);
-            }*/
-            if (Main.rand.Next(100) == 0) //1% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AncientIronHelmet);
-            }
-            if (Main.rand.Next(200) == 0) //0.5% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AncientGoldHelmet);
-            }
-            if (Main.rand.Next(201) == 0) //0.49% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.BoneSword);
-            }
-            if (Main.rand.Next(500) == 0) //0.2% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Skull);
+                // In this foreach loop, we simple add each drop to the PartyZombie drop pool. 
+                npcLoot.Add(angryBonesDropRule);
             }
             //additionally, drop the Handgun
-            if (Main.rand.Next(50) == 0) //2% chance
-            {
-                Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.Handgun);
-            }
+            npcLoot.Add(ItemDropRule.Common(ItemID.Handgun, 50)); //2% chance
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo) //would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
         {
-            return (spawnInfo.player.ZoneDungeon) ? 0.01f : 0f;
+            return (spawnInfo.Player.ZoneDungeon) ? 0.01f : 0f;
         }
     }
 }
