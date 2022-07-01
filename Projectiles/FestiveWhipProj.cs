@@ -32,8 +32,8 @@ namespace RijamsMod.Projectiles
             Projectile.extraUpdates = 1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
-            //Projectile.WhipSettings.Segments = 20;
-            //Projectile.WhipSettings.RangeMultiplier = 2f;
+            Projectile.WhipSettings.Segments = 20;
+            Projectile.WhipSettings.RangeMultiplier = 2f;
         }
 
         private float Timer
@@ -68,7 +68,7 @@ namespace RijamsMod.Projectiles
                 // Plays a whipcrack sound at the tip of the whip.
                 List<Vector2> points = Projectile.WhipPointsForCollision;
                 Projectile.FillWhipControlPoints(Projectile, points);
-                SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
+                SoundEngine.PlaySound(SoundID.Item153, points[^1]);
             }
 
             float t3 = Timer / swingTime;
@@ -77,7 +77,7 @@ namespace RijamsMod.Projectiles
             {
                 Projectile.WhipPointsForCollision.Clear();
                 Projectile.FillWhipControlPoints(Projectile, Projectile.WhipPointsForCollision);
-                Rectangle r4 = Utils.CenteredRectangle(Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1], new Vector2(30f, 30f));
+                Rectangle r4 = Utils.CenteredRectangle(Projectile.WhipPointsForCollision[^1], new Vector2(30f, 30f));
                 int selectRand = Utils.SelectRandom(Main.rand, DustID.GreenTorch, DustID.RedTorch);
                 int num6 = Dust.NewDust(r4.TopLeft(), r4.Width, r4.Height, selectRand, 0f, 0f, 0, Color.White, 2f);
                 Main.dust[num6].noGravity = true;

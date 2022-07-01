@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,6 +11,12 @@ namespace RijamsMod.Items.Consumables
         {
             DisplayName.SetDefault("Flask of Sulfuric Acid");
             Tooltip.SetDefault("Melee attacks inflict enemies with Sulfuric Acid");
+            ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
+            {
+                new Color(255, 255, 0),
+                new Color(193, 43, 43),
+                new Color(181, 115, 20)
+            };
         }
 
         public override void SetDefaults()

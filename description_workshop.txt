@@ -1,4 +1,4 @@
-Rijam's Mod is a bunch of random additions created by Rijam. This mod is mostly made as a learning experience, but feel free to check it out! Recipe Browser is highly recommended.
+Rijam's Mod is a bunch of random additions created by Rijam. Recipe Browser is highly recommended.
 
 "Extemporaneous"
 
@@ -6,15 +6,12 @@ Includes:
 
 [b] 3 Town NPCs [/b]
 [list]
-[*] Harpy: sells sky related items and a few extra things.
-[*][*] Find her in the sky.
-[*] Interstellar Traveler: sells information items and weapons. Has a quest system.
-[*][*] Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
-[*] Hell Trader: sells Underworld related items.
-[*][*] Spawns randomly in the Underworld, can move in in Hardmode.
+[*] Harpy: sells sky related items and a few extra things. Find her in the sky.
+[*] Interstellar Traveler: sells information items and weapons. Has a quest system. Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
+[*] Hell Trader: sells Underworld related items. Spawns randomly in the Underworld, can move in in Hardmode.
 [/list]
 
-[b] 153 new items and weapons throughout the game's progression [/b]
+[b] 158 new items and weapons throughout the game's progression [/b]
 [list]
 [*] 35 weapons: 6 Melee, 8 Ranged, 8 Magic, 13 Summoner.
 [*] 12 ammo types.
@@ -35,13 +32,6 @@ Includes:
 [*] Support for Census - Town NPC Checklist.
 [*] Harpy sells some items from other mods.
 [*] Town NPC cross mod dialog and happiness.
-[/list]
-
-Known Issues:
-[list]
-[*] Interstellar Traveler's Quest Checklist items don't show (tML bug).
-[*] Enemy Banners don't apply their buffs.
-[*] The range of the whips is broken (This will be fixed next month and is fixed in Preview).
 [/list]
 
 The code is open source if you extract the mod!

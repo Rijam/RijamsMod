@@ -1,4 +1,4 @@
-Rijam's Mod is a bunch of random additions created by Rijam. This mod is mostly made as a learning experience, but feel free to check it out! Recipe Browser is highly recommended.
+Rijam's Mod is a bunch of random additions created by Rijam. Recipe Browser is highly recommended.
 
 "Extemporaneous"
 
@@ -12,7 +12,7 @@ Includes:
 - Hell Trader: sells Underworld related items.
 - - Spawns randomly in the Underworld, can move in in Hardmode.
 
-[c/ff8000:153 new items and weapons] throughout the game's progression
+[c/ff8000:158 new items and weapons] throughout the game's progression
 - 35 weapons: 6 Melee, 8 Ranged, 8 Magic, 13 Summoner.
 - 12 ammo types.
 - 36 accessories.
@@ -30,9 +30,7 @@ Includes:
 - Town NPC cross mod dialog and happiness.
 
 Known Issues:
-- Interstellar Traveler's Quest Checklist items don't show (tML bug).
-- Enemy Banners don't apply their buffs.
-- The range of the whips is broken (This will be fixed next month and is fixed in Preview).
+- None
 
 The code is open source if you extract the mod!
 

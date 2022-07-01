@@ -12,7 +12,7 @@ namespace RijamsMod
         public override void AddRecipes()
         {
             /*
-             * Preview
+             * Preview */
             Recipe.Create(ItemID.SnowGlobe)
                 .AddIngredient(ItemID.Glass, 5)
                 .AddIngredient(ItemID.SnowBlock, 5)
@@ -86,7 +86,8 @@ namespace RijamsMod
             Recipe.Create(ItemID.BlueBerries)
                 .AddIngredient(ModContent.ItemType<Items.Consumables.FreshBlueberry>(), 3)
                 .Register();
-            */
+            /* */
+            /* Stable
             Mod.CreateRecipe(ItemID.SnowGlobe)
                 .AddIngredient(ItemID.Glass, 5)
                 .AddIngredient(ItemID.SnowBlock, 5)
@@ -160,6 +161,7 @@ namespace RijamsMod
             Mod.CreateRecipe(ItemID.BlueBerries)
                 .AddIngredient(ModContent.ItemType<Items.Consumables.FreshBlueberry>(), 3)
                 .Register();
+            */
         }
 
         public override void AddRecipeGroups()

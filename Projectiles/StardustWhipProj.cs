@@ -32,8 +32,8 @@ namespace RijamsMod.Projectiles
             Projectile.extraUpdates = 2;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
-            //Projectile.WhipSettings.Segments = 20;
-            //Projectile.WhipSettings.RangeMultiplier = 3f;
+            Projectile.WhipSettings.Segments = 20;
+            Projectile.WhipSettings.RangeMultiplier = 3f;
         }
 
         private float Timer
@@ -57,7 +57,7 @@ namespace RijamsMod.Projectiles
             // However, the use of UnitX basically turns it into a more complicated way of checking if the projectile's velocity is above or equal to zero on the X axis.
             Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
 
-            Timer2 = 2;
+            Timer2 = 1; // Each segment can only spawn one Stardust Explosion
             Timer++; // make sure you keep this line if you remove the charging mechanic.
 
             float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates;
@@ -81,7 +81,7 @@ namespace RijamsMod.Projectiles
                 // Plays a whipcrack sound at the tip of the whip.
                 List<Vector2> points = Projectile.WhipPointsForCollision;
                 Projectile.FillWhipControlPoints(Projectile, points);
-                SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
+                SoundEngine.PlaySound(SoundID.Item153, points[^1]);
             }
 
             float t3 = Timer / swingTime;
@@ -90,7 +90,7 @@ namespace RijamsMod.Projectiles
             {
                 Projectile.WhipPointsForCollision.Clear();
                 Projectile.FillWhipControlPoints(Projectile, Projectile.WhipPointsForCollision);
-                Rectangle r4 = Utils.CenteredRectangle(Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1], new Vector2(30f, 30f));
+                Rectangle r4 = Utils.CenteredRectangle(Projectile.WhipPointsForCollision[^1], new Vector2(30f, 30f));
                 Lighting.AddLight(r4.Center(), Color.Yellow.ToVector3() * 0.2f);
                 int selectRand = Utils.SelectRandom(Main.rand, DustID.YellowTorch, DustID.BlueTorch);
                 for (int i = 0; i < 5; i++)

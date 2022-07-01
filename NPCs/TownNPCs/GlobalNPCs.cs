@@ -20,8 +20,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			switch (npc.type)
 			{		
 				case NPCID.Guide:
-					NPCHelper.GetNearbyResidentNPCs(Main.npc[NPCID.Guide], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
-					if (Main.rand.NextBool(2) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.Guide)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						if (npcTypeListVillage.Contains(ModContent.NPCType<InterstellarTraveler>()))
 						{
@@ -34,7 +34,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					{
 						chat = "There is an odd device that you can craft now. Maybe you can find out what its purpose is?";
 					}
-					if (Main.rand.NextBool(2) && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0)
 					{
 						if (npcTypeListVillage.Contains(ModContent.NPCType<Harpy>()))
 						{
@@ -49,9 +49,9 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					break;
 				case NPCID.Steampunker:
-					if (Main.rand.NextBool(2) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPCID.Steampunker], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage2, out List<int> _);
+						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.Steampunker)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage2, out List<int> _);
 						if (npcTypeListVillage2.Contains(ModContent.NPCType<InterstellarTraveler>()))
 						{
 							chat = "Do ya know if the armor " + Main.npc[interTravel].GivenName + " is wearing comes in brass? I'd even settle for brass-colored!";
@@ -59,9 +59,9 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					break;
 				case NPCID.Nurse:
-					if (Main.rand.NextBool(3) && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPCID.Nurse], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage3, out List<int> _);
+						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.Nurse)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage3, out List<int> _);
 						if (npcTypeListVillage3.Contains(ModContent.NPCType<InterstellarTraveler>()) && npcTypeListVillage3.Contains(ModContent.NPCType<Harpy>()))
 						{
 							chat = "Don't get me started on how difficult it is to operate on " + Main.npc[harpy].GivenName + ". At least " + Main.npc[interTravel].GivenName + " knows how to take care of herself.";
@@ -69,53 +69,87 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					break;
 				case NPCID.BestiaryGirl:
-					NPCHelper.GetNearbyResidentNPCs(Main.npc[NPCID.Nurse], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage4, out List<int> _);
-					if (Main.rand.NextBool(2) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.BestiaryGirl)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage4, out List<int> _);
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
 						if (npcTypeListVillage4.Contains(ModContent.NPCType<InterstellarTraveler>()))
 						{
-							chat = "Wow " + Main.npc[interTravel].GivenName + " is like, such an exciting person! We should totally get to know each other!";
+							if (Main.bloodMoon || Main.moonPhase == 0)
+							{
+								chat = Main.npc[interTravel].GivenName + " exciting! Want to CHAT!";
+							}
+							else
+							{
+								chat = "Wow " + Main.npc[interTravel].GivenName + " is like, such an exciting person! We should totally get to know each other!";
+							}
 						}
 					}
-					if (Main.rand.NextBool(2) && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0)
+					if (Main.rand.NextBool(4) && npcTypeListVillage4.Contains(ModContent.NPCType<Harpy>()))
 					{
-						chat = "A friendly harpy! We could learn so much about harpy society from " + Main.npc[harpy].GivenName + ", if there even is such a thing!";
+						if (Main.bloodMoon || Main.moonPhase == 0)
+						{
+							chat = "Friendly " + Main.npc[harpy].GivenName + "! LEARN about them!";
+						}
+						else
+						{
+							chat = "A friendly harpy! We could learn so much about harpy society from " + Main.npc[harpy].GivenName + ", if there even is such a thing!";
+						}
 					}
 					break;
 				case NPCID.Merchant:
-					if (Main.rand.Next(0, 4) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						chat = "Next time you speak with " + Main.npc[interTravel].GivenName + ", tell them that their business is not welcomed.";
+						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.Merchant)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage5, out List<int> _);
+						if (npcTypeListVillage5.Contains(ModContent.NPCType<InterstellarTraveler>()))
+						{
+							chat = "Next time you speak with " + Main.npc[interTravel].GivenName + ", tell them that their business is not welcomed.";
+						}
 					}
 					break;
 				case NPCID.Stylist:
-					if (Main.rand.Next(0, 5) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						chat = "I'm not sure what to do with " + Main.npc[interTravel].GivenName + ". Feathers are not the same as hair!";
+						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.Stylist)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage6, out List<int> _);
+						if (npcTypeListVillage6.Contains(ModContent.NPCType<InterstellarTraveler>()))
+						{
+							chat = "I'm not sure what to do with " + Main.npc[interTravel].GivenName + ". Feathers are not the same as hair!";
+						}
 					}
 					break;
 				case NPCID.Angler:
-					if (Main.rand.Next(0, 8) == 0 && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<Harpy>()) > 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						chat = "Dodo " + Main.npc[harpy].GivenName + " definitely fits the definition for Bird-Brain! Ugly Duckling over there hides herself behind that armor!";
+						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.Angler)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage7, out List<int> _);
+						if (npcTypeListVillage7.Contains(ModContent.NPCType<InterstellarTraveler>()) && npcTypeListVillage7.Contains(ModContent.NPCType<Harpy>()))
+						{
+							chat = "Dodo " + Main.npc[harpy].GivenName + " definitely fits the definition for Bird-Brain! Ugly Duckling over there hides herself behind that armor!";
+						}
 					}
 					break;
 				case NPCID.TravellingMerchant:
-					if (Main.rand.Next(0, 10) == 0)
+					if (Main.rand.NextBool(10))
 					{
 						chat = "It has been quite a while since I have seen my ...good friend. I should visit The Valley at some point...";
 					}
-					if (Main.rand.Next(0, 3) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						string[] lines = { "I've never seen anyone like " + Main.npc[interTravel].GivenName + " throughout my travels. This is quite interesting!",
-						"No other merchants' goods are as exotic as mine! Not even " + Main.npc[interTravel].GivenName + "'s!"};
-						chat = lines[Main.rand.Next(lines.Length)];
+						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.TravellingMerchant)], 1, out List<int> _, out List<int> _, out List<int> npcTypeListVillage8, out List<int> _);
+						if (npcTypeListVillage8.Contains(ModContent.NPCType<InterstellarTraveler>()))
+						{
+							string[] lines = { "I've never seen anyone like " + Main.npc[interTravel].GivenName + " throughout my travels. This is quite interesting!",
+							"No other merchants' goods are as exotic as mine! Not even " + Main.npc[interTravel].GivenName + "'s!"};
+							chat = lines[Main.rand.Next(lines.Length)];
+						}
 					}
 					break;
 				case NPCID.TaxCollector:
-					if (Main.rand.Next(0, 3) == 0 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
+					if (Main.rand.NextBool(4) && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 0)
 					{
-						chat = "That alien " + Main.npc[interTravel].GivenName + " keeps giving me this weird currency. I refuse to accept it! What am I supposed to do with it?";
+						NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(NPCID.TaxCollector)], 3, out List<int> _, out List<int> _, out List<int> npcTypeListVillage9, out List<int> _);
+						if (npcTypeListVillage9.Contains(ModContent.NPCType<InterstellarTraveler>()))
+						{
+							chat = "That alien " + Main.npc[interTravel].GivenName + " keeps giving me this weird currency. I refuse to accept it! What am I supposed to do with it?";
+						}
 					}
 					break;
 			}
@@ -123,13 +157,46 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override void SetupShop(int type, Chest shop, ref int nextSlot)
 		{
 			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
+			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 
-			if (type == NPCID.Merchant && Main.hardMode)
+			if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs) && townNPCsCrossModSupport)
 			{
-				shop.item[nextSlot].SetDefaults(ItemID.SharpeningStation);
-				shop.item[nextSlot].shopCustomPrice = 100000;
-				nextSlot++;
+				float shopMulti = (float)bossesAsNPCs.Call("shopMulti");
+				if (type == NPCID.GoblinTinkerer)
+				{
+					if ((bool)bossesAsNPCs.Call("GoblinSellInvasionItems") && (bool)bossesAsNPCs.Call("downedGoblinSummoner"))
+					{
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.ShadowflameStaff>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+						nextSlot++;
+					}
+				}
+				if (type == bossesAsNPCs.Find<ModNPC>("IceQueen").Type)
+				{
+					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2"))
+					{
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.FestivePlating>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+						nextSlot++;
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+						nextSlot++;
+					}
+					if ((bool)bossesAsNPCs.Call("GetStatusShop1") && !(bool)bossesAsNPCs.Call("GetStatusShop2"))
+					{
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.FestiveWhip>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+						nextSlot++;
+					}
+				}
+				if (type == bossesAsNPCs.Find<ModNPC>("BrainOfCthulhu").Type)
+				{
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.CrawlerChelicera>());
+					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+					nextSlot++;
+				}
 			}
+
 			if (type == NPCID.ArmsDealer)
 			{
 				if ((!Main.dayTime && NPC.downedBoss2) || Main.hardMode) //EoW or BoC
@@ -212,7 +279,6 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.item[nextSlot].SetDefaults(ItemID.BlackInk);
 					nextSlot++;
 				}
-				int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 				if (interTravel > 0)
                 {
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Dyes.BeamDye>());
@@ -225,6 +291,18 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					shop.item[nextSlot].SetDefaults(ItemID.BombFish);
 					shop.item[nextSlot].shopCustomPrice = 1000;
+					nextSlot++;
+				}
+				if (NPC.downedBoss1) //EoC
+				{
+					shop.item[nextSlot].SetDefaults(ItemID.ScarabBomb);
+					shop.item[nextSlot].shopCustomPrice = 1500;
+					nextSlot++;
+				}
+				if (RijamsModWorld.hellTraderArrivable && NPC.FindFirstNPC(ModContent.NPCType<HellTrader>()) > 0)
+				{
+					shop.item[nextSlot].SetDefaults(ItemID.DryBomb);
+					shop.item[nextSlot].shopCustomPrice = 2500;
 					nextSlot++;
 				}
 				if (NPC.downedQueenBee)
@@ -270,6 +348,14 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].shopCustomPrice = 1500;
 				nextSlot++;
 			}
+			if (type == NPCID.Pirate)
+			{
+				if (Main.LocalPlayer.ZoneSnow)
+				{
+					shop.item[nextSlot].SetDefaults(ItemID.SnowballLauncher);
+					nextSlot++;
+				}
+			}
 			if (type == NPCID.SkeletonMerchant)
 			{
 				if (NPC.downedGoblins)
@@ -294,38 +380,12 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].shopCustomPrice = 75000;
 				nextSlot++;
 			}
-			
-			if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs) && townNPCsCrossModSupport)
+			if (type == NPCID.GoblinTinkerer && interTravel > 0)
 			{
-				float shopMulti = (float)bossesAsNPCs.Call("shopMulti");
-				if (type == NPCID.GoblinTinkerer)
-				{
-					if ((bool)bossesAsNPCs.Call("GoblinSellInvasionItems") && (bool)bossesAsNPCs.Call("downedGoblinSummoner"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.ShadowflameStaff>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-				}
-				if (type == bossesAsNPCs.Find<ModNPC>("IceQueen").Type)
-				{
-					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.FestivePlating>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-					if ((bool)bossesAsNPCs.Call("GetStatusShop1") && !(bool)bossesAsNPCs.Call("GetStatusShop2"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.FestiveWhip>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-				}
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.StripLight>());
+				nextSlot++;
 			}
+			
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils) && townNPCsCrossModSupport)
 			{
 				if (type == pboneUtils.Find<ModNPC>("Miner").Type)

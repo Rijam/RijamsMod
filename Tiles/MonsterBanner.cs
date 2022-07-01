@@ -1,10 +1,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.Items.Placeable;
+using RijamsMod.NPCs.Enemies;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using static Terraria.ModLoader.ModContent;
 
 namespace RijamsMod.Tiles
 {
@@ -28,64 +31,66 @@ namespace RijamsMod.Tiles
 			AddMapEntry(new Color(13, 88, 130), name);
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+		public override void KillMultiTile(int i, int j, int frameX, int frameY)
+		{
 			int style = frameX / 18;
-			string item;
-			switch (style) {
+			int item;
+			switch (style)
+			{
 				case 0:
-					item = "DarkSoldierBanner";
+					item = ItemType<DarkSoldierBanner>();
 					break;
 				case 1:
-					item = "SkeletonCrossbowerBanner";
+					item = ItemType<SkeletonCrossbowerBanner>();
 					break;
 				case 2:
-					item = "SkeletonGunnerBanner";
+					item = ItemType<SkeletonGunnerBanner>();
 					break;
 				case 3:
-					item = "DungeonBatBanner";
+					item = ItemType<DungeonBatBanner>();
 					break;
 				case 4:
-					item = "SnowmanMuscleBanner";
+					item = ItemType<SnowmanMuscleBanner>();
 					break;
 				case 5:
-					item = "SirSlushBanner";
+					item = ItemType<SirSlushBanner>();
 					break;
 				default:
 					return;
 			}
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, Mod.Find<ModItem>(item).Type);
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 48, item);
 		}
 
-		public override void NearbyEffects(int i, int j, bool closer) {
-			if (closer) {
-				Player player = Main.LocalPlayer;
+		public override void NearbyEffects(int i, int j, bool closer)
+		{
+			if (closer)
+			{
 				int style = Main.tile[i, j].TileFrameX / 18;
-				string type;
+				int type;
 				switch (style) {
 					case 0:
-						type = "DarkSoldier";
+						type = NPCType<DarkSoldier>();
 						break;
 					case 1:
-						type = "SkeletonCrossbower";
+						type = NPCType<SkeletonCrossbower>();
 						break;
 					case 2:
-						type = "SkeletonGunner";
+						type = NPCType<SkeletonGunner>();
 						break;
 					case 3:
-						type = "DungeonBat";
+						type = NPCType<DungeonBat>();
 						break;
 					case 4:
-						type = "SnowmanMuscle";
+						type = NPCType<SnowmanMuscle>();
 						break;
 					case 5:
-						type = "SirSlush";
+						type = NPCType<SirSlush>();
 						break;
 					default:
 						return;
 				}
-				//player.NPCBannerBuff[Mod.Find<ModNPC>(type).Type] = true;
-				//player.hasBanner = true;
-				player.HasNPCBannerBuff(Mod.Find<ModNPC>(type).Type);
+				Main.SceneMetrics.NPCBannerBuff[type] = true;
+				Main.SceneMetrics.hasBanner = true;
 			}
 		}
 	}

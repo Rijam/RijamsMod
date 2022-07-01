@@ -32,8 +32,8 @@ namespace RijamsMod.Projectiles
             Projectile.extraUpdates = 1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
-            //Projectile.WhipSettings.Segments = 20;
-            //Projectile.WhipSettings.RangeMultiplier = 0.5f;
+            Projectile.WhipSettings.Segments = 20;
+            Projectile.WhipSettings.RangeMultiplier = 0.5f;
         }
 
         private float Timer
@@ -69,7 +69,7 @@ namespace RijamsMod.Projectiles
                 // Plays a whipcrack sound at the tip of the whip.
                 List<Vector2> points = Projectile.WhipPointsForCollision;
                 Projectile.FillWhipControlPoints(Projectile, points);
-                SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
+                SoundEngine.PlaySound(SoundID.Item153, points[^1]);
             }
         }
 

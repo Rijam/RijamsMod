@@ -189,6 +189,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (usedMicronWrap && usedMicronWrapTime == 3600) // Wait exactly one second before healing
 			{
+				NPC.AddBuff(BuffID.Lovestruck, 60);
 				NPC.life += 150;
 				NPC.netUpdate = true;
 			}
