@@ -5,6 +5,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using RijamsMod.Items;
 using RijamsMod.Items.Weapons;
+using RijamsMod.Items.Weapons.Melee;
+using RijamsMod.Items.Weapons.Ranged;
+using RijamsMod.Items.Weapons.Summon.Whips;
+using RijamsMod.Items.Weapons.Summon.Minions;
+using RijamsMod.Items.Weapons.Summon.Cudgels;
 using RijamsMod.Items.Accessories;
 using RijamsMod.Items.Accessories.Defense;
 using RijamsMod.Items.Accessories.Misc;
@@ -128,6 +133,10 @@ namespace RijamsMod
 			{
 				npcLoot.Add(ItemDropRule.Common(ItemID.GoodieBag, 5, 1, 4));
 			}
+			if (npc.type == NPCID.HeadlessHorseman)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HorsemansJoustingLance>(), 10));
+			}
 			if (npc.type == NPCID.MourningWood)
 			{
 				npcLoot.Add(ItemDropRule.Common(ItemID.GoodieBag, 2, 1, 4));
@@ -142,7 +151,7 @@ namespace RijamsMod
 			}
 			if (npc.type == NPCID.EyeofCthulhu && !Main.expertMode && WorldGen.crimson)
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>(), 1, 20, 51));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), 1, 20, 51));
 			}
 			if (npc.type == NPCID.DesertGhoul || npc.type == NPCID.DesertGhoulCorruption || npc.type == NPCID.DesertGhoulCrimson || npc.type == NPCID.DesertGhoulHallow)
 			{
@@ -152,13 +161,33 @@ namespace RijamsMod
 			{
 				npcLoot.Add(ItemDropRule.NormalvsExpert(ItemID.TurtleShell, 34, 17));
 			}
+			if (npc.type == NPCID.GreekSkeleton)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LonkheJoustingLance>(), 20));
+			}
+			if (npc.type == NPCID.GraniteGolem)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Granitization>(), 20));
+			}
+			if (npc.type == NPCID.AngryBones || npc.type == NPCID.AngryBonesBig || npc.type == NPCID.AngryBonesBigHelmet || npc.type == NPCID.AngryBonesBigMuscle)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BoneHeadJoustingLance>(), 30));
+			}
+			if (npc.type == NPCID.Paladin)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FallenPaladinCudgel>(), 10));
+			}
+			if (npc.type == NPCID.QueenSlimeBoss && !Main.expertMode)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CrystalClusterCudgel>(), 4));
+			}
 		}
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
 		{
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
 			if (projectile != null)
 			{
-				if (moddedplayer.daybreakStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.DamageType == DamageClass.Melee)
+				if (moddedplayer.daybreakStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.CountsAsClass(DamageClass.Melee))
 				{
 					//Same chances as Magma Stone, but half duration
 					if (Main.rand.Next(8) <= 2)
@@ -174,7 +203,7 @@ namespace RijamsMod
 						npc.AddBuff(BuffID.Daybreak, 60);
 					}
 				}
-				if (moddedplayer.frostburnStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.DamageType == DamageClass.Melee)
+				if (moddedplayer.frostburnStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.CountsAsClass(DamageClass.Melee))
 				{
 					//Same chances as Magma Stone, but half duration
 					if (Main.rand.Next(8) <= 2)
@@ -190,7 +219,7 @@ namespace RijamsMod
 						npc.AddBuff(BuffID.Frostburn, 120);
 					}
 				}
-				if (moddedplayer.flaskBuff == 1 && projectile.owner == Main.LocalPlayer.whoAmI && projectile.DamageType == DamageClass.Melee)
+				if (moddedplayer.flaskBuff == 1 && projectile.owner == Main.LocalPlayer.whoAmI && projectile.CountsAsClass(DamageClass.Melee))
 				{
 					npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 				}

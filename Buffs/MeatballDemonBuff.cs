@@ -18,7 +18,7 @@ namespace RijamsMod.Buffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			if (player.ownedProjectileCounts[Mod.Find<ModProjectile>("MeatballDemon").Type] > 0)
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Summon.Minions.MeatballDemon>()] > 0)
 			{
 				player.buffTime[buffIndex] = 18000;
 			}

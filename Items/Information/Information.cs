@@ -273,6 +273,10 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "InZoneHallow", "In Hallow biome: " + StatCalc.PlayerInZoneHallow()));
 				tooltips.Add(new TooltipLine(Mod, "GolfScore", "Golf score: " + StatCalc.GolferScoreAccumulated()));
 				tooltips.Add(new TooltipLine(Mod, "Luck", "Luck: " + StatCalc.Luck()));
+				tooltips.Add(new TooltipLine(Mod, "PosX", "Position X Pixels: " + Main.LocalPlayer.position.X));
+				tooltips.Add(new TooltipLine(Mod, "PosY", "Position Y Pixels: " + Main.LocalPlayer.position.Y));
+				tooltips.Add(new TooltipLine(Mod, "PosX", "Position X Tiles: " + Main.LocalPlayer.position.X / 16f));
+				tooltips.Add(new TooltipLine(Mod, "PosY", "Position Y Tiles: " + Main.LocalPlayer.position.Y / 16f));
 			}
 			if (!isLeftShiftHeld && !isLeftCtrlHeld && !isRightShiftHeld)
 			{
@@ -319,7 +323,7 @@ namespace RijamsMod.Items.Information
 
 		//Defense
 		public static string StatDefense() => player.statDefense.ToString();
-		public static string Endurance() => player.endurance.ToString();
+		public static string Endurance() => (player.endurance * 100).ToString();
 
 		//Movement
 		public static string MoveSpeed() => player.moveSpeed.ToString();

@@ -79,6 +79,7 @@ namespace RijamsMod.Projectiles.Pets
 			Projectile.aiStyle = -1;
 			DrawOffsetX = -9;
 			DrawOriginOffsetY -= 16;
+			Projectile.extraUpdates = 1;
 		}
 
 		public override bool PreAI()
@@ -114,9 +115,9 @@ namespace RijamsMod.Projectiles.Pets
 			if (posNewXY < 100f && Main.player[Projectile.owner].velocity.Y == 0f && Projectile.position.Y + Projectile.height <= Main.player[Projectile.owner].position.Y + Main.player[Projectile.owner].height && !Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
 			{
 				Projectile.ai[0] = 0f;
-				if (Projectile.velocity.Y < -12f)
+				if (Projectile.velocity.Y < -16f)
 				{
-					Projectile.velocity.Y = -12f;
+					Projectile.velocity.Y = -16f;
 				}
 			}
 			if (posNewXY < 50f)
@@ -131,7 +132,7 @@ namespace RijamsMod.Projectiles.Pets
 			{
 				if (posNewXY < 100f)
 				{
-					smallFloat = 0.1f;
+					smallFloat = 0.2f;
 				}
 				if (posNewXY > 300f)
 				{
@@ -168,7 +169,7 @@ namespace RijamsMod.Projectiles.Pets
 			Projectile.spriteDirection = Projectile.direction;
 			Projectile.rotation = Projectile.velocity.X * 0.05f;
 			Projectile.frameCounter++;
-			int frameAmount = 5;
+			int frameAmount = 10;
 			if (Projectile.frameCounter > frameAmount)
 			{
 				Projectile.frame++;

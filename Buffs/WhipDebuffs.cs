@@ -69,11 +69,11 @@ namespace RijamsMod.Buffs
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedByFestiveWhip = true;
 		}
 	}
-	public class StardustWhipDebuff : ModBuff
+	public class SupernovaWhipDebuff : ModBuff
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stardust Whipped");
+			DisplayName.SetDefault("Supernova Whipped");
 			Description.SetDefault("+20 summon tag damage");
 			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
 			// Other mods may check it for different purposes.
@@ -82,7 +82,7 @@ namespace RijamsMod.Buffs
 
 		public override void Update(NPC npc, ref int buffIndex)
 		{
-			npc.GetGlobalNPC<WhipDebuffNPC>().markedByStardustWhip = true;
+			npc.GetGlobalNPC<WhipDebuffNPC>().markedBySupernovaWhip = true;
 		}
 	}
 
@@ -95,7 +95,7 @@ namespace RijamsMod.Buffs
 		public bool markedByViciousWhip;
 		public bool markedBySulfuricWhip;
 		public bool markedByFestiveWhip;
-		public bool markedByStardustWhip;
+		public bool markedBySupernovaWhip;
 
 		public override void ResetEffects(NPC npc)
 		{
@@ -103,7 +103,7 @@ namespace RijamsMod.Buffs
 			markedByViciousWhip = false;
 			markedBySulfuricWhip = false;
 			markedByFestiveWhip = false;
-			markedByStardustWhip = false;
+			markedBySupernovaWhip = false;
 		}
 
 		// TODO: Inconsistent with vanilla, increasing damage AFTER it is randomised, not before. Change to a different hook in the future.
@@ -122,7 +122,7 @@ namespace RijamsMod.Buffs
 				}
 				if (markedBySulfuricWhip)
 				{
-					damage += 5;
+					damage += 10;
 					Dust.NewDust(npc.Center, npc.width, npc.height, ModContent.DustType<Dusts.SulfurDust>(), 1f * hitDirection, 1f * hitDirection, 150, default, 1f);
 				}
 				if (markedByFestiveWhip)
@@ -134,7 +134,7 @@ namespace RijamsMod.Buffs
 						Dust.NewDust(npc.position, npc.width, npc.height, selectRand, 1f * hitDirection, 1f * hitDirection, 0, Color.White, 1f);
 					}
 				}
-				if (markedByStardustWhip)
+				if (markedBySupernovaWhip)
 				{
 					damage += 20;
 					if (Main.rand.NextBool(10))

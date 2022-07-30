@@ -1,5 +1,9 @@
 ﻿using RijamsMod.Items.Quest;
 using RijamsMod.Items.Weapons;
+using RijamsMod.Items.Weapons.Melee;
+using RijamsMod.Items.Weapons.Magic;
+using RijamsMod.Items.Weapons.Ranged;
+using RijamsMod.Items.Weapons.Summon;
 using RijamsMod.Items.Accessories;
 using RijamsMod.Items.Information;
 using RijamsMod.Items.Accessories.Summoner;

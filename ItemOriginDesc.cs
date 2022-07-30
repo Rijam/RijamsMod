@@ -19,7 +19,7 @@ namespace RijamsMod
 	{
 		public static Dictionary<int, string[]> itemList = new();
 
-		public static void ClearList() { itemList.Clear(); }
+		public static void ClearList() => itemList.Clear();
 
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
@@ -165,6 +165,7 @@ namespace RijamsMod
 		}
 		/// <summary>
 		/// Returns true if the item is in the shop that the player is currently looking at.
+		/// See NPCHelper.FindItemInShop() for an NPC version.
 		/// </summary>
 		/// <param name="item"></param>
 		/// <returns>bool</returns>

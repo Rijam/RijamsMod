@@ -156,20 +156,66 @@ namespace RijamsMod
         public override void PostWorldGen()
         {
             List<Chest> Chests = Main.chest.Where(checkfor => checkfor != null).ToList();
-            for (int i = 0; i < 5; i++)
+            for (int chestIndex = 0; chestIndex < Main.maxChests; chestIndex++)
             {
-                for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
+                Chest chest = Main.chest[chestIndex];
+
+                //Mod.Logger.Debug("RijamsMod: chestIndex " + chestIndex);
+                
+                if (chest != null && Main.tile[chest.x, chest.y].TileType == TileID.Containers)
                 {
-                    Chest chest = Main.chest[chestIndex];
-                    if (i == 0 && chest != null)
-                    {
-                        if (WorldGen.genRand.Next(0, 100) < (Main.tile[chest.x, chest.y].TileFrameX / 36 == 17 ? 50 : (Main.tile[chest.x, chest.y].TileFrameX / 36 == 1 ? 15 : Main.tile[chest.x, chest.y].TileFrameX / 36 == 0 ? 10 : 5)))
+                    // Chest IDs are from the Tile_26 image. They can easily be found on this wiki page https://terraria.wiki.gg/wiki/Tile_IDs
+                    // Wooden Chest (0)
+                    if (Main.tile[chest.x, chest.y].TileFrameX == 0 * 36)
+					{
+                        //Mod.Logger.Debug("RijamsMod: Wooden Chest found at: " + chest.x + " " + chest.y);
+
+                        // 1 in 4 may seem super common, but it really isn't.
+                        // If there are 40 Wooden Chests in a large world, then that means only 10 of them have the item.
+                        // Also, a lot of Wooden Chests are in hard to reach areas underground.
+                        // Expect about half the number of chests in a small world.
+                        if (WorldGen.genRand.NextBool(4)) 
                         {
                             for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
                             {
                                 if (chest.item[inventoryIndex].IsAir)
                                 {
-                                    chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Belt>());
+                                    //Mod.Logger.Debug("RijamsMod: Belt added.");
+                                    chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Whips.Belt>());
+                                    chest.item[inventoryIndex].stack = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        if (WorldGen.genRand.NextBool(8))
+                        {
+                            for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+                            {
+                                if (chest.item[inventoryIndex].IsAir)
+                                {
+                                    //Mod.Logger.Debug("RijamsMod: Small Glow Ring added.");
+                                    chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.SmallGlowRing>());
+                                    chest.item[inventoryIndex].stack = 1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    // Locked Golden Chest (2)
+                    if (Main.tile[chest.x, chest.y].TileFrameX == 2 * 36)
+					{
+                        //Mod.Logger.Debug("RijamsMod: Locked Golden Chest found at: " + chest.x + " " + chest.y);
+
+                        // Again, seems common but is not.
+                        // If there are 20 Locked Golden Chests in a large world, only 4 of them have the item.
+                        if (WorldGen.genRand.NextBool(5))
+                        {
+                            for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+                            {
+                                if (chest.item[inventoryIndex].IsAir)
+                                {
+                                    //Mod.Logger.Debug("RijamsMod: Cobalt Protector Cudgel added.");
+                                    chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Cudgels.CobaltProtectorCudgel>());
                                     chest.item[inventoryIndex].stack = 1;
                                     break;
                                 }

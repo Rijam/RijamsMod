@@ -7,15 +7,21 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using RijamsMod.Items.Armor;
+using RijamsMod.Items.Weapons.Ranged.Ammo;
+using RijamsMod.Items.Weapons.Summon.Whips;
+using RijamsMod.Buffs;
 using System.Linq;
 using Terraria.GameContent.Creative;
 using Terraria.Utilities;
+using Terraria.GameContent.ItemDropRules;
 
 namespace RijamsMod.Items
 {
     public class GlobalItems : GlobalItem
     {
-        public static List<int> isWhip = new();
+        public static List<int> isWhip = new() { ItemID.BlandWhip, ItemID.ThornWhip, ItemID.BoneWhip, ItemID.FireWhip,
+            ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip };
+        public static List<int> isJoustingLance = new() { ItemID.JoustingLance, ItemID.HallowJoustingLance, ItemID.ShadowJoustingLance };
 
 		public override void SetDefaults(Item item)
         {
@@ -88,6 +94,10 @@ namespace RijamsMod.Items
                         item.ModItem.SacrificeTotal = 99;
                     }
                     else if (item.makeNPC > 1)
+					{
+                        item.ModItem.SacrificeTotal = 3;
+					}
+                    else if (ItemID.Sets.BossBag[item.type])
 					{
                         item.ModItem.SacrificeTotal = 3;
 					}
@@ -188,7 +198,77 @@ namespace RijamsMod.Items
                 tooltips.Insert(index + 3, new TooltipLine(Mod, "AncientSlacks", "10% increased melee speed"));
                 tooltips.Insert(index + 4, new TooltipLine(Mod, "AncientSlacks", "10% reduced mana usage"));
                 tooltips.Insert(index + 5, new TooltipLine(Mod, "AncientSlacks", "+2 life regeneration"));
-                
+            }
+            if (item.type == ItemID.ShadowJoustingLance)
+            {
+                TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
+                if (line != null)
+                {
+                    line.Text = Language.GetTextValue("ItemTooltip.ShadowJoustingLance") + "\nInflicts Shadowflame";
+                }
+            }
+            if (isWhip.Contains(item.type) && isLeftShiftHeld)
+			{
+                if (item.type == ModContent.ItemType<Belt>())
+                {
+                    tooltips.Insert(index + 3, new TooltipLine(Mod, "ModWhipDamageReduction", "50% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.BlandWhip)
+				{
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "50% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.ThornWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "40% damage penalty per enemy pierced"));
+                }
+                if (item.type == ModContent.ItemType<VileWhip>())
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "ModWhipDamageReduction", "30% damage penalty per enemy pierced"));
+                }
+                if (item.type == ModContent.ItemType<ViciousWhip>())
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "ModWhipDamageReduction", "30% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.BoneWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "10% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.FireWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "33% damage penalty per enemy pierced"));
+                }
+                if (item.type == ModContent.ItemType<SulfuricWhip>())
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "ModWhipDamageReduction", "40% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.CoolWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "30% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.SwordWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "20% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.MaceWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "5% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.ScytheWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "10% damage penalty per enemy pierced"));
+                }
+                if (item.type == ModContent.ItemType<FestiveWhip>())
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "ModWhipDamageReduction", "20% damage penalty per enemy pierced"));
+                }
+                if (item.type == ItemID.RainbowWhip)
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "VanillaWhipDamageReduction", "10% damage penalty per enemy pierced"));
+                }
+                if (item.type == ModContent.ItemType<SupernovaWhip>())
+                {
+                    tooltips.Insert(index + 4, new TooltipLine(Mod, "ModWhipDamageReduction", "5% damage penalty per enemy pierced"));
+                }
             }
             /*if (item.type == ItemID.CelestialCuffs)
             {
@@ -296,13 +376,33 @@ namespace RijamsMod.Items
         {
             if (weapon.type == ItemID.SnowmanCannon)
             {
-                if (ammo.type == ModContent.ItemType<Weapons.Ammo.EndlessRocketBox>())
+                if (ammo.type == ModContent.ItemType<EndlessRocketBox>())
                 {
                     type = ProjectileID.RocketSnowmanI;
                 }
             }
         }
-        public override void OpenVanillaBag(string context, Player player, int arg)
+		public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
+		{
+			if (item.type == ItemID.EyeOfCthulhuBossBag)
+			{
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodyArrow>(), 1, 20, 50));
+            }
+            if (item.type == ItemID.WoodenCrate || item.type == ItemID.WoodenCrateHard)
+			{
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Belt>(), 10));
+            }
+            if (item.type == ItemID.LockBox)
+			{
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.CobaltProtectorCudgel>(), 7));
+            }
+            if (item.type == ItemID.QueenSlimeBossBag)
+			{
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.CrystalClusterCudgel>(), 4));
+            }
+		}
+        // Obsolete
+		/*public override void OpenVanillaBag(string context, Player player, int arg)
         {
             if (context == "bossBag")
             {
@@ -322,25 +422,42 @@ namespace RijamsMod.Items
                     player.QuickSpawnItem(player.GetSource_OpenItem(ItemID.WoodenCrate), ModContent.ItemType<Weapons.Belt>(), 1);
                 }
             }
-        }
+        }*/
 
-        private static readonly int[] whipPrefixes = new int[] { PrefixID.Broken, PrefixID.Terrible, PrefixID.Annoying, PrefixID.Unhappy,
+        private static readonly int[] whipPrefixes = new int[]
+        {
+            PrefixID.Broken, PrefixID.Terrible, PrefixID.Annoying, PrefixID.Unhappy,
             PrefixID.Shoddy, PrefixID.Shameful, PrefixID.Sluggish, PrefixID.Weak, PrefixID.Tiny, PrefixID.Slow, PrefixID.Dull, PrefixID.Damaged, PrefixID.Small,
             PrefixID.Lazy, PrefixID.Light, PrefixID.Heavy, PrefixID.Nimble, PrefixID.Keen, PrefixID.Ruthless, PrefixID.Bulky, PrefixID.Nasty, PrefixID.Pointy,
             PrefixID.Zealous, PrefixID.Quick, PrefixID.Hurtful, PrefixID.Large, PrefixID.Dangerous, PrefixID.Sharp, PrefixID.Strong, PrefixID.Forceful,
             PrefixID.Agile, PrefixID.Massive, PrefixID.Murderous, PrefixID.Unpleasant, PrefixID.Deadly, PrefixID.Demonic, PrefixID.Superior, PrefixID.Savage,
-            PrefixID.Godly, PrefixID.Legendary};
+            PrefixID.Godly, PrefixID.Legendary
+        };
+
+        private static readonly int[] joustingLancePrefixes = new int[]
+        {
+            PrefixID.Large, PrefixID.Massive, PrefixID.Dangerous, PrefixID.Savage,
+            PrefixID.Sharp, PrefixID.Pointy, PrefixID.Tiny, PrefixID.Terrible, PrefixID.Small, PrefixID.Dull, PrefixID.Unhappy, PrefixID.Bulky,
+            PrefixID.Shameful, PrefixID.Heavy, PrefixID.Light, PrefixID.Keen, PrefixID.Superior, PrefixID.Forceful, PrefixID.Hurtful, PrefixID.Strong,
+            PrefixID.Unpleasant, PrefixID.Broken, PrefixID.Damaged, PrefixID.Weak, PrefixID.Shoddy, PrefixID.Ruthless, PrefixID.Quick,
+            PrefixID.Deadly2, PrefixID.Agile, PrefixID.Nimble, PrefixID.Murderous, PrefixID.Slow, PrefixID.Sluggish, PrefixID.Lazy, PrefixID.Annoying,
+            PrefixID.Nasty, PrefixID.Godly, PrefixID.Demonic, PrefixID.Zealous, PrefixID.Legendary
+        };
 
         public override int ChoosePrefix(Item item, UnifiedRandom rand)
 		{
-            if (isWhip.Contains(item.type))
+            if (item.ModItem != null && isWhip.Contains(item.type))
 			{
                 return rand.Next(whipPrefixes);
             }
-			return base.ChoosePrefix(item, rand);
+            if (item.ModItem != null && isJoustingLance.Contains(item.type))
+            {
+                return rand.Next(joustingLancePrefixes);
+            }
+            return base.ChoosePrefix(item, rand);
 		}
-		// Not needed anymore
-		/*public override bool CanUseItem(Item item, Player player)
+        // Not needed anymore
+        /*public override bool CanUseItem(Item item, Player player)
         {
             if (item.buffType == BuffID.WellFed && player.HasBuff(ModContent.BuffType<Buffs.ExceptionalFeast>()))
             {
@@ -352,12 +469,75 @@ namespace RijamsMod.Items
             }
             return base.CanUseItem(item, player);
         }*/
-	}
+
+        private static readonly List<int> SupportMinionsDefenseBuffs = new() { ModContent.BuffType<CobaltProtectorBuff>(),
+            ModContent.BuffType<CrystalClusterBuff>(), ModContent.BuffType<FallenPaladinBuff>(), ModContent.BuffType<StardustProtectorBuff>() };
+        public override bool CanUseItem(Item item, Player player)
+        {
+            if (item.ModItem is CudgelDefenseItem)
+			{
+                for (int i = 0; i < SupportMinionsDefenseBuffs.Count; i++)
+				{
+                    if (player.HasBuff(SupportMinionsDefenseBuffs[i]))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
 
     //This is used for the Timon's Axe, Hammer of Retribution, and Quietus for checking if the glow mask should be drawn in ItemUseGlow
     public class MagicMeleeGlow : ModItem
     {
         public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(MagicMeleeGlow);
         public override string Texture => Item.type == ModContent.ItemType<MagicMeleeGlow>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
+    }
+    //This is used for the Cudgel support minion items.
+    public class CudgelDefenseItem : ModItem
+    {
+        public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(CudgelDefenseItem);
+        public override string Texture => Item.type == ModContent.ItemType<CudgelDefenseItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+            int index = 0;
+            if (Item.favorited)
+            {
+                index += 2;
+            }
+            tooltips.Insert(index + 3, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Defense Support Minion -]"));
+            tooltips.Insert(index + 4, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one defense support minion per player]"));
+        }
+    }
+    public class CudgelHealingItem : ModItem
+    {
+        public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(CudgelHealingItem);
+        public override string Texture => Item.type == ModContent.ItemType<CudgelHealingItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            int index = 0;
+            if (Item.favorited)
+            {
+                index += 2;
+            }
+            tooltips.Insert(index + 3, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Healing Support Minion -]"));
+            tooltips.Insert(index + 4, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one healing support minion per player]"));
+        }
+    }
+    public class CudgelBuffItem : ModItem
+    {
+        public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(CudgelBuffItem);
+        public override string Texture => Item.type == ModContent.ItemType<CudgelBuffItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            int index = 0;
+            if (Item.favorited)
+            {
+                index += 2;
+            }
+            tooltips.Insert(index + 3, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Buff Support Minion -]"));
+            tooltips.Insert(index + 4, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one buff support minion per player]"));
+        }
     }
 }

@@ -72,7 +72,7 @@ namespace RijamsMod.NPCs.Enemies
                 npcLoot.Add(angryBonesDropRule);
             }
             //additionally, drop the crossbow
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.StockadeCrossbow>(), 15)); //6.67% chance
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Ranged.StockadeCrossbow>(), 15)); //6.67% chance
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo) //would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.

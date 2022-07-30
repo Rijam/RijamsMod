@@ -164,16 +164,25 @@ namespace RijamsMod.NPCs.TownNPCs
 				float shopMulti = (float)bossesAsNPCs.Call("shopMulti");
 				if (type == NPCID.GoblinTinkerer)
 				{
-					if ((bool)bossesAsNPCs.Call("GoblinSellInvasionItems") && (bool)bossesAsNPCs.Call("downedGoblinSummoner"))
+					if ((bool)bossesAsNPCs.Call("GoblinSellInvasionItems") && (bool)bossesAsNPCs.Call("downedGoblinSummoner") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
 					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.ShadowflameStaff>());
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+						nextSlot++;
+					}
+				}
+				if (type == bossesAsNPCs.Find<ModNPC>("Pumpking").Type)
+				{
+					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
+					{
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Melee.HorsemansJoustingLance>());
 						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
 						nextSlot++;
 					}
 				}
 				if (type == bossesAsNPCs.Find<ModNPC>("IceQueen").Type)
 				{
-					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2"))
+					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
 					{
 						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.FestivePlating>());
 						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
@@ -181,19 +190,28 @@ namespace RijamsMod.NPCs.TownNPCs
 						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>());
 						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
 						nextSlot++;
-					}
-					if ((bool)bossesAsNPCs.Call("GetStatusShop1") && !(bool)bossesAsNPCs.Call("GetStatusShop2"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.FestiveWhip>());
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>());
 						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
 						nextSlot++;
 					}
 				}
 				if (type == bossesAsNPCs.Find<ModNPC>("BrainOfCthulhu").Type)
 				{
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.CrawlerChelicera>());
-					shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-					nextSlot++;
+					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
+					{
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.CrawlerChelicera>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+						nextSlot++;
+					}
+				}
+				if (type == bossesAsNPCs.Find<ModNPC>("QueenSlime").Type)
+				{
+					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
+					{
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
+						nextSlot++;
+					}
 				}
 			}
 
@@ -201,7 +219,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				if ((!Main.dayTime && NPC.downedBoss2) || Main.hardMode) //EoW or BoC
                 {
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Ammo.BloodyArrow>());
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>());
 					shop.item[nextSlot].shopCustomPrice = 40;
 					nextSlot++;
 				}
@@ -524,7 +542,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && townNPCsCrossModSupport)
 				{
 					int fishermanType = fishermanNPC.Find<ModNPC>("Fisherman").Type;
-					var fishermanHappiness = NPCHappiness.Get(fishermanNPC.Find<ModNPC>("Fisherman").Type);
+					var fishermanHappiness = NPCHappiness.Get(fishermanType);
 
 					fishermanHappiness.SetNPCAffection(harpy, AffectionLevel.Like);
 					harpyHappiness.SetNPCAffection(fishermanType, AffectionLevel.Love);
@@ -535,7 +553,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				if (ModLoader.TryGetMod("SGAmod", out Mod sgamod) && townNPCsCrossModSupport)
 				{
 					int drakenType = sgamod.Find<ModNPC>("Dergon").Type;
-					var drakenHappiness = NPCHappiness.Get(sgamod.Find<ModNPC>("Dergon").Type);
+					var drakenHappiness = NPCHappiness.Get(drakenType);
 
 					drakenHappiness.SetNPCAffection(harpy, AffectionLevel.Like);
 					harpyHappiness.SetNPCAffection(drakenType, AffectionLevel.Like);
@@ -554,7 +572,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					intTravHappiness.SetNPCAffection(cookType, AffectionLevel.Love);
 
 					int weaponMasterType = thorium.Find<ModNPC>("WeaponMaster").Type;
-					var weaponMasterHappiness = NPCHappiness.Get(thorium.Find<ModNPC>("WeaponMaster").Type);
+					var weaponMasterHappiness = NPCHappiness.Get(weaponMasterType);
 
 					hellTraderHappiness.SetNPCAffection(weaponMasterType, AffectionLevel.Love);
 					weaponMasterHappiness.SetNPCAffection(hellTrader, AffectionLevel.Like);
@@ -563,10 +581,23 @@ namespace RijamsMod.NPCs.TownNPCs
 				if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs) && townNPCsCrossModSupport)
 				{
 					int martianSaucerType = bossesAsNPCs.Find<ModNPC>("MartianSaucer").Type;
-					var martianSaucerHappiness = NPCHappiness.Get(bossesAsNPCs.Find<ModNPC>("MartianSaucer").Type);
+					var martianSaucerHappiness = NPCHappiness.Get(martianSaucerType);
 
 					martianSaucerHappiness.SetNPCAffection(intTrav, AffectionLevel.Like);
 					intTravHappiness.SetNPCAffection(martianSaucerType, AffectionLevel.Like);
+				}
+
+				if (ModLoader.TryGetMod("CalamityMod", out Mod calamity) && townNPCsCrossModSupport) //Calamity
+				{
+					int brimstoneWitchType = calamity.Find<ModNPC>("WITCH").Type; //Brimstone Witch
+					int archmageType = calamity.Find<ModNPC>("DILF").Type; //Archmage
+
+					var brimstoneWitchHappiness = NPCHappiness.Get(brimstoneWitchType);
+
+					hellTraderHappiness.SetNPCAffection(brimstoneWitchType, AffectionLevel.Love);
+					hellTraderHappiness.SetNPCAffection(archmageType, AffectionLevel.Like);
+
+					brimstoneWitchHappiness.SetNPCAffection(hellTrader, AffectionLevel.Like);
 				}
 			}
 		}

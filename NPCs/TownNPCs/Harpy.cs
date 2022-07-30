@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using RijamsMod.Items;
 using RijamsMod.Items.Accessories.Movement;
-using RijamsMod.Projectiles;
+using RijamsMod.Projectiles.Magic;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -193,7 +193,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (Main.LocalPlayer.HasItem(ItemID.HarpyBanner))
 			{
-				chat.Add(Language.GetTextValue("That's so cool! You made a banner just for me?"), 5.0);
+				chat.Add("That's so cool! You made a banner just for me?", 5.0);
 			}
 			if ((Main.LocalPlayer.HasItem(ItemID.TallyCounter) || Main.LocalPlayer.HasItem(ItemID.REK) || Main.LocalPlayer.HasItem(ItemID.PDA) || Main.LocalPlayer.HasItem(ItemID.CellPhone)) && Main.player[Main.myPlayer].lastCreatureHit == Item.NPCtoBanner(NPCID.Harpy))
 			//The player has the Tally Counter, R.E.K. 3000, PDA, or Cellphone in their inventory. The last enemy they hit was a Harpy and the kill count for Harpies is more than 0.
@@ -201,14 +201,14 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				if (NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] > 0)
 				{
-					chat.Add(Language.GetTextValue("Why does that device that you have say \"Harpy: " + NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] + "\"?"), 20.0);
+					chat.Add("Why does that device that you have say \"Harpy: " + NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] + "\"?", 20.0);
 				}
 			}
 			if (ModLoader.TryGetMod("Joostmod", out Mod joostMod) && townNPCsCrossModSupport) //Joostmod
             {
 				if (Main.LocalPlayer.HasBuff(joostMod.Find<ModBuff>("HarpyMinion").Type))
 				{
-					chat.Add(Language.GetTextValue("Aww, isn't that little harpy so cute? Wait, what do you mean minion?"));
+					chat.Add("Aww, isn't that little harpy so cute? Wait, what do you mean minion?");
 				}
 			}
 			if (RijamsModWorld.savedHarpy == false) //spawn in the Harpy before finding her
@@ -316,20 +316,16 @@ namespace RijamsMod.NPCs.TownNPCs
 			nextSlot++;
 			if (ModLoader.TryGetMod("CalamityMod", out Mod calamityMod) && townNPCsCrossModSupport)
 			{
-				shop.item[nextSlot].SetDefaults(calamityMod.Find<ModItem>("DesertFeather").Type);
-				nextSlot++;
+				NPCHelper.SafelySetCrossModItem(calamityMod, "DesertFeather", shop, ref nextSlot);
+
 				if ((bool)calamityMod.Call("GetBossDowned", "dragonfolly"))
                 {
-					shop.item[nextSlot].SetDefaults(calamityMod.Find<ModItem>("EffulgentFeather").Type);
-					shop.item[nextSlot].shopCustomPrice = 50000;
-					nextSlot++;
+					NPCHelper.SafelySetCrossModItem(calamityMod, "EffulgentFeather", shop, ref nextSlot, 50000);
 				}
 			}
 			if (ModLoader.TryGetMod("SacredTools", out Mod shadowsOfAbaddon) && townNPCsCrossModSupport) //Shadows of Abaddon
 			{
-				shop.item[nextSlot].SetDefaults(shadowsOfAbaddon.Find<ModItem>("BirdFeather").Type); //White Feather
-				shop.item[nextSlot].shopCustomPrice = 50;
-				nextSlot++;
+				NPCHelper.SafelySetCrossModItem(shadowsOfAbaddon, "BirdFeather", shop, ref nextSlot, 50); //White Feather
 				
 				/*if (SacredToolsDownedHarpyPreHM) //Jensen
 				{
@@ -348,14 +344,10 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (ModLoader.TryGetMod("AAMod", out Mod ancientsAwakened) && townNPCsCrossModSupport) //Ancients Awakened
 			{
-				shop.item[nextSlot].SetDefaults(ancientsAwakened.Find<ModItem>("vulture_feather").Type);
-				shop.item[nextSlot].shopCustomPrice = 5000;
-				nextSlot++;
+				NPCHelper.SafelySetCrossModItem(ancientsAwakened, "vulture_feather", shop, ref nextSlot, 5000);
 				if (NPC.downedPlantBoss)
 				{
-					shop.item[nextSlot].SetDefaults(ancientsAwakened.Find<ModItem>("SeraphFeather").Type);
-					shop.item[nextSlot].shopCustomPrice = 10000;
-					nextSlot++;
+					NPCHelper.SafelySetCrossModItem(ancientsAwakened, "SeraphFeather", shop, ref nextSlot, 10000);
 				}
 				/*if (AAModDownedAthena) //Athena
 				{
@@ -379,16 +371,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				if (NPC.downedBoss1)
 				{
-					shop.item[nextSlot].SetDefaults(orchidMod.Find<ModItem>("HarpyTalon").Type);
-					shop.item[nextSlot].shopCustomPrice = 2000;
-					nextSlot++;
+					NPCHelper.SafelySetCrossModItem(orchidMod, "HarpyTalon", shop, ref nextSlot, 2000);
 				}
 			}
 			if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport) //Thorium
 			{
-				shop.item[nextSlot].SetDefaults(thorium.Find<ModItem>("BirdTalon").Type); //Talon
-				shop.item[nextSlot].shopCustomPrice = 100;
-				nextSlot++;
+				NPCHelper.SafelySetCrossModItem(thorium, "BirdTalon", shop, ref nextSlot, 100); //Talon
 			}
 			shop.item[nextSlot].SetDefaults(ItemID.SkyMill);
 			shop.item[nextSlot].shopCustomPrice = 17500;
@@ -425,8 +413,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 				if (ModLoader.TryGetMod("QwertysRandomContent", out Mod qwertysBossAndItems) && townNPCsCrossModSupport) //Qwertys Boss And Items
 				{
-					shop.item[nextSlot].SetDefaults(qwertysBossAndItems.Find<ModItem>("FortressHarpyFeather").Type);
-					nextSlot++;
+					NPCHelper.SafelySetCrossModItem(qwertysBossAndItems, "FortressHarpyFeather", shop, ref nextSlot);
 				}
 				if (NPC.downedMechBossAny)
 				{
@@ -476,9 +463,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			nextSlot++;
 			if (ModLoader.TryGetMod("Split", out Mod split) && townNPCsCrossModSupport) //Split Mod
 			{
-				shop.item[nextSlot].SetDefaults(split.Find<ModItem>("PosterHarpy").Type);
-				shop.item[nextSlot].shopCustomPrice = 10000;
-				nextSlot++;
+				NPCHelper.SafelySetCrossModItem(split, "PosterHarpy", shop, ref nextSlot, 10000);
 			}
 		}
 

@@ -19,7 +19,7 @@ namespace RijamsMod.Tiles
 			Main.tileBlockLight[Type] = false;
 			Main.tileLighted[Type] = true;
 			Main.tileNoAttach[Type] = true;
-			Main.placementPreview = false;
+			//Main.placementPreview = false; // Actually turns it off for everything :skull_emoji:
 
 			//Placeable in mid air to get around the fact that you can't place tiles on top of tiles if the tile is non-solid (which this tile is)
 			//Adapted from Magic Storage StorageConnector.cs
@@ -40,7 +40,7 @@ namespace RijamsMod.Tiles
 		}
 
 		//Adapted from Magic Storage StorageConnector.cs
-		public int CanPlace(int i, int j, int type, int style, int direction, int alternative) => 0;
+		public static int CanPlace(int i, int j, int type, int style, int direction, int alternative) => 0;
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{

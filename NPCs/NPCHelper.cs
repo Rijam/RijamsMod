@@ -37,7 +37,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string LikeText(string npc)
 		{
-			return "[c/ddf2b3:" + Language.GetTextValue("Mods.BossesAsNPCs.UI.Like") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Like") + "\n";
+			return "[c/ddf2b3:" + Language.GetTextValue("Mods." + mod + ".UI.Like") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Like") + "\n";
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string DislikeText(string npc)
 		{
-			return "[c/f2e0b3:" + Language.GetTextValue("Mods.BossesAsNPCs.UI.Dislike") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Dislike") + "\n";
+			return "[c/f2e0b3:" + Language.GetTextValue("Mods." + mod + ".UI.Dislike") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Dislike") + "\n";
 		}
 
 		/// <summary>
@@ -248,6 +248,7 @@ namespace RijamsMod.NPCs
 		}
 		/// <summary>
 		/// Searches the shop (or chest) to see if an item is in it. slotNumber is the slot the item is in.
+		/// See ItemOriginDesc.CheckIfInShop() for a player version.
 		/// </summary>
 		/// <returns>True if the item is found</returns>
 		public static bool FindItemInShop(int[] shop, int item, out int? slotNumber)
@@ -265,6 +266,7 @@ namespace RijamsMod.NPCs
 		}
 		/// <summary>
 		/// Searches the shop (or chest) to see if an item is in it. slotNumber is the slot the item is in.
+		/// See ItemOriginDesc.CheckIfInShop() for a player version.
 		/// </summary>
 		/// <returns>True if the item is found</returns>
 		public static bool FindItemInShop(Chest shop, int item, out int? slotNumber)
@@ -291,6 +293,99 @@ namespace RijamsMod.NPCs
 				return true;
 			}
 			return false;
+		}
+
+		/// <summary>
+		/// Safely returns the integer of the ModItem from the given mod.
+		/// </summary>
+		/// <param name="mod">The mod that the item is from.</param>
+		/// <param name="itemString">The class name of the item.</param>
+		/// <returns>int if found, 0 if not found.</returns>
+		public static int SafelyGetCrossModItem(Mod mod, string itemString)
+		{
+			mod.TryFind<ModItem>(itemString, out ModItem outItem);
+			if (outItem != null)
+			{
+				return outItem.Type;
+			}
+			ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelyGetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
+			return 0;
+		}
+
+		/// <summary>
+		/// Safely sets the shop item of the ModItem from the given slot in the given slot.
+		/// Will not set the shop item if the ModItem is not found.
+		/// The price of the item will be the customPrice.
+		/// </summary>
+		/// <param name="mod">The mod that the item is from.</param>
+		/// <param name="itemString">The class name of the item.</param>
+		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
+		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
+		/// <param name="customPrice">The custom price of the item.</param>
+		public static void SafelySetCrossModItem(Mod mod, string itemString, Chest shop, ref int nextSlot, int customPrice)
+		{
+			mod.TryFind<ModItem>(itemString, out ModItem outItem);
+			if (outItem != null)
+			{
+				shop.item[nextSlot].SetDefaults(outItem.Type);
+				shop.item[nextSlot].shopCustomPrice = customPrice;
+				nextSlot++;
+			}
+			else
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelySetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
+			}
+		}
+
+		/// <summary>
+		/// Safely sets the shop item of the ModItem from the given slot in the given slot.
+		/// Will not set the shop item if the ModItem is not found.
+		/// The price of the item will be the item's value / 5 / priceDiv.
+		/// </summary>
+		/// <param name="mod">The mod that the item is from.</param>
+		/// <param name="itemString">The class name of the item.</param>
+		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
+		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
+		/// <param name="priceDiv">The price will be divided by this amount.</param>
+		public static void SafelySetCrossModItem(Mod mod, string itemString, Chest shop, ref int nextSlot, float priceDiv)
+		{
+			mod.TryFind<ModItem>(itemString, out ModItem outItem);
+			if (outItem != null)
+			{
+				shop.item[nextSlot].SetDefaults(outItem.Type);
+				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value / 5 / priceDiv);
+				nextSlot++;
+			}
+			else
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelySetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
+			}
+		}
+
+		/// <summary>
+		/// Safely sets the shop item of the ModItem from the given slot in the given slot.
+		/// Will not set the shop item if the ModItem is not found.
+		/// The price of the item will be the item's (value / priceDiv) * priceMulti.
+		/// </summary>
+		/// <param name="mod">The mod that the item is from.</param>
+		/// <param name="itemString">The class name of the item.</param>
+		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
+		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
+		/// <param name="priceDiv">The price will be divided by this amount.</param>
+		/// <param name="priceMulti">The price will be multiplied by this amount after the priceDiv.</param>
+		public static void SafelySetCrossModItem(Mod mod, string itemString, Chest shop, ref int nextSlot, float priceDiv = 1f, float priceMulti = 1f)
+		{
+			mod.TryFind<ModItem>(itemString, out ModItem outItem);
+			if (outItem != null)
+			{
+				shop.item[nextSlot].SetDefaults(outItem.Type);
+				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value / priceDiv * priceMulti);
+				nextSlot++;
+			}
+			else
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelySetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
+			}
 		}
 	}
 }

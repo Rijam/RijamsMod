@@ -11,8 +11,6 @@ namespace RijamsMod
 	{
         public override void AddRecipes()
         {
-            /*
-             * Preview */
             Recipe.Create(ItemID.SnowGlobe)
                 .AddIngredient(ItemID.Glass, 5)
                 .AddIngredient(ItemID.SnowBlock, 5)
@@ -78,7 +76,7 @@ namespace RijamsMod
                 .Register();
 
             Recipe.Create(ItemID.WandofSparking)
-                .AddIngredient(ModContent.ItemType<Items.Weapons.HotStick>(), 1)
+                .AddIngredient(ModContent.ItemType<Items.Weapons.Magic.HotStick>(), 1)
                 .AddIngredient(ItemID.Torch, 2)
                 .AddIngredient(ItemID.FallenStar, 1)
                 .AddTile(TileID.Anvils)
@@ -86,82 +84,6 @@ namespace RijamsMod
             Recipe.Create(ItemID.BlueBerries)
                 .AddIngredient(ModContent.ItemType<Items.Consumables.FreshBlueberry>(), 3)
                 .Register();
-            /* */
-            /* Stable
-            Mod.CreateRecipe(ItemID.SnowGlobe)
-                .AddIngredient(ItemID.Glass, 5)
-                .AddIngredient(ItemID.SnowBlock, 5)
-                .AddIngredient(ItemID.SoulofLight, 5)
-                .AddIngredient(ItemID.SoulofNight, 5)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.BandofStarpower)
-                .AddIngredient(ItemID.PanicNecklace, 1)
-                .AddIngredient(ItemID.VilePowder, 5)
-                .AddTile(TileID.DemonAltar)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.PanicNecklace)
-                .AddIngredient(ItemID.BandofStarpower, 1)
-                .AddIngredient(ItemID.ViciousPowder, 5)
-                .AddTile(TileID.DemonAltar)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.PutridScent)
-                .AddIngredient(ItemID.FleshKnuckles, 1)
-                .AddIngredient(ItemID.VilePowder, 5)
-                .AddTile(TileID.DemonAltar)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.FleshKnuckles)
-                .AddIngredient(ItemID.PutridScent, 1)
-                .AddIngredient(ItemID.ViciousPowder, 5)
-                .AddTile(TileID.DemonAltar)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.SlimeStaff)
-                .AddIngredient(ItemID.Gel, 500)
-                .AddIngredient(ItemID.Wood, 5)
-                .AddIngredient(ItemID.FallenStar, 1)
-                .AddTile(TileID.Anvils)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.ThornsPotion)
-                .AddIngredient(ItemID.BottledWater, 1)
-                .AddIngredient(ItemID.Deathweed, 1)
-                .AddIngredient(ItemID.Cactus, 1)
-                .AddIngredient(ModContent.ItemType<Items.Materials.CrawlerChelicera>(), 1)
-                .AddIngredient(ItemID.Stinger, 1)
-                .AddTile(TileID.Bottles)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.RainbowString)
-                .AddIngredient(ItemID.WhiteString, 1)
-                .AddIngredient(ItemID.LivingRainbowDye, 1)
-                .AddTile(TileID.DyeVat)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.RainbowString)
-                .AddIngredient(ItemID.WhiteString, 1)
-                .AddIngredient(ItemID.RainbowHairDye, 1)
-                .AddTile(TileID.DyeVat)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.SunplateBlock)
-                .AddIngredient(ModContent.ItemType<Items.Placeable.SunplatePillarBlock>(), 1)
-                .Register();
-
-            Mod.CreateRecipe(ItemID.WandofSparking)
-                .AddIngredient(ModContent.ItemType<Items.Weapons.HotStick>(), 1)
-                .AddIngredient(ItemID.Torch, 2)
-                .AddIngredient(ItemID.FallenStar, 1)
-                .AddTile(TileID.Anvils)
-                .Register();
-            Mod.CreateRecipe(ItemID.BlueBerries)
-                .AddIngredient(ModContent.ItemType<Items.Consumables.FreshBlueberry>(), 3)
-                .Register();
-            */
         }
 
         public override void AddRecipeGroups()

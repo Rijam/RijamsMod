@@ -7,6 +7,8 @@ using Terraria.ModLoader.Utilities;
 using Terraria.Audio;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.Bestiary;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace RijamsMod.NPCs.Enemies
 {
@@ -28,17 +30,17 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetDefaults()
 		{
 			NPC.width = 28;
-			NPC.height = 52;
+			NPC.height = 82; //52
 			NPC.damage = 1;
 			NPC.defense = 0;
 			NPC.lifeMax = 600;
 			NPC.buffImmune[BuffID.Confused] = false;
-			NPC.HitSound = SoundID.NPCHit11; //16 for hat
+			NPC.HitSound = SoundID.NPCHit11;
 			NPC.DeathSound = SoundID.NPCDeath15;
 			NPC.value = 10000f;
 			NPC.knockBackResist = 0f;
 			NPC.aiStyle = 0; //0 will face the player
-			//npc.dontTakeDamage = true;
+			NPC.dontTakeDamage = false;
 			Banner = NPC.type;
 			BannerItem = ModContent.ItemType<Items.Placeable.SirSlushBanner>();
 		}
@@ -160,7 +162,7 @@ namespace RijamsMod.NPCs.Enemies
 					projSpeedX *= sqrtXto2PlusYto2;
 					projSpeedY *= sqrtXto2PlusYto2;
 					int projDamage = 30;
-					int projType = ModContent.ProjectileType<Projectiles.SirSlushSnowball>();
+					int projType = ModContent.ProjectileType<Projectiles.Enemies.SirSlushSnowball>();
 					vectoryForProj.X += projSpeedX;
 					vectoryForProj.Y += projSpeedY;
 					if (!Main.dedServ)
@@ -274,32 +276,63 @@ namespace RijamsMod.NPCs.Enemies
 				}
 			}
 		}
-		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+		/*
+		public override bool? CanBeHitByProjectile(Projectile projectile)
 		{
-			return true;
-		}
-	}
-	public class SirSlushHat : ModNPC
-    {
-		public override bool IsLoadingEnabled(Mod mod)
-		{
+			Rectangle hatHitbox = new(0, 0, 28, 30)
+			{
+				X = (int)NPC.position.X,
+				Y = (int)NPC.position.Y
+			};
+			// Has flaws. Anything that uses custom collision (Jousting Lances, Whips) doesn't get detected.
+			if (hatHitbox.Intersects(projectile.getRect()) && projectile.damage > 0 && projectile.friendly)
+			{
+				if (NPC.immune[projectile.owner] <= 0)
+				{
+					Main.NewText("Hit Projectile!");
+					return true;
+				}
+				return false;
+			}
+			if (NPC.getRect().Intersects(projectile.getRect()) && projectile.friendly)
+			{
+				if (projectile.CanBeReflected())
+				{
+					projectile.velocity *= -1;
+					projectile.friendly = false;
+					projectile.hostile = true;
+				}
+				if (NPC.immune[projectile.owner] <= 0)
+				{
+					SoundEngine.PlaySound(SoundID.Item150, NPC.position);
+				}
+				return false;
+			}
 			return false;
 		}
-        public override string Texture => "Terraria/NPC_0";
-
-		public override void SetDefaults()
+		public override bool? CanBeHitByItem(Player player, Item item)
 		{
-			NPC.aiStyle = -1;
-			NPC.width = 20;
-			NPC.height = 30;
-		}
-        public override void AI()
-        {
-            
-        }
-        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
-		{
+			Rectangle hatHitbox = new(0, 0, 28, 30)
+			{
+				X = (int)NPC.position.X - NPC.width / 2,
+				Y = (int)NPC.position.Y - NPC.height / 2
+			};
+			// Doesn't work. Need to get the melee hitbox: https://github.com/JavidPack/ModdersToolkit/blob/1.4/Tools/Hitboxes/HitboxesTool.cs
+			if (hatHitbox.Intersects(item.getRect()) && item.damage > 0)
+			{
+				Main.NewText("Hit Melee!");
+				return true;
+			}
 			return false;
 		}
+		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			Rectangle hatHitbox = new(0, 0, 28, 30)
+			{
+				X = (int)NPC.position.X - NPC.width / 2,
+				Y = (int)NPC.position.Y - NPC.height / 2
+			};
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, NPC.position - screenPos, hatHitbox, Color.Orange * 0.6f);
+		}*/
 	}
 }

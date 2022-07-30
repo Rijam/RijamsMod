@@ -39,3 +39,22 @@
 	* Demolitionist now sells Scarab Bombs and Dry Bombs.
 	* Added Master Builder Pack.
 	* Fixed the enemy banners not giving their buffs.
+
+1.1.2.0 - (July 29, 2022)
+	* Fixed the Vile Whip (whoops)
+	* Buffed Vile Whip, Vicious Whip, and Sulfuric Whip a little.
+	* Hell Trader now loves the Brimstone Witch (Calamity) and likes the Archmage (Calamity)
+	* Added Wooden Jousting Lance, Lonkhe Jousting Lance, Bone Head Jousting Lance, Horseman's Jousting Lance, and Solar Jousting Lance.
+	* Added Granitization.
+	* Added Cobalt Protector Cudgel, Crystal Cluster Cudgel, Fallen Paladin Cudgel, and Stardust Protector Cudgel. They are support minions that give defense buffs.
+	* Shadow Jousting Lance now inflicts Shadowflame.
+	* Increased the speed of the LED Lumoth.
+	* Fixed the Rocket Booster not effecting Cluster Rockets, Liquid Rockets, and Mini Nukes.
+	* Fixed Daybreak Stone and Gelid Skull Rose not applying the debuff to all melee weapons.
+	* Fixed Sulfur Torch not being destroyed when right clicked.
+	* Buffed the Solar Flares from the Solyo: They now fall faster and can hit 3 times per second instead of 1 time per second.
+	* Cross mod shop items are now much safer. The game will no longer throw an error if the item is not found.
+	* "Stardust Whip" renamed to "Supernova Whip".
+	* Improved world generation for placing the Belt in Wooden Chests (and now the Cobalt Protector Cudgel in Locked Golden Chests).
+	* Small Glow ring now has a low chance of generating in Wooden Chests.
+	* Fixed Living Sulfur Fire Block turning off the tile placement preview.

@@ -72,11 +72,11 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.BreadAndJelly>(), 1000)); //0.1% chance
 			if (!NPC.downedBoss3) 
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.HissyStaff>(), 1000)); //0.1% chance & not defeated Skeletron
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.Minions.HissyStaff>(), 1000)); //0.1% chance & not defeated Skeletron
 			}
 			else
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.HissyStaff>(), 20)); //5% chance & defeated Skeletron
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.Minions.HissyStaff>(), 20)); //5% chance & defeated Skeletron
 			}
 		}
 

@@ -82,6 +82,16 @@ namespace RijamsMod.Tiles
 		{
 			num = Main.rand.Next(1, 3);
 		}
+		
+		public override bool RightClick(int i, int j) // Torch gets destroyed when right clicked.
+		{
+			WorldGen.KillTile(i, j);
+			for (int k = 0; k < 5; k++)
+			{
+				Dust.NewDust(new Vector2(i, j), i, j, DustType);
+			}
+			return true;
+		}
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
 		{

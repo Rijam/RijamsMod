@@ -354,16 +354,21 @@ namespace RijamsMod.NPCs.TownNPCs
 						chat.Add("That big gun you have scares me! I don't even know why!", 0.5);
 					}
 				}
-				if (player.HasItem(ModContent.ItemType<Items.Weapons.PlasmaRifle>()))
+				if (player.HasItem(ModContent.ItemType<Items.Weapons.Magic.PlasmaRifle>()))
 				{
 					chat.Add("I feel like I've seen that energy gun you have, but I'm not sure where.", 0.5);
 				}
 				if (ModLoader.TryGetMod("CalamityMod", out Mod calamity) && townNPCsCrossModSupport) //Calamity
 				{
-					int brimestoneWitch = NPC.FindFirstNPC(calamity.Find<ModNPC>("WITCH").Type); //Brimstone Witch
-					if (brimestoneWitch >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("WITCH").Type))
+					int brimstoneWitch = NPC.FindFirstNPC(calamity.Find<ModNPC>("WITCH").Type); //Brimstone Witch
+					if (brimstoneWitch >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("WITCH").Type))
 					{
 						chat.Add("Calamitas is so powerful! I wish my magic were as good as hers!");
+					}
+					int archmage = NPC.FindFirstNPC(calamity.Find<ModNPC>("DILF").Type); //Archmage
+					if (archmage >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("DILF").Type))
+					{
+						chat.Add("I'm more into fire magic, but Permafrost's ice magic is still super impressive!");
 					}
 				}
 			}
@@ -431,7 +436,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.Cascade);
 				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.TimonsAxe>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Melee.TimonsAxe>());
 				nextSlot++;
 			}
 			if (Main.hardMode)
@@ -447,12 +452,12 @@ namespace RijamsMod.NPCs.TownNPCs
             {
 				shop.item[nextSlot].SetDefaults(ItemID.UnholyTrident);
 				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.HammerOfRetribution>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Melee.HammerOfRetribution>());
 				nextSlot++;
 			}
 			if (NPC.downedGolemBoss)
 			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Quietus>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Melee.Quietus>());
 				nextSlot++;
 			}
 			shop.item[nextSlot].SetDefaults(ItemID.AshBlock);
@@ -578,7 +583,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
 		{
 			SoundEngine.PlaySound(SoundID.Item8, NPC.position);
-			projType = ModContent.ProjectileType<Projectiles.SulfurSphere>();
+			projType = ModContent.ProjectileType<Projectiles.Magic.SulfurSphere>();
 			attackDelay = 2;
 		}
 

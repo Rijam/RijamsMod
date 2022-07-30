@@ -52,6 +52,7 @@ namespace RijamsMod
         {
             ItemOriginDesc.itemList.Clear();
             Items.GlobalItems.isWhip.Clear();
+            Items.GlobalItems.isJoustingLance.Clear();
             Instance = null;
             ConfigClient = null;
             ConfigServer = null;

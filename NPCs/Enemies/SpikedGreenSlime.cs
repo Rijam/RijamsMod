@@ -70,7 +70,7 @@ namespace RijamsMod.NPCs.Enemies
 							vector4.Y *= 1f + (float)Main.rand.Next(-50, 51) * 0.005f;
 							vector4.Normalize();
 							vector4 *= 4f + (float)Main.rand.Next(-50, 51) * 0.01f;
-							Projectile.NewProjectile(Entity.GetSource_FromAI(), vector3.X, vector3.Y, vector4.X, vector4.Y, ModContent.ProjectileType<Projectiles.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
+							Projectile.NewProjectile(Entity.GetSource_FromAI(), vector3.X, vector3.Y, vector4.X, vector4.Y, ModContent.ProjectileType<Projectiles.Enemies.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
 							NPC.localAI[0] = 30f;
 						}
 					}
@@ -90,7 +90,7 @@ namespace RijamsMod.NPCs.Enemies
 						num11 *= num13;
 						num12 *= num13;
 						NPC.localAI[0] = 50f;
-						Projectile.NewProjectile(Entity.GetSource_FromAI(), vector3.X, vector3.Y, num11, num12, ModContent.ProjectileType<Projectiles.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
+						Projectile.NewProjectile(Entity.GetSource_FromAI(), vector3.X, vector3.Y, num11, num12, ModContent.ProjectileType<Projectiles.Enemies.SpikedGreenSlimeSpike>(), 9, 0f, Main.myPlayer);
 					}
 				}
 			}
