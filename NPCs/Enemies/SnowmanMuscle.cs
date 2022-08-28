@@ -35,7 +35,6 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.damage = 30;
 			NPC.defense = 0;
 			NPC.lifeMax = 250;
-			NPC.lavaImmune = true;
 			NPC.buffImmune[BuffID.Confused] = false;
 			NPC.value = 500f;
 			NPC.knockBackResist = 0.5f;
@@ -43,7 +42,7 @@ namespace RijamsMod.NPCs.Enemies
 			AIType = NPCID.SnowmanGangsta;
 			AnimationType = NPCID.SnowmanGangsta;
 			Banner = NPC.type;
-			BannerItem = ModContent.ItemType<Items.Placeable.SnowmanMuscleBanner>();
+			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.SnowmanMuscleBanner>();
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -111,6 +110,7 @@ namespace RijamsMod.NPCs.Enemies
 						projectileVector.Y += speedY;
 						if (Main.netMode != NetmodeID.MultiplayerClient)
 						{
+							NPC.FaceTarget();
 							int projectileDamage = 15;
 							int projectileType = ProjectileID.BulletSnowman;
 							SoundEngine.PlaySound(SoundID.Item36, NPC.position);

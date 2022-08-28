@@ -39,7 +39,7 @@ namespace RijamsMod.Projectiles.Magic
 		{
 			Projectile.ai[0]++;
 			if (Projectile.ai[0] == 2) //Update every 2 ticks
-            {
+			{
 				int newTarget = FindTargetWithLineOfSight();
 				Projectile.netUpdate = true;
 				if (newTarget != -1) //fly to the target
@@ -115,7 +115,7 @@ namespace RijamsMod.Projectiles.Magic
 		{
 			float newMaxRange = maxRange;
 			int result = -1;
-			for (int i = 0; i < 200; i++)
+			for (int i = 0; i < Main.maxNPCs; i++)
 			{
 				NPC nPC = Main.npc[i];
 				bool nPCCanBeChased = nPC.CanBeChasedBy(this);

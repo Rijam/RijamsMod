@@ -82,6 +82,7 @@ namespace RijamsMod.Items.Accessories.Movement
 				.AddIngredient(ItemID.SillyBalloonPink, 10)
 				.AddIngredient(ItemID.SillyBalloonPurple, 10)
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.SillyBalloonMachine)
 				.Register();
 		}
 	}
@@ -121,7 +122,9 @@ namespace RijamsMod.Items.Accessories.Movement
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<TooManyBalloons>(), 1)
 				.AddIngredient(ItemID.ObsidianHorseshoe, 6)
+				.AddIngredient(ItemID.GelBalloon, 10) // Sparkle Slime Balloon
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.SillyBalloonMachine)
 				.Register();
 
 			CreateRecipe()
@@ -138,7 +141,9 @@ namespace RijamsMod.Items.Accessories.Movement
 				.AddIngredient(ItemID.SillyBalloonGreen, 10)
 				.AddIngredient(ItemID.SillyBalloonPink, 10)
 				.AddIngredient(ItemID.SillyBalloonPurple, 10)
+				.AddIngredient(ItemID.GelBalloon, 10) // Sparkle Slime Balloon
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.SillyBalloonMachine)
 				.Register();
 		}
 	}

@@ -34,7 +34,7 @@ namespace RijamsMod.NPCs.Enemies
             NPC.HitSound = SoundID.NPCHit2;
             NPC.DeathSound = SoundID.NPCDeath4;
             Banner = NPC.type;
-            BannerItem = ModContent.ItemType<Items.Placeable.DungeonBatBanner>();
+            BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.DungeonBatBanner>();
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -46,9 +46,12 @@ namespace RijamsMod.NPCs.Enemies
             });
         }
 
-        public override void OnKill()
-		{
-            Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(NPC.spriteDirection * -8, 0), ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
+        public override void HitEffect(int hitDirection, double damage)
+        {
+            if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
+            {
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(NPC.spriteDirection * -8, 0), ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
+            }
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

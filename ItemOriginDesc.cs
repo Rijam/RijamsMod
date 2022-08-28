@@ -63,7 +63,7 @@ namespace RijamsMod
 		/// <param name="item"></param>
 		/// <returns>bool</returns>
 		public static bool CheckIfEquipped(int item)
-        {
+		{
 			Player player = Main.LocalPlayer;
 			for (int i = 0; i <= 7 + player.GetAmountOfExtraAccessorySlotsToShow(); i++)
 			{

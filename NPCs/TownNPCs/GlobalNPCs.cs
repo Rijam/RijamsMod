@@ -159,61 +159,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
 			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 
-			if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs) && townNPCsCrossModSupport)
-			{
-				float shopMulti = (float)bossesAsNPCs.Call("shopMulti");
-				if (type == NPCID.GoblinTinkerer)
-				{
-					if ((bool)bossesAsNPCs.Call("GoblinSellInvasionItems") && (bool)bossesAsNPCs.Call("downedGoblinSummoner") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-				}
-				if (type == bossesAsNPCs.Find<ModNPC>("Pumpking").Type)
-				{
-					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Melee.HorsemansJoustingLance>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-				}
-				if (type == bossesAsNPCs.Find<ModNPC>("IceQueen").Type)
-				{
-					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.FestivePlating>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-				}
-				if (type == bossesAsNPCs.Find<ModNPC>("BrainOfCthulhu").Type)
-				{
-					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.CrawlerChelicera>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-				}
-				if (type == bossesAsNPCs.Find<ModNPC>("QueenSlime").Type)
-				{
-					if (!(bool)bossesAsNPCs.Call("GetStatusShop1") && (bool)bossesAsNPCs.Call("GetStatusShop2") && (bool)bossesAsNPCs.Call("TownNPCsCrossModSupport"))
-					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value * shopMulti);
-						nextSlot++;
-					}
-				}
-			}
+			// BossesAsNPCs support in RijamsMod.cs PostSetupContent()
 
 			if (type == NPCID.ArmsDealer)
 			{
@@ -580,11 +526,13 @@ namespace RijamsMod.NPCs.TownNPCs
 
 				if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs) && townNPCsCrossModSupport)
 				{
-					int martianSaucerType = bossesAsNPCs.Find<ModNPC>("MartianSaucer").Type;
-					var martianSaucerHappiness = NPCHappiness.Get(martianSaucerType);
+					if (bossesAsNPCs.TryFind<ModNPC>("MartianSaucer", out ModNPC martianSaucer))
+					{
+						var martianSaucerHappiness = NPCHappiness.Get(martianSaucer.Type);
 
-					martianSaucerHappiness.SetNPCAffection(intTrav, AffectionLevel.Like);
-					intTravHappiness.SetNPCAffection(martianSaucerType, AffectionLevel.Like);
+						martianSaucerHappiness.SetNPCAffection(intTrav, AffectionLevel.Like);
+						intTravHappiness.SetNPCAffection(martianSaucer.Type, AffectionLevel.Like);
+					}
 				}
 
 				if (ModLoader.TryGetMod("CalamityMod", out Mod calamity) && townNPCsCrossModSupport) //Calamity

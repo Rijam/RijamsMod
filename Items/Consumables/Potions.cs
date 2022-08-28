@@ -86,4 +86,45 @@ namespace RijamsMod.Items.Consumables
                 .Register();
         }
     }
+    public class SoaringPotion : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("Soaring Potion");
+            Tooltip.SetDefault("+0.5 seconds wing flight");
+            ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
+            {
+                new Color(139, 235, 239),
+                new Color(15, 167, 211),
+                new Color(1, 70, 161)
+            };
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 16;
+            Item.height = 30;
+            Item.useStyle = ItemUseStyleID.DrinkLiquid;
+            Item.useAnimation = 15;
+            Item.useTime = 15;
+            Item.useTurn = true;
+            Item.UseSound = SoundID.Item3;
+            Item.maxStack = 30;
+            Item.consumable = true;
+            Item.rare = ItemRarityID.Blue;
+            Item.value = Item.sellPrice(silver: 2);
+            Item.buffType = ModContent.BuffType<Buffs.Soaring>();
+            Item.buffTime = 10800; //3 minutes
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.BottledWater, 1)
+                .AddIngredient(ItemID.Damselfish, 1)
+                .AddIngredient(ItemID.Feather, 1)
+                .AddIngredient(ItemID.SoulofFlight, 1)
+                .AddTile(TileID.Bottles)
+                .Register();
+        }
+    }
 }

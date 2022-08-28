@@ -85,19 +85,26 @@ namespace RijamsMod.NPCs.Enemies
 			}
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				int num334 = NPC.NewNPC(Entity.GetSource_Death(), (int)(NPC.position.X + (NPC.width / 2)), (int)(NPC.position.Y + NPC.height), NPCID.BlueSlime);
-				Main.npc[num334].SetDefaults(NPCID.PurpleSlime);
-				Main.npc[num334].velocity.X = NPC.velocity.X;
-				Main.npc[num334].velocity.Y = NPC.velocity.Y;
-				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, NPC.scale);
-				if (Main.netMode == NetmodeID.Server && num334 < 200)
+				int npcType = NPC.NewNPC(Entity.GetSource_Death(), (int)(NPC.position.X + (NPC.width / 2)), (int)(NPC.position.Y + NPC.height), NPCID.BlueSlime);
+				Main.npc[npcType].SetDefaults(NPCID.PurpleSlime);
+				Main.npc[npcType].velocity.X = NPC.velocity.X;
+				Main.npc[npcType].velocity.Y = NPC.velocity.Y;
+				if (Main.netMode == NetmodeID.Server && npcType < 200)
 				{
-					NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num334);
+					NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npcType);
 				}
 			}
 		}
+		public override void HitEffect(int hitDirection, double damage)
+		{
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
+			{
+				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, NPC.scale);
+			}
+		}
 
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (Main.slimeRain && Main.hardMode && spawnInfo.Player.ZoneOverworldHeight)
             {

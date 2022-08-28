@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RijamsMod.Items.Placeable;
+using RijamsMod.Items.Placeable.EnemyBanners;
 using RijamsMod.NPCs.Enemies;
 using Terraria;
 using Terraria.DataStructures;
@@ -55,6 +55,9 @@ namespace RijamsMod.Tiles
 				case 5:
 					item = ItemType<SirSlushBanner>();
 					break;
+				case 6:
+					item = ItemType<FirmamentHarpyBanner>();
+					break;
 				default:
 					return;
 			}
@@ -85,6 +88,9 @@ namespace RijamsMod.Tiles
 						break;
 					case 5:
 						type = NPCType<SirSlush>();
+						break;
+					case 6:
+						type = NPCType<FirmamentHarpy>();
 						break;
 					default:
 						return;

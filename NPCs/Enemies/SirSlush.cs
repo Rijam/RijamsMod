@@ -42,7 +42,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.aiStyle = 0; //0 will face the player
 			NPC.dontTakeDamage = false;
 			Banner = NPC.type;
-			BannerItem = ModContent.ItemType<Items.Placeable.SirSlushBanner>();
+			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.SirSlushBanner>();
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -94,12 +94,15 @@ namespace RijamsMod.NPCs.Enemies
 			}
 		}
 
-		public override void OnKill()
+		public override void HitEffect(int hitDirection, double damage)
 		{
-			Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Hat").Type, 1f);
-			for (int k = 0; k < 5; k++)
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
+				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Hat").Type, 1f);
+				for (int k = 0; k < 5; k++)
+				{
+					Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
+				}
 			}
 		}
 
@@ -301,10 +304,10 @@ namespace RijamsMod.NPCs.Enemies
 					projectile.velocity *= -1;
 					projectile.friendly = false;
 					projectile.hostile = true;
-				}
-				if (NPC.immune[projectile.owner] <= 0)
-				{
-					SoundEngine.PlaySound(SoundID.Item150, NPC.position);
+					if (NPC.immune[projectile.owner] <= 0)
+					{
+						SoundEngine.PlaySound(SoundID.Item150, NPC.position);
+					}
 				}
 				return false;
 			}

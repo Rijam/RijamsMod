@@ -24,38 +24,66 @@ namespace RijamsMod
 	{
 		public override bool InstancePerEntity => true;
 		public bool sulfuricAcid;
+		public bool bleedingOut;
 
 		public override void ResetEffects(NPC npc)
 		{
 			sulfuricAcid = false;
+			bleedingOut = false;
 		}
 		public override bool SpecialOnKill(NPC npc)
         {
-			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
-			//Player player = Main.LocalPlayer;
-			//If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-			if (moddedplayer.burglarsRing && (!npc.boss || !npc.immortal || !npc.dontCountMe) && npc.active && npc.lastInteraction != 255)
-            {
-				//Main.NewText($"NPCLoot called for NPC Id: {npc.type}");
-				npc.NPCLoot();
-				//Main.NewText("Success?");
-				if (ModContent.GetInstance<RijamsModConfigClient>().BurglarsRingSound)
-                {
-					/*if (Main.netMode != NetmodeID.Server && Main.myPlayer == player.whoAmI)
-                    {
-						SoundEngine.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
+			bool worked = false;
+			Player workedPlayer = null;
+			if (Main.netMode != NetmodeID.MultiplayerClient)
+			{
+				for (int i = 0; i < Main.maxPlayers; i++)
+				{
+					Player player = Main.player[i];
+					if (!player.active)
+					{
+						continue;
 					}
-					else
-                    {
-						SoundEngine.PlaySound(SoundID.Item, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, 35, 0.75f, 0.5f);
-					}*/
-					SoundEngine.PlaySound(new("Terraria/Sounds/Item_35", 0, 1) { Volume = 0.5f, PitchRange = (0.75f, 0.75f)} );
+					RijamsModPlayer moddedplayer = player.GetModPlayer<RijamsModPlayer>();
+					if (!moddedplayer.burglarsRing)
+					{
+						continue;
+					}
+					// Mod.Logger.Debug($"Player {player.whoAmI} has Burglar's Ring");
+					// Mod.Logger.Debug($"NPC is: {npc.FullName}");
+					// Mod.Logger.Debug($"npc.lastInteraction is {npc.lastInteraction}");
+					// Mod.Logger.Debug($"player.lastCreatureHit is {player.lastCreatureHit}");
 
-					//SoundEngine.PlaySound(SoundLoader.customSoundType, (int)Main.LocalPlayer.Center.X, (int)Main.LocalPlayer.Center.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/beep"), 0.25f, 2f);
+					// If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
+					if (!npc.boss && !npc.immortal && !npc.dontCountMe && npc.active && npc.lastInteraction != Main.maxPlayers)
+					{
+						// Mod.Logger.Debug($"NPCLoot called for NPC Id: {npc.type}. Who Am I: {npc.whoAmI}. To banner: {Item.NPCtoBanner(npc.type)}");
+						npc.NPCLoot();
+						// Mod.Logger.Debug("Success?");
+						worked = true;
+						workedPlayer = player;
+						break;
+					}
+				}
+			}
+			// Still doesn't play the sound in multiplayer
+			if (worked)
+			{
+				Mod.Logger.Debug("Sound?");
+				float volume = ModContent.GetInstance<RijamsModConfigServer>().BurglarsRingSound / 100f;
+				if (volume > 0)
+				{
+					if (Main.CurrentPlayer.whoAmI == workedPlayer.whoAmI)
+					{
+						SoundEngine.PlaySound(new("Terraria/Sounds/Item_35") { Volume = volume, Pitch = 0.75f }, workedPlayer.Center); // not being called?
+					}
+					Mod.Logger.Debug("Main.CurrentPlayer.whoAmI " + Main.CurrentPlayer.whoAmI + " Main.LocalPlayer.whoAmI " + Main.LocalPlayer.whoAmI);
+					Mod.Logger.Debug("workedPlayer.whoAmI " + workedPlayer.whoAmI + " workedPlayer.name " + workedPlayer.name + " workedPlayer.Center " + workedPlayer.Center);
+					Mod.Logger.Debug("Played sound? volume = " + volume);
 				}
 			}
 			return base.SpecialOnKill(npc);
-        }
+		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 			if (npc.type == NPCID.SnowmanGangsta)
@@ -303,10 +331,18 @@ namespace RijamsMod
 					npc.damage = npc.defDamage;
 				}*/
 			}
+			if (bleedingOut)
+			{
+				if (npc.lifeRegen > 0)
+				{
+					npc.lifeRegen = 0;
+				}
+				npc.lifeRegen -= 20;
+			}
 		}
 		public override void DrawEffects(NPC npc, ref Color drawColor)
 		{
-			if (sulfuricAcid)
+			if (sulfuricAcid && npc.active)
 			{
 				if (Main.rand.Next(4) < 3)
 				{
@@ -321,6 +357,12 @@ namespace RijamsMod
 					}
 				}
 				Lighting.AddLight(npc.position, 1.0f, 1.0f, 0.0f);
+			}
+			if (bleedingOut && npc.active)
+			{
+				Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood, 0, 0, 50, default, 1f);
+				drawColor.G *= (byte)0.4f;
+				drawColor.B *= (byte)0.4f;
 			}
 		}
 		/*public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)

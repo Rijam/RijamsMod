@@ -21,7 +21,7 @@ namespace RijamsMod
 	///For the string[]:
 	///		The texture of the glowmask
 	///		R, G, and B must 0 to 255
-	///		"flame" is the only special effect supported (anything else will just draw as normal).
+	///		"flame" and "lerpOnOff" is the only special effect supported (anything else will just draw as normal).
 	public class ArmorUseGlowHead : PlayerDrawLayer
 	{
 		//slot, string[texture path, r, g, b, special effect]
@@ -64,6 +64,9 @@ namespace RijamsMod
 			return new AfterParent(PlayerDrawLayers.Head);
 		}
 
+		private int fadeInOrOut = 0;
+		private int lerpTimer = 0;
+		private Color lerpColor = Color.White;
 		protected override void Draw(ref PlayerDrawSet drawInfo)
 		{
 			Player drawPlayer = drawInfo.drawPlayer;
@@ -78,6 +81,9 @@ namespace RijamsMod
 
 			ulong seed = 0;
 
+			// "flame" will draw the glowmask 5 times each with a slightly different position giving it a flickering sort of look.
+			// "lerpOnOff" will fade the glowmask in and out.
+
 			if (values[4] == "flame")
 			{
 				numTimesToDraw = 5;
@@ -89,14 +95,27 @@ namespace RijamsMod
 				Vector2 drawPos = drawInfo.Position - Main.screenPosition + new Vector2(drawPlayer.width / 2 - drawPlayer.bodyFrame.Width / 2, drawPlayer.height - drawPlayer.bodyFrame.Height + 4f) + drawPlayer.headPosition;
 				Vector2 headVect = drawInfo.headVect;
 
+				Color color = drawPlayer.GetImmuneAlphaPure(new Color(int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])), drawInfo.shadow);
+
 				if (values[4] == "flame")
 				{
 					float random1 = Utils.RandomInt(ref seed, -5, 6) * 0.05f;
 					float random2 = Utils.RandomInt(ref seed, -5, 1) * 0.15f;
 					drawPos += new Vector2(random1, random2);
 				}
-
-				Color color = drawPlayer.GetImmuneAlphaPure(new Color(int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])), drawInfo.shadow);
+				if (values[4] == "lerpOnOff")
+				{
+					if (fadeInOrOut == 0)
+					{
+						lerpColor = Color.Lerp(new Color(int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3]), 255), new Color(0, 0, 0, 0), lerpTimer / 600f);
+					}
+					if (fadeInOrOut == 1)
+					{
+						lerpColor = Color.Lerp(new Color(0, 0, 0, 0), new Color(int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3]), 255), lerpTimer / 600f);
+					}
+					color = drawPlayer.GetImmuneAlphaPure(lerpColor, drawInfo.shadow);
+					lerpTimer++;
+				}
 
 				DrawData drawData = new(
 					glowmask.Value, // The texture to render.
@@ -114,6 +133,19 @@ namespace RijamsMod
 
 				// Queues a drawing of a sprite. Do not use SpriteBatch in drawlayers!
 				drawInfo.DrawDataCache.Add(drawData);
+
+				if (values[4] == "lerpOnOff")
+				{
+					if (lerpTimer > 600)
+					{
+						fadeInOrOut++;
+						lerpTimer = 0;
+						if (fadeInOrOut > 1)
+						{
+							fadeInOrOut = 0;
+						}
+					}
+				}
 			}
 		}
 	}

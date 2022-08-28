@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Buffs
@@ -27,6 +28,20 @@ namespace RijamsMod.Buffs
 		public override void Update(Player player, ref int buffIndex)
 		{
 			player.maxTurrets++;
+		}
+	}
+
+	public class Soaring : ModBuff
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Soaring");
+			Description.SetDefault("+0.5 seconds wing flight time");
+		}
+
+		public override void Update(Player player, ref int buffIndex)
+		{
+			player.GetModPlayer<RijamsModPlayer>().soaringPotion = true;
 		}
 	}
 }

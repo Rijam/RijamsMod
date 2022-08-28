@@ -28,6 +28,16 @@ Mods: {
 			SnowmanMuscleBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.SnowmanMuscle}"
 			SirSlushBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.SirSlush}"
 		}
+		ArmorSetBonus: {
+			Skyware:
+				'''
+				
+				Attacking enemies will shoot feathers at them
+				Feathers have a base damage of 20
+				Damage scales with the respective damage type
+				One second cool down between shots
+				'''
+		}
 
 		NPCName: {
 			Harpy: Harpy
@@ -100,7 +110,8 @@ Mods: {
 				SkeletonCrossbower: A past adventurer who met a predictable fate in the Dungeon. Their ranged attack makes them stand out.
 				SkeletonGunner: Evil skeletons are already bad enough, but this one has found a gun!
 				SnowmanMuscle: This heartless snowman will use his shotgun to take out anyone who stands in the snowmen's way.
-				SpikedGreenSlime: A green slime with the ability to launch its massive spikes at its opponents. 
+				SpikedGreenSlime: A green slime with the ability to launch its massive spikes at its opponents.
+				FirmamentHarpy: These harpies come equipped with armor and a different combat technique. Don't let them slice your with their talons!
 			}
 			Happiness: {
 				// These are automatically translated from other localization. Leave as is.

@@ -87,7 +87,9 @@ namespace RijamsMod.Items.Accessories.Magic
 				.AddIngredient(ItemID.ManaCloak, 1)
 				.AddIngredient(ItemID.PutridScent, 1)
 				.AddIngredient(ItemID.LunarBlockNebula, 5)
+				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 
 			CreateRecipe()
@@ -95,7 +97,9 @@ namespace RijamsMod.Items.Accessories.Magic
 				.AddIngredient(ItemID.StarCloak, 1)
 				.AddIngredient(ItemID.ArcaneFlower, 1)
 				.AddIngredient(ItemID.LunarBlockNebula, 5)
+				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
 	}

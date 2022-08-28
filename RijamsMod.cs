@@ -12,6 +12,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 using Terraria.UI;
 using RijamsMod.UI;
+using System.Linq.Expressions;
 
 namespace RijamsMod
 {
@@ -88,6 +89,16 @@ namespace RijamsMod
                 //rarity = 0;
                 //condition = () => true;
                 //pboneUtils.Call("MysteriousTraderItem", ModLoader.GetMod("RijamsMod"), ModContent.ItemType<Items.Consumables.StrangeRoll>(), rarity, condition);
+            }
+            if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs))
+			{
+                bossesAsNPCs.Call("AddToShop", "DefaultPrice", "GoblinTinkerer", ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>(), () => (bool)bossesAsNPCs.Call("downedGoblinSummoner"));
+                bossesAsNPCs.Call("AddToShop", "WithDiv", "Pumpking", ModContent.ItemType<Items.Weapons.Melee.HorsemansJoustingLance>(), () => true, 0.1f);
+                bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Materials.FestivePlating>(), () => NPC.downedChristmasSantank);
+                bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), () => NPC.downedChristmasSantank, 0.1f);
+                bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>(), () => true);
+                bossesAsNPCs.Call("AddToShop", "DefaultPrice", "BrainOfCthulhu", ModContent.ItemType<Items.Materials.CrawlerChelicera>(), () => true);
+                bossesAsNPCs.Call("AddToShop", "DefaultPrice", "QueenSlime", ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>(), () => true);
             }
         }
 

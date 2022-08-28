@@ -8,7 +8,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults() 
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy]", "[c/474747:After defeating Golem]", null } );
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy or]", "[c/474747:dropped by Firmament Harpies]", "[c/474747:After defeating Golem]" } );
 		}
 
 		public override void SetDefaults() 
@@ -24,7 +24,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy]", "[c/474747:After defeating Golem]", null } );
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy or]", "[c/474747:dropped by Firmament Harpies]", "[c/474747:After defeating Golem]" } );
 		}
 
 		public override void SetDefaults()

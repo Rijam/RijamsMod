@@ -38,6 +38,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.lifeMax = 200;
 			NPC.lavaImmune = true;
 			NPC.buffImmune[BuffID.OnFire] = true;
+			NPC.buffImmune[BuffID.Confused] = false;
 			NPC.HitSound = new(Mod.Name + "/Sounds/NPCHit/DarkSoldierHurt") { Volume = 0.7f, MaxInstances = 5 };
 			NPC.DeathSound = new(Mod.Name + "/Sounds/NPCKilled/DarkSoldierDeath") { Volume = 0.7f, MaxInstances = 5 };
 			NPC.value = 6000f;
@@ -46,7 +47,7 @@ namespace RijamsMod.NPCs.Enemies
 			AIType = NPCID.BoneThrowingSkeleton;
 			AnimationType = NPCID.BoneThrowingSkeleton;
 			Banner = NPC.type;
-			BannerItem = ModContent.ItemType<Items.Placeable.DarkSoldierBanner>();
+			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.DarkSoldierBanner>();
 		}
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -57,13 +58,16 @@ namespace RijamsMod.NPCs.Enemies
 			});
 		}
 
-		public override void OnKill()
+		public override void HitEffect(int hitDirection, double damage)
 		{
-			Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
-			for (int k = 0; k < 2; k++)
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
+				for (int k = 0; k < 2; k++)
+				{
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+				}
 			}
 		}
 
@@ -233,6 +237,7 @@ namespace RijamsMod.NPCs.Enemies
 						}
 						if (NPC.ai[1] == (float)numIs35)
 						{
+							NPC.FaceTarget();
 							float numIs7f = 7f;
 							Vector2 vectoryForProj = new(NPC.position.X + (float)NPC.width * 0.5f, NPC.position.Y + (float)NPC.height * 0.5f);
 							float projSpeedX = Main.player[NPC.target].position.X + (float)Main.player[NPC.target].width * 0.5f - vectoryForProj.X;

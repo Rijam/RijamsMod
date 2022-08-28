@@ -11,12 +11,12 @@ Includes:
 [*] Hell Trader: sells Underworld related items. Spawns randomly in the Underworld, can move in in Hardmode.
 [/list]
 
-[b] 168 new items and weapons throughout the game's progression [/b]
+[b] 175 new items and weapons throughout the game's progression [/b]
 [list]
-[*] 45 weapons: 12 Melee, 8 Ranged, 8 Magic, 17 Summoner.
+[*] 45 weapons: 12 Melee, 8 Ranged, 8 Magic, 18 Summoner.
 [*] 12 ammo types.
 [*] 36 accessories.
-[*] 11 armor pieces.
+[*] 17 armor pieces.
 [*] 10 vanity items + 3 dyes.
 [/list]
 

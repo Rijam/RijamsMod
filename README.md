@@ -13,8 +13,8 @@ Rijam's Mod is a bunch of random additions created by Rijam. This mod is mostly 
 - Hell Trader: sells Underworld related items.
 - - Spawns randomly in the Underworld, can move in in Hardmode.
 
-158 new items and weapons throughout the game's progression.
-- 35 weapons: 6 Melee, 8 Ranged, 8 Magic, 13 Summoner.
+168 new items and weapons throughout the game's progression.
+- 45 weapons: 12 Melee, 8 Ranged, 8 Magic, 17 Summoner.
 - 12 ammo types.
 - 36 accessories.
 - 11 armor pieces.

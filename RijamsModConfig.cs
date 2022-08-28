@@ -118,6 +118,17 @@ namespace RijamsMod
 		[DefaultValue(true)]
 		public bool TownNPCsCrossModSupport { get; set; }
 
+		[Label("[i:RijamsMod/BurglarsRing]   Burglar's Ring Notification Sound")]
+		[Tooltip("This option controls the volume of the sound the " +
+			"Burglar's Ring will make upon successfully working\n" +
+			"   Set to 0 if you don't want to hear the sound\n" +
+			"Default value: 100\n" +
+			"Reload not required.")]
+		[Range(0, 200)]
+		[DefaultValue(100)]
+		[Slider]
+		public int BurglarsRingSound { get; set; }
+
 		[Label("[i:784]   Load Debug Items")]
 		[Tooltip("This option toggles if the debug items will be loaded.\n" +
 			"  When On: The debug items WILL be loaded.\n" +
@@ -183,6 +194,7 @@ namespace RijamsMod
 	[Label("Client Options")]
 	public class RijamsModConfigClient : ModConfig
 	{
+		public static RijamsModConfigClient Instance;
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		[Header("[c/00FF00:Client Option]")]
@@ -196,15 +208,5 @@ namespace RijamsMod
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Ornithophobia { get; set; }
-
-		[Label("[i:RijamsMod/BurglarsRing]   Burglar's Ring Notification Sound")]
-		[Tooltip("This option toggles if the Burglar's Ring will make a sound upon successfully working\n" +
-			"  When On: the Burglar's Ring will make a sound.\n" +
-			"  When Off: the Burglar's Ring will not make a sound.\n" +
-			"   Turn Off if you don't want to hear the sound\n" +
-			"Default value: On\n" +
-			"Reload not required.")]
-		[DefaultValue(true)]
-		public bool BurglarsRingSound { get; set; }
 	}
 }

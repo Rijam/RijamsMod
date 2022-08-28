@@ -23,49 +23,35 @@ namespace RijamsMod.Items.Weapons.Melee
 
 		public override void SetDefaults()
 		{
-			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.Melee.WoodenJoustingLanceProj>(), 3.5f, 24); // A special method that sets a variety of item parameters that make the item act like a spear weapon.
+			// A special method that sets a variety of item parameters that make the item act like a spear weapon.
+			// To see everything DefaultToSpear() does, right click the method in Visual Studios and choose "Go To Definition" (or press F12).
+			// The shoot speed will affect how far away the projectile spawns from the player's hand.
+			// If you are using the custom AI in your projectile (and not aiStyle 19 and AIType = ProjectileID.JoustingLance), the standard value is 1f.
+			// If you are using aiStyle 19 and AIType = ProjectileID.JoustingLance, then multiply the value by about 3.5f.
+			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.Melee.WoodenJoustingLanceProj>(), 0.575f, 24);
 
-			// The above Item.DefaultToSpear() does the following. Uncomment these if you don't want to use the above method or want to change something about it.
-			// Item.useStyle = ItemUseStyleID.Shoot;
-			// Item.useAnimation = 31;
-			// Item.useTime = 31;
-			// Item.shootSpeed = 3.5f;
 			Item.width = 46;
 			Item.height = 46;
-			// Item.UseSound = SoundID.Item1;
-			// Item.shoot = ModContent.ProjectileType<Projectiles.ExampleJoustingLance>();
-			// Item.noMelee = true;
-			// Item.noUseGraphic = true;
 			Item.DamageType = DamageClass.MeleeNoSpeed; // We need to use MeleeNoSpeed here so that attack speed doesn't effect our held projectile.
-			// Item.useAnimation = 24
-			// Item.useTime = 24;
 
 			Item.SetWeaponValues(10, 7f, 0); // A special method that sets the damage, knockback, and bonus critical strike chance.
 
-			// The above Item.SetWeaponValues() does the following. Uncomment these if you don't want to use the above method.
-			// Item.damage = 56;
-			// Item.knockBack = 12f;
-			// Item.crit = 2; // Even though this says 2, this is more like "bonus critical strike chance". All weapons have a base critical strike chance of 4.
-
 			Item.SetShopValues(ItemRarityColor.White0, Item.buyPrice(0, 0, 0, 30)); // A special method that sets the rarity and value.
 
-			// The above Item.SetShopValues() does the following. Uncomment these if you don't want to use the above method.
-			// Item.rare = ItemRarityID.Red;
-			// Item.value = Item.buyPrice(0, 6); // The value of the item. In this case, 6 gold. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
-
 			Item.channel = true; // Channel is important for our projectile.
-			//Item.DamageType = DamageClass.MeleeNoSpeed;
 		}
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
 			// If the player has increased melee speed, it will effect the shootSpeed of the Jousting Lance which will cause the projectile to spawn further away than it is supposed to.
 			// This ensures that the velocity of the projectile is always the shootSpeed.
-			float inverseMeleeSpeed = 1f / player.GetAttackSpeed(DamageClass.Melee);
+			float inverseMeleeSpeed = 1f / (player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic));
 			velocity *= inverseMeleeSpeed;
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+		// This will allow our Jousting Lance to receive the same modifiers as melee weapons.
+		public override bool MeleePrefix() => true;
+
 		public override void AddRecipes()
 		{
 			CreateRecipe()
@@ -82,15 +68,15 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 
 			int itemType = ModContent.ItemType<WoodenJoustingLance>(); // Change this to your item
-			double damageTaken = Main.CalculateDamagePlayersTake((int)damage, Player.statDefense);
 
-			if (!Player.immune && damageTaken >= 1.0 && Player.inventory[Player.selectedItem].type == itemType)
+			if (Player.inventory[Player.selectedItem].type == itemType)
 			{
-				for (int j = 0; j < 1000; j++)
+				for (int j = 0; j < Main.maxProjectiles; j++)
 				{
-					if (Main.projectile[j].active && Main.projectile[j].owner == Player.whoAmI)
+					Projectile currentProj = Main.projectile[j];
+					if (currentProj.active && currentProj.owner == Player.whoAmI && currentProj.type == ItemLoader.GetItem(itemType).Item.shoot)
 					{
-						Main.projectile[j].active = false;
+						currentProj.active = false;
 					}
 				}
 			}

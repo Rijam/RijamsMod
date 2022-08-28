@@ -127,8 +127,8 @@ namespace RijamsMod.Projectiles.Summon.Support
 					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 					if (distance <= radius)
 					{
-						searchPlayer.statDefense += 15;
-						searchPlayer.endurance += 0.1f;
+						searchPlayer.statDefense += 13;
+						searchPlayer.endurance += 0.08f;
 					}
 				}
 			}

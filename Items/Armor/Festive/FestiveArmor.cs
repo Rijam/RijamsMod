@@ -13,6 +13,10 @@ namespace RijamsMod.Items.Armor.Festive
 		{
 			DisplayName.SetDefault("Festive Mask");
 			Tooltip.SetDefault("+1 Minion capacity\n+15% Summon damage");
+			if (!Main.dedServ)
+			{
+				ArmorUseGlowHead.RegisterData(Item.headSlot, new string[] { Texture + "_Head_Glowmask", "255", "255", "255", "lerpOnOff" });
+			}
 		}
 
 		public override void SetDefaults()

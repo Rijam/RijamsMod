@@ -58,3 +58,22 @@
 	* Improved world generation for placing the Belt in Wooden Chests (and now the Cobalt Protector Cudgel in Locked Golden Chests).
 	* Small Glow ring now has a low chance of generating in Wooden Chests.
 	* Fixed Living Sulfur Fire Block turning off the tile placement preview.
+
+1.1.3.0 - (August 28, 2022)
+	* Fixed Gore in multiplayer.
+	* Fixed Burglar's Ring working on bosses.
+	* Fixed Burglar's Ring not working in multiplayer! The sound effect still doesn't work, but the loot does!
+	* Added Skyware Armor. Designed to be post-EoC.
+	* Added Harpy Idol Cudgel.
+	* Added Firmament Harpy. Spawns post-Golem.
+	* Added Soaring Potion.
+	* Daybreak Gauntlet, Assemble Assemble, Gamut Apparatus, and Cosmic Sorcery are now Post-Moon Lord. They require Luminite Bars now.
+	* Naughty List now gives +1 minion and +1 sentry instead of +2 minions (affects upgrades too).
+	* Naughty Scarab now requires Beetle Husks to craft.
+	* Hailfire Pygmy Scarf, Daybreak Gauntlet, Assemble Assemble, Gamut Apparatus, and Cosmic Sorcery now also require the Ancient Manipulator as a crafting station.
+	* Harpy now sells Souls of Flight after all three mechanical bosses have been defeated instead of at the beginning of Hardmode.
+	* Harpy now sells Harpy Wings after Plantera has been defeated instead of after any mechanical boss.
+	* Too Many Balloons and Too Many Horseshoe Balloons now also require the Silly Balloon Machine as a crafting station.
+	* Too Many Horseshoe Balloons now requires Sparkle Slime Balloons.
+	* Nerfed Stardust Protector Cudgel. Reduced bonus defense from 15 to 13 and bonus damage reduction from 10% to 8%.
+	* Improved the Jousting Lances' code and fixed a few bugs.

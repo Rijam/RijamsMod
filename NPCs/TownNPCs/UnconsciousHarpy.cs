@@ -120,13 +120,16 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			return 0f;
 		}
-		public override void OnKill()
+		public override void HitEffect(int hitDirection, double damage)
 		{
-			Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Head").Type, 1f);
-			for (int k = 0; k < 2; k++)
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Arm").Type, 1f);
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Leg").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Head").Type, 1f);
+				for (int k = 0; k < 2; k++)
+				{
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Arm").Type, 1f);
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + "Harpy_Gore_Leg").Type, 1f);
+				}
 			}
 		}
 	}

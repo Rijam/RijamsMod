@@ -35,6 +35,10 @@ namespace RijamsMod
 		public bool fluffaloPet;
 		public bool hailfireBootsBoost;
 		public int flaskBuff = 0;
+		public int skywareArmorSetBonus = 0;
+		public int skywareArmorSetBonusTimer = 0;
+		public bool bleedingOut = false;
+		public bool soaringPotion;
 
 		public override void ResetEffects()
 		{
@@ -57,6 +61,10 @@ namespace RijamsMod
 			fluffaloPet = false;
 			hailfireBootsBoost = false;
 			flaskBuff = 0;
+			skywareArmorSetBonus = 0;
+			//skywareArmorSetBonusTimer = 0;
+			bleedingOut = false;
+			soaringPotion = false;
 		}
 		public override void UpdateDead()
 		{
@@ -97,6 +105,10 @@ namespace RijamsMod
 					Player.jumpSpeedBoost += 2f;
 					Player.moveSpeed += 2;
 				}
+			}
+			if (soaringPotion)
+			{
+				Player.wingTimeMax += 30;
 			}
 			if (hailfireBootsBoost)
             {
@@ -166,25 +178,58 @@ namespace RijamsMod
 				Player.lifeRegenTime = 0;
 				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second.
 				Player.lifeRegen -= 16;
-				//Player.allDamageMult *= 0.9f; @@
+				Player.GetDamage(DamageClass.Generic) *= 0.9f;
+			}
+			if (bleedingOut)
+			{
+				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects.
+				if (Player.lifeRegen > 0)
+				{
+					Player.lifeRegen = 0;
+				}
+				Player.lifeRegenTime = 0;
+				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 10 life lost per second.
+				Player.lifeRegen -= 20;
+				Player.moveSpeed *= 0.9f;
+				Player.GetAttackSpeed(DamageClass.Generic) *= 0.9f;
 			}
 		}
 		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
 		{
 			if (sulfuricAcid)
 			{
-				if (Main.rand.NextBool(4) && drawInfo.shadow == 0f)
+				if (drawInfo.drawPlayer.active && !drawInfo.drawPlayer.dead)
 				{
-					int dust = Dust.NewDust(drawInfo.drawPlayer.position - new Vector2(2f, 2f), Player.width + 4, Player.height + 4, ModContent.DustType<Dusts.SulfurDust>(), Player.velocity.X * 0.4f, Player.velocity.Y * 0.4f, 100, default, 2f);
-					Main.dust[dust].noGravity = true;
-					Main.dust[dust].velocity *= 1.8f;
-					Main.dust[dust].velocity.Y -= 0.5f;
-					//Main.playerDrawDust.Add(dust); @@
+					if (Main.rand.NextBool(4) && drawInfo.shadow == 0f)
+					{
+						int dust = Dust.NewDust(drawInfo.drawPlayer.position - new Vector2(2f, 2f), Player.width + 4, Player.height + 4, ModContent.DustType<Dusts.SulfurDust>(), Player.velocity.X * 0.4f, Player.velocity.Y * 0.4f, 100, default, 2f);
+						Main.dust[dust].noGravity = true;
+						Main.dust[dust].velocity *= 1.8f;
+						Main.dust[dust].velocity.Y -= 0.5f;
+						if (Main.rand.NextBool(4))
+						{
+							Main.dust[dust].noGravity = false;
+							Main.dust[dust].scale *= 0.5f;
+						}
+					}
+					r *= 1.0f;
+					g *= 1.0f;
+					b *= 0.0f;
+					fullBright = true;
 				}
-				r *= 1.0f;
-				g *= 1.0f;
-				b *= 0.0f;
-				fullBright = true;
+			}
+			if (bleedingOut)
+			{
+				if (drawInfo.drawPlayer.active && !drawInfo.drawPlayer.dead)
+				{
+					for (int i = 0; i < 5; i++)
+					{
+						Dust.NewDust(drawInfo.drawPlayer.position, drawInfo.drawPlayer.width, drawInfo.drawPlayer.height, DustID.Blood, 0, 0, 50, default, 1f);
+					}
+					r *= 1.0f;
+					g *= 0.4f;
+					b *= 0.4f;
+				}
 			}
 		}
         public override void PostUpdateRunSpeeds()
@@ -195,5 +240,5 @@ namespace RijamsMod
 				Player.maxRunSpeed += 2;
 			}
 		}
-    }
+	}
 }

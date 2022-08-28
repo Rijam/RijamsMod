@@ -72,7 +72,9 @@ namespace RijamsMod.Items.Accessories.Ranger
 				.AddIngredient(ItemID.MagmaStone, 1)
 				.AddIngredient(ModContent.ItemType<RocketBooster>(), 1)
 				.AddIngredient(ItemID.LunarBlockVortex, 5)
+				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 
 			CreateRecipe()
@@ -80,7 +82,9 @@ namespace RijamsMod.Items.Accessories.Ranger
 				.AddIngredient(ItemID.MoltenQuiver, 1)
 				.AddIngredient(ModContent.ItemType<RocketBooster>(), 1)
 				.AddIngredient(ItemID.LunarBlockVortex, 5)
+				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 
 			CreateRecipe()
@@ -89,7 +93,9 @@ namespace RijamsMod.Items.Accessories.Ranger
 				.AddIngredient(ItemID.MagmaStone, 1)
 				.AddIngredient(ModContent.ItemType<RocketBooster>(), 1)
 				.AddIngredient(ItemID.LunarBlockVortex, 5)
+				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
 	}

@@ -424,7 +424,8 @@ namespace RijamsMod.Items
             }
         }*/
 
-        private static readonly int[] whipPrefixes = new int[]
+        // Not needed anymore
+        /*private static readonly int[] whipPrefixes = new int[]
         {
             PrefixID.Broken, PrefixID.Terrible, PrefixID.Annoying, PrefixID.Unhappy,
             PrefixID.Shoddy, PrefixID.Shameful, PrefixID.Sluggish, PrefixID.Weak, PrefixID.Tiny, PrefixID.Slow, PrefixID.Dull, PrefixID.Damaged, PrefixID.Small,
@@ -455,7 +456,8 @@ namespace RijamsMod.Items
                 return rand.Next(joustingLancePrefixes);
             }
             return base.ChoosePrefix(item, rand);
-		}
+		}*/
+
         // Not needed anymore
         /*public override bool CanUseItem(Item item, Player player)
         {
@@ -470,8 +472,9 @@ namespace RijamsMod.Items
             return base.CanUseItem(item, player);
         }*/
 
-        private static readonly List<int> SupportMinionsDefenseBuffs = new() { ModContent.BuffType<CobaltProtectorBuff>(),
-            ModContent.BuffType<CrystalClusterBuff>(), ModContent.BuffType<FallenPaladinBuff>(), ModContent.BuffType<StardustProtectorBuff>() };
+        private static readonly List<int> SupportMinionsDefenseBuffs = new() { ModContent.BuffType<HarpyIdolBuff>(), 
+            ModContent.BuffType<CobaltProtectorBuff>(), ModContent.BuffType<CrystalClusterBuff>(), ModContent.BuffType<FallenPaladinBuff>(),
+            ModContent.BuffType<StardustProtectorBuff>() };
         public override bool CanUseItem(Item item, Player player)
         {
             if (item.ModItem is CudgelDefenseItem)

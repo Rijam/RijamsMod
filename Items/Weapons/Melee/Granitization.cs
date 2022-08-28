@@ -68,6 +68,9 @@ namespace RijamsMod.Items.Weapons.Melee
 			tooltips.Insert(index, new TooltipLine(Mod, "Speed", Math.Round(Item.shootSpeed * 2f * player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic), 3) + " firing speed"));
 			tooltips.Insert(index + 1, new TooltipLine(Mod, "Time", Math.Round(Item.useTime / player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic), 3) + " firing time"));
 		}
+
+		public override bool MeleePrefix() => true;
+
 		public override void AddRecipes()
 		{
 			CreateRecipe()

@@ -43,7 +43,9 @@ namespace RijamsMod.Items.Accessories.Melee
 				.AddIngredient(ModContent.ItemType<YoyoBackpack>(), 1)
 				.AddIngredient(ItemID.FleshKnuckles, 1)
 				.AddIngredient(ModContent.ItemType<DaybreakStone>(), 1)
+				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
 	}

@@ -93,13 +93,16 @@ namespace RijamsMod.NPCs.TownNPCs
 			});
 		}
 
-		public override void OnKill()
+		public override void HitEffect(int hitDirection, double damage)
 		{
-			Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
-			for (int k = 0; k < 2; k++)
+			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
+				for (int k = 0; k < 2; k++)
+				{
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+				}
 			}
 		}
 
@@ -109,10 +112,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				return true;
             }
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 
 		public override bool CheckConditions(int left, int right, int top, int bottom)
@@ -431,18 +431,18 @@ namespace RijamsMod.NPCs.TownNPCs
 					nextSlot++;
 				}
 			}
-			if (Main.hardMode)
+			if (NPCHelper.DownedMechBossAll())
 			{
 				shop.item[nextSlot].SetDefaults(ItemID.SoulofFlight);
 				shop.item[nextSlot].shopCustomPrice = 15000;
 				nextSlot++;
 			}
-			if (NPC.downedMechBossAny)
+			if (NPC.downedPlantBoss)
 			{
 				shop.item[nextSlot].SetDefaults(ItemID.HarpyWings);
 				nextSlot++;
 			}
-			if (NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3)
+			if (NPCHelper.DownedMechBossAll())
 			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<GuideToProperFlightTechniques>());
 				nextSlot++;

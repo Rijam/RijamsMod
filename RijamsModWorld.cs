@@ -155,7 +155,6 @@ namespace RijamsMod
         }
         public override void PostWorldGen()
         {
-            List<Chest> Chests = Main.chest.Where(checkfor => checkfor != null).ToList();
             for (int chestIndex = 0; chestIndex < Main.maxChests; chestIndex++)
             {
                 Chest chest = Main.chest[chestIndex];
@@ -164,7 +163,7 @@ namespace RijamsMod
                 
                 if (chest != null && Main.tile[chest.x, chest.y].TileType == TileID.Containers)
                 {
-                    // Chest IDs are from the Tile_26 image. They can easily be found on this wiki page https://terraria.wiki.gg/wiki/Tile_IDs
+                    // Chest IDs are from the Tile_21 image. They can easily be found on this wiki page https://terraria.wiki.gg/wiki/Tile_IDs
                     // Wooden Chest (0)
                     if (Main.tile[chest.x, chest.y].TileFrameX == 0 * 36)
 					{

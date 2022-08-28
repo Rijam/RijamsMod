@@ -42,7 +42,7 @@ namespace RijamsMod.NPCs.Enemies
             NPC.HitSound = SoundID.NPCHit2;
             NPC.DeathSound = SoundID.NPCDeath2;
             Banner = NPC.type;
-            BannerItem = ModContent.ItemType<Items.Placeable.SkeletonGunnerBanner>();
+            BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.SkeletonGunnerBanner>();
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
