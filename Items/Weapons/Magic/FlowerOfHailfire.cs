@@ -52,7 +52,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				}
 				int projType = ProjectileID.BallofFire;
 				if (i % 2 == 0)
-                {
+				{
 					projType = ProjectileID.BallofFrost;
 				}
 				Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, projType, damage, knockback, player.whoAmI);

@@ -24,7 +24,7 @@ namespace RijamsMod.Items
 		{
 			Item.width = 14;
 			Item.height = 14;
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
 			Item.useStyle = ItemUseStyleID.EatFood;
@@ -45,6 +45,7 @@ namespace RijamsMod.Items
 			Main.NewText("savedHarpy is currenty: " + RijamsModWorld.savedHarpy);
 			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArrived);
 			Main.NewText("hellTraderArrivable is currenty: " + RijamsModWorld.hellTraderArrivable);
+			Main.NewText("harpyJustRescued is currenty: " + RijamsModWorld.harpyJustRescued);
 			return true;
 		}
 	}
@@ -66,7 +67,7 @@ namespace RijamsMod.Items
 			Item.color = Color.Orange;
 			Item.width = 14;
 			Item.height = 14;
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
 			Item.useStyle = ItemUseStyleID.EatFood;
@@ -92,7 +93,7 @@ namespace RijamsMod.Items
 			RijamsModWorld.UpdateWorldBool();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
+		{
 			string currentState = RijamsModWorld.intTravQuestOddDevice.ToString();
 			tooltips.Add(new TooltipLine(Mod, "CurrentState", "intTravQuestOddDevice == " + currentState));
 		}
@@ -266,16 +267,19 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.savedHarpy = false;
+			RijamsModWorld.harpyJustRescued = false;
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.savedHarpy = true;
+			RijamsModWorld.harpyJustRescued = true;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.savedHarpy.ToString();
 			tooltips.Add(new TooltipLine(Mod, "CurrentState", "savedHarpy == " + currentState));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "harpyJustRescued == " + RijamsModWorld.harpyJustRescued.ToString()));
 		}
 	}
 	public class DebugHellTraderArrivable : DebugIntTravQuestOddDevice

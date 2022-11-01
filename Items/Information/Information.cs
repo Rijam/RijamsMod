@@ -184,7 +184,7 @@ namespace RijamsMod.Items.Information
 			bool isRightShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightShift);
 
 			if (isLeftShiftHeld)
-            {
+			{
 				//Life
 				tooltips.Add(new TooltipLine(Mod, "MaxLife", "Maximum life: " + StatCalc.StatLifeMax()));
 				tooltips.Add(new TooltipLine(Mod, "MaxTempLife", "Maximum temporary life: " + StatCalc.StatLifeMax2()));

@@ -8,15 +8,15 @@ namespace RijamsMod.Items.Placeable
 {
 	public class StripLight : ModItem
 	{
-        public override void SetStaticDefaults()
-        {
+		public override void SetStaticDefaults()
+		{
 			Tooltip.SetDefault("Paints will affect the color of the light\nDeep paints are brighter");
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.width = 16;
 			Item.height = 6;
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.noWet = false;
 			Item.useTurn = true;
 			Item.autoReuse = true;

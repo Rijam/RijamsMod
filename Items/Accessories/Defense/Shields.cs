@@ -8,7 +8,7 @@ namespace RijamsMod.Items.Accessories.Defense
 
 	[AutoloadEquip(EquipType.Shield)]
 	public class StellarShield : ModItem
-    {
+	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Stellar Shield");
@@ -36,7 +36,7 @@ namespace RijamsMod.Items.Accessories.Defense
 			player.longInvince = true;
 			player.panic = true;
 			if (!hideVisual)
-            {
+			{
 				player.starCloakItem = Item;
 				player.honeyCombItem = Item;
 				//player.GetModPlayer<RijamsModPlayer>().honeyComb = true;
@@ -100,7 +100,6 @@ namespace RijamsMod.Items.Accessories.Defense
 			{
 				player.starCloakItem = Item;
 				player.honeyCombItem = Item;
-				//player.GetModPlayer<RijamsModPlayer>().honeyComb = true;
 			}
 		}
 		public override void AddRecipes()
@@ -108,7 +107,6 @@ namespace RijamsMod.Items.Accessories.Defense
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<StellarShield>(), 1)
 				.AddIngredient(ItemID.AnkhCharm, 1)
-				.AddIngredient(ItemID.PocketMirror, 1)
 				.AddIngredient(ItemID.LunarBar, 2)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();
@@ -116,7 +114,6 @@ namespace RijamsMod.Items.Accessories.Defense
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<StellarShield>(), 1)
 				.AddIngredient(ItemID.AnkhShield, 1)
-				.AddIngredient(ItemID.PocketMirror, 1)
 				.AddIngredient(ItemID.LunarBar, 2)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();
@@ -127,7 +124,6 @@ namespace RijamsMod.Items.Accessories.Defense
 				.AddIngredient(ItemID.StarVeil, 1)
 				.AddIngredient(ItemID.SweetheartNecklace, 1)
 				.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 10)
-				.AddIngredient(ItemID.PocketMirror, 1)
 				.AddIngredient(ItemID.LunarBar, 2)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();

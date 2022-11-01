@@ -41,40 +41,20 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.SetShopValues(ItemRarityColor.Yellow8, Item.buyPrice(0, 75)); // A special method that sets the rarity and value.
 
 			Item.channel = true; // Channel is important for our projectile.
-		}
 
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-		{
-			// If the player has increased melee speed, it will effect the shootSpeed of the Jousting Lance which will cause the projectile to spawn further away than it is supposed to.
-			// This ensures that the velocity of the projectile is always the shootSpeed.
-			float inverseMeleeSpeed = 1f / (player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic));
-			velocity *= inverseMeleeSpeed;
+			// This will make sure our projectile completely disappears on hurt.
+			// It's not enough just to stop the channel, as the lance can still deal damage while being stowed
+			// If two players charge at each other, the first one to hit should cancel the other's lance
+			Item.StopAnimationOnHurt = true;
 		}
 
 		// This will allow our Jousting Lance to receive the same modifiers as melee weapons.
 		public override bool MeleePrefix() => true;
 	}
 
-	// This will cause the Jousting Lance to become inactive if the player is hit with it out. Make sure to change the itemType to your item.
+	// Spawn projectiles
 	public class HorsemansJoustingLancePlayer : ModPlayer
 	{
-		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)
-		{
-
-			int itemType = ModContent.ItemType<HorsemansJoustingLance>(); // Change this to your item
-
-			if (Player.inventory[Player.selectedItem].type == itemType)
-			{
-				for (int j = 0; j < Main.maxProjectiles; j++)
-				{
-					Projectile currentProj = Main.projectile[j];
-					if (currentProj.active && currentProj.owner == Player.whoAmI && currentProj.type == ItemLoader.GetItem(itemType).Item.shoot)
-					{
-						currentProj.active = false;
-					}
-				}
-			}
-		}
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
 		{
 			int itemType = ModContent.ItemType<HorsemansJoustingLance>();

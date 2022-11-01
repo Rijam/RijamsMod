@@ -27,5 +27,5 @@ namespace RijamsMod.Items.Armor.Vanity
 			Item.vanity = true;
 			Item.defense = 0;
 		}
-    }
+	}
 }

@@ -45,8 +45,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.AttackFrameCount[NPC.type] = 5;
 			NPCID.Sets.DangerDetectRange[NPC.type] = 1000;
 			NPCID.Sets.AttackType[NPC.type] = 1;
-			NPCID.Sets.AttackTime[NPC.type] = 30;
-			NPCID.Sets.AttackAverageChance[NPC.type] = 1;
+			NPCID.Sets.AttackTime[NPC.type] = 30; 
+			NPCID.Sets.AttackAverageChance[NPC.type] = 1; // Lower numbers actually make the NPC more likely to attack
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
 
 			// Influences how the NPC looks in the Bestiary
@@ -162,8 +162,15 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override List<string> SetNPCNameList()
 		{
-			if (!Main.dedServ) RijamsModWorld.intTravArrived = true; //Set the flag to true when a name is picked
-			else RijamsModWorld.SetIntTravArived();
+			if (!Main.dedServ)
+			{
+				RijamsModWorld.intTravArrived = true; //Set the flag to true when a name is picked
+			}
+			else 
+			{
+				RijamsModWorld.intTravArrived = true;
+				RijamsModWorld.UpdateWorldBool();
+			}
 			
 			return new List<string>()
 			{
@@ -179,6 +186,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			//Main.NewText("NPC.ai[1] " + NPC.ai[1]);
 			//Main.NewText("NPC.ai[2] " + NPC.ai[2]);
 			//Main.NewText("NPC.ai[3] " + NPC.ai[3]);
+			//Main.NewText("NPC.localAI[0] " + NPC.localAI[0]);
 			//Main.NewText("usedMicronWrapTime " + usedMicronWrapTime);
 			//Main.NewText("usedMicronWrap " + usedMicronWrap);
 
@@ -232,37 +240,25 @@ namespace RijamsMod.NPCs.TownNPCs
 		#endregion
 
 		#region PostDraw
-		//PostDraw taken from Torch Merchant by cace#7129
 		//Note about the glow mask, the sitting frame needs to be 2 visible pixels higher.
 		private readonly Asset<Texture2D> texture1 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Arm");
 		private readonly Asset<Texture2D> texture2 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Casual_Arm");
 
 		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
+			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
 			Asset<Texture2D> drawTexture = texture1;
 			if (NPC.altTexture == 1 && NPCHelper.AllQuestsCompleted())
 			{
 				drawTexture = texture2;
 			}
 
-			SpriteEffects spriteEffects = NPC.direction == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-			Vector2 screenOffset = new(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen)
-			{
-				screenOffset = Vector2.Zero;
-			}
-
 			Color color = NPC.GetAlpha(drawColor);
 
-			int spriteWidth = 40;
-			int spriteHeight = 56;
-			int x = NPC.frame.X;
-			int y = NPC.frame.Y;
-			if (NPC.frame.Y > 20 * spriteHeight) //Only draw while attacking
+			if (NPC.frame.Y > 20 * NPC.frame.Height) //Only draw while attacking
 			{
-				Vector2 posOffset = new(NPC.position.X - Main.screenPosition.X - (spriteWidth - 16f) / 2f - 191f, NPC.position.Y - Main.screenPosition.Y - 204f);
-				spriteBatch.Draw(drawTexture.Value, posOffset + screenOffset, (Rectangle?)new Rectangle(x, y, spriteWidth, spriteHeight), color, NPC.rotation, default, 1f, spriteEffects, 0f);
+				spriteBatch.Draw(drawTexture.Value, NPC.Center - screenPos - new Vector2(0, 4), NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 			}
 		}
 		#endregion
@@ -633,7 +629,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Send();
 				}
 				Mod.Logger.Debug("RijamsMod: Odd Device quest completed.");
-				PlayCompleteQuestSound();
+				PlayCompleteQuestSound(false);
 				return;
 			}
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<BlankDisplay>()) && RijamsModWorld.intTravQuestBlankDisplay == false)
@@ -654,7 +650,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Send();
 				}
 				Mod.Logger.Debug("RijamsMod: Blank Display quest completed.");
-				PlayCompleteQuestSound();
+				PlayCompleteQuestSound(false);
 				return;
 			}
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<TeleportationCore>()) && RijamsModWorld.intTravQuestTPCore == false)
@@ -674,7 +670,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Send();
 				}
 				Mod.Logger.Debug("RijamsMod: Teleportation Core quest completed.");
-				PlayCompleteQuestSound();
+				PlayCompleteQuestSound(false);
 				return;
 			}
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<BreadAndJelly>()) && RijamsModWorld.intTravQuestBreadAndJelly == false)
@@ -695,7 +691,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Send();
 				}
 				Mod.Logger.Debug("RijamsMod: Rye Jam quest completed.");
-				PlayCompleteQuestSound();
+				PlayCompleteQuestSound(true);
 				return;
 			}
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<MagicOxygenizer>()) && RijamsModWorld.intTravQuestMagicOxygenizer == false)
@@ -712,7 +708,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Send();
 				}
 				Mod.Logger.Debug("RijamsMod: Magic Oxygenizer quest completed.");
-				PlayCompleteQuestSound();
+				PlayCompleteQuestSound(false);
 				return;
 			}
 			if (Main.LocalPlayer.HasItem(ModContent.ItemType<PrimeThruster>()) && RijamsModWorld.intTravQuestPrimeThruster == false)
@@ -729,7 +725,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Send();
 				}
 				Mod.Logger.Debug("RijamsMod: Prime Thruster quest completed.");
-				PlayCompleteQuestSound();
+				PlayCompleteQuestSound(false);
 				return;
 			}
 			else
@@ -862,23 +858,31 @@ namespace RijamsMod.NPCs.TownNPCs
 				finalChat.Append(needTo);
 			}
 			if (secret)
-            {
+			{
 				finalChat.Append(completed2);
 			}
 
 			Main.npcChatText = finalChat.ToString();
 			if (NPCHelper.AllQuestsCompleted())
-            {
+			{
 				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
 			}
 			else
-            {
+			{
 				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
 			}
 		}
-		public void PlayCompleteQuestSound()
+		public void PlayCompleteQuestSound(bool secret)
 		{
-			SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/CelebrationJingle"));
+			// Play the second jingle if all the quests are completed
+			if (NPCHelper.AllQuestsCompleted() && !secret) 
+			{
+				SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/CelebrationJingle2"));
+			}
+			else
+			{
+				SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/CelebrationJingle"));
+			}
 		}
 		#endregion
 
@@ -1062,8 +1066,8 @@ namespace RijamsMod.NPCs.TownNPCs
 						break;
 				}
 			}
-            if (Main.LocalPlayer.HasItem(ModContent.ItemType<InformationInterface>()))
-            {
+			if (Main.LocalPlayer.HasItem(ModContent.ItemType<InformationInterface>()))
+			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.InformationInterfaceTile>());
 				shop.item[nextSlot].shopCustomPrice = 5000;
 				nextSlot++;
@@ -1085,7 +1089,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 			}
 			if (RijamsModWorld.intTravQuestPrimeThruster)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<RocketBooster>());
 				shop.item[nextSlot].shopCustomPrice = 200000;
 				nextSlot++;
@@ -1098,7 +1102,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.InterestingSphere>());
 			nextSlot++;
 			if (Main.hardMode)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.FluffaloEgg>());
 				nextSlot++;
 			}
@@ -1127,15 +1131,15 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (!Main.hardMode)
 			{
-			damage = 30;
+				damage = 30;
 			}
 			if (Main.hardMode && !NPC.downedMoonlord)
 			{
-			damage = 45;
+				damage = 45;
 			}
 			if (NPC.downedMoonlord)
 			{
-			damage = 60;
+				damage = 60;
 			}
 			knockback = 4f;
 		}

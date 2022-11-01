@@ -66,7 +66,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 			player.crimsonRegen = true;
 		}
 
-        public override void AddRecipes()
+		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.CrimtaneBar, 15)

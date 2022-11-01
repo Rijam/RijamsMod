@@ -282,7 +282,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Reinforced Summoner's Glove");
-			Tooltip.SetDefault("+12% All Summon speed\n+10% Whip size\n+5% whip damage\n+100% Summon knockback\n+4 Defense\nEnables auto swing for all summon weapons");
+			Tooltip.SetDefault("+12% All Summon speed\n+10% Whip size\n+5% Whip damage\n+100% Summon knockback\n+4 Defense\nEnables auto swing for all summon weapons");
 		}
 
 		public override void SetDefaults()

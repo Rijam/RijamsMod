@@ -8,15 +8,15 @@ namespace RijamsMod.Items.Placeable
 {
 	public class SulfurTorch : ModItem
 	{
-        public override void SetStaticDefaults()
-        {
+		public override void SetStaticDefaults()
+		{
 			Tooltip.SetDefault("Can be placed in water");
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.width = 10;
 			Item.height = 12;
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.holdStyle = 1;
 			Item.noWet = false;
 			Item.useTurn = true;

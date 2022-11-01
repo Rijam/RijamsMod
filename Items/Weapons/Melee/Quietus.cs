@@ -34,11 +34,11 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.QuietusProj>();
 			Item.shootSpeed = 16f;
-            if (!Main.dedServ)
-            {
+			if (!Main.dedServ)
+			{
 				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
 			}
-        }
+		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			if (player.CheckMana(20, true)) //Checks if the player has 20 mana and then consumes it. Benefits from decreased mana cost.
@@ -55,7 +55,7 @@ namespace RijamsMod.Items.Weapons.Melee
 				player.manaRegenDelay = (int)player.maxRegenDelay;
 			}
 			return false;
-        }
+		}
 		public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
 		{
 			if (player.CheckMana(20, false))
@@ -63,5 +63,5 @@ namespace RijamsMod.Items.Weapons.Melee
 				damage *= 2;
 			}
 		}
-    }
+	}
 }

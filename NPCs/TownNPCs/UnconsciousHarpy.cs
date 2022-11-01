@@ -71,7 +71,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			//From Spirit mod
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				NPC.homeless = false;
+				NPC.homeless = true;
 				NPC.homeTileX = -1;
 				NPC.homeTileY = -1;
 				NPC.netUpdate = true;
@@ -103,11 +103,12 @@ namespace RijamsMod.NPCs.TownNPCs
 		}
 
 		public void Rescue()
-        {
+		{
 			NPC.dontTakeDamage = false;
 			RijamsModWorld.savedHarpy = true;
 			RijamsModWorld.UpdateWorldBool();
 			NPC.Transform(ModContent.NPCType<Harpy>());
+			RijamsModWorld.harpyJustRescued = true;
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) //from Calamity's Vanities
 		{

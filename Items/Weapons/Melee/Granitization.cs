@@ -51,9 +51,9 @@ namespace RijamsMod.Items.Weapons.Melee
 			// Extra logic for the chain to adjust to item stats, unlike the Solar Eruption.
 			if (projectile.ModProjectile is GranitizationProj modProjectile)
 			{
-				modProjectile.firingSpeed = Item.shootSpeed * 2f * player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic);
-				modProjectile.firingAnimation = Item.useAnimation / player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic);
-				modProjectile.firingTime = Item.useTime / player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic);
+				modProjectile.firingSpeed = Item.shootSpeed * 2f * player.GetTotalAttackSpeed(DamageClass.Melee);
+				modProjectile.firingAnimation = Item.useAnimation / player.GetTotalAttackSpeed(DamageClass.Melee);
+				modProjectile.firingTime = Item.useTime / player.GetTotalAttackSpeed(DamageClass.Melee);
 			}
 			return false;
 		}
@@ -65,8 +65,8 @@ namespace RijamsMod.Items.Weapons.Melee
 			{
 				index += 2;
 			}
-			tooltips.Insert(index, new TooltipLine(Mod, "Speed", Math.Round(Item.shootSpeed * 2f * player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic), 3) + " firing speed"));
-			tooltips.Insert(index + 1, new TooltipLine(Mod, "Time", Math.Round(Item.useTime / player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic), 3) + " firing time"));
+			tooltips.Insert(index, new TooltipLine(Mod, "Speed", Math.Round(Item.shootSpeed * 2f * player.GetTotalAttackSpeed(DamageClass.Melee), 3) + " firing speed"));
+			tooltips.Insert(index + 1, new TooltipLine(Mod, "Time", Math.Round(Item.useTime / player.GetTotalAttackSpeed(DamageClass.Melee), 3) + " firing time"));
 		}
 
 		public override bool MeleePrefix() => true;

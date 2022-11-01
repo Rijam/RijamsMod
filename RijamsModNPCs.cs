@@ -32,9 +32,9 @@ namespace RijamsMod
 			bleedingOut = false;
 		}
 		public override bool SpecialOnKill(NPC npc)
-        {
-			bool worked = false;
-			Player workedPlayer = null;
+		{
+			bool burgRingWorked = false;
+			Player burgRingWorkedPlayer = null;
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
 				for (int i = 0; i < Main.maxPlayers; i++)
@@ -45,41 +45,73 @@ namespace RijamsMod
 						continue;
 					}
 					RijamsModPlayer moddedplayer = player.GetModPlayer<RijamsModPlayer>();
-					if (!moddedplayer.burglarsRing)
+					if (moddedplayer.burglarsRing || moddedplayer.warriorRing || moddedplayer.lifeSapperRing || moddedplayer.manaSapperRing)
 					{
-						continue;
-					}
-					// Mod.Logger.Debug($"Player {player.whoAmI} has Burglar's Ring");
-					// Mod.Logger.Debug($"NPC is: {npc.FullName}");
-					// Mod.Logger.Debug($"npc.lastInteraction is {npc.lastInteraction}");
-					// Mod.Logger.Debug($"player.lastCreatureHit is {player.lastCreatureHit}");
+						// Mod.Logger.Debug($"Player {player.whoAmI} has Burglar's Ring");
+						// Mod.Logger.Debug($"NPC is: {npc.FullName}");
+						// Mod.Logger.Debug($"npc.lastInteraction is {npc.lastInteraction}");
+						// Mod.Logger.Debug($"player.lastCreatureHit is {player.lastCreatureHit}");
 
-					// If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-					if (!npc.boss && !npc.immortal && !npc.dontCountMe && npc.active && npc.lastInteraction != Main.maxPlayers)
-					{
-						// Mod.Logger.Debug($"NPCLoot called for NPC Id: {npc.type}. Who Am I: {npc.whoAmI}. To banner: {Item.NPCtoBanner(npc.type)}");
-						npc.NPCLoot();
-						// Mod.Logger.Debug("Success?");
-						worked = true;
-						workedPlayer = player;
-						break;
+						if (npc.immortal || npc.dontCountMe || !npc.active || npc.lastInteraction == Main.maxPlayers)
+						{
+							continue;
+						}
+
+						// If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
+						if (moddedplayer.burglarsRing && !npc.boss)
+						{
+							// Mod.Logger.Debug($"NPCLoot called for NPC Id: {npc.type}. Who Am I: {npc.whoAmI}. To banner: {Item.NPCtoBanner(npc.type)}");
+							npc.NPCLoot();
+							// Mod.Logger.Debug("Success?");
+							burgRingWorked = true;
+							burgRingWorkedPlayer = player;
+						}
+
+						// If the player has the Warrior Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
+						if (moddedplayer.warriorRing)
+						{
+							int chance = (int)(20 * (1 / player.luck)); //1 in 20 chance (5%) but is affected by luck.
+							if (Main.rand.NextBool(chance))
+							{
+								player.AddBuff(ModContent.BuffType<Buffs.WarriorEnergy>(), 300);
+								if (Main.netMode != NetmodeID.Server)
+								{
+									SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/RingPowerup") { Volume = 0.75f });
+								}
+							}
+						}
+
+						// If the player has the Life Sapper Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
+						if (moddedplayer.lifeSapperRing)
+						{
+							int healAmount = 1 + (Math.Max(player.statLifeMax, player.statLifeMax2) / 100); // Base of 1 + 1 for every 100 max HP. Example: 100 HP = healed 2; 400 HP = healed 5; 
+							player.Heal(healAmount);
+						}
+
+						// If the player has the Life Sapper Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
+						if (moddedplayer.manaSapperRing)
+						{
+							int manaAmount = 2 + (Math.Max(player.statManaMax, player.statManaMax2) / 100); // Base of 2 + 1 for every 100 max mana. Example: 20 MP = healed 2; 200 MP = healed 4; 
+							player.statMana += manaAmount;
+							player.ManaEffect(manaAmount);
+						}
 					}
 				}
 			}
 			// Still doesn't play the sound in multiplayer
-			if (worked)
+			if (burgRingWorked)
 			{
-				Mod.Logger.Debug("Sound?");
+				// Mod.Logger.Debug("Sound?");
 				float volume = ModContent.GetInstance<RijamsModConfigServer>().BurglarsRingSound / 100f;
 				if (volume > 0)
 				{
-					if (Main.CurrentPlayer.whoAmI == workedPlayer.whoAmI)
+					if (Main.CurrentPlayer.whoAmI == burgRingWorkedPlayer.whoAmI)
 					{
-						SoundEngine.PlaySound(new("Terraria/Sounds/Item_35") { Volume = volume, Pitch = 0.75f }, workedPlayer.Center); // not being called?
+						SoundEngine.PlaySound(SoundID.Item35 with { Volume = volume, Pitch = 0.75f }, burgRingWorkedPlayer.Center); // not being called?
 					}
-					Mod.Logger.Debug("Main.CurrentPlayer.whoAmI " + Main.CurrentPlayer.whoAmI + " Main.LocalPlayer.whoAmI " + Main.LocalPlayer.whoAmI);
-					Mod.Logger.Debug("workedPlayer.whoAmI " + workedPlayer.whoAmI + " workedPlayer.name " + workedPlayer.name + " workedPlayer.Center " + workedPlayer.Center);
-					Mod.Logger.Debug("Played sound? volume = " + volume);
+					// Mod.Logger.Debug("Main.CurrentPlayer.whoAmI " + Main.CurrentPlayer.whoAmI + " Main.LocalPlayer.whoAmI " + Main.LocalPlayer.whoAmI);
+					// Mod.Logger.Debug("workedPlayer.whoAmI " + workedPlayer.whoAmI + " workedPlayer.name " + workedPlayer.name + " workedPlayer.Center " + workedPlayer.Center);
+					// Mod.Logger.Debug("Played sound? volume = " + volume);
 				}
 			}
 			return base.SpecialOnKill(npc);
@@ -136,13 +168,13 @@ namespace RijamsMod
 				}
 			}
 			if (npc.type == NPCID.Crimera)
-            {
+			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.DilapidatedCrimson.DilapidatedCrimsonHelmet>(), 525)); //0.19% chance
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.DilapidatedCrimson.DilapidatedCrimsonScalemail>(), 525));
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Armor.DilapidatedCrimson.DilapidatedCrimsonGreaves>(), 525));
 			}
 			if (npc.type == NPCID.PresentMimic)
-            {
+			{
 				npcLoot.Add(ItemDropRule.Common(ItemID.Present, 3, 1, 6));
 			}
 			if (npc.type == NPCID.Nutcracker)
@@ -223,7 +255,7 @@ namespace RijamsMod
 						npc.AddBuff(BuffID.Daybreak, 180);
 					}
 					else if (Main.rand.Next(8) <= 3)
-                    {
+					{
 						npc.AddBuff(BuffID.Daybreak, 120);
 					}
 					else if (Main.rand.Next(8) <= 3)
@@ -247,9 +279,16 @@ namespace RijamsMod
 						npc.AddBuff(BuffID.Frostburn, 120);
 					}
 				}
-				if (moddedplayer.flaskBuff == 1 && projectile.owner == Main.LocalPlayer.whoAmI && projectile.CountsAsClass(DamageClass.Melee))
+				if (projectile.owner == Main.LocalPlayer.whoAmI && (projectile.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[projectile.type]))
 				{
-					npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+					if (moddedplayer.flaskBuff == 1)
+					{
+						npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+					}
+					if (moddedplayer.flaskBuff == 2)
+					{
+						npc.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
+					}
 				}
 			}
 		}
@@ -273,7 +312,7 @@ namespace RijamsMod
 					npc.AddBuff(BuffID.Daybreak, 60);
 				}
 			}
-			if (moddedplayer.frostburnStone && item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && item.DamageType == DamageClass.Melee)
+			if (moddedplayer.frostburnStone && item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && item.CountsAsClass(DamageClass.Melee))
 			{
 				//Same chances as Magma Stone
 				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
@@ -290,9 +329,16 @@ namespace RijamsMod
 					npc.AddBuff(BuffID.Frostburn, 120);
 				}
 			}
-			if (moddedplayer.flaskBuff == 1 && item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && item.DamageType == DamageClass.Melee)
+			if (item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && (item.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[item.shoot]))
 			{
-				npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+				if (moddedplayer.flaskBuff == 1)
+				{
+					npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+				}
+				if (moddedplayer.flaskBuff == 2)
+				{
+					npc.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
+				}
 			}
 		}
 		/*public override void SetupShop(int type, Chest shop, ref int nextSlot)
@@ -366,14 +412,14 @@ namespace RijamsMod
 			}
 		}
 		/*public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-        {
-            if (sulfuricAcid)
-            {
+		{
+			if (sulfuricAcid)
+			{
 				damage = (int)(npc.defDamage * 0.5f);
 			}
-        }
-        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
-        {
+		}
+		public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+		{
 			if (sulfuricAcid)
 			{
 				damage = (int)(npc.defDamage * 0.5f);

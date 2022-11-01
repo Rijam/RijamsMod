@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System;
+using Terraria.Audio;
 
 namespace RijamsMod.Projectiles.Melee.Clubs
 {
@@ -51,8 +52,13 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			Projectile.hide = false; // Important when used alongside player.heldProj. "Hidden" projectiles have special draw conditions
 		}
 
+		SoundStyle clubSwing = new(nameof(RijamsMod) + "/Sounds/Item/ClubSwing") { Volume = 1f, PitchVariance = 0.05f, MaxInstances = 10 };
+		SoundStyle clubHit = new(nameof(RijamsMod) + "/Sounds/Item/ClubHit") { Volume = 0.5f, PitchVariance = 0.5f, MaxInstances = 10 };
+		SoundStyle clubSlam = new(nameof(RijamsMod) + "/Sounds/Item/ClubSlam") { Volume = 1f, PitchVariance = 0.05f, MaxInstances = 10 };
+
 		public override void AI()
 		{
+			int halfFiringAnimation = firingAnimation / 2;
 			Player player = Main.player[Projectile.owner];
 			// Main.NewText("Timer " + Timer);
 			// Main.NewText("Projectile.Center " + Projectile.Center);
@@ -61,6 +67,7 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			/*if (Timer == 0)
 			{
 				Main.NewText("firingAnimation " + firingAnimation);
+				Main.NewText("halfFiringAnimation " + halfFiringAnimation);
 			}*/
 
 			if (useTurn) // Still wouldn't recommend using useTurn
@@ -119,77 +126,135 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			Projectile.spriteDirection = Projectile.direction;
 
 			// Bug? Can miss targets between points when melee speed is super high.
-			if (Timer < firingAnimation / 3)
+			if (Timer <= halfFiringAnimation)
 			{
-				
-				Projectile.frame = 0;
-				Timer2++;
-				Vector2 center = Projectile.Center;
-				center.X = MathHelper.Lerp(CalcFirstPoint(player).X, CalcSecondPoint(player).X, Timer2 / (firingTime / 3));
-				center.Y = MathHelper.Lerp(CalcFirstPoint(player).Y, CalcSecondPoint(player).Y, Timer2 / (firingTime / 3));
-				// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 3));
-				Projectile.Center = center;
+				if (Timer < halfFiringAnimation / 3)
+				{
+					Projectile.frame = 0;
+					Timer2++;
+					Vector2 center = Projectile.Center;
+					center.X = MathHelper.Lerp(CalcFirstPoint(player).X, CalcSecondPoint(player).X, Timer2 / (firingTime / 3f));
+					center.Y = MathHelper.Lerp(CalcFirstPoint(player).Y, CalcSecondPoint(player).Y, Timer2 / (firingTime / 3f));
+					// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 3));
+					Projectile.Center = center;
+				}
+				else if (Timer == halfFiringAnimation / 3)
+				{
+					Timer2 = 0;
+					Projectile.Center = CalcSecondPoint(player);
+					// Main.NewText("----");
+				}
+				if (Timer > halfFiringAnimation / 3 && Timer < halfFiringAnimation / 2)
+				{
+					Projectile.frame = 1;
+					Timer2++;
+					Vector2 center = Projectile.Center;
+					center.X = MathHelper.Lerp(CalcSecondPoint(player).X, CalcThirdPoint(player).X, Timer2 / (firingTime / 5f));
+					center.Y = MathHelper.Lerp(CalcSecondPoint(player).Y, CalcThirdPoint(player).Y, Timer2 / (firingTime / 5f));
+					// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 5));
+					Projectile.Center = center;
+				}
+				else if (Timer == halfFiringAnimation / 2)
+				{
+					Timer2 = 0;
+					Projectile.Center = CalcThirdPoint(player);
+					// Main.NewText("----");
+				}
+				if (Timer > halfFiringAnimation / 2 && Timer <= (halfFiringAnimation * 4 / 5))
+				{
+					Projectile.frame = 2;
+					Timer2++;
+					Vector2 center = Projectile.Center;
+					center.X = MathHelper.Lerp(CalcThirdPoint(player).X, CalcFourthPoint(player).X, Timer2 / (firingTime / 3f));
+					center.Y = MathHelper.Lerp(CalcThirdPoint(player).Y, CalcFourthPoint(player).Y, Timer2 / (firingTime / 3f));
+					// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 3));
+					Projectile.Center = center;
+				}
+				else if (Timer > halfFiringAnimation * 4 / 5)
+				{
+					Timer2 = 0;
+					Projectile.Center = CalcFourthPoint(player);
+				}
 			}
-			else if (Timer == firingAnimation / 3)
+			else
 			{
-				Timer2 = 0;
-				Projectile.Center = CalcSecondPoint(player);
-				// Main.NewText("----");
-			}
-			if (Timer > firingAnimation / 3 && Timer < firingAnimation / 2)
-			{
-				Projectile.frame = 1;
-				Timer2++;
-				Vector2 center = Projectile.Center;
-				center.X = MathHelper.Lerp(CalcSecondPoint(player).X, CalcThirdPoint(player).X, Timer2 / (firingTime / 5));
-				center.Y = MathHelper.Lerp(CalcSecondPoint(player).Y, CalcThirdPoint(player).Y, Timer2 / (firingTime / 5));
-				// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 5));
-				Projectile.Center = center;
-			}
-			else if (Timer == firingAnimation / 2)
-			{
-				Timer2 = 0;
-				Projectile.Center = CalcThirdPoint(player);
-				// Main.NewText("----");
-			}
-			if (Timer > firingAnimation / 2 && Timer < (firingAnimation * 4 / 5))
-			{
-				Projectile.frame = 2;
-				Timer2++;
-				Vector2 center = Projectile.Center;
-				center.X = MathHelper.Lerp(CalcThirdPoint(player).X, CalcFourthPoint(player).X, Timer2 / (firingTime / 3));
-				center.Y = MathHelper.Lerp(CalcThirdPoint(player).Y, CalcFourthPoint(player).Y, Timer2 / (firingTime / 3));
-				// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 3));
-				Projectile.Center = center;
-			}
-			else if (Timer > firingAnimation * 4 / 5)
-			{
-				Timer2 = 0;
-				Projectile.Center = CalcFourthPoint(player);
+				int halfTimer = Timer - halfFiringAnimation;
+				// Main.NewText("Timer - halfFiringAnimation " + halfTimer);
+				if (Timer == halfFiringAnimation + 1)
+				{
+					SoundEngine.PlaySound(clubSwing, Projectile.Center);
+				}
+				if (halfTimer < halfFiringAnimation / 3)
+				{
+					Projectile.frame = 2;
+					Timer2++;
+					Vector2 center = Projectile.Center;
+					center.X = MathHelper.Lerp(CalcFourthPoint(player).X, CalcThirdPoint(player).X, Timer2 / (firingTime / 3f));
+					center.Y = MathHelper.Lerp(CalcFourthPoint(player).Y, CalcThirdPoint(player).Y, Timer2 / (firingTime / 3f));
+					// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 3));
+					Projectile.Center = center;
+				}
+				else if (halfTimer == halfFiringAnimation / 3)
+				{
+					Timer2 = 0;
+					Projectile.Center = CalcSecondPoint(player);
+					// Main.NewText("----");
+				}
+				if (halfTimer > halfFiringAnimation / 3 && halfTimer < halfFiringAnimation / 2)
+				{
+					Projectile.frame = 1;
+					Timer2++;
+					Vector2 center = Projectile.Center;
+					center.X = MathHelper.Lerp(CalcThirdPoint(player).X, CalcSecondPoint(player).X, Timer2 / (firingTime / 5f));
+					center.Y = MathHelper.Lerp(CalcThirdPoint(player).Y, CalcSecondPoint(player).Y, Timer2 / (firingTime / 5f));
+					// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 5));
+					Projectile.Center = center;
+				}
+				else if (halfTimer == halfFiringAnimation / 2)
+				{
+					Timer2 = 0;
+					Projectile.Center = CalcThirdPoint(player);
+					// Main.NewText("----");
+				}
+				if (halfTimer > halfFiringAnimation / 2 && halfTimer <= (halfFiringAnimation * 4 / 5))
+				{
+					Projectile.frame = 0;
+					Timer2++;
+					Vector2 center = Projectile.Center;
+					center.X = MathHelper.Lerp(CalcSecondPoint(player).X, CalcFirstPoint(player).X, Timer2 / (firingTime / 3f));
+					center.Y = MathHelper.Lerp(CalcSecondPoint(player).Y, CalcFirstPoint(player).Y, Timer2 / (firingTime / 3f));
+					// Main.NewText("Timer2 out of given time: " + Timer2 + " " + (firingTime / 3));
+					Projectile.Center = center;
+				}
+				else if (halfTimer > (halfFiringAnimation * 4 / 5))
+				{
+					Timer2 = 0;
+					Projectile.Center = CalcFirstPoint(player);
+				}
 			}
 		}
 
 		private Vector2 CalcFirstPoint(Player player)
 		{
-			Vector2 point = player.Center + new Vector2(5 * player.direction, 20);
+			Vector2 point = player.Center + new Vector2(5 * player.direction, 20 * player.gravDir);
 			Vector2 origin = player.Center;
 			return Vector2.Transform(point - origin, Matrix.CreateRotationZ(Projectile.rotation)) + origin;
 		}
 		private Vector2 CalcSecondPoint(Player player)
 		{
-			Vector2 point = player.Center + new Vector2(4 * 16 * player.direction, 15);
+			Vector2 point = player.Center + new Vector2(4 * 16 * player.direction, 15 * player.gravDir);
 			Vector2 origin = player.Center;
 			return Vector2.Transform(point - origin, Matrix.CreateRotationZ(Projectile.rotation)) + origin;
 		}
 		private Vector2 CalcThirdPoint(Player player)
 		{
-			Vector2 point = player.Center + new Vector2(6 * 16 * player.direction, -2);
+			Vector2 point = player.Center + new Vector2(6 * 16 * player.direction, -2 * player.gravDir);
 			Vector2 origin = player.Center;
 			return Vector2.Transform(point - origin, Matrix.CreateRotationZ(Projectile.rotation)) + origin;
 		}
 		private Vector2 CalcFourthPoint(Player player)
 		{
-			Vector2 point = player.Center + new Vector2(3.15f * 16 * player.direction, -3.75f * 16);
+			Vector2 point = player.Center + new Vector2(3.15f * 16 * player.direction, -3.75f * 16 * player.gravDir);
 			Vector2 origin = player.Center;
 			return Vector2.Transform(point - origin, Matrix.CreateRotationZ(Projectile.rotation)) + origin;
 		}
@@ -199,6 +264,21 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 
 		public override bool? CanCutTiles() => true;
 
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			if (damage > 0)
+			{
+				SoundEngine.PlaySound(clubHit, Projectile.Center);
+			}
+		}
+		public override void OnHitPvp(Player target, int damage, bool crit)
+		{
+			if (damage > 0)
+			{
+				SoundEngine.PlaySound(clubHit, Projectile.Center);
+			}
+		}
+
 		// We need to draw the projectile manually. If you don't include this, the Jousting Lance will not be aligned with the player.
 		public override bool PreDraw(ref Color lightColor)
 		{
@@ -207,12 +287,17 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			Player owner = Main.player[Projectile.owner];
 
 			// SpriteEffects change which direction the sprite is drawn.
-			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+			SpriteEffects spriteEffects = (Projectile.spriteDirection <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			if (owner.gravDir == -1f)
+			{
+				spriteEffects |= SpriteEffects.FlipVertically;
+			}
 
 			// Get texture of projectile
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
-			Texture2D texture2 = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Melee/Clubs/" + Name + "Background").Value;
-			Texture2D texture3 = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Melee/Clubs/" + Name + "SwooshUp").Value;
+			Texture2D texBackground = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Melee/Clubs/" + Name + "Background").Value;
+			Texture2D texSwooshUp = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Melee/Clubs/" + Name + "SwooshUp").Value;
+			Texture2D texSwooshDown = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Melee/Clubs/" + Name + "SwooshDown").Value;
 
 			// Get the currently selected frame on the texture.
 			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
@@ -247,7 +332,7 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 					CalcFourthPoint(owner) - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 					Projectile.Hitbox, Color.Magenta * 0.25f, 0, Projectile.Hitbox.Size() / 2, Projectile.scale, spriteEffects, 0);
 
-				Main.EntitySpriteDraw(texture2,
+				Main.EntitySpriteDraw(texBackground,
 					position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 					sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 			}
@@ -256,9 +341,18 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 
-			Main.EntitySpriteDraw(texture3,
-				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
+			if (Timer < (firingAnimation / 2))
+			{
+				Main.EntitySpriteDraw(texSwooshUp,
+					position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+					sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
+			}
+			else
+			{
+				Main.EntitySpriteDraw(texSwooshDown,
+					position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+					sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
+			}
 
 			if (drawExtra)
 			{

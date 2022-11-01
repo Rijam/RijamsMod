@@ -36,7 +36,7 @@ namespace RijamsMod.Items.Armor
 			player.GetDamage(DamageClass.Ranged) += 0.1f;
 		}
 		public override void ArmorSetShadows(Player player)
-        {
+		{
 			player.armorEffectDrawShadow = true;
 		}
 

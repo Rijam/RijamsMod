@@ -6,11 +6,11 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 {
 	public class SulfurBullet : ModItem
 	{
-        public override void SetStaticDefaults()
-        {
+		public override void SetStaticDefaults()
+		{
 			Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.MusketBall);
 			Item.damage = 11;

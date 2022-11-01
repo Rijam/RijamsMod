@@ -17,6 +17,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			DisplayName.SetDefault("Dark Soldier");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BoneThrowingSkeleton];
+			NPCID.Sets.AllowDoorInteraction[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
@@ -322,7 +323,7 @@ namespace RijamsMod.NPCs.Enemies
 									alertSoundCounter += 5;
 								}
 								if (alertSoundCounter > 0)
-                                {
+								{
 									alertSoundCounter--;
 								}
 								if (alertSoundCounter < 0)
@@ -429,31 +430,6 @@ namespace RijamsMod.NPCs.Enemies
 				int numNPCPosYAndStuff = (int)((vectorNPCPos.Y + (float)NPC.height - 1f) / 16f);
 				if (WorldGen.InWorld(numNPCPosXAndStuff, numNPCPosYAndStuff, 4))
 				{
-					// readonly?
-					/*if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff] == null)
-					{
-						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff] = default(Tile);
-					}
-					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1] == null)
-					{
-						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1] = default(Tile);
-					}
-					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2] == null)
-					{
-						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 2] = default(Tile);
-					}
-					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3] == null)
-					{
-						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 3] = default(Tile);
-					}
-					if (Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff + 1] == null)
-					{
-						Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff + 1] = default(Tile);
-					}
-					if (Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3] == null)
-					{
-						Main.tile[numNPCPosXAndStuff - numNPCVelocityX, numNPCPosYAndStuff - 3] = default(Tile);
-					}*/
 					if ((float)(numNPCPosXAndStuff * 16) < vectorNPCPos.X + (float)NPC.width && (float)(numNPCPosXAndStuff * 16 + 16) > vectorNPCPos.X && 
 						((Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].HasUnactuatedTile && !Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].TopSlope && 
 						!Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff - 1].TopSlope && Main.tileSolid[Main.tile[numNPCPosXAndStuff, numNPCPosYAndStuff].TileType] && 
@@ -504,40 +480,6 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				int numNPCPosXWidthDirect = (int)((NPC.position.X + (float)(NPC.width / 2) + (float)(15 * NPC.direction)) / 16f);
 				int numNPCPosYandHeight = (int)((NPC.position.Y + (float)NPC.height - 15f) / 16f);
-				// readonly?
-				/*if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight] = default(Tile);
-				}
-				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1] = default(Tile);
-				}
-				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 2] = default(Tile);
-				}
-				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 3] = default(Tile);
-				}
-				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1] = default(Tile);
-				}
-				if (Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight - 1] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight - 1] = default(Tile);
-				}
-				if (Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight + 1] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect + NPC.direction, numNPCPosYandHeight + 1] = default(Tile);
-				}
-				if (Main.tile[numNPCPosXWidthDirect - NPC.direction, numNPCPosYandHeight + 1] == null)
-				{
-					Main.tile[numNPCPosXWidthDirect - NPC.direction, numNPCPosYandHeight + 1] = default(Tile);
-				}
-				Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight + 1].IsHalfBlock;*/
 				if (Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].HasUnactuatedTile && (TileLoader.IsClosedDoor(Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1]) || Main.tile[numNPCPosXWidthDirect, numNPCPosYandHeight - 1].TileType == TileID.TallGateClosed) && flagIfCorrectEnemyFalse)
 				{
 					NPC.ai[2] += 1f;
@@ -710,9 +652,9 @@ namespace RijamsMod.NPCs.Enemies
 				return 0.3f;
 			}
 			if ((spawnInfo.SpawnTileY <= Main.maxTilesY - 200 && spawnInfo.SpawnTileY > (Main.rockLayer + Main.maxTilesY - 200) / 2)) //lower half of the caverns?
-            {
+			{
 				return 0.08f;
-            }
+			}
 			else
 			{
 				return 0f;

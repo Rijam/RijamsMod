@@ -28,70 +28,7 @@ namespace RijamsMod
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
 		[Header("[c/00FF00:Server Options]")]
-		/*[Label("[i:3122]   Sell Fisherman NPC Modded Items")]
-		[Tooltip("This option toggles if the Fisherman will sell the custom items added by this mod.\n" +
-			"  When On: The Fisherman WILL sell the custom items added by this mod.\n" +
-			"  When Off: The Fisherman WILL NOT sell the custom items added by this mod.\n" +
-			"    Turn Off to remove the modded items.\n" +
-			"Default value: On\n" +
-			"Reload not required.")]
-		[DefaultValue(true)]
-		public bool SellModdedItems { get; set; }
-
-		[Label("[i:2002]   Sell Bait")]
-		[Tooltip("This option toggles if the Fisherman will sell bait.\n" +
-			"  When On: The Fisherman WILL sell bait.\n" +
-			"  When Off: The Fisherman WILL NOT sell bait.\n" +
-			"    Turn Off to remove bait from the shop.\n" +
-			"Default value: On\n" +
-			"Reload not required.")]
-		[DefaultValue(true)]
-		public bool SellBait { get; set; }
-
-		[Label("[i:2290]   Sell Fish")]
-		[Tooltip("This option toggles if the Fisherman will sell fish.\n" +
-			"  When On: The Fisherman WILL sell fish.\n" +
-			"  When Off: The Fisherman WILL NOT sell fish.\n" +
-			"    Turn Off to remove fish from the shop.\n" +
-			"Default value: On\n" +
-			"Reload not required.")]
-		[DefaultValue(true)]
-		public bool SellFish { get; set; }
-
-		[Label("[i:2291]   Sell Fishing Rods")]
-		[Tooltip("This option toggles if the Fisherman will sell fishing rods.\n" +
-			"  When On: The Fisherman WILL sell fishing rods.\n" +
-			"  When Off: The Fisherman WILL NOT sell fishing rods.\n" +
-			"    Turn Off to remove fishing rods from the shop.\n" +
-			"Default value: On\n" +
-			"Reload not required.")]
-		[DefaultValue(true)]
-		public bool SellFishingRods { get; set; }
-
-		[Label("[i:3120]   Sell Extra Items")]
-		[Tooltip("This option toggles if the Fisherman will sell extra items such as:\n" +
-			"fishing accessories, Fish Finder parts, and vanity items.\n" +
-			"  When On: The Fisherman will sell extra items.\n" +
-			"  When Off: The Fisherman WILL NOT sell extra items.\n" +
-			"    Turn Off to remove extra items from the shop.\n" +
-			"Default value: On\n" +
-			"Reload not required.")]
-		[DefaultValue(true)]
-		public bool SellExtraItems { get; set; }
-
-		[Label("[i:87]   Shop Price Scaling")]
-		[Tooltip("This option sets the scaling for the prices in the Fisherman's shop.\n" +
-			"  50 means half the normal price\n" +
-			"  200 means double the normal price.\n" +
-			"    Change this value if you want the shop to be cheaper or more expensive.\n" +
-			"Default value: 100\n" +
-			"Reload not required.")]
-		[Increment(1)]
-		[Range(50, 200)]
-		[DefaultValue(100)]
-		[Slider]
-		public int ShopPriceScaling { get; set; }*/
-
+		
 		[Label("[i:848]   Vanilla Vanity to Armor Changes")]
 		[Tooltip("This option toggles if certain vanilla vanity sets are changed into armor sets.\n" +
 			"  When On: The follow vanity sets will be changed to armor.\n" +

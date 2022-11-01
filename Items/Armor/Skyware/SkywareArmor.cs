@@ -186,7 +186,7 @@ namespace RijamsMod.Items.Armor.Skyware
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.GetDamage(DamageClass.Magic) += 0.05f;
+			player.GetDamage(DamageClass.Summon) += 0.05f;
 			player.maxMinions++;
 		}
 

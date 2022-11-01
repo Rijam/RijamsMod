@@ -68,17 +68,17 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				Main.invasionSize -= 1;
 				if (Main.invasionSize < 0)
-                {
+				{
 					Main.invasionSize = 0;
 				}
 				if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
+				{
 					//icon: 1 = Frost Moon, 2 = Pumpkin Moon, 3 = Old One's Army, 4 = Goblin Army, 5 = Frost Legion, 6 = Pirate Invasion, 7 = Martian Madness
 					//Any other number (including 0) will be a generic invasion icon
 					Main.ReportInvasionProgress(Main.invasionSizeStart - Main.invasionSize, Main.invasionSizeStart, 5, 0);
 				}
 				if (Main.netMode == NetmodeID.Server)
-                {
+				{
 					NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, Main.invasionProgress, (float)Main.invasionProgressMax, (float)Main.invasionProgressIcon, 0f, 0, 0, 0);
 				}
 			}
@@ -115,7 +115,7 @@ namespace RijamsMod.NPCs.Enemies
 							int projectileType = ProjectileID.BulletSnowman;
 							SoundEngine.PlaySound(SoundID.Item36, NPC.position);
 							for (int i=0; i < 3; i++)
-                            {
+							{
 								int newProjectile = Projectile.NewProjectile(Entity.GetSource_FromAI(), projectileVector.X, projectileVector.Y, speedX, speedY, projectileType, projectileDamage, 0.5f, Main.myPlayer);
 								Main.projectile[newProjectile].ai[0] = 2f;
 								Main.projectile[newProjectile].timeLeft = 300;
@@ -177,11 +177,11 @@ namespace RijamsMod.NPCs.Enemies
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (SpawnCondition.FrostLegion.Active)
-            {
+			{
 				return SpawnCondition.FrostLegion.Chance * 0.2f;
 			}
 			else
-            {
+			{
 				return 0;
 			}
 		}

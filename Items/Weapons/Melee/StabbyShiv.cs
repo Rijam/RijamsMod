@@ -65,9 +65,9 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.noUseGraphic = true; // The sword is actually a "projectile", so the item should not be visible when used
 			Item.noMelee = true; // The projectile will do the damage and not the item
 			if (!Main.dedServ)
-            {
+			{
 				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
-            }
+			}
 
 			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.FrostyShivProjectile>(); // The projectile is what makes a shortsword work
 			Item.shootSpeed = 2.1f; // This value bleeds into the behavior of the projectile as velocity, keep that in mind when tweaking values

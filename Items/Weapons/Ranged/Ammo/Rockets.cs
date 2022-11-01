@@ -18,11 +18,11 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 			Item.width = 54;
 			Item.height = 32;
 			Item.maxStack = 1;
-			Item.consumable = false;             //You need to set the item consumable so that the ammo would automatically consumed
+			Item.consumable = false;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.value = 100000;
 			Item.rare = ItemRarityID.Green;
 			//item.shoot = ProjectileID.RocketI;   //The projectile shoot when your weapon using this ammo
-			//item.ammo = AmmoID.Rocket;              //The ammo class this ammo belongs to.
+			//item.ammo = AmmoID.Rocket;			  //The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()

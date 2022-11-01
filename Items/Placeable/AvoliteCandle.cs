@@ -8,15 +8,15 @@ namespace RijamsMod.Items.Placeable
 {
 	public class AvoliteCandle : ModItem
 	{
-        public override void SetStaticDefaults()
-        {
+		public override void SetStaticDefaults()
+		{
 			Tooltip.SetDefault("'The crystal never runs out of light'");
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.width = 16;
 			Item.height = 16;
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.holdStyle = ItemHoldStyleID.HoldFront;
 			Item.noWet = false;
 			Item.useTurn = true;

@@ -164,13 +164,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (type == NPCID.ArmsDealer)
 			{
 				if ((!Main.dayTime && NPC.downedBoss2) || Main.hardMode) //EoW or BoC
-                {
+				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>());
 					shop.item[nextSlot].shopCustomPrice = 40;
 					nextSlot++;
 				}
 				if (Main.hardMode)
-                {
+				{
 					shop.item[nextSlot].SetDefaults(ItemID.AmmoBox);
 					shop.item[nextSlot].shopCustomPrice = 150000;
 					nextSlot++;
@@ -244,7 +244,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					nextSlot++;
 				}
 				if (interTravel > 0)
-                {
+				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Dyes.BeamDye>());
 					nextSlot++;
 				}
@@ -300,7 +300,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					nextSlot++;
 				}
 				if (NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !Main.hardMode)
-                {
+				{
 					shop.item[nextSlot].SetDefaults(ItemID.FireBlossomPlanterBox);
 					shop.item[nextSlot].shopCustomPrice = 100;
 					nextSlot++;
@@ -546,6 +546,12 @@ namespace RijamsMod.NPCs.TownNPCs
 					hellTraderHappiness.SetNPCAffection(archmageType, AffectionLevel.Like);
 
 					brimstoneWitchHappiness.SetNPCAffection(hellTrader, AffectionLevel.Like);
+				}
+
+				if (ModLoader.TryGetMod("LivingWorldMod", out Mod livingWorldMod) && townNPCsCrossModSupport)
+				{
+					int harpyVillagerType = livingWorldMod.Find<ModNPC>("HarpyVillager").Type;
+					harpyHappiness.SetNPCAffection(harpyVillagerType, AffectionLevel.Love);
 				}
 			}
 		}

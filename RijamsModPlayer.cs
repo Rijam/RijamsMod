@@ -29,7 +29,6 @@ namespace RijamsMod
 		public bool sulfuricAcid;
 		public bool ancientSet;
 		public bool frostyRose;
-		//public bool honeyComb;
 		public bool yoyoBackpack;
 		public bool snuggetPet;
 		public bool fluffaloPet;
@@ -39,6 +38,9 @@ namespace RijamsMod
 		public int skywareArmorSetBonusTimer = 0;
 		public bool bleedingOut = false;
 		public bool soaringPotion;
+		public bool warriorRing;
+		public bool lifeSapperRing;
+		public bool manaSapperRing;
 
 		public override void ResetEffects()
 		{
@@ -65,6 +67,9 @@ namespace RijamsMod
 			//skywareArmorSetBonusTimer = 0;
 			bleedingOut = false;
 			soaringPotion = false;
+			warriorRing = false;
+			lifeSapperRing = false;
+			manaSapperRing = false;
 		}
 		public override void UpdateDead()
 		{
@@ -111,13 +116,13 @@ namespace RijamsMod
 				Player.wingTimeMax += 30;
 			}
 			if (hailfireBootsBoost)
-            {
+			{
 				if (Player.wingTimeMax > 0)
 				{
 					Player.wingTimeMax += 30;
 				}
 				if (Player.rocketTimeMax > 0)
-                {
+				{
 					Player.rocketTimeMax = 8;
 				}
 			}
@@ -152,14 +157,14 @@ namespace RijamsMod
 					}
 				}
 				/*if (player.wet == false || player.honeyWet == false || player.lavaWet == false)
-                {
+				{
 					breathingPackTimer = 0;
 					//breathingPackUsed = false;
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = false;
 				}*/
 			}
 			if (yoyoBackpack)
-            {
+			{
 				Player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6);
 				Player.yoyoGlove = true;
 				Player.yoyoString = true;
@@ -232,10 +237,10 @@ namespace RijamsMod
 				}
 			}
 		}
-        public override void PostUpdateRunSpeeds()
-        {
-            if (ancientSet)
-            {
+		public override void PostUpdateRunSpeeds()
+		{
+			if (ancientSet)
+			{
 				Player.runAcceleration += 0.1f;
 				Player.maxRunSpeed += 2;
 			}

@@ -33,7 +33,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.shoot = ModContent.ProjectileType<SulfurSphere>();
 			Item.value = Item.sellPrice(gold: 2);
 		}
-        public override void AddRecipes()
+		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.SpellTome, 1)

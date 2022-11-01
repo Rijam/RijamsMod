@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.UI
 {
-	/*public class MyUICommandOpen : ModCommand
+	public class MyUICommandOpen : ModCommand
 	{
 		public override CommandType Type
 			=> CommandType.Chat;
@@ -16,7 +16,7 @@ namespace RijamsMod.UI
 
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			TheUI.Visible = true;
+			MatterManipulatorUI.Visible = true;
 		}
 	}
 	public class MyUICommandClose : ModCommand
@@ -32,7 +32,7 @@ namespace RijamsMod.UI
 
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			TheUI.Visible = false;
+			MatterManipulatorUI.Visible = false;
 		}
-	}*/
+	}
 }

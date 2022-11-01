@@ -6,11 +6,11 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 {
 	public class BloodyArrow : ModItem
 	{
-        public override void SetStaticDefaults()
-        {
+		public override void SetStaticDefaults()
+		{
 			Tooltip.SetDefault("7% damage penalty per enemy pierced");
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.UnholyArrow);
 			Item.damage = 14;

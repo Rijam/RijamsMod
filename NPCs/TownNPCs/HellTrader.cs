@@ -24,7 +24,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override void BossHeadSlot(ref int index)
 		{
 			if (!RijamsModWorld.hellTraderArrivable)
-            {
+			{
 				index = -1;
 			}
 		}
@@ -41,6 +41,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.AttackTime[NPC.type] = 40;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 10;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+
+			NPCID.Sets.MagicAuraColor[Type] = Color.Yellow;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
@@ -136,7 +138,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (Main.hardMode && RijamsModWorld.hellTraderArrivable && NPC.CountNPCS(ModContent.NPCType<HellTrader>()) < 1)
 			{
 				return true;
-            }
+			}
 			else
 			{
 				return false;
@@ -163,30 +165,30 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(NPC.type) && spawnInfo.Player.ZoneUnderworldHeight)
-            {
+			{
 				if (spawnInfo.SpawnTileType == TileID.ObsidianBrick || spawnInfo.SpawnTileType == TileID.HellstoneBrick || spawnInfo.SpawnTileType == TileID.Platforms)
-                {
+				{
 					if (!NPC.downedBoss1) //Haven't killed EoC
-                    {
+					{
 						return 0.05f;
-                    }
+					}
 					if (!NPC.downedBoss3) //Have killed EoC but not Skeletron
-                    {
+					{
 						return 0.075f;
 					}
 					return 0.1f; //Else
-                }
-            }
+				}
+			}
 			return 0f;
 		}
 		public override bool UsesPartyHat()
 		{
 			return RijamsModWorld.hellTraderArrivable;
 		}
-        public override void AI()
-        {
+		public override void AI()
+		{
 			if (!RijamsModWorld.hellTraderArrivable)
-            {
+			{
 				NPC.rarity = 1;
 				float distance = Math.Abs(NPC.position.X - Main.player[NPC.FindClosestPlayer()].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.FindClosestPlayer()].position.Y);
 				if (distance >= 4000f && NPC.homeless)
@@ -197,21 +199,44 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}
 			if (RijamsModWorld.hellTraderArrivable)
-            {
+			{
 				NPC.rarity = 0;
 			}
 		}
-        /*public override bool PreAI()
-        {
-			if (!RijamsModWorld.hellTraderArrivable)
-			{
-				npc.altTexture = 0; //works, but then there is an infinite amount of confetti
-				//Main.npcTexture[npc.type] = Main.npcAltTextures[npc.type][npc.altTexture];
-			}
-			return true;
-        }*/
 
-        public override string GetChat()
+		// Sitting frame height is corrected here.
+		private readonly Asset<Texture2D> glowmask = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/HellTrader_Glow");
+		// private readonly Asset<Texture2D> shimmerGlowmask1 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/HellTrader_Glow");
+		// private readonly Asset<Texture2D> shimmerGlowmask2 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/HellTrader_Glow_Alt");
+		// private readonly Asset<Texture2D> shimmerWings = ModContent.Request<Texture2D>("BossesAsNPCs/NPCs/TownNPCs/Shimmered/HellTrader_Wings");
+		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			Color color = new(255, 255, 255, 100);
+			Vector2 verticalOffset = new(0, 4);
+			if (NPC.frame.Y == 18 * NPC.frame.Height) // Sitting, move up 4 pixels
+			{
+				verticalOffset = new Vector2(0, 8);
+			}
+
+			spriteBatch.Draw(glowmask.Value, NPC.Center - screenPos - verticalOffset, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
+		}
+		/*
+		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			Color color = new(255, 255, 255, 100);
+			Vector2 verticalOffset = new(0, 4);
+			if (NPC.frame.Y == 18 * NPC.frame.Height) // Sitting, move up 4 pixels
+			{
+				verticalOffset = new Vector2(0, 8);
+			}
+			spriteBatch.Draw(shimmerWings.Value, NPC.Center - screenPos - verticalOffset, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
+			return true;
+		}
+		*/
+
+		public override string GetChat()
 		{
 			WeightedRandom<string> chat = new();
 
@@ -221,16 +246,19 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCHelper.GetNearbyResidentNPCs(Main.npc[hellTrader], 1, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
 
 			if (!RijamsModWorld.hellTraderArrivable)
-            {
+			{
+				Main.LocalPlayer.currentShoppingSettings.HappinessReport = ""; // Removes the Happiness chat option.
+
 				chat.Add("Hello, human. An unexpected confrontation, for sure.");
 				chat.Add("My robes are made from a special fabric. They are fire proof, just like me.");
 				chat.Add("You shall know me by " + Main.npc[hellTrader].GivenName + ". I look forward to trading with you, " + Main.LocalPlayer.name + ".");
 				chat.Add("I have some fine goods to trade with you if you have the money.");
 				chat.Add("Are you here to trade? Good, I have something that might interest you.");
 				chat.Add("The Underworld is a dangerous place. You are brave to venture down here.");
+				chat.Add("The most dangerous demons are not the ones who fight, but who speak.");
 				chat.Add("Who is this \"Slayer\" that you speak of?", 0.1);
 				if (!Main.hardMode)
-                {
+				{
 					chat.Add("I see some of the greaters carrying around a small human figure. It must have some sort of significance...");
 				}
 			}
@@ -258,8 +286,8 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("Thanks again, " + Main.LocalPlayer.name + ", for asking me to live in your town. Much better than living alone in the Underworld!");
 				}
 
-				if ((Main.LocalPlayer.HasItem(ItemID.TallyCounter) || Main.LocalPlayer.HasItem(ItemID.REK) || Main.LocalPlayer.HasItem(ItemID.PDA) || Main.LocalPlayer.HasItem(ItemID.CellPhone)) && Main.player[Main.myPlayer].lastCreatureHit == Item.NPCtoBanner(NPCID.FireImp))
-				//The player has the Tally Counter, R.E.K. 3000, PDA, or Cellphone in their inventory. The last enemy they hit was a Harpy and the kill count for Fire Imps is more than 0.
+				if ((Main.LocalPlayer.HasItem(ItemID.TallyCounter) || Main.LocalPlayer.HasItem(ItemID.REK) || Main.LocalPlayer.HasItem(ItemID.PDA) || Main.LocalPlayer.HasItem(ItemID.CellPhone)) && Main.LocalPlayer.lastCreatureHit == Item.NPCtoBanner(NPCID.FireImp))
+				//The player has the Tally Counter, R.E.K. 3000, PDA, or Cellphone in their inventory. The last enemy they hit was a Fire Imp and the kill count for Fire Imps is more than 0.
 				//Item.NPCtoBanner(NPCID.FireImp) == 24
 				{
 					if (NPC.killCount[Item.NPCtoBanner(NPCID.FireImp)] > 0)
@@ -293,7 +321,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 
 				if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
-                {
+				{
 					chat.Add("I've never tasted food so sweet!");
 					chat.Add("What? Surprised to see me without my hood on?");
 				}
@@ -306,11 +334,11 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					chat.Add("It's so vibrant on the surface! I'm used to nothing but reds and grays.");
 					if (Main.dayTime)
-                    {
+					{
 						chat.Add(Main.raining ? "Water is falling from the sky? How does that even work?" : "I had read about the sun! It's a lot brighter than I expected! Brighter than magma!");
 					}
 					if (!Main.dayTime)
-                    {
+					{
 						chat.Add("It gets a little chilly at night. Luckily, my robes keep me warm.");
 					}
 					if (Main.bloodMoon)
@@ -318,21 +346,21 @@ namespace RijamsMod.NPCs.TownNPCs
 						chat.Add("Woah. What's going on tonight? Why is the moon red?", 2.0);
 					}
 					if (Main.eclipse)
-                    {
+					{
 						chat.Add("Wait, where did the sun go?", 2.0);
 					}
 				}
 				if (player.ZoneDirtLayerHeight || player.ZoneRockLayerHeight)
-                {
+				{
 					chat.Add("The Underground is the perfect place for me.");
 				}
 				if (player.ZoneUnderworldHeight)
-                {
+				{
 					chat.Add("Y'know, the Underworld isn't that friendly of a place. I still like it from nostalgia, though.");
 					chat.Add("I read that there was once a great civilization down here. They are the ones who built all of these buildings. I never did figure out what happened to them, though.");
 				}
 				if (player.ZoneDesert || player.ZoneJungle || player.ZoneUnderworldHeight)
-                {
+				{
 					chat.Add("I enjoy the heat from this environment.");
 				}
 				if (player.ZoneBeach)
@@ -340,7 +368,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("The ocean is huge! I'd never seen so much water in one spot before!");
 				}
 				if (player.HasBuff(BuffID.ImpMinion))
-                {
+				{
 					chat.Add("I'm honestly surprised you were able to control those Imps. It's not easy getting hell spawn to do what you want, I should know!");
 				}
 				if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport) //Thorium
@@ -353,7 +381,7 @@ namespace RijamsMod.NPCs.TownNPCs
 						chat.Add(Main.npc[weaponMaster].GivenName + "'s helmet is very nice.\nNothing! It's just a casual observation.");
 					}
 					if (player.HasItem(thorium.Find<ModItem>("PLG8999").Type))
-                    {
+					{
 						chat.Add("That big gun you have scares me! I don't even know why!", 0.5);
 					}
 				}
@@ -383,7 +411,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			button = Language.GetTextValue("LegacyInterface.28"); //Shop
 			if (Main.hardMode && !RijamsModWorld.hellTraderArrivable)
-            {
+			{
 				button2 = "Ask to move in";
 			}
 		}
@@ -428,13 +456,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			shop.item[nextSlot].SetDefaults(ItemID.MagmaStone); //10 gold
 			nextSlot++;
 			if (NPC.downedBoss1)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ItemID.DemonScythe);
 				shop.item[nextSlot].shopCustomPrice = 250000;
 				nextSlot++;
 			}
 			if (NPC.downedBoss3)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ItemID.ShadowKey);
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.Cascade);
@@ -443,7 +471,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 			}
 			if (Main.hardMode)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ItemID.HelFire);
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ItemID.Pwnhammer);
@@ -452,7 +480,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 			}
 			if (NPC.downedMechBossAny)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ItemID.UnholyTrident);
 				nextSlot++;
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Melee.HammerOfRetribution>());
@@ -503,18 +531,22 @@ namespace RijamsMod.NPCs.TownNPCs
 					nextSlot++;
 				}
 			}
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.LifeSapperRing>());
+			nextSlot++;
+			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.ManaSapperRing>());
+			nextSlot++;
 			if (NPC.downedBoss1)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.InfernicFabric>());
 				nextSlot++;
 			}
 			if (Main.hardMode)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.Sulfur>());
 				nextSlot++;
 			}
 			if (RijamsModWorld.hellTraderArrivable)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ItemID.PlumbersHat);
 				shop.item[nextSlot].shopCustomPrice = 400000;
 				nextSlot++;
@@ -554,7 +586,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override bool CanGoToStatue(bool toKingStatue)
 		{
 			if (RijamsModWorld.hellTraderArrivable)
-            {
+			{
 				return !toKingStatue;
 			}
 			return false;
@@ -616,7 +648,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (npc.altTexture == 1)
 			{
-				return ModContent.Request<Texture2D>(Path + "Town_Alt_1");
+				return ModContent.Request<Texture2D>(Path + "Town_Alt");
 			}
 
 			if (RijamsModWorld.hellTraderArrivable && !(npc.homeless || NPCHelper.IsFarFromHome(npc)))

@@ -7,8 +7,8 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.NPCs.Enemies
 {
-    public class FlyingPurpleSlime : ModNPC
-    {
+	public class FlyingPurpleSlime : ModNPC
+	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Flying Purple Slime");
@@ -42,7 +42,7 @@ namespace RijamsMod.NPCs.Enemies
 		}
 
 		public override void AI()
-        {
+		{
 			if (NPC.velocity.X > 0f)
 			{
 				NPC.spriteDirection = 1;
@@ -54,7 +54,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.rotation = NPC.velocity.X * 0.1f;
 		}
 
-        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+		public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
 		{
 			if (NPC.life > 0)
 			{
@@ -64,7 +64,7 @@ namespace RijamsMod.NPCs.Enemies
 				}
 			}
 		}
-        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+		public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
 		{
 			if (NPC.life > 0)
 			{
@@ -107,11 +107,11 @@ namespace RijamsMod.NPCs.Enemies
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (Main.slimeRain && Main.hardMode && spawnInfo.Player.ZoneOverworldHeight)
-            {
+			{
 				if (spawnInfo.PlayerInTown)
-                {
+				{
 					return 1f;
-                }
+				}
 				return 0.5f;
 			}
 			return 0;

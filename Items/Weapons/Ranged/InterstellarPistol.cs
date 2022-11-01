@@ -35,11 +35,11 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.scale = 0.75f;
 			Item.useAmmo = AmmoID.Bullet;
 			if (!Main.dedServ)
-            {
+			{
 				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
 				Item.GetGlobalItem<ItemUseGlow>().glowOffsetX = 1;
 				Item.GetGlobalItem<ItemUseGlow>().glowOffsetY = 2;
-            }
+			}
 		}
 
 		// Help, my gun isn't being held at the handle! Adjust these 2 numbers until it looks right.

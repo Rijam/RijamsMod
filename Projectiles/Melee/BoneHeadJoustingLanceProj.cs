@@ -14,7 +14,15 @@ namespace RijamsMod.Projectiles.Melee
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Bone Head Jousting Lance"); // The English name of the projectile
+
+			// This will cause the player to dismount if they are hit by another Jousting Lance.
+			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.
 			ProjectileID.Sets.DismountsPlayersOnHit[Type] = true;
+
+			// This will make sure the velocity of the projectile will always be the shoot speed set in the item.
+			// Since the velocity of the projectile affects how far out the jousting lance will spawn, we want the
+			// velocity to always be the same even if the player has increased attack speed.
+			ProjectileID.Sets.NoMeleeSpeedVelocityScaling[Type] = true;
 		}
 
 		public override void SetDefaults()

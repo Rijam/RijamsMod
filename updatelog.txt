@@ -77,3 +77,23 @@
 	* Too Many Horseshoe Balloons now requires Sparkle Slime Balloons.
 	* Nerfed Stardust Protector Cudgel. Reduced bonus defense from 15 to 13 and bonus damage reduction from 10% to 8%.
 	* Improved the Jousting Lances' code and fixed a few bugs.
+
+1.1.4.0 - (? ?, 2022)
+	* Fixed some damage class related issues such as Skyware Headgear giving magic damage instead of summon damage.
+	* Added Warrior Ring, Life Sapper Ring, and Mana Sapper Ring.
+	* Reduced the file size of the mod a little by turning all of the WAV sounds into OGG.
+	* Fixed Dark Soldier not being to open doors.
+	* Harpy now uses her alternate sprite when first rescued.
+	* Increased the stack size of stackable items to 9999.
+	* Added a glow mask to the Hell Trader.
+	* Added Celestial Magnet to the Harpy's shop and doubled the price of Fledgling Wings.
+	* Added Different Bundle of Horseshoe Balloons.
+	* Reduced the number of Obsidian Skulls/Horseshoes needed for the Too Many Horseshoe Balloons from 6 to 2.
+	* Charm of Life now includes the Life Sapper Ring
+	* Cosmic Sorcery now includes the Mana Sapper Ring
+	* Removed Pocket Mirror from the Citadel's recipe.
+	* Hell Trader's magic attack now has the magic aura colored.
+	* Added Flask of Oil.
+	* Fixed Flask of Sulfuric Acid not applying to whips.
+	* Added Ammo Pouch, an early ranged accessory.
+

@@ -69,6 +69,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			NPC.townNPC = true;
 			NPC.friendly = true;
+			NPC.homeless = true;
 			NPC.width = 18;
 			NPC.height = 40;
 			NPC.aiStyle = 7;
@@ -106,17 +107,35 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
+		public override void PostAI()
+		{
+			if (RijamsModWorld.harpyJustRescued && !NPC.homeless && !NPCHelper.IsFarFromHome(Main.npc[NPC.FindFirstNPC(Type)]))
+			{
+				RijamsModWorld.harpyJustRescued = false;
+			}
+		}
+
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
 		{
 			if (RijamsModWorld.savedHarpy && NPC.CountNPCS(ModContent.NPCType<Harpy>()) < 1)
 			{
 				return true;
-            }
+			}
 			return false;
 		}
 
+		private int justRescuedTime = 30;
+
 		public override bool CheckConditions(int left, int right, int top, int bottom)
 		{
+			if (justRescuedTime > 0)
+			{
+				justRescuedTime--;
+			}
+			if (RijamsModWorld.harpyJustRescued && NPC.homeless && justRescuedTime > 0)
+			{
+				return false;
+			}
 			return true;
 		}
 
@@ -178,7 +197,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("Wings? Now you can soar through the sky like me!");
 			}
 			if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
-            {
+			{
 				chat.Add("I'm not used to wearing anything on my head!", 2.0);
 				chat.Add("Parties are fun! We should do one every day!", 2.0);
 			}
@@ -205,7 +224,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}
 			if (ModLoader.TryGetMod("Joostmod", out Mod joostMod) && townNPCsCrossModSupport) //Joostmod
-            {
+			{
 				if (Main.LocalPlayer.HasBuff(joostMod.Find<ModBuff>("HarpyMinion").Type))
 				{
 					chat.Add("Aww, isn't that little harpy so cute? Wait, what do you mean minion?");
@@ -274,6 +293,16 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Valdaris? Sorry, I don't know what you are talking about.", 0.5);
 			}
+			if (ModLoader.TryGetMod("LivingWorldMod", out Mod livingWorldMod) && townNPCsCrossModSupport) //
+			{
+				int harpyVillagerType = livingWorldMod.Find<ModNPC>("HarpyVillager").Type;
+				int harpyVillager = NPC.FindFirstNPC(harpyVillagerType);
+
+				if (harpyVillager > 0)
+				{
+					chat.Add("Other harpies? I hope they welcome me. I would love to be with them!");
+				}
+			}
 			return chat;
 		}
 
@@ -319,7 +348,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				NPCHelper.SafelySetCrossModItem(calamityMod, "DesertFeather", shop, ref nextSlot);
 
 				if ((bool)calamityMod.Call("GetBossDowned", "dragonfolly"))
-                {
+				{
 					NPCHelper.SafelySetCrossModItem(calamityMod, "EffulgentFeather", shop, ref nextSlot, 50000);
 				}
 			}
@@ -383,12 +412,14 @@ namespace RijamsMod.NPCs.TownNPCs
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.LuckyHorseshoe);
 			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.CreativeWings); //Fledgling Wings
-			shop.item[nextSlot].shopCustomPrice = 80000;
+			shop.item[nextSlot].SetDefaults(ItemID.CelestialMagnet);
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.Starfury);
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.ShinyRedBalloon);
+			nextSlot++;
+			shop.item[nextSlot].SetDefaults(ItemID.CreativeWings); //Fledgling Wings
+			shop.item[nextSlot].shopCustomPrice = 160000;
 			nextSlot++;
 			shop.item[nextSlot].SetDefaults(ItemID.SunplateBlock);
 			shop.item[nextSlot].shopCustomPrice = 20;
@@ -448,7 +479,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 			}
 			if (NPC.downedGolemBoss)
-            {
+			{
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.SunEssence>());
 				nextSlot++;
 			}
@@ -497,12 +528,12 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
 		{
-			if(NPC.downedMoonlord)
-            {
+			if (NPC.downedMoonlord)
+			{
 				projType = ModContent.ProjectileType<FriendlyHarpyFeatherRed>();
 			}
 			else
-            {
+			{
 				projType = ModContent.ProjectileType<FriendlyHarpyFeather>();
 			}
 			attackDelay = 2;
@@ -516,12 +547,20 @@ namespace RijamsMod.NPCs.TownNPCs
 	}
 	public class HarpyProfile : ITownNPCProfile
 	{
+		public string Path => (GetType().Namespace + "." + GetType().Name.Split("Profile")[0]).Replace('.', '/');
 		public int RollVariation() => 0;
 
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
-		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) => ModContent.Request<Texture2D>((GetType().Namespace + "." + GetType().Name.Split("Profile")[0]).Replace('.', '/'));
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
+		{
+			if (RijamsModWorld.harpyJustRescued)
+			{
+				return ModContent.Request<Texture2D>(Path + "_Alt");
+			}
+			return ModContent.Request<Texture2D>(Path);
+		}
 
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot((GetType().Namespace + "." + GetType().Name.Split("Profile")[0]).Replace('.', '/') + "_Head");
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot(Path + "_Head");
 	}
 }

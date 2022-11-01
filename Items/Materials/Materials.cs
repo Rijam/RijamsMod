@@ -13,7 +13,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults() 
 		{
-			Item.maxStack = 99;
+			Item.maxStack = 9999;
 			Item.width = 14;
 			Item.height = 34;
 			Item.value = 125000;
@@ -29,7 +29,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.width = 20;
 			Item.height = 20;
 			Item.value = 7500;
@@ -45,7 +45,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 99;
+			Item.maxStack = 9999;
 			Item.width = 20;
 			Item.height = 10;
 			Item.value = 25;
@@ -61,7 +61,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.width = 24;
 			Item.height = 24;
 			Item.value = 5000;
@@ -77,7 +77,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.width = 20;
 			Item.height = 20;
 			Item.value = 7500;
@@ -93,7 +93,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 9999;
 			Item.width = 22;
 			Item.height = 22;
 			Item.value = 8000;

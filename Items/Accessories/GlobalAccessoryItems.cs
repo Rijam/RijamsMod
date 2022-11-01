@@ -13,22 +13,11 @@ namespace RijamsMod.Items.Accessories
 	{
 		public override void SetDefaults(Item item)
 		{
-			//if (item.type == ItemID.CelestialCuffs)
-			//{ // Here we make sure to only change Copper Shortsword by checking item.type in an if statement
-				//item.damage = 50;       // Changed original CopperShortsword's damage to 50!
-			//}
+
 		}
-        public override void UpdateAccessory(Item item, Player player, bool hideVisual)
-        {
-			/*if (item.type == ItemID.CelestialCuffs)
-            {
-				player.statManaMax2 += 20;
-			}
-			if (item.type == ItemID.FireGauntlet)
-			{
-				player.GetAttackSpeed(DamageClass.Melee) += 0.02f;
-				player.GetDamage(DamageClass.Melee) += 0.02f;
-			}*/
+		public override void UpdateAccessory(Item item, Player player, bool hideVisual)
+		{
+
 		}
 		public override void MeleeEffects(Item item, Player player, Rectangle hitbox)
 		{
@@ -50,7 +39,7 @@ namespace RijamsMod.Items.Accessories
 			}
 		}
 		public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
-        {
+		{
 			if (player.GetModPlayer<RijamsModPlayer>().rocketBooster && (ammo.type == AmmoID.Rocket || weapon.useAmmo == AmmoID.Rocket || 
 					ammo.type == ItemID.ExplosiveJackOLantern || weapon.useAmmo == ItemID.ExplosiveJackOLantern || ammo.type == ItemID.Nail ||
 					weapon.useAmmo == ItemID.Nail || ammo.type == ItemID.StyngerBolt || weapon.useAmmo == ItemID.StyngerBolt) && !player.GetModPlayer<RijamsModPlayer>().gamutApparatus)
@@ -63,24 +52,17 @@ namespace RijamsMod.Items.Accessories
 				knockback *= 1.2f;
 				speed *= 1.2f;
 				if (type == ProjectileID.WoodenArrowFriendly)
-                {
+				{
 					type = ProjectileID.FireArrow;
 					damage += 2;
 				}
 			}
 		}
-        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
-        {
-			/*if (player.GetModPlayer<RijamsModPlayer>().rocketBooster && (item.ammo == AmmoID.Rocket || item.useAmmo == AmmoID.Rocket || type == AmmoID.Rocket))
-			{
-				Main.NewText("rocketBooster GlobalItem");
-				knockBack *= 1.5f;
-				speedX *= 0.5f;
-				speedY *= 0.5f;
-			}*/
+		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
+		{
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockBack);
-        }
-    }
+		}
+	}
 	public class SummonersGloveUpdate : GlobalItem
 	{
 		public override bool? CanAutoReuseItem(Item item, Player player)
@@ -101,36 +83,13 @@ namespace RijamsMod.Items.Accessories
 			}
 			return base.CanAutoReuseItem(item, player);
 		}
-		/*public override bool CanUseItem(Item item, Player player)
-        {
-			//Works, but makes all summon items and sentries still auto swing after the gloves have been unequipped.
-			if (player.GetModPlayer<RijamsModPlayer>().summonersGlove)
-			{
-				if (item.CountsAsClass(DamageClass.Summon) || item.sentry)
-				{
-					item.autoReuse = true;
-				}
-            }
-			//Works, but makes all summon items and sentries still auto swing after the gloves have been unequipped.
-			bool flag = false;
-			if (player.GetModPlayer<RijamsModPlayer>().summonersGlove)
-			{
-				flag |= item.summon;
-				flag |= item.sentry;
-			}
-			if (flag)
-			{
-				item.autoReuse = true;
-			}
-			return base.CanUseItem(item, player);//taken from Omniswing
-		}*/
 	}
 	public class GuideToProperFlightTechniquesUpdate : GlobalItem
 	{
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
-        {
+		{
 			if (player.GetModPlayer<RijamsModPlayer>().guideToProperFlightTechniques)
-            {
+			{
 				if (player.wingTimeMax > 0)
 				{
 					speed += 1f;

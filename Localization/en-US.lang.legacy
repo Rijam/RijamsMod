@@ -1,6 +1,0 @@
-ItemTooltip.DarkSoldierBanner={$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.DarkSoldier}
-ItemTooltip.SkeletonCrossbowerBanner={$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.SkeletonCrossbower}
-ItemTooltip.SkeletonGunnerBanner={$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.SkeletonGunner}
-ItemTooltip.DungeonBatBanner={$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.DungeonBat}
-ItemTooltip.SnowmanMuscleBanner={$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.SnowmanMuscle}
-ItemTooltip.SirSlushBanner={$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCName.SirSlush}

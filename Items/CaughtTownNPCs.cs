@@ -146,19 +146,19 @@ namespace RijamsMod.Items
 			Item.tileBoost += 20;
 		}
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-        {
-            if (RijamsModWorld.hellTraderArrivable)
-            {
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			if (RijamsModWorld.hellTraderArrivable)
+			{
 				tooltips.Insert(3, new TooltipLine(Mod, "Quote1", "'Hey, human! Good to see you again.'"));
 			}
 			else
-            {
+			{
 				tooltips.Insert(3, new TooltipLine(Mod, "Quote2", "'Hello, human. An unexpected confrontation, for sure.'"));
 			}			
-        }
+		}
 
-        public override bool CanUseItem(Player player)
+		public override bool CanUseItem(Player player)
 		{
 			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
 			return (NPC.CountNPCS(ModContent.NPCType<HellTrader>()) < 1 && !Collision.SolidCollision(mousePos, player.width, player.height));

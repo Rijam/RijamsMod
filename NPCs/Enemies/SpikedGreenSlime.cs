@@ -8,8 +8,8 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.NPCs.Enemies
 {
-    public class SpikedGreenSlime : ModNPC
-    {
+	public class SpikedGreenSlime : ModNPC
+	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Spiked Green Slime");
@@ -42,7 +42,7 @@ namespace RijamsMod.NPCs.Enemies
 		}
 
 		public override void AI()
-        {
+		{
 			bool flag = true;
 			if (NPC.localAI[0] > 0f)
 			{
@@ -231,7 +231,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (Main.slimeRain && Main.hardMode && spawnInfo.Player.ZoneOverworldHeight)
-            {
+			{
 				if (spawnInfo.PlayerInTown)
 				{
 					return 1.25f;

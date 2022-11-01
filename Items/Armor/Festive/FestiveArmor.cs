@@ -46,7 +46,7 @@ namespace RijamsMod.Items.Armor.Festive
 			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.05f;
 			player.GetCritChance(DamageClass.SummonMeleeSpeed) += 0.02f; // Don't even know if this works lol. It's so low that hopefully nobody will notice if it doesn't work.
 			if (Math.Abs(player.velocity.X) > 2 || Math.Abs(player.velocity.Y) > 2)
-            {
+			{
 				float x2 = player.position.X - player.velocity.X / 10f;
 				float y2 = player.position.Y - player.velocity.Y / 10f;
 				int selectRand = Utils.SelectRandom(Main.rand, DustID.GreenTorch, DustID.RedTorch);

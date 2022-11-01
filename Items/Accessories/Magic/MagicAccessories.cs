@@ -51,11 +51,11 @@ namespace RijamsMod.Items.Accessories.Magic
 	}
 	[AutoloadEquip(EquipType.Front, EquipType.Back, EquipType.HandsOn, EquipType.HandsOff)]
 	public class CosmicSorcery : ModItem
-    {
+	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Cosmic Sorcery");
-			Tooltip.SetDefault("+15% Magic damage\n+10% Magic Critical Strike chance\n+20 Max Mana\nIncreased mana regeneration rate\nIncreases pickup range for mana stars\nRestores mana when damage\nAutomatically use mana potions when needed\nCauses stars to fall when injured\nEnemies are a little less likely to target you");
+			Tooltip.SetDefault("+15% Magic damage\n+10% Magic Critical Strike chance\n+20 Max Mana\nIncreased mana regeneration rate\nIncreases pickup range for mana stars\nRestores mana when damage\nAutomatically use mana potions when needed\nCauses stars to fall when injured\nGain a little bit of mana after slaying an enemy\n  Scales with max mana\nEnemies are a little less likely to target you");
 		}
 
 		public override void SetDefaults()
@@ -72,12 +72,13 @@ namespace RijamsMod.Items.Accessories.Magic
 			player.GetCritChance(DamageClass.Magic) += 10;
 			player.statManaMax2 += 20;
 			player.manaRegenDelayBonus++;
-            player.manaRegenBonus += 25;
+			player.manaRegenBonus += 25;
 			player.manaMagnet = true;
 			player.magicCuffs = true;
 			player.manaFlower = true;
 			player.starCloakItem = Item;
 			player.aggro -= 20 * 16; //20 tiles
+			player.GetModPlayer<RijamsModPlayer>().manaSapperRing = true;
 		}
 
 		public override void AddRecipes()
@@ -86,6 +87,7 @@ namespace RijamsMod.Items.Accessories.Magic
 				.AddIngredient(ModContent.ItemType<DestroyerCuffs>(), 1)
 				.AddIngredient(ItemID.ManaCloak, 1)
 				.AddIngredient(ItemID.PutridScent, 1)
+				.AddIngredient(ModContent.ItemType<Misc.ManaSapperRing>(), 1)
 				.AddIngredient(ItemID.LunarBlockNebula, 5)
 				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
@@ -96,6 +98,7 @@ namespace RijamsMod.Items.Accessories.Magic
 				.AddIngredient(ModContent.ItemType<DestroyerCuffs>(), 1)
 				.AddIngredient(ItemID.StarCloak, 1)
 				.AddIngredient(ItemID.ArcaneFlower, 1)
+				.AddIngredient(ModContent.ItemType<Misc.ManaSapperRing>(), 1)
 				.AddIngredient(ItemID.LunarBlockNebula, 5)
 				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)

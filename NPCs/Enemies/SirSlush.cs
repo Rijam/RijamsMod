@@ -12,8 +12,8 @@ using Terraria.GameContent;
 
 namespace RijamsMod.NPCs.Enemies
 {
-    public class SirSlush : ModNPC
-    {
+	public class SirSlush : ModNPC
+	{
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Sir Slush");
@@ -112,8 +112,8 @@ namespace RijamsMod.NPCs.Enemies
 		//2 == attack
 
 		
-        public override void AI()
-        {
+		public override void AI()
+		{
 			NPC.ai[0]++;
 			//Main.NewText("npc.ai[0] " + npc.ai[0]);
 			//Main.NewText("AIState " + AIState);
@@ -124,7 +124,7 @@ namespace RijamsMod.NPCs.Enemies
 				bool lineOfSight = Collision.CanHitLine(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height);
 				float distance = Math.Abs(NPC.position.X - Main.player[NPC.target].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.target].position.Y);
 				if (NPC.ai[0] >= 30 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f && lineOfSight)
-                {
+				{
 					NPC.ai[0] = 0;
 					SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/SirSlushAlert") { MaxInstances = 5 }, NPC.position);
 					AIState = 1;
@@ -136,14 +136,14 @@ namespace RijamsMod.NPCs.Enemies
 				NPC.FaceTarget();
 				float distance = Math.Abs(NPC.position.X - Main.player[NPC.target].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.target].position.Y);
 				if (NPC.ai[0] == 80 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f)
-                {
+				{
 					NPC.ai[0] = 0;
 					NPC.frameCounter = 0;
 					AIState = 2;
 					NPC.netUpdate = true;
 				}
 				else if (NPC.ai[0] > 80 || distance > 1000f)
-                {
+				{
 					NPC.ai[0] = 0;
 					AIState = 0;
 					NPC.netUpdate = true;
@@ -153,7 +153,7 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				NPC.FaceTarget();
 				if (NPC.ai[0] == 20)
-                {
+				{
 					Vector2 vectoryForProj = new(NPC.position.X + NPC.width * 0.5f, NPC.position.Y + NPC.height * 0.5f);
 					float projSpeedX = Main.player[NPC.target].position.X + Main.player[NPC.target].width * 0.5f - vectoryForProj.X;
 					float projSpeedXAbs; //= Math.Abs(projSpeedX) * 0.1f;
@@ -175,7 +175,7 @@ namespace RijamsMod.NPCs.Enemies
 					}
 				}
 				if (NPC.ai[0] >= 40)
-                {
+				{
 					NPC.ai[0] = 0;
 					AIState = 0;
 					NPC.netUpdate = true;
@@ -212,7 +212,7 @@ namespace RijamsMod.NPCs.Enemies
 			if (AIState == 0) //idle
 			{
 				if (NPC.frameCounter < 10)
-                {
+				{
 					NPC.frame.Y = Frame_Idle1 * frameHeight;
 				}
 				else if (NPC.frameCounter < 20)
@@ -228,7 +228,7 @@ namespace RijamsMod.NPCs.Enemies
 					NPC.frame.Y = Frame_Idle4 * frameHeight;
 				}
 				else
-                {
+				{
 					NPC.frameCounter = 0;
 				}
 			}

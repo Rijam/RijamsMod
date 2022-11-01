@@ -38,18 +38,18 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.scale = 0.75f;
 			Item.useAmmo = AmmoID.Bullet;
 			if (!Main.dedServ)
-            {
+			{
 				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
 				Item.GetGlobalItem<ItemUseGlow>().glowOffsetX = -16;
 				Item.GetGlobalItem<ItemUseGlow>().glowOffsetY = 0;
-            }
+			}
 		}
 
 
 		// What if I wanted this gun to have a 50% chance not to consume ammo?
 		public override bool CanConsumeAmmo(Item ammo, Player player)
 		{
-			return Main.rand.NextFloat() >= .50f;
+			return Main.rand.NextFloat() >= 0.5f;
 		}
 
 		// What if I wanted it to work like Uzi, replacing regular bullets with High Velocity Bullets?

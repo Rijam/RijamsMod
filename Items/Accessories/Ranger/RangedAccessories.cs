@@ -6,6 +6,37 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Accessories.Ranger
 {
+	[AutoloadEquip(EquipType.Waist)]
+	public class AmmoPouch : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			DisplayName.SetDefault("Ammo Pouch");
+			Tooltip.SetDefault("+5% bullet damage\n+5% ranged attack speed");
+		}
+
+		public override void SetDefaults()
+		{
+			Item.width = 26;
+			Item.height = 32;
+			Item.rare = ItemRarityID.Green;
+			Item.value = Item.sellPrice(0, 0, 50, 0);
+			Item.accessory = true;
+		}
+
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.bulletDamage += 0.05f;
+			player.GetAttackSpeed(DamageClass.Ranged) += 0.05f;
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.Leather, 10)
+				.AddTile(TileID.TinkerersWorkbench)
+				.Register();
+		}
+	}
 	public class RocketBooster : ModItem
 	{
 		public override void SetStaticDefaults()
@@ -34,7 +65,7 @@ namespace RijamsMod.Items.Accessories.Ranger
 	[AutoloadEquip(EquipType.Back, EquipType.Face, EquipType.HandsOn)]
 	public class GamutApparatus : ModItem
 	{
-        public override void SetStaticDefaults()
+		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Gamut Apparatus");
 			Tooltip.SetDefault("+15% Ranged damage\n+10% Ranged Critical Strike chance\n20% chance to not consume ammo\n+20% projectile velocity and knockback\nLights wooden arrows ablaze\nEnemies are slightly less likely to target you\nRight Click to zoom out (Hide to disable)");

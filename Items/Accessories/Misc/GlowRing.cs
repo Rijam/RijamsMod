@@ -104,7 +104,7 @@ namespace RijamsMod.Items.Accessories.Misc
 				tooltips.Add(new TooltipLine(Mod, "Info", "the enemy at least once."));
 			}
 			else
-            {
+			{
 				tooltips.Add(new TooltipLine(Mod, "Info", "Hold Left Shift for more info"));
 			}
 		}
