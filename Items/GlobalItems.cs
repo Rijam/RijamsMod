@@ -344,6 +344,7 @@ namespace RijamsMod.Items
 				return true;
 			}
 			index = 0;
+			ModLoader.GetMod("RijamsMod").Logger.WarnFormat("Tooltip line {0} from mod {1} not found!", name, mod);
 			return false;
 		}
 
@@ -497,13 +498,11 @@ namespace RijamsMod.Items
 		public override string Texture => Item.type == ModContent.ItemType<CudgelDefenseItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int index = 0;
-			if (Item.favorited)
+			if (GlobalItems.FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
 			{
-				index += 2;
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Defense Support Minion -]"));
+				tooltips.Insert(index + 2, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one defense support minion per player]"));
 			}
-			tooltips.Insert(index + 3, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Defense Support Minion -]"));
-			tooltips.Insert(index + 4, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one defense support minion per player]"));
 		}
 	}
 	public class CudgelHealingItem : ModItem
@@ -512,13 +511,11 @@ namespace RijamsMod.Items
 		public override string Texture => Item.type == ModContent.ItemType<CudgelHealingItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int index = 0;
-			if (Item.favorited)
+			if (GlobalItems.FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
 			{
-				index += 2;
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Healing Support Minion -]"));
+				tooltips.Insert(index + 2, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one healing support minion per player]"));
 			}
-			tooltips.Insert(index + 3, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Healing Support Minion -]"));
-			tooltips.Insert(index + 4, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one healing support minion per player]"));
 		}
 	}
 	public class CudgelBuffItem : ModItem
@@ -527,13 +524,11 @@ namespace RijamsMod.Items
 		public override string Texture => Item.type == ModContent.ItemType<CudgelBuffItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			int index = 0;
-			if (Item.favorited)
+			if (GlobalItems.FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
 			{
-				index += 2;
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Buff Support Minion -]"));
+				tooltips.Insert(index + 2, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one buff support minion per player]"));
 			}
-			tooltips.Insert(index + 3, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Buff Support Minion -]"));
-			tooltips.Insert(index + 4, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one buff support minion per player]"));
 		}
 	}
 }
