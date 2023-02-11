@@ -13,12 +13,15 @@ using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
+using Terraria.ModLoader.IO;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
 	[AutoloadHead]
 	public class Harpy : ModNPC
 	{
+		private bool isShimmered; // NPC.IsShimmerVariant is not kept when opening the shop.
+
 		public override void SetStaticDefaults()
 		{
 			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
@@ -31,6 +34,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.AttackTime[NPC.type] = 90;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 30;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
@@ -72,7 +76,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.homeless = true;
 			NPC.width = 18;
 			NPC.height = 40;
-			NPC.aiStyle = 7;
+			NPC.aiStyle = NPCAIStyleID.Passive;
 			NPC.damage = 10;
 			NPC.defense = 15;//def 15
 			NPC.lifeMax = 250;
@@ -98,11 +102,30 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
-				for (int k = 0; k < 2; k++)
+				if (NPC.IsShimmerVariant)
 				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+					if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Alt_Shimmered").Type, 1f);
+					}
+					else
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Shimmered").Type, 1f);
+					}
+					for (int k = 0; k < 2; k++)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Arm_Shimmered").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg_Shimmered").Type, 1f);
+					}
+				}
+				else
+				{
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head").Type, 1f);
+					for (int k = 0; k < 2; k++)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Arm").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg").Type, 1f);
+					}
 				}
 			}
 		}
@@ -113,9 +136,17 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				RijamsModWorld.harpyJustRescued = false;
 			}
+			/*if (isShimmered && !NPC.IsShimmerVariant)
+			{
+				NPC.townNpcVariationIndex = 1;
+			}
+			if (NPC.IsShimmerVariant && !isShimmered)
+			{
+				isShimmered = true;
+			}*/
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
+		public override bool CanTownNPCSpawn(int numTownNPCs)
 		{
 			if (RijamsModWorld.savedHarpy && NPC.CountNPCS(ModContent.NPCType<Harpy>()) < 1)
 			{
@@ -242,15 +273,17 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && townNPCsCrossModSupport)
 			{
-				int fisherman = NPC.FindFirstNPC(fishermanNPC.Find<ModNPC>("Fisherman").Type);
-				if (fisherman >= 0)
+				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fishermanModNPC))
 				{
-					chat.Add("Me and " + Main.npc[fisherman].GivenName + " go on fishing trips sometimes! He lets me 'scout ahead', whatever that means!", 0.5);
+					int fisherman = NPC.FindFirstNPC(fishermanModNPC.Type);
+					if (fisherman >= 0)
+					{
+						chat.Add("Me and " + Main.npc[fisherman].GivenName + " go on fishing trips sometimes! He lets me 'scout ahead', whatever that means!", 0.5);
+					}
 				}
 			}
 			int hellTrader = NPC.FindFirstNPC(ModContent.NPCType<HellTrader>());
 			if (hellTrader >= 0 && RijamsModWorld.hellTraderArrivable)
-
 			{
 				chat.Add("Me and " + Main.npc[hellTrader].GivenName + " come from opposite heights of the world! Isn't that cool!", 0.5);
 			}
@@ -295,12 +328,15 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (ModLoader.TryGetMod("LivingWorldMod", out Mod livingWorldMod) && townNPCsCrossModSupport) //
 			{
-				int harpyVillagerType = livingWorldMod.Find<ModNPC>("HarpyVillager").Type;
-				int harpyVillager = NPC.FindFirstNPC(harpyVillagerType);
-
-				if (harpyVillager > 0)
+				if (livingWorldMod.TryFind<ModNPC>("HarpyVillager", out ModNPC harpyVillagerModNPC))
 				{
-					chat.Add("Other harpies? I hope they welcome me. I would love to be with them!");
+					int harpyVillagerType = harpyVillagerModNPC.Type;
+					int harpyVillager = NPC.FindFirstNPC(harpyVillagerType);
+
+					if (harpyVillager > 0)
+					{
+						chat.Add("Other harpies? I hope they welcome me. I would love to be with them!");
+					}
 				}
 			}
 			return chat;
@@ -318,23 +354,6 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop = true;
 			}
 		}
-
-		/*public bool SacredToolsDownedHarpyPreHM
-		{
-			get { return SacredTools.ModdedWorld.downedHarpy; }
-		}
-		public bool SacredToolsDownedHarpyHM
-		{
-			get { return SacredTools.ModdedWorld.downedRaynare; }
-		}
-		public bool AAModDownedAthena
-		{
-			get { return AAMod.AAWorld.downedAthena; }
-		}
-		public bool PinkymodDownedST
-		{
-			get { return pinkymod.Global.Pinkyworld.downedSunlightTrader; }
-		}*/ //from Alchemist NPC
 
 		public override void SetupShop(Chest shop, ref int nextSlot)
 		{
@@ -507,15 +526,15 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (!Main.hardMode)
 			{
-			damage = 10;
+				damage = 10;
 			}
 			if (Main.hardMode && !NPC.downedMoonlord)
 			{
-			damage = 20;
+				damage = 20;
 			}
 			if (NPC.downedMoonlord)
 			{
-			damage = 30;
+				damage = 30;
 			}
 			knockback = 4f;
 		}
@@ -544,10 +563,25 @@ namespace RijamsMod.NPCs.TownNPCs
 			multiplier = 12f;
 			randomOffset = 0.15f;
 		}
+
+		/*public override void SaveData(TagCompound tag)
+		{
+			//tag["HarpyIsShimmerVariant"] = isShimmered;
+			//Mod.Logger.DebugFormat("Harpy Save: NPC.townNpcVariationIndex {0}, tag[\"HarpyIsShimmerVariant\"] {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag["HarpyIsShimmerVariant"].ToString(), isShimmered);
+		}
+
+		public override void LoadData(TagCompound tag)
+		{
+			//isShimmered = tag.GetBool("HarpyIsShimmerVariant");
+			//Mod.Logger.DebugFormat("Harpy Load: NPC.townNpcVariationIndex {0}, tag.GetBool(\"HarpyIsShimmerVariant\") {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag.GetBool("HarpyIsShimmerVariant").ToString(), isShimmered);
+		}*/
 	}
 	public class HarpyProfile : ITownNPCProfile
 	{
-		public string Path => (GetType().Namespace + "." + GetType().Name.Split("Profile")[0]).Replace('.', '/');
+		private string Namespace => GetType().Namespace.Replace('.', '/');
+		private string NPCName => (GetType().Name.Split("Profile")[0]).Replace('.', '/');
+		private string Path => (Namespace + "/" + NPCName);
+
 		public int RollVariation() => 0;
 
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
@@ -556,11 +590,30 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (RijamsModWorld.harpyJustRescued)
 			{
+				if (npc.IsShimmerVariant)
+				{
+					return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Alt");
+				}
 				return ModContent.Request<Texture2D>(Path + "_Alt");
+			}
+			if (npc.IsShimmerVariant && npc.altTexture != 1)
+			{
+				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
+			}
+			if (npc.IsShimmerVariant && npc.altTexture == 1)
+			{
+				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Hatless");
 			}
 			return ModContent.Request<Texture2D>(Path);
 		}
 
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot(Path + "_Head");
+		public int GetHeadTextureIndex(NPC npc)
+		{
+			/*if (npc.IsShimmerVariant)
+			{
+				return ModContent.GetModHeadSlot(Namespace + "/Shimmered/" + NPCName + "_Head");
+			}*/
+			return ModContent.GetModHeadSlot(Path + "_Head");
+		}
 	}
 }

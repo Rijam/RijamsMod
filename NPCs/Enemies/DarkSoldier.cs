@@ -15,9 +15,8 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Dark Soldier");
+			// DisplayName.SetDefault("Dark Soldier");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BoneThrowingSkeleton];
-			NPCID.Sets.AllowDoorInteraction[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
@@ -63,26 +62,29 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head").Type, 1f);
 				for (int k = 0; k < 2; k++)
 				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Arm").Type, 1f);
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg").Type, 1f);
 				}
 			}
+		}
+
+		public class DownedSkeletron : IItemDropRuleCondition, IProvideItemConditionDescription
+		{
+			public bool CanDrop(DropAttemptInfo info) => NPC.downedBoss3;
+			public bool CanShowItemDropInUI() => true;
+			public string GetConditionDescription() => null;
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.BreadAndJelly>(), 1000)); //0.1% chance
-			if (!NPC.downedBoss3) 
-			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.Minions.HissyStaff>(), 1000)); //0.1% chance & not defeated Skeletron
-			}
-			else
-			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.Minions.HissyStaff>(), 20)); //5% chance & defeated Skeletron
-			}
+			LeadingConditionRule downedSkeletron = new(new DownedSkeletron());
+			downedSkeletron.OnSuccess(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.Minions.HissyStaff>(), 20)); //5% chance & defeated Skeletron
+			downedSkeletron.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Summon.Minions.HissyStaff>(), 1000)); //0.1% chance & not defeated Skeletron
+			npcLoot.Add(downedSkeletron);
 		}
 
 		//Frames
@@ -647,18 +649,26 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
+			float spawnChance = 0f;
 			if (spawnInfo.Player.ZoneUnderworldHeight) //Underworld
 			{
-				return 0.3f;
+				spawnChance += 0.3f;
 			}
-			if ((spawnInfo.SpawnTileY <= Main.maxTilesY - 200 && spawnInfo.SpawnTileY > (Main.rockLayer + Main.maxTilesY - 200) / 2)) //lower half of the caverns?
+			if (spawnInfo.Player.ZoneRockLayerHeight && // Player in the caverns layer
+				spawnInfo.SpawnTileY <= Main.maxTilesY - 200 && // Above the underworld
+				spawnInfo.SpawnTileY > (Main.rockLayer + Main.maxTilesY - 200) / 2) // Lower half of the canverns above the underworld.
 			{
-				return 0.08f;
+				spawnChance += 0.08f;
 			}
-			else
+			if (spawnInfo.PlayerInTown) // Decrease the chance dramatically if in a town
 			{
-				return 0f;
+				spawnChance -= 0.1f;
 			}
+			if (Main.remixWorld && !Main.hardMode) // Don't Dig Up or Get Fixed Boi worlds and Pre-Hardmode.
+			{
+				spawnChance -= 0.1f;
+			}
+			return (float)Math.Clamp(spawnChance, 0.0, 1.0);
 		}
 	}
 }

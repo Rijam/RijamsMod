@@ -81,6 +81,9 @@ namespace RijamsMod
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>(), () => true);
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "BrainOfCthulhu", ModContent.ItemType<Items.Materials.CrawlerChelicera>(), () => true);
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "QueenSlime", ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>(), () => true);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), () => true);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), () => true);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), () => true);
 			}
 			if (ModLoader.TryGetMod("DialogueTweak", out Mod dialogueTweak))
 			{
@@ -193,6 +196,11 @@ namespace RijamsMod
 					NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Hell Trader Arrivable (Multiplayer packet).");
 					break;
+				case RijamsModMessageType.SetSnuggetTownPetArrivable:
+					RijamsModWorld.boughtSnuggetPet = true;
+					NetMessage.SendData(MessageID.WorldData);
+					Logger.Debug("RijamsMod: Snugget Town Pet Arrivable (Multiplayer packet).");
+					break;
 				default:
 					Logger.WarnFormat("RijamsMod: Unknown Message type: {0}", msgType);
 					break;
@@ -208,6 +216,7 @@ namespace RijamsMod
 		SetQuestRyeJam,
 		SetQuestMagicOxygenizer,
 		SetQuestPrimeThruster,
-		SetHellTraderArrivable
+		SetHellTraderArrivable,
+		SetSnuggetTownPetArrivable
 	}
 }

@@ -13,8 +13,8 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Supernova Whip");
-			Tooltip.SetDefault("20 summon tag damage\n10% summon tag critical strike chance\nCauses Stardust Explosions on enemies\nCan hit enemies through tiles\n{$CommonItemTooltip.Whips}");
+			// DisplayName.SetDefault("Supernova Whip");
+			// Tooltip.SetDefault("20 summon tag damage\n10% summon tag critical strike chance\nCauses Stardust Explosions on enemies\nCan hit enemies through tiles\n{$CommonItemTooltip.Whips}");
 			GlobalItems.isWhip.Add(Item.type);
 		}
 		public override void SetDefaults()
@@ -26,6 +26,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 			Item.rare = ItemRarityID.Red;
 			Item.value = 150000;
 			Item.channel = false;
+			Item.UseSound = SoundID.Item152 with { Pitch = 0.05f };
 		}
 
 		public override void AddRecipes()

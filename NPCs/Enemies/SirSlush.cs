@@ -16,7 +16,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sir Slush");
+			// DisplayName.SetDefault("Sir Slush");
 			Main.npcFrameCount[NPC.type] = 12;
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
@@ -98,10 +98,10 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Hat").Type, 1f);
+				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Hat").Type, 1f);
 				for (int k = 0; k < 5; k++)
 				{
-					Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
+					Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name).Type, 1f);
 				}
 			}
 		}

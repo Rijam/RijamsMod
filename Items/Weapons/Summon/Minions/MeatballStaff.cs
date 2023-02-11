@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Meatball Staff");
-			Tooltip.SetDefault("Summons a Meatball Demon to fight for you");
+			// DisplayName.SetDefault("Meatball Staff");
+			// Tooltip.SetDefault("Summons a Meatball Demon to fight for you");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
@@ -36,7 +36,7 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Summon;
 			//item.buffType = ModContent.BuffType<HissyDemonBuff>();
-			Item.buffType = ModContent.BuffType<Buffs.MeatballDemonBuff>();
+			Item.buffType = ModContent.BuffType<Buffs.Minions.MeatballDemonBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ModContent.ProjectileType<MeatballDemon>();
 		}

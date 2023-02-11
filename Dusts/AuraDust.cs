@@ -14,6 +14,8 @@ namespace RijamsMod.Dusts
 
 		public override bool MidUpdate(Dust dust)
 		{
+			dust.scale *= 0.97f;
+
 			if (dust.noLight || dust.noLightEmittence)
 			{
 				return false;

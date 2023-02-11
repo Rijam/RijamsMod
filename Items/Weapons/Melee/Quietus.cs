@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.Items.Armor.Vanity.IntTrav;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -13,9 +14,11 @@ namespace RijamsMod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults() 
 		{
-			DisplayName.SetDefault("Quietus");
-			Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws multiple long range projectiles\n  Weapon does double damage\n  Uses 20 mana\n'Not to be confused with the Whisper's Edge'");
+			// DisplayName.SetDefault("Quietus");
+			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws multiple long range projectiles\n  Weapon does double damage\n  Uses 20 mana\n'Not to be confused with the Whisper's Edge'");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Golem]", null });
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<HammerOfRetribution>(); // Shimmer transforms the item.
+			ItemID.Sets.UsesBetterMeleeItemLocation[Type] = true;
 		}
 
 		public override void SetDefaults() 

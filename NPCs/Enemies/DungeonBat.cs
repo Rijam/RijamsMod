@@ -14,7 +14,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Dungeon Bat");
+			// DisplayName.SetDefault("Dungeon Bat");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.CaveBat]; //5
 		}
 
@@ -50,7 +50,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(NPC.spriteDirection * -8, 0), ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity + new Vector2(NPC.spriteDirection * -8, 0), ModContent.Find<ModGore>(Mod.Name + "/" + Name).Type, 1f);
 			}
 		}
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -24,8 +25,8 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.RandomStyleRange = 3;
 			TileObjectData.addTile(Type);
 			DustType = DustID.RichMahogany;
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Life Fruit Sanctuary");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Life Fruit Sanctuary");
 			AddMapEntry(new Color(219, 157, 64), name);
 		}
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
@@ -56,7 +57,7 @@ namespace RijamsMod.Tiles
 			if (closer)
 			{
 				Player player = Main.LocalPlayer;
-				player.AddBuff(ModContent.BuffType<Buffs.LifeFruitSanctuaryBuff>(), 126);
+				player.AddBuff(ModContent.BuffType<Buffs.Other.LifeFruitSanctuaryBuff>(), 126);
 			}
 		}
 	}

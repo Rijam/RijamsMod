@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.ComponentModel.DataAnnotations;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -70,7 +71,7 @@ namespace RijamsMod.Projectiles.Melee
 				killDust3.velocity *= 2f;
 				killDust.noLight = true;
 			}
-			SoundEngine.PlaySound(SoundID.Item66, Projectile.position);
+			SoundEngine.PlaySound(SoundID.Item66 with { MaxInstances = 6 }, Projectile.position) ;
 			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 		}
 	}

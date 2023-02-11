@@ -55,7 +55,7 @@ namespace RijamsMod.Tiles
 				PaintID.BrownPaint => new Color(255, 191, 127),
 				PaintID.ShadowPaint => new Color(1, 1, 1),
 				PaintID.NegativePaint => new Color(200, 200, 255),
-				PaintID.IlluminantPaint => new Color(306, 306, 306),
+				// PaintID.IlluminantPaint => new Color(306, 306, 306),
 				_ => null,
 			};
 		}

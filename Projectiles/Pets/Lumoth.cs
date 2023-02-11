@@ -10,7 +10,7 @@ namespace RijamsMod.Projectiles.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Lumoth");
+			// DisplayName.SetDefault("Lumoth");
 			Main.projFrames[Projectile.type] = 4;
 			Main.projPet[Projectile.type] = true;
 			ProjectileID.Sets.LightPet[Projectile.type] = true;
@@ -64,7 +64,7 @@ namespace RijamsMod.Projectiles.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("LED Lumoth");
+			// DisplayName.SetDefault("LED Lumoth");
 			Main.projFrames[Projectile.type] = 4;
 			Main.projPet[Projectile.type] = true;
 			ProjectileID.Sets.LightPet[Projectile.type] = true;

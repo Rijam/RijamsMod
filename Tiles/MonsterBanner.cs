@@ -5,6 +5,7 @@ using RijamsMod.NPCs.Enemies;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using static Terraria.ModLoader.ModContent;
@@ -26,8 +27,8 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.StyleWrapLimit = 111;
 			TileObjectData.addTile(Type);
 			DustType = -1;
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Banner");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Banner");
 			AddMapEntry(new Color(13, 88, 130), name);
 		}
 

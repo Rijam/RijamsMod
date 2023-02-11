@@ -15,7 +15,8 @@ namespace RijamsMod.Items.Armor.Vanity.IntTrav
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Interstellar Helmet");
+			// DisplayName.SetDefault("Interstellar Helmet");
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PeacekeeperHat>(); // Shimmer transforms the item.
 		}
 		public override void SetDefaults()
 		{
@@ -33,7 +34,8 @@ namespace RijamsMod.Items.Armor.Vanity.IntTrav
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Interstellar Chestplate");
+			// DisplayName.SetDefault("Interstellar Chestplate");
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PeacekeeperShirt>(); // Shimmer transforms the item.
 		}
 		public override void SetDefaults()
 		{
@@ -50,7 +52,8 @@ namespace RijamsMod.Items.Armor.Vanity.IntTrav
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Interstellar Leggings");
+			// DisplayName.SetDefault("Interstellar Leggings");
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PeacekeeperTrousers>(); // Shimmer transforms the item.
 		}
 		public override void SetDefaults()
 		{

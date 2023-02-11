@@ -13,8 +13,8 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Vile Whip");
-			Tooltip.SetDefault("8 summon tag damage\n{$CommonItemTooltip.Whips}");
+			// DisplayName.SetDefault("Vile Whip");
+			// Tooltip.SetDefault("8 summon tag damage\n{$CommonItemTooltip.Whips}");
 			GlobalItems.isWhip.Add(Item.type);
 		}
 		public override void SetDefaults()

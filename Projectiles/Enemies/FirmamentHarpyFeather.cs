@@ -11,7 +11,7 @@ namespace RijamsMod.Projectiles.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Firmament Harpy Feather");
+			// DisplayName.SetDefault("Firmament Harpy Feather");
 		}
 
 		public override void SetDefaults()

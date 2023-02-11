@@ -10,8 +10,8 @@ namespace RijamsMod.Items.Accessories.Defense
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Frosty Rose");
-			Tooltip.SetDefault("Grants immunity to Frostburn, Frozen, and Chilled");
+			// DisplayName.SetDefault("Frosty Rose");
+			// Tooltip.SetDefault("Grants immunity to Frostburn, Frozen, and Chilled");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by The Frost Legion]", null, null });
 		}
 
@@ -35,8 +35,8 @@ namespace RijamsMod.Items.Accessories.Defense
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Obsidian Frosty Skull Rose");
-			Tooltip.SetDefault("+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled");
+			// DisplayName.SetDefault("Obsidian Frosty Skull Rose");
+			// Tooltip.SetDefault("+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled");
 			ArmorIDs.Face.Sets.PreventHairDraw[Item.faceSlot] = true;
 		}
 
@@ -70,8 +70,8 @@ namespace RijamsMod.Items.Accessories.Defense
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gelid Skull Rose");
-			Tooltip.SetDefault("+1 Defense\nMelee attacks inflict Frostburn\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled");
+			// DisplayName.SetDefault("Gelid Skull Rose");
+			// Tooltip.SetDefault("+1 Defense\nMelee attacks inflict Frostburn\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled");
 			ArmorIDs.Face.Sets.PreventHairDraw[Item.faceSlot] = true;
 		}
 
@@ -106,8 +106,8 @@ namespace RijamsMod.Items.Accessories.Defense
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Rose of Fire and Ice");
-			Tooltip.SetDefault("Reduces damage from touching lava\nGrants immunity to Frostburn, Frozen, and Chilled");
+			// DisplayName.SetDefault("Rose of Fire and Ice");
+			// Tooltip.SetDefault("Reduces damage from touching lava\nGrants immunity to Frostburn, Frozen, and Chilled");
 		}
 
 		public override void SetDefaults()

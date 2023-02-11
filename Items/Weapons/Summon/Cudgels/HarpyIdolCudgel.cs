@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Harpy Idol Cudgel");
-			Tooltip.SetDefault("Summons a Harpy Idol to defend you\nPlayers within its aura receive:\n+3 defense\n+1% damage reduction\n5 tile radius");
+			// DisplayName.SetDefault("Harpy Idol Cudgel");
+			// Tooltip.SetDefault("Summons a Harpy Idol to defend you\nPlayers within its aura receive:\n+3 defense\n+1% damage reduction\n5 tile radius");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
@@ -27,6 +27,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
+			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.value = Item.sellPrice(silver: 50);
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item90; //131, 123
@@ -35,8 +36,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// These below are needed for a minion weapon
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Summon;
-			//item.buffType = ModContent.BuffType<ShadowflamePhantomBuff>();
-			Item.buffType = ModContent.BuffType<Buffs.HarpyIdolBuff>();
+
+			Item.buffType = ModContent.BuffType<Buffs.Minions.HarpyIdolBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ModContent.ProjectileType<HarpyIdol>();
 		}
@@ -49,6 +50,13 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
+
+			if (projectile.ModProjectile is HarpyIdol modProjectile)
+			{
+				modProjectile.additionalDefense = 3; // 3 defense
+				modProjectile.additionalDR = 0.01f; // 1% damage reduction
+				modProjectile.distRadius = 5; // 5 tile radius
+			}
 
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;

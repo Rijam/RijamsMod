@@ -17,9 +17,10 @@ namespace RijamsMod.Items
 		public override string Texture => Mod.Name + "/NPCs/TownNPCs/Harpy";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Harpy");
-			Tooltip.SetDefault("'Friends? I am friendly.'");
+			// DisplayName.SetDefault("Harpy");
+			// Tooltip.SetDefault("'Friends? I am friendly.'");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 25));
+			Item.ResearchUnlockCount = 3;
 		}
 
 		public override void SetDefaults()
@@ -71,8 +72,8 @@ namespace RijamsMod.Items
 		public override string Texture => Mod.Name + "/NPCs/TownNPCs/InterstellarTraveler";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Interstellar Traveler");
-			Tooltip.SetDefault("'I'm pretty far from home, but this place is pretty cool.'");
+			// DisplayName.SetDefault("Interstellar Traveler");
+			// Tooltip.SetDefault("'I'm pretty far from home, but this place is pretty cool.'");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 26));
 		}
 
@@ -124,7 +125,7 @@ namespace RijamsMod.Items
 		public override string Texture => Mod.Name + "/NPCs/TownNPCs/HellTrader";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hell Trader");
+			// DisplayName.SetDefault("Hell Trader");
 			//Tooltip.SetDefault("'Hey, human! Good to see you again.'");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 23));
 		}

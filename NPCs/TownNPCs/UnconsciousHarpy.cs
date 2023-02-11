@@ -14,7 +14,7 @@ namespace RijamsMod.NPCs.TownNPCs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Unconscious Harpy");
+			// DisplayName.SetDefault("Unconscious Harpy");
 			//NPCID.Sets.TownCritter[npc.type] = true;
 			Main.npcFrameCount[NPC.type] = 1;
 			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)

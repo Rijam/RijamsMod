@@ -15,12 +15,16 @@ using Terraria.Audio;
 using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
+using Terraria.UI.Gamepad;
+using Terraria.ModLoader.IO;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
 	[AutoloadHead]
 	public class HellTrader : ModNPC
 	{
+		private bool isShimmered; // NPC.IsShimmerVariant is not kept when opening the shop.
+
 		public override void BossHeadSlot(ref int index)
 		{
 			if (!RijamsModWorld.hellTraderArrivable)
@@ -41,6 +45,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.AttackTime[NPC.type] = 40;
 			NPCID.Sets.AttackAverageChance[NPC.type] = 10;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
 
 			NPCID.Sets.MagicAuraColor[Type] = Color.Yellow;
 
@@ -92,6 +97,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			AnimationType = NPCID.Guide;
 			NPC.lavaImmune = true;
 			NPC.buffImmune[BuffID.OnFire] = true;
+			NPC.buffImmune[ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>()] = true;
 			NPC.homeless = true;
 			Main.npcCatchable[NPC.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
 			NPC.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? ModContent.ItemType<CaughtHellTrader>() : -1;
@@ -113,27 +119,50 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
+				if (NPC.IsShimmerVariant)
 				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head_Alt_1").Type, 1f);
-				}
-				else if (RijamsModWorld.hellTraderArrivable)
-				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head_Alt_2").Type, 1f);
+					if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Alt_1_Shimmered").Type, 1f);
+					}
+					else if (RijamsModWorld.hellTraderArrivable)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Alt_2_Shimmered").Type, 1f);
+					}
+					else
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Shimmered").Type, 1f);
+					}
+					for (int k = 0; k < 2; k++)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Arm_Shimmered").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg_Shimmered").Type, 1f);
+					}
 				}
 				else
 				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
-				}
-				for (int k = 0; k < 2; k++)
-				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+					if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Alt_1").Type, 1f);
+					}
+					else if (RijamsModWorld.hellTraderArrivable)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Alt_2").Type, 1f);
+					}
+					else
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head").Type, 1f);
+					}
+					for (int k = 0; k < 2; k++)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Arm").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg").Type, 1f);
+					}
 				}
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
+		public override bool CanTownNPCSpawn(int numTownNPCs)
 		{
 			if (Main.hardMode && RijamsModWorld.hellTraderArrivable && NPC.CountNPCS(ModContent.NPCType<HellTrader>()) < 1)
 			{
@@ -166,7 +195,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(NPC.type) && spawnInfo.Player.ZoneUnderworldHeight)
 			{
-				if (spawnInfo.SpawnTileType == TileID.ObsidianBrick || spawnInfo.SpawnTileType == TileID.HellstoneBrick || spawnInfo.SpawnTileType == TileID.Platforms)
+				if (spawnInfo.SpawnTileType == TileID.ObsidianBrick || spawnInfo.SpawnTileType == TileID.HellstoneBrick || spawnInfo.SpawnTileType == TileID.Platforms || spawnInfo.SpawnTileType == TileID.AshGrass)
 				{
 					if (!NPC.downedBoss1) //Haven't killed EoC
 					{
@@ -202,39 +231,61 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				NPC.rarity = 0;
 			}
+
+			/*if (isShimmered && !NPC.IsShimmerVariant)
+			{
+				NPC.townNpcVariationIndex = 1;
+			}
+			if (NPC.IsShimmerVariant && !isShimmered)
+			{
+				isShimmered = true;
+			}*/
 		}
 
 		// Sitting frame height is corrected here.
 		private readonly Asset<Texture2D> glowmask = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/HellTrader_Glow");
-		// private readonly Asset<Texture2D> shimmerGlowmask1 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/HellTrader_Glow");
-		// private readonly Asset<Texture2D> shimmerGlowmask2 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/HellTrader_Glow_Alt");
-		// private readonly Asset<Texture2D> shimmerWings = ModContent.Request<Texture2D>("BossesAsNPCs/NPCs/TownNPCs/Shimmered/HellTrader_Wings");
+		private readonly Asset<Texture2D> shimmerGlowmask1 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/HellTrader_Glow");
+		private readonly Asset<Texture2D> shimmerGlowmask2 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/HellTrader_Glow_Alt");
+		private readonly Asset<Texture2D> shimmerWings = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/HellTrader_Wings");
 		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
+			Asset<Texture2D> drawTexture = glowmask;
 			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			Color color = new(255, 255, 255, 100);
-			Vector2 verticalOffset = new(0, 4);
+			Color color = new(255, 255, 255, 255);
+			Vector2 verticalOffset = new(0, 4 - NPC.gfxOffY);
 			if (NPC.frame.Y == 18 * NPC.frame.Height) // Sitting, move up 4 pixels
 			{
-				verticalOffset = new Vector2(0, 8);
+				verticalOffset.Y += 4;
 			}
 
-			spriteBatch.Draw(glowmask.Value, NPC.Center - screenPos - verticalOffset, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
+			if (NPC.IsShimmerVariant)
+			{
+				if (NPC.altTexture == 1)
+				{
+					drawTexture = shimmerGlowmask2;
+				}
+				else
+				{
+					drawTexture = shimmerGlowmask1;
+				}
+			}
+
+			spriteBatch.Draw(drawTexture.Value, NPC.Center - screenPos - verticalOffset, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 		}
-		/*
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
-			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			Color color = new(255, 255, 255, 100);
-			Vector2 verticalOffset = new(0, 4);
-			if (NPC.frame.Y == 18 * NPC.frame.Height) // Sitting, move up 4 pixels
+			if (NPC.IsShimmerVariant)
 			{
-				verticalOffset = new Vector2(0, 8);
+				SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+				Vector2 verticalOffset = new(8, 4 - NPC.gfxOffY);
+				if (NPC.frame.Y == 18 * NPC.frame.Height) // Sitting, move up 4 pixels
+				{
+					verticalOffset.Y += 4;
+				}
+				spriteBatch.Draw(shimmerWings.Value, NPC.Center - screenPos - verticalOffset, new Rectangle(NPC.frame.X, NPC.frame.Y, shimmerWings.Width(), NPC.frame.Height), drawColor, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 			}
-			spriteBatch.Draw(shimmerWings.Value, NPC.Center - screenPos - verticalOffset, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 			return true;
 		}
-		*/
 
 		public override string GetChat()
 		{
@@ -262,6 +313,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I see some of the greaters carrying around a small human figure. It must have some sort of significance...");
 				}
 			}
+
 			if (RijamsModWorld.hellTraderArrivable)
 			{
 				chat.Add("Hey, human! Good to see you again.");
@@ -270,6 +322,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("Ever notice how all of the other Imps wear chokers around their neck?");
 				chat.Add("Interesting fact: Imps have blueish skin color as an adolescent. Yes, Imps have to grow up, too!");
 				chat.Add("That Wall of Flesh was the biggest demon I'd ever seen! How does something like that even move forward?");
+				chat.Add("Do you not like the smell of sulfur? It smells fine to me.");
 				chat.Add("Who is this \"Slayer\" that you speak of?", 0.2);
 
 				if (NPC.life < NPC.lifeMax * 0.2)
@@ -371,35 +424,47 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					chat.Add("I'm honestly surprised you were able to control those Imps. It's not easy getting hell spawn to do what you want, I should know!");
 				}
-				if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport) //Thorium
-				{
-					int weaponMaster = NPC.FindFirstNPC(thorium.Find<ModNPC>("WeaponMaster").Type);
-					if (weaponMaster >= 0 && npcTypeListVillage.Contains(thorium.Find<ModNPC>("WeaponMaster").Type))
-					{
-						chat.Add("Hmm...\nHuh? No, I wasn't staring at " + Main.npc[weaponMaster].GivenName + "!");
-						chat.Add("So... heard anything new about " + Main.npc[weaponMaster].GivenName + "? I'm just asking...");
-						chat.Add(Main.npc[weaponMaster].GivenName + "'s helmet is very nice.\nNothing! It's just a casual observation.");
-					}
-					if (player.HasItem(thorium.Find<ModItem>("PLG8999").Type))
-					{
-						chat.Add("That big gun you have scares me! I don't even know why!", 0.5);
-					}
-				}
 				if (player.HasItem(ModContent.ItemType<Items.Weapons.Magic.PlasmaRifle>()))
 				{
 					chat.Add("I feel like I've seen that energy gun you have, but I'm not sure where.", 0.5);
 				}
+				if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport) //Thorium
+				{
+					if (thorium.TryFind<ModNPC>("WeaponMaster", out ModNPC weaponMasterModNPC))
+					{
+						int weaponMaster = NPC.FindFirstNPC(weaponMasterModNPC.Type);
+						if (weaponMaster >= 0 && npcTypeListVillage.Contains(thorium.Find<ModNPC>("WeaponMaster").Type))
+						{
+							chat.Add("Hmm...\nHuh? No, I wasn't staring at " + Main.npc[weaponMaster].GivenName + "!");
+							chat.Add("So... heard anything new about " + Main.npc[weaponMaster].GivenName + "? I'm just asking...");
+							chat.Add(Main.npc[weaponMaster].GivenName + "'s helmet is very nice.\nNothing! It's just a casual observation.");
+						}
+					}
+					if (thorium.TryFind<ModItem>("PLG8999", out ModItem plg))
+					{
+						if (player.HasItem(plg.Type))
+						{
+							chat.Add("That big gun you have scares me! I don't even know why!", 0.5);
+						}
+					}
+				}
 				if (ModLoader.TryGetMod("CalamityMod", out Mod calamity) && townNPCsCrossModSupport) //Calamity
 				{
-					int brimstoneWitch = NPC.FindFirstNPC(calamity.Find<ModNPC>("WITCH").Type); //Brimstone Witch
-					if (brimstoneWitch >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("WITCH").Type))
+					if (calamity.TryFind<ModNPC>("WITCH", out ModNPC brimstoneWitchModNPC))
 					{
-						chat.Add("Calamitas is so powerful! I wish my magic were as good as hers!");
+						int brimstoneWitch = NPC.FindFirstNPC(brimstoneWitchModNPC.Type); //Brimstone Witch
+						if (brimstoneWitch >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("WITCH").Type))
+						{
+							chat.Add("Calamitas is so powerful! I wish my magic were as good as hers!");
+						}
 					}
-					int archmage = NPC.FindFirstNPC(calamity.Find<ModNPC>("DILF").Type); //Archmage
-					if (archmage >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("DILF").Type))
+					if (calamity.TryFind<ModNPC>("DILF", out ModNPC archmageModNPC))
 					{
-						chat.Add("I'm more into fire magic, but Permafrost's ice magic is still super impressive!");
+						int archmage = NPC.FindFirstNPC(archmageModNPC.Type); //Archmage
+						if (archmage >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("DILF").Type))
+						{
+							chat.Add("I'm more into fire magic, but Permafrost's ice magic is still super impressive!");
+						}
 					}
 				}
 			}
@@ -627,10 +692,25 @@ namespace RijamsMod.NPCs.TownNPCs
 			multiplier = 6f;
 			randomOffset = 0.15f;
 		}
+
+		/*public override void SaveData(TagCompound tag)
+		{
+			//tag["HellTraderIsShimmerVariant"] = isShimmered;
+			//Mod.Logger.DebugFormat("Hell Trader Save: NPC.townNpcVariationIndex {0}, tag[\"HellTraderIsShimmerVariant\"] {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag["HellTraderIsShimmerVariant"].ToString(), isShimmered);
+		}
+
+		public override void LoadData(TagCompound tag)
+		{
+			//isShimmered = tag.GetBool("HellTraderIsShimmerVariant");
+			//Mod.Logger.DebugFormat("Hell Trader Load: NPC.townNpcVariationIndex {0}, tag.GetBool(\"HellTraderIsShimmerVariant\") {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag.GetBool("HellTraderIsShimmerVariant").ToString(), isShimmered);
+		}*/
 	}
 	public class HellTraderProfile : ITownNPCProfile
 	{
-		public string Path => (GetType().Namespace + "." + GetType().Name.Split("Profile")[0]).Replace('.', '/');
+		private string Namespace => GetType().Namespace.Replace('.', '/');
+		private string NPCName => (GetType().Name.Split("Profile")[0]).Replace('.', '/');
+		private string Path => (Namespace + "/" + NPCName);
+
 		public int RollVariation() => 0;
 
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
@@ -648,12 +728,25 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (npc.altTexture == 1)
 			{
+				if (npc.IsShimmerVariant)
+				{
+					return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town_Alt");
+				}
 				return ModContent.Request<Texture2D>(Path + "Town_Alt");
 			}
 
 			if (RijamsModWorld.hellTraderArrivable && !(npc.homeless || NPCHelper.IsFarFromHome(npc)))
 			{
+				if (npc.IsShimmerVariant)
+				{
+					return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town");
+				}
 				return ModContent.Request<Texture2D>(Path + "Town");
+			}
+
+			if (npc.IsShimmerVariant)
+			{
+				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
 			}
 
 			return ModContent.Request<Texture2D>(Path);
@@ -661,6 +754,10 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
+			/*if (npc.IsShimmerVariant)
+			{
+				return ModContent.GetModHeadSlot(Namespace + "/Shimmered/" + NPCName + "_Head");
+			}*/
 			return ModContent.GetModHeadSlot(Path + "_Head");
 		}
 	}

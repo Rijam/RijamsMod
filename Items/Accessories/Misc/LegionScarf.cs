@@ -10,8 +10,8 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Legion Scarf");
-			Tooltip.SetDefault("+5% increased damage\nWhile in the Snow biome or Space:\n +9% increased damage");
+			// DisplayName.SetDefault("Legion Scarf");
+			// Tooltip.SetDefault("+5% increased damage\nWhile in the Snow biome or Space:\n +9% increased damage");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Mister Stabby & Snow Balla]", null, null });
 		}
 

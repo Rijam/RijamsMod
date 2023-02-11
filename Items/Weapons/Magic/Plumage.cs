@@ -11,7 +11,7 @@ namespace RijamsMod.Items.Weapons.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Shoot a bunch of feathers");
+			// Tooltip.SetDefault("Shoot a bunch of feathers");
 		}
 
 		public override void SetDefaults()
@@ -55,7 +55,7 @@ namespace RijamsMod.Items.Weapons.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Shoots even more feathers");
+			// Tooltip.SetDefault("Shoots even more feathers");
 
 		}
 
@@ -111,7 +111,7 @@ namespace RijamsMod.Items.Weapons.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Shreds your foes");
+			// Tooltip.SetDefault("Shreds your foes");
 
 		}
 

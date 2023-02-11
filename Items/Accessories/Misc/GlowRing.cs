@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Small Glow Ring");
-			Tooltip.SetDefault("Emits a small amount of light");
+			// DisplayName.SetDefault("Small Glow Ring");
+			// Tooltip.SetDefault("Emits a small amount of light");
 		}
 
 		public override void SetDefaults()
@@ -45,8 +45,8 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Large Glow Ring");
-			Tooltip.SetDefault("Emits a large amount of light");
+			// DisplayName.SetDefault("Large Glow Ring");
+			// Tooltip.SetDefault("Emits a large amount of light");
 		}
 
 		public override void SetDefaults()
@@ -80,8 +80,8 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Burglar's Ring");
-			Tooltip.SetDefault("Enemies drop double loot\n'Purple burglar alarm'");
+			// DisplayName.SetDefault("Burglar's Ring");
+			// Tooltip.SetDefault("Enemies drop double loot\n'Purple burglar alarm'");
 		}
 
 		public override void SetDefaults()

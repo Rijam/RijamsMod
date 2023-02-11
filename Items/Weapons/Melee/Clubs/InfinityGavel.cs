@@ -14,17 +14,17 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Infinity Gavel");
+			// DisplayName.SetDefault("Infinity Gavel");
 		}
 
 		public override void SetDefaults()
 		{
-			Item.damage = 45;
+			Item.damage = 100;
 			Item.DamageType = DamageClass.Melee;
 			Item.width = 18;
 			Item.height = 18;
-			Item.useTime = 90;
-			Item.useAnimation = 90;
+			Item.useTime = 45;
+			Item.useAnimation = 45;
 			Item.knockBack = 8;
 			Item.value = Item.buyPrice(gold: 2);
 			Item.rare = ItemRarityID.LightRed;
@@ -32,7 +32,7 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 			Item.autoReuse = true;
 			Item.useTurn = false;
 			Item.crit = 10;
-			Item.useStyle = ItemUseStyleID.DrinkLiquid;
+			Item.useStyle = -1;
 			Item.noUseGraphic = true; // The sword is actually a "projectile", so the item should not be visible when used
 			Item.noMelee = true; // The projectile will do the damage and not the item
 
@@ -49,11 +49,14 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 			if (projectile.ModProjectile is InfinityGavelSwingProj modProjectile)
 			{
 				modProjectile.useTurn = Item.useTurn;
-				modProjectile.firingAnimation = (int)Math.Round(Item.useAnimation / player.GetTotalAttackSpeed(DamageClass.Melee));
-				modProjectile.firingTime = (int)Math.Round(Item.useTime / player.GetTotalAttackSpeed(DamageClass.Melee));
+				modProjectile.firingAnimation = (int)Math.Round(Item.useAnimation * 2f / player.GetTotalAttackSpeed(DamageClass.Melee));
+				modProjectile.firingTime = (int)Math.Round(Item.useTime * 2f / player.GetTotalAttackSpeed(DamageClass.Melee));
 			}
 			return false;
 		}
+
+		public override bool MeleePrefix() => true;
+
 		public override void UseItemFrame(Player player)
 		{
 			// Adapted from useStyle 9 (DrinkLiquid)
@@ -64,8 +67,8 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 
 			float newShootRotation = shootRotation;
 
-			float rotateMin = -30f;
-			float rotateMax = 30f;
+			float rotateMin = -45f;
+			float rotateMax = 45f;
 
 			// Right is 0
 			// Top is -Pi/2			-90
@@ -91,21 +94,22 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 			}
 			newShootRotation *= player.direction;
 
-			float currentAnimationTime = player.itemAnimation / (float)player.itemAnimationMax;
+			float currentAnimationTime = (player.itemAnimation * 2f) / (float)(player.itemAnimationMax * 2f);
+
 			float time = 1f - currentAnimationTime;
-			time = Utils.GetLerpValue(0f, 0.4f, time, clamped: true);
+			time = Utils.GetLerpValue(0f, 1.0f, time, clamped: true);
 			player.itemRotation = time * -player.direction * 2f + 0.7f * player.direction;
 			player.itemLocation = player.MountedCenter + new Vector2(player.direction * 10 * currentAnimationTime, 0f);
 			float rotationAmount;
 			if (time <= 0.5f)
 			{
-				rotationAmount = (1f - time) * 4f;
+				rotationAmount = (1f - time) * 5f;
 			}
 			else
 			{
-				rotationAmount = time * 4f;
+				rotationAmount = time * 5f;
 			}
-			float rotationDirection = rotationAmount + (float)Math.PI * 3f / 4f + newShootRotation;
+			float rotationDirection = rotationAmount + (float)Math.PI * 2f / 5f + newShootRotation;
 			rotationDirection *= player.direction;
 
 			player.SetCompositeArmFront(enabled: true, CompositeArmStretchAmount.Full, rotationDirection);

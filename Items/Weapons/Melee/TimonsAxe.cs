@@ -13,8 +13,8 @@ namespace RijamsMod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Timon's Axe");
-			Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws short range projectiles\n  Weapon does double damage\n  Uses 20 mana");
+			// DisplayName.SetDefault("Timon's Axe");
+			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws short range projectiles\n  Weapon does double damage\n  Uses 20 mana");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating Skeletron]", null });
 		}
 
@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.knockBack = 3;
 			Item.value = 100000;
 			Item.rare = ItemRarityID.Orange;
-			Item.UseSound = SoundID.Item1;
+			Item.UseSound = SoundID.DD2_MonkStaffSwing with { Pitch = -0.3f };
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.TimonsAxeProj>();
 			Item.shootSpeed = 16f;

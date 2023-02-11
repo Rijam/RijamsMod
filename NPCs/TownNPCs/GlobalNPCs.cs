@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.Localization;
@@ -16,7 +17,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
-			//int fisherman = NPC.FindFirstNPC(ModContent.NPCType<Fisherman>());
+
 			switch (npc.type)
 			{		
 				case NPCID.Guide:
@@ -167,12 +168,6 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>());
 					shop.item[nextSlot].shopCustomPrice = 40;
-					nextSlot++;
-				}
-				if (Main.hardMode)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.AmmoBox);
-					shop.item[nextSlot].shopCustomPrice = 150000;
 					nextSlot++;
 				}
 			}
@@ -349,10 +344,19 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.StripLight>());
 				nextSlot++;
 			}
+
+			if (type == NPCID.BestiaryGirl && interTravel > 0)
+			{
+				if (Main.GetBestiaryProgressReport().CompletionPercent >= 0.6f)
+				{
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.SnuggetPetLicense>());
+					nextSlot++;
+				}
+			}
 			
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils) && townNPCsCrossModSupport)
 			{
-				if (type == pboneUtils.Find<ModNPC>("Miner").Type)
+				if (pboneUtils.TryFind<ModNPC>("Miner", out ModNPC minerModNPC) && type == minerModNPC.Type)
 				{
 					if (Main.hardMode)
 					{
@@ -365,6 +369,20 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 				}
 			}
+
+			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && townNPCsCrossModSupport)
+			{
+				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman) && type == fisherman.Type)
+				{
+					if (Main.LocalPlayer.ZoneJungle && (int)fishermanNPC.Call("GetStatusShopCycle") == 2) // Fish shop is open
+					{
+						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Fishing.HornetTail>());
+						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].GetStoreValue() * (float)fishermanNPC.Call("shopMulti"));
+						nextSlot++;
+					}
+				}
+			}
+
 		}
 		public override void SetupTravelShop(int[] shop, ref int nextSlot)
 		{
@@ -487,41 +505,49 @@ namespace RijamsMod.NPCs.TownNPCs
 
 				if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && townNPCsCrossModSupport)
 				{
-					int fishermanType = fishermanNPC.Find<ModNPC>("Fisherman").Type;
-					var fishermanHappiness = NPCHappiness.Get(fishermanType);
+					if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fishermanModNPC))
+					{
+						var fishermanHappiness = NPCHappiness.Get(fishermanModNPC.Type);
 
-					fishermanHappiness.SetNPCAffection(harpy, AffectionLevel.Like);
-					harpyHappiness.SetNPCAffection(fishermanType, AffectionLevel.Love);
+						fishermanHappiness.SetNPCAffection(harpy, AffectionLevel.Like);
+						harpyHappiness.SetNPCAffection(fishermanModNPC.Type, AffectionLevel.Love);
 
-					hellTraderHappiness.SetNPCAffection(fishermanType, AffectionLevel.Like);
+						hellTraderHappiness.SetNPCAffection(fishermanModNPC.Type, AffectionLevel.Like);
+					}
 				}
 
 				if (ModLoader.TryGetMod("SGAmod", out Mod sgamod) && townNPCsCrossModSupport)
 				{
-					int drakenType = sgamod.Find<ModNPC>("Dergon").Type;
-					var drakenHappiness = NPCHappiness.Get(drakenType);
+					if (sgamod.TryFind<ModNPC>("Dergon", out ModNPC dergonModNPC))
+					{
+						int drakenType = dergonModNPC.Type;
+						var drakenHappiness = NPCHappiness.Get(drakenType);
 
-					drakenHappiness.SetNPCAffection(harpy, AffectionLevel.Like);
-					harpyHappiness.SetNPCAffection(drakenType, AffectionLevel.Like);
+						drakenHappiness.SetNPCAffection(harpy, AffectionLevel.Like);
+						harpyHappiness.SetNPCAffection(drakenType, AffectionLevel.Like);
 
-					drakenHappiness.SetNPCAffection(intTrav, AffectionLevel.Like);
-					intTravHappiness.SetNPCAffection(drakenType, AffectionLevel.Like);
-
-					int goatType = sgamod.Find<ModNPC>("Goat").Type;
-					hellTraderHappiness.SetNPCAffection(goatType, AffectionLevel.Like);
+						drakenHappiness.SetNPCAffection(intTrav, AffectionLevel.Like);
+						intTravHappiness.SetNPCAffection(drakenType, AffectionLevel.Like);
+					}
+					if (sgamod.TryFind<ModNPC>("Goat", out ModNPC goatModNPC))
+					{
+						hellTraderHappiness.SetNPCAffection(goatModNPC.Type, AffectionLevel.Like);
+					}
 				}
 
 				if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport)
 				{
-					int cookType = thorium.Find<ModNPC>("Cook").Type;
+					if (thorium.TryFind<ModNPC>("Cook", out ModNPC cookModNPC))
+					{
+						intTravHappiness.SetNPCAffection(cookModNPC.Type, AffectionLevel.Love);
+					}
+					if (thorium.TryFind<ModNPC>("WeaponMaster", out ModNPC weaponMasterModNPC))
+					{
+						var weaponMasterHappiness = NPCHappiness.Get(weaponMasterModNPC.Type);
 
-					intTravHappiness.SetNPCAffection(cookType, AffectionLevel.Love);
-
-					int weaponMasterType = thorium.Find<ModNPC>("WeaponMaster").Type;
-					var weaponMasterHappiness = NPCHappiness.Get(weaponMasterType);
-
-					hellTraderHappiness.SetNPCAffection(weaponMasterType, AffectionLevel.Love);
-					weaponMasterHappiness.SetNPCAffection(hellTrader, AffectionLevel.Like);
+						hellTraderHappiness.SetNPCAffection(weaponMasterModNPC.Type, AffectionLevel.Love);
+						weaponMasterHappiness.SetNPCAffection(hellTrader, AffectionLevel.Like);
+					}
 				}
 
 				if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs) && townNPCsCrossModSupport)
@@ -537,21 +563,23 @@ namespace RijamsMod.NPCs.TownNPCs
 
 				if (ModLoader.TryGetMod("CalamityMod", out Mod calamity) && townNPCsCrossModSupport) //Calamity
 				{
-					int brimstoneWitchType = calamity.Find<ModNPC>("WITCH").Type; //Brimstone Witch
-					int archmageType = calamity.Find<ModNPC>("DILF").Type; //Archmage
+					if (calamity.TryFind<ModNPC>("WITCH", out ModNPC brimstoneWitchModNPC) && calamity.TryFind<ModNPC>("DILF", out ModNPC archmageModNPC))
+					{
+						var brimstoneWitchHappiness = NPCHappiness.Get(brimstoneWitchModNPC.Type);
 
-					var brimstoneWitchHappiness = NPCHappiness.Get(brimstoneWitchType);
+						hellTraderHappiness.SetNPCAffection(brimstoneWitchModNPC.Type, AffectionLevel.Love);
+						hellTraderHappiness.SetNPCAffection(archmageModNPC.Type, AffectionLevel.Like);
 
-					hellTraderHappiness.SetNPCAffection(brimstoneWitchType, AffectionLevel.Love);
-					hellTraderHappiness.SetNPCAffection(archmageType, AffectionLevel.Like);
-
-					brimstoneWitchHappiness.SetNPCAffection(hellTrader, AffectionLevel.Like);
+						brimstoneWitchHappiness.SetNPCAffection(hellTrader, AffectionLevel.Like);
+					}
 				}
 
 				if (ModLoader.TryGetMod("LivingWorldMod", out Mod livingWorldMod) && townNPCsCrossModSupport)
 				{
-					int harpyVillagerType = livingWorldMod.Find<ModNPC>("HarpyVillager").Type;
-					harpyHappiness.SetNPCAffection(harpyVillagerType, AffectionLevel.Love);
+					if (livingWorldMod.TryFind<ModNPC>("HarpyVillager", out ModNPC harpyVillagerModNPC))
+					{
+						harpyHappiness.SetNPCAffection(harpyVillagerModNPC.Type, AffectionLevel.Love);
+					}
 				}
 			}
 		}

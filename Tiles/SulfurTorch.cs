@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using ReLogic.Content;
@@ -23,43 +24,25 @@ namespace RijamsMod.Tiles
 			Main.tileNoFail[Type] = true;
 			Main.tileWaterDeath[Type] = false;
 			TileID.Sets.FramesOnKillWall[Type] = true;
+			TileID.Sets.Torch[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleTorch);
-			TileObjectData.newTile.WaterDeath = false;
-			TileObjectData.newTile.LavaDeath = false;
-			TileObjectData.newTile.WaterPlacement = LiquidPlacement.Allowed;
-			TileObjectData.newTile.LavaPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
-
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
-			TileObjectData.newAlternate.WaterDeath = false;
-			TileObjectData.newAlternate.LavaDeath = false;
-			TileObjectData.newAlternate.WaterPlacement = LiquidPlacement.Allowed;
-			TileObjectData.newAlternate.LavaPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newAlternate.AnchorLeft = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
 			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { (int)TileID.WoodenBeam };
 			TileObjectData.addAlternate(1);
-
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
-			TileObjectData.newAlternate.WaterDeath = false;
-			TileObjectData.newAlternate.LavaDeath = false;
-			TileObjectData.newAlternate.WaterPlacement = LiquidPlacement.Allowed;
-			TileObjectData.newAlternate.LavaPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newAlternate.AnchorRight = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
 			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { (int)TileID.WoodenBeam };
 			TileObjectData.addAlternate(2);
-
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.StyleTorch);
-			TileObjectData.newAlternate.WaterDeath = false;
-			TileObjectData.newAlternate.LavaDeath = false;
-			TileObjectData.newAlternate.WaterPlacement = LiquidPlacement.Allowed;
-			TileObjectData.newAlternate.LavaPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newAlternate.AnchorWall = true;
 			TileObjectData.addAlternate(0);
 
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Torch");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Torch");
 			AddMapEntry(new Color(250, 250, 0), name);
 			DustType = ModContent.DustType<SulfurDust>();
 			ItemDrop = ModContent.ItemType<Items.Placeable.SulfurTorch>();

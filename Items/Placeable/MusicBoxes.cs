@@ -1,5 +1,6 @@
 using Terraria.ModLoader;
 using Terraria.ID;
+using RijamsMod.Items.Information;
 
 namespace RijamsMod.Items.Placeable
 {
@@ -7,9 +8,11 @@ namespace RijamsMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Music Box (Outer Storage Warehouse)");
-			Tooltip.SetDefault("Freedoom Phase 2 - MAP07 - Outer Storage Warehouse");
+			// DisplayName.SetDefault("Music Box (Outer Storage Warehouse)");
+			// Tooltip.SetDefault("Freedoom Phase 2 - MAP07 - Outer Storage Warehouse");
 			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Sounds/Music/FreedoomPhase2_MAP07_OuterStorageWarehouse"), Item.type, ModContent.TileType<Tiles.MusicBoxOSW>());
+			ItemID.Sets.CanGetPrefixes[Type] = false; // music boxes can't get prefixes in vanilla
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.MusicBox; // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults()

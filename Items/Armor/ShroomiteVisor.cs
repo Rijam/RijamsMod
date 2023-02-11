@@ -10,8 +10,8 @@ namespace RijamsMod.Items.Armor
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Shroomite Visor");
-			Tooltip.SetDefault("10% increased all ranged damage\n5% increased ranged critical strike chance");
+			// DisplayName.SetDefault("Shroomite Visor");
+			// Tooltip.SetDefault("10% increased all ranged damage\n5% increased ranged critical strike chance");
 		}
 
 		public override void SetDefaults()

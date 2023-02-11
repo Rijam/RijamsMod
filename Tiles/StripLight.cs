@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using ReLogic.Content;
@@ -71,8 +72,8 @@ namespace RijamsMod.Tiles
 			TileObjectData.newAlternate.AnchorWall = true;
 			TileObjectData.addAlternate(0);*/
 			TileObjectData.addTile(Type);
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Strip Light");
+			LocalizedText name = CreateMapEntryName();
+			// name.SetDefault("Strip Light");
 			AddMapEntry(new Color(250, 250, 250), name);
 			DustType = DustID.WhiteTorch;
 			ItemDrop = ModContent.ItemType<Items.Placeable.StripLight>();
@@ -94,6 +95,18 @@ namespace RijamsMod.Tiles
 				{
 					newColor = (Vector3)color;
 				}
+				if (tile.HasActuator) // Has an Actuator on it (can't activate it because the tile isn't solid)
+				{
+					newColor *= 0.5f;
+				}
+				if (tile.IsTileFullbright) // Has Illuminant Coating
+				{
+					newColor *= 2f;
+				}
+				/*if (tile.IsTileInvisible) // Has Echo Coating
+				{
+					newColor *= 0f;
+				}*/
 				r = newColor.X;
 				g = newColor.Y;
 				b = newColor.Z;

@@ -33,7 +33,7 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Infinity Gavel");
+			// DisplayName.SetDefault("Infinity Gavel");
 			Main.projFrames[Projectile.type] = 3;
 		}
 
@@ -92,8 +92,8 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			float velocityRotation = Projectile.velocity.ToRotation();
 			// Main.NewText("velocityRotation " + velocityRotation * 57.2957795);
 			// Main.NewText("direction " + Projectile.direction);
-			float rotateMin = -30f;
-			float rotateMax = 30f;
+			float rotateMin = -45f;
+			float rotateMax = 45f;
 			if (Projectile.direction < 0)
 			{
 				// Shot to the left.
@@ -332,9 +332,9 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 					CalcFourthPoint(owner) - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 					Projectile.Hitbox, Color.Magenta * 0.25f, 0, Projectile.Hitbox.Size() / 2, Projectile.scale, spriteEffects, 0);
 
-				Main.EntitySpriteDraw(texBackground,
-					position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
-					sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
+				//Main.EntitySpriteDraw(texBackground,
+				//	position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				//	sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 			}
 
 			Main.EntitySpriteDraw(texture,

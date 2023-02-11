@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.Items.Armor.Vanity.IntTrav;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -13,9 +14,10 @@ namespace RijamsMod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults() 
 		{
-			DisplayName.SetDefault("Hammer of Retribution");
-			Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws a long range projectile\n  Weapon does double damage\n  Uses 20 mana");
+			// DisplayName.SetDefault("Hammer of Retribution");
+			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws a long range projectile\n  Weapon does double damage\n  Uses 20 mana");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating any Mechanical Boss]", null });
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<TimonsAxe>(); // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults() 
@@ -30,7 +32,7 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.knockBack = 5;
 			Item.value = 200000;
 			Item.rare = ItemRarityID.LightRed;
-			Item.UseSound = SoundID.Item1;
+			Item.UseSound = SoundID.DD2_MonkStaffSwing with { Pitch = -0.3f };
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.HammerOfRetributionProj>();
 			Item.shootSpeed = 16f;

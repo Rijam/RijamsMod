@@ -12,8 +12,8 @@ namespace RijamsMod.Items.Weapons.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Cresceptre");
-			Tooltip.SetDefault("'Just going through a purple patch, don't mind me.'");
+			// DisplayName.SetDefault("Cresceptre");
+			// Tooltip.SetDefault("'Just going through a purple patch, don't mind me.'");
 		}
 
 		public override void SetDefaults()
@@ -32,8 +32,17 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.UseSound = new(Mod.Name + "/Sounds/Item/Cresceptre") { PitchVariance = 0.05f, MaxInstances = 5 };
 			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/Weapons/Magic/" + Name).Value;
-				Item.GetGlobalItem<ItemUseGlow>().glowOffsetX = -16;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+
+				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
+				flash.posOffsetXLeft = 12;
+				flash.posOffsetXRight = -56;
+				flash.posOffsetY = -12;
+				flash.frameCount = 3;
+				flash.frameRate = 3;
+				flash.forceFirstFrame = true;
+				flash.animationLoop = false;
 			}
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shootSpeed = 12f;
@@ -48,10 +57,10 @@ namespace RijamsMod.Items.Weapons.Magic
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Vector2 muzzleOffset = Vector2.Normalize(velocity) * 25f;
+			Vector2 muzzleOffset = Vector2.Normalize(velocity) * 20f;
 			float numberProjectiles = 2;// 2 shots
 			float rotation = MathHelper.ToRadians(20);
-			position += Vector2.Normalize(velocity) * 45f;
+			position += Vector2.Normalize(velocity) * 20f;
 
 			for (int i = 0; i < numberProjectiles; i++)
 			{
@@ -60,7 +69,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				{
 					position += muzzleOffset;
 				}
-				Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI);
+				Projectile.NewProjectile(source, position, perturbedSpeed, type, damage, knockback, player.whoAmI);
 			}
 			return false;
 		}

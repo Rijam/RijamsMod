@@ -27,6 +27,7 @@ namespace RijamsMod
 		public static bool intTravQuestMagicOxygenizer = false;
 		public static bool intTravQuestPrimeThruster = false;
 		public static bool hellTraderArrivable = false;
+		public static bool boughtSnuggetPet = false;
 
 		public static bool harpyJustRescued = false; // Not important for saving.
 
@@ -41,7 +42,8 @@ namespace RijamsMod
 			intTravQuestMagicOxygenizer = false;
 			intTravQuestPrimeThruster = false;
 			hellTraderArrivable = false;
-            
+			boughtSnuggetPet = false;
+
 			harpyJustRescued = false;
 		}
 
@@ -56,6 +58,7 @@ namespace RijamsMod
 			intTravQuestMagicOxygenizer = false;
 			intTravQuestPrimeThruster = false;
 			hellTraderArrivable = false;
+			boughtSnuggetPet = false;
 
 			harpyJustRescued = false;
 		}
@@ -98,6 +101,10 @@ namespace RijamsMod
 			{
 				tag["hellTraderArrivable"] = true;
 			}
+			if (boughtSnuggetPet)
+			{
+				tag["boughtSnuggetPet"] = true;
+			}
 		}
 		public override void LoadWorldData(TagCompound tag)
 		{
@@ -110,6 +117,7 @@ namespace RijamsMod
 			intTravQuestMagicOxygenizer = tag.ContainsKey("intTravQuestBreathingPack");
 			intTravQuestPrimeThruster = tag.ContainsKey("intTravQuestPrimeThruster");
 			hellTraderArrivable = tag.ContainsKey("hellTraderArrivable");
+			boughtSnuggetPet = tag.ContainsKey("boughtSnuggetPet");
 		}
 
 		public override void NetSend(BinaryWriter writer)
@@ -128,6 +136,7 @@ namespace RijamsMod
 
 			var flags2 = new BitsByte();
 			flags2[0] = hellTraderArrivable;
+			flags2[1] = boughtSnuggetPet;
 			writer.Write(flags2);
 		}
 		public override void NetReceive(BinaryReader reader)
@@ -144,6 +153,7 @@ namespace RijamsMod
 
 			BitsByte flags2 = reader.ReadByte();
 			hellTraderArrivable = flags2[0];
+			boughtSnuggetPet = flags2[1];
 		}
 
 		public static void UpdateWorldBool() //from Calamity's Vanities
@@ -175,7 +185,7 @@ namespace RijamsMod
 						// Expect about half the number of chests in a small world.
 						if (WorldGen.genRand.NextBool(4)) 
 						{
-							for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -188,7 +198,7 @@ namespace RijamsMod
 						}
 						if (WorldGen.genRand.NextBool(8))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -209,12 +219,25 @@ namespace RijamsMod
 						// If there are 20 Locked Golden Chests in a large world, only 4 of them have the item.
 						if (WorldGen.genRand.NextBool(5))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
 									//Mod.Logger.Debug("RijamsMod: Cobalt Protector Cudgel added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Cudgels.CobaltProtectorCudgel>());
+									chest.item[inventoryIndex].stack = 1;
+									break;
+								}
+							}
+						}
+						if (chest.item[0].type == ItemID.Handgun) // If the first slot of the chest is a Handgun, add the StockadeCrossbow.
+						{
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							{
+								if (chest.item[inventoryIndex].IsAir)
+								{
+									//Mod.Logger.Debug("RijamsMod: Cobalt Protector Cudgel added.");
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Ranged.StockadeCrossbow>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
 								}

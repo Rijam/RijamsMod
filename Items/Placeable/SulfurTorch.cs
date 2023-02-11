@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Items.Information;
 
 namespace RijamsMod.Items.Placeable
 {
@@ -10,23 +11,14 @@ namespace RijamsMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Can be placed in water");
+			// Tooltip.SetDefault("Can be placed in water");
+			ItemID.Sets.Torches[Type] = true;
+			ItemID.Sets.WaterTorches[Type] = true;
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.ShimmerTorch; // Shimmer transforms the item.
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 10;
-			Item.height = 12;
-			Item.maxStack = 9999;
-			Item.holdStyle = 1;
-			Item.noWet = false;
-			Item.useTurn = true;
-			Item.autoReuse = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.consumable = true;
-			Item.createTile = ModContent.TileType<Tiles.SulfurTorch>();
-			Item.flame = true;
+			Item.DefaultToTorch(ModContent.TileType<Tiles.SulfurTorch>(), 0, true);
 			Item.value = 31;
 		}
 
@@ -49,6 +41,11 @@ namespace RijamsMod.Items.Placeable
 		{
 			dryTorch = false;
 			wetTorch = true;
+		}
+
+		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
+		{ // Overrides the default sorting method of this Item.
+			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; // Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be.
 		}
 
 		public override void AddRecipes()

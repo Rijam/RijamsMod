@@ -13,13 +13,13 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sulfuric Whip");
-			Tooltip.SetDefault("10 summon tag damage\nInflicts Sulfuric Acid\n{$CommonItemTooltip.Whips}");
+			// DisplayName.SetDefault("Sulfuric Whip");
+			// Tooltip.SetDefault("10 summon tag damage\nInflicts Sulfuric Acid\nCan hit enemies through tiles\n{$CommonItemTooltip.Whips}");
 			GlobalItems.isWhip.Add(Item.type);
 		}
 		public override void SetDefaults()
 		{
-			Item.DefaultToWhip(ModContent.ProjectileType<SulfuricWhipProj>(), 45, 2f, 4f, 30);
+			Item.DefaultToWhip(ModContent.ProjectileType<SulfuricWhipProj>(), 30, 2f, 4f, 30);
 
 			Item.width = 44;
 			Item.height = 36;

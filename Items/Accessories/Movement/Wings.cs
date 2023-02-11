@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.DataStructures;
+using System.Linq;
 
 namespace RijamsMod.Items.Accessories.Movement
 {
@@ -10,7 +12,11 @@ namespace RijamsMod.Items.Accessories.Movement
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Allows flight and slow fall\nBetter than average horizontal acceleration");
+			// Tooltip.SetDefault("Allows flight and slow fall\nBetter than average horizontal acceleration");
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(170, 6f, 12f);
+			// 170 = 2.83 seconds flight time
+			// 6 = fly speed
+			// 12 = acceleration multiplier
 		}
 
 		public override void SetDefaults() {
@@ -19,10 +25,11 @@ namespace RijamsMod.Items.Accessories.Movement
 			Item.value = 80000;
 			Item.rare = ItemRarityID.Red;
 			Item.accessory = true;
+			
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.wingTimeMax = 170; //2.83 second
+			//player.wingTimeMax = 170; //2.83 second
 		}
 
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
@@ -37,8 +44,8 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)
 		{
-			speed = 6f;
-			acceleration *= 12f;
+			//speed = 6f;
+			//acceleration *= 12f;
 		}
 
 		public override void AddRecipes()
@@ -47,6 +54,7 @@ namespace RijamsMod.Items.Accessories.Movement
 				.AddIngredient(ModContent.ItemType<Materials.GiantRedHarpyFeather>(), 1)
 				.AddIngredient(ItemID.SoulofFlight, 20)
 				.AddTile(TileID.MythrilAnvil)
+				.SortAfter(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)) // Places this recipe after any wing so every wing stays together in the crafting menu.
 				.Register();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)

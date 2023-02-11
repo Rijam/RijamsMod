@@ -16,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		public override void SetStaticDefaults()
 		{
 			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
-			Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nInflicts Daybroken\nCauses Solar Explosion on hit");
+			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nInflicts Daybroken\nCauses Solar Explosion on hit");
 			GlobalItems.isJoustingLance.Add(Type);
 			//CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The number of sacrifices that is required to research the item in Journey Mode.
 		}

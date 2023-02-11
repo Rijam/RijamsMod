@@ -11,7 +11,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Flying Purple Slime");
+			// DisplayName.SetDefault("Flying Purple Slime");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.Slimer];
 		}
 
@@ -99,7 +99,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore").Type, NPC.scale);
+				Gore.NewGore(Entity.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name).Type, NPC.scale);
 			}
 		}
 

@@ -44,7 +44,7 @@ namespace RijamsMod.UI
 			pickaxe.Top.Set(5, 0f);
 			pickaxe.Width.Set(40, 0f);
 			pickaxe.Height.Set(40, 0f);
-			pickaxe.OnClick += new MouseEvent(PickButtonClicked);
+			pickaxe.OnLeftClick += new MouseEvent(PickButtonClicked);
 			TheUIPanel.Append(pickaxe);
 
 			Asset<Texture2D> buttonAxeTextureOff = ModContent.Request<Texture2D>("RijamsMod/UI/UIAxeOff");
@@ -53,7 +53,7 @@ namespace RijamsMod.UI
 			axe.Top.Set(5, 0f);
 			axe.Width.Set(40, 0f);
 			axe.Height.Set(40, 0f);
-			axe.OnClick += new MouseEvent(AxeButtonClicked);
+			axe.OnLeftClick += new MouseEvent(AxeButtonClicked);
 			TheUIPanel.Append(axe);
 
 			Asset<Texture2D> buttonHammerTextureOff = ModContent.Request<Texture2D>("RijamsMod/UI/UIHammerOff");
@@ -62,7 +62,7 @@ namespace RijamsMod.UI
 			hammer.Top.Set(5, 0f);
 			hammer.Width.Set(40, 0f);
 			hammer.Height.Set(40, 0f);
-			hammer.OnClick += new MouseEvent(HammerButtonClicked);
+			hammer.OnLeftClick += new MouseEvent(HammerButtonClicked);
 			TheUIPanel.Append(hammer);
 
 			Append(TheUIPanel);

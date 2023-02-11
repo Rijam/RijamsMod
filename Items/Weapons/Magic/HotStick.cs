@@ -11,7 +11,7 @@ namespace RijamsMod.Items.Weapons.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hot Stick");
+			// DisplayName.SetDefault("Hot Stick");
 		}
 
 		public override void SetDefaults()

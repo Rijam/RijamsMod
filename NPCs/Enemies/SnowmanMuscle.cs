@@ -16,7 +16,7 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Snowman Muscle");
+			// DisplayName.SetDefault("Snowman Muscle");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SnowmanGangsta];
 
 			// Influences how the NPC looks in the Bestiary

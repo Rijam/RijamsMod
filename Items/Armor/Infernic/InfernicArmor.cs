@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Armor.Infernic
@@ -11,8 +12,8 @@ namespace RijamsMod.Items.Armor.Infernic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Infernic Hood");
-			Tooltip.SetDefault("+60 Max mana\n+1 Minion count");
+			// DisplayName.SetDefault("Infernic Hood");
+			// Tooltip.SetDefault("+60 Max mana\n+1 Minion count");
 			if (!Main.dedServ)
 			{
 				ArmorUseGlowHead.RegisterData(Item.headSlot, new string[] { Texture + "_Head_Glowmask", "255", "255", "255", "none" });
@@ -40,7 +41,7 @@ namespace RijamsMod.Items.Armor.Infernic
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "\nGrants immunity to fire blocks\nGrants immunity to On Fire!\nProvides 2 seconds of immunity to lava";
+			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Infernic");
 			player.buffImmune[BuffID.OnFire] = true;
 			player.fireWalk = true;
 			player.lavaMax += 120;
@@ -70,8 +71,8 @@ namespace RijamsMod.Items.Armor.Infernic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Infernic Robes");
-			Tooltip.SetDefault("+10% Magic critical strike chance\n+12% Magic and summon damage");
+			// DisplayName.SetDefault("Infernic Robes");
+			// Tooltip.SetDefault("+10% Magic critical strike chance\n+12% Magic and summon damage");
 			if (!Main.dedServ)
 			{
 				ArmorUseGlowBody.RegisterData(Item.bodySlot, Color.White);
@@ -107,8 +108,8 @@ namespace RijamsMod.Items.Armor.Infernic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Infernic Trousers");
-			Tooltip.SetDefault("+5% Movement speed\n10% reduced mana usage\n+1 mana regeneration bonus");
+			// DisplayName.SetDefault("Infernic Trousers");
+			// Tooltip.SetDefault("+5% Movement speed\n10% reduced mana usage\n+1 mana regeneration bonus");
 			if (!Main.dedServ)
 			{
 				ArmorUseGlowLegs.RegisterData(Item.legSlot, new string[] { Texture + "_Legs_Glowmask", "255", "255", "255", "none" });

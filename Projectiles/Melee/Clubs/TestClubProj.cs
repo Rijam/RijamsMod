@@ -33,7 +33,7 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Test Club");
+			// DisplayName.SetDefault("Test Club");
 			Main.projFrames[Projectile.type] = 3;
 		}
 
@@ -67,7 +67,7 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			/*if (Timer == 0)
 			{
 				Main.NewText("firingAnimation " + firingAnimation);
-				Main.NewText("halfFiringAnimation " + halfFiringAnimation);
+				Main.NewText("firingTime " + firingTime);
 			}*/
 
 			if (useTurn) // Still wouldn't recommend using useTurn
@@ -92,8 +92,8 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			float velocityRotation = Projectile.velocity.ToRotation();
 			// Main.NewText("velocityRotation " + velocityRotation * 57.2957795);
 			// Main.NewText("direction " + Projectile.direction);
-			float rotateMin = -30f;
-			float rotateMax = 30f;
+			float rotateMin = -45f;
+			float rotateMax = 45f;
 			if (Projectile.direction < 0)
 			{
 				// Shot to the left.

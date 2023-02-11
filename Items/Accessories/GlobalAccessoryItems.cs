@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Items.Armor.RedSkyware;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,14 +12,6 @@ namespace RijamsMod.Items.Accessories
 	// See other GlobalItem classes in ExampleMod to see other ways that GlobalItem can be used.
 	public class GlobalAccessoryItems : GlobalItem
 	{
-		public override void SetDefaults(Item item)
-		{
-
-		}
-		public override void UpdateAccessory(Item item, Player player, bool hideVisual)
-		{
-
-		}
 		public override void MeleeEffects(Item item, Player player, Rectangle hitbox)
 		{
 			if (player.GetModPlayer<RijamsModPlayer>().daybreakStone && item.CountsAsClass(DamageClass.Melee) && !item.noMelee && !item.noUseGraphic && Main.rand.NextBool(2))
@@ -57,10 +50,18 @@ namespace RijamsMod.Items.Accessories
 					damage += 2;
 				}
 			}
+			if (player.armor[0].type == ModContent.ItemType<RedSkywareHelmet>()) // If the Red Skyware Helmet is equipped in the helmet slot
+			{
+				speed *= 1.1f;
+				knockback *= 1.1f;
+			}
 		}
-		public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
+		public override void ModifyItemScale(Item item, Player player, ref float scale)
 		{
-			return base.Shoot(item, player, source, position, velocity, type, damage, knockBack);
+			if (player.armor[0].type == ModContent.ItemType<RedSkywareMask>() && (player.HeldItem.DamageType.CountsAsClass(DamageClass.Melee) || Main.mouseItem.DamageType.CountsAsClass(DamageClass.Melee)))
+			{
+				scale *= 1.1f;
+			}
 		}
 	}
 	public class SummonersGloveUpdate : GlobalItem

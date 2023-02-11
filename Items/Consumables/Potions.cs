@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Buffs.Potions;
 
 namespace RijamsMod.Items.Consumables
 {
@@ -9,8 +10,8 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Fury Potion");
-			Tooltip.SetDefault("+10% attack speed");
+			// DisplayName.SetDefault("Fury Potion");
+			// Tooltip.SetDefault("+10% attack speed");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
 				new Color(255, 181, 229),
@@ -28,11 +29,11 @@ namespace RijamsMod.Items.Consumables
 			Item.useTime = 15;
 			Item.useTurn = true;
 			Item.UseSound = SoundID.Item3;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.sellPrice(silver: 2);
-			Item.buffType = ModContent.BuffType<Buffs.Fury>();
+			Item.buffType = ModContent.BuffType<Fury>();
 			Item.buffTime = 14400; //4 minutes
 		}
 		public override void AddRecipes()
@@ -50,8 +51,8 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Support Potion");
-			Tooltip.SetDefault("+1 sentry capacity");
+			// DisplayName.SetDefault("Support Potion");
+			// Tooltip.SetDefault("+1 sentry capacity");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
 				new Color(252, 98, 100),
@@ -69,11 +70,11 @@ namespace RijamsMod.Items.Consumables
 			Item.useTime = 15;
 			Item.useTurn = true;
 			Item.UseSound = SoundID.Item3;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.sellPrice(silver: 2);
-			Item.buffType = ModContent.BuffType<Buffs.Support>();
+			Item.buffType = ModContent.BuffType<Support>();
 			Item.buffTime = 28800; //8 minutes
 		}
 		public override void AddRecipes()
@@ -90,8 +91,8 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Soaring Potion");
-			Tooltip.SetDefault("+0.5 seconds wing flight");
+			// DisplayName.SetDefault("Soaring Potion");
+			// Tooltip.SetDefault("+0.5 seconds wing flight");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
 				new Color(139, 235, 239),
@@ -109,11 +110,11 @@ namespace RijamsMod.Items.Consumables
 			Item.useTime = 15;
 			Item.useTurn = true;
 			Item.UseSound = SoundID.Item3;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.sellPrice(silver: 2);
-			Item.buffType = ModContent.BuffType<Buffs.Soaring>();
+			Item.buffType = ModContent.BuffType<Soaring>();
 			Item.buffTime = 10800; //3 minutes
 		}
 		public override void AddRecipes()
@@ -123,6 +124,54 @@ namespace RijamsMod.Items.Consumables
 				.AddIngredient(ItemID.Damselfish, 1)
 				.AddIngredient(ItemID.Feather, 1)
 				.AddIngredient(ItemID.SoulofFlight, 1)
+				.AddTile(TileID.Bottles)
+				.Register();
+		}
+	}
+	public class FerociousPotion : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Ferocious Potion");
+			// Tooltip.SetDefault("+10 armor penetration");
+			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
+			{
+				new Color(251, 194, 29),
+				new Color(209, 127, 147),
+				new Color(140, 85, 10)
+			};
+		}
+
+		public override void SetDefaults()
+		{
+			Item.width = 20;
+			Item.height = 30;
+			Item.useStyle = ItemUseStyleID.DrinkLiquid;
+			Item.useAnimation = 15;
+			Item.useTime = 15;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item3;
+			Item.maxStack = Item.CommonMaxStack;
+			Item.consumable = true;
+			Item.rare = ItemRarityID.Blue;
+			Item.value = Item.sellPrice(silver: 2);
+			Item.buffType = ModContent.BuffType<Ferocious>();
+			Item.buffTime = 14400; //4 minutes
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.BottledWater, 1)
+				.AddIngredient(ModContent.ItemType<Fishing.HornetTail>(), 1)
+				.AddIngredient(ItemID.WormTooth, 1)
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.AddTile(TileID.Bottles)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.BottledWater, 1)
+				.AddIngredient(ModContent.ItemType<Fishing.HornetTail>(), 1)
+				.AddIngredient(ModContent.ItemType<Materials.CrawlerChelicera>(), 1)
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
 				.AddTile(TileID.Bottles)
 				.Register();
 		}

@@ -10,7 +10,7 @@ namespace RijamsMod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stabby Shiv");
+			// DisplayName.SetDefault("Stabby Shiv");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Mister Stabby]", null, null });
 		}
 
@@ -42,8 +42,8 @@ namespace RijamsMod.Items.Weapons.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Frosty Shiv");
-			Tooltip.SetDefault("Inflicts Frostburn"); 
+			// DisplayName.SetDefault("Frosty Shiv");
+			// Tooltip.SetDefault("Inflicts Frostburn"); 
 		}
 
 		public override void SetDefaults()

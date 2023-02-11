@@ -13,7 +13,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Basic Dart");     //The English name of the projectile
+			// DisplayName.SetDefault("Basic Dart");     //The English name of the projectile
 		}
 
 		public override void SetDefaults()
@@ -43,7 +43,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sulfur Dart");     //The English name of the projectile
+			// DisplayName.SetDefault("Sulfur Dart");     //The English name of the projectile
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 2;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
 		}
@@ -68,11 +68,11 @@ namespace RijamsMod.Projectiles.Ranged
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)
 		{
-			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			target.netUpdate = true;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity) => false;
@@ -116,7 +116,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Chlorophyte Dart");     //The English name of the projectile
+			// DisplayName.SetDefault("Chlorophyte Dart");     //The English name of the projectile
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 3;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
 		}
@@ -196,7 +196,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Spectre Dart");     //The English name of the projectile
+			// DisplayName.SetDefault("Spectre Dart");     //The English name of the projectile
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 3;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
 		}
@@ -311,7 +311,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Shroomite Dart");     //The English name of the projectile
+			// DisplayName.SetDefault("Shroomite Dart");     //The English name of the projectile
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 7;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
 		}
@@ -393,7 +393,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Luminite Dart");     //The English name of the projectile
+			// DisplayName.SetDefault("Luminite Dart");     //The English name of the projectile
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 3;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode

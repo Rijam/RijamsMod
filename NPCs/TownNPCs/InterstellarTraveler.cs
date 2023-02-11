@@ -27,6 +27,10 @@ using ReLogic.Content;
 using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader.IO;
 using Terraria.GameContent.UI;
+using System.Drawing.Printing;
+using RijamsMod.NPCs.TownNPCs.SnuggetPet;
+using System.Xml;
+using log4net.Repository.Hierarchy;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -35,6 +39,7 @@ namespace RijamsMod.NPCs.TownNPCs
 	{
 		private bool usedMicronWrap = false;
 		private int usedMicronWrapTime = 0;
+		private bool isShimmered; // NPC.IsShimmerVariant is not kept when opening the shop.
 
 		#region Set Defaults
 		public override void SetStaticDefaults()
@@ -48,6 +53,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.AttackTime[NPC.type] = 30; 
 			NPCID.Sets.AttackAverageChance[NPC.type] = 1; // Lower numbers actually make the NPC more likely to attack
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
+			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
@@ -70,6 +76,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				.SetNPCAffection(NPCID.Cyborg, AffectionLevel.Like)
 				.SetNPCAffection(NPCID.Steampunker, AffectionLevel.Like)
 				.SetNPCAffection(NPCID.PartyGirl, AffectionLevel.Like)
+				.SetNPCAffection(ModContent.NPCType<SnuggetPet.SnuggetPet>(), AffectionLevel.Like)
 				//Like Draken (cross mod)
 				//Like Martian Saucer (cross mod)
 				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Dislike)
@@ -115,16 +122,35 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Head").Type, 1f);
-				for (int k = 0; k < 2; k++)
+				if (NPC.IsShimmerVariant)
 				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Arm").Type, 1f);
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+					if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Alt_Shimmered").Type, 1f);
+					}
+					else
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head_Shimmered").Type, 1f);
+					}
+					for (int k = 0; k < 2; k++)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Arm_Shimmered").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg_Shimmered").Type, 1f);
+					}
 				}
+				else
+				{
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Head").Type, 1f);
+					for (int k = 0; k < 2; k++)
+					{
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Arm").Type, 1f);
+						Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg").Type, 1f);
+					}
+				}			
 			}
 		}
 
-		public override bool CanTownNPCSpawn(int numTownNPCs, int money)
+		public override bool CanTownNPCSpawn(int numTownNPCs)
 		{
 			if (NPC.downedBoss2 && NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) < 1) //EoW or BoC
 			{
@@ -134,7 +160,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				else
 				{
-					for (int k = 0; k < 255; k++)
+					for (int k = 0; k < Main.maxPlayers; k++)
 					{
 						Player player = Main.player[k];
 						if (player.active)
@@ -213,42 +239,33 @@ namespace RijamsMod.NPCs.TownNPCs
 				usedMicronWrap = false;
 				NPC.netUpdate = true;
 			}
-		}
 
-		/* Preview
-		// Probably not necessary to have this saving stuff
-		public override bool NeedSaving()
-		{
-			return usedMicronWrap && usedMicronWrapTime > 0; // Only save if the NPC has healed
-		}
-
-		public override void SaveData(TagCompound tag)
-		{
-			if (usedMicronWrap)
+			/*if (isShimmered && !NPC.IsShimmerVariant)
 			{
-				tag["usedMicronWrap"] = usedMicronWrap;
-				tag["usedMicronWrapTime"] = usedMicronWrapTime;
+				NPC.townNpcVariationIndex = 1;
 			}
+			if (NPC.IsShimmerVariant && !isShimmered)
+			{
+				isShimmered = true;
+			}*/
 		}
-
-		public override void LoadData(TagCompound tag)
-		{
-			usedMicronWrap = tag.GetBool("usedMicronWrap");
-			usedMicronWrapTime = tag.GetInt("usedMicronWrapTime");
-		}
-		*/
 		#endregion
 
 		#region PostDraw
 		//Note about the glow mask, the sitting frame needs to be 2 visible pixels higher.
 		private readonly Asset<Texture2D> texture1 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Arm");
 		private readonly Asset<Texture2D> texture2 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Casual_Arm");
+		private readonly Asset<Texture2D> texture3 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/InterstellarTraveler_Arm");
 
 		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
 			Asset<Texture2D> drawTexture = texture1;
+			if (NPC.IsShimmerVariant)
+			{
+				drawTexture = texture3;
+			}
 			if (NPC.altTexture == 1 && NPCHelper.AllQuestsCompleted())
 			{
 				drawTexture = texture2;
@@ -321,7 +338,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("What? There two of me!? I have a lot of questions now. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 5.0);
 			}
-			if (!NPC.downedBoss2 || RijamsModWorld.intTravArrived == false) //spawn in the Interstellar Traveler before meeting the requirements
+			if (!NPC.downedBoss2 || !RijamsModWorld.intTravArrived) //spawn in the Interstellar Traveler before meeting the requirements
 			{
 				chat.Add("I'm not supposed to be here, yet. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 2.0);
 			}
@@ -512,59 +529,80 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (ModLoader.TryGetMod("SGAmod", out Mod sgamod) && townNPCsCrossModSupport) //SGAmod
 			{
-				int draken = NPC.FindFirstNPC(sgamod.Find<ModNPC>("Dergon").Type);
-				if (draken >= 0 && npcTypeListVillage.Contains(sgamod.Find<ModNPC>("Dergon").Type))
+				if (sgamod.TryFind<ModNPC>("Dergon", out ModNPC drakenModNPC))
 				{
-					chat.Add("That Draken has a lot going through his head. He's a nice guy once you get to know him, though.");
+					int draken = NPC.FindFirstNPC(drakenModNPC.Type);
+					if (draken >= 0 && npcTypeListVillage.Contains(sgamod.Find<ModNPC>("Dergon").Type))
+					{
+						chat.Add("That Draken has a lot going through his head. He's a nice guy once you get to know him, though.");
+					}
 				}
 			}
 			if (ModLoader.TryGetMod("CalamityMod", out Mod calamity) && townNPCsCrossModSupport) //Calamity
 			{
-				int seaKing = NPC.FindFirstNPC(calamity.Find<ModNPC>("SEAHOE").Type); //Sea King
-				if (seaKing >= 0 && npcTypeListNearBy.Contains(calamity.Find<ModNPC>("SEAHOE").Type))
+				if (calamity.TryFind<ModNPC>("SEAHOE", out ModNPC seaKingModNPC))
 				{
-					chat.Add("I didn't expect to see somebody like Amidias! This planet is full of surprises!");
+					int seaKing = NPC.FindFirstNPC(seaKingModNPC.Type); //Sea King
+					if (seaKing >= 0 && npcTypeListNearBy.Contains(calamity.Find<ModNPC>("SEAHOE").Type))
+					{
+						chat.Add("I didn't expect to see somebody like Amidias! This planet is full of surprises!");
+					}
 				}
 			}
 			if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport) //Thorium
 			{
-				int cook = NPC.FindFirstNPC(thorium.Find<ModNPC>("Cook").Type);
-				if (cook >= 0 && npcTypeListVillage.Contains(thorium.Find<ModNPC>("Cook").Type))
+				if (thorium.TryFind<ModNPC>("Cook", out ModNPC cookModNPC))
 				{
-					chat.Add("I am thankful to see somebody like " + Main.npc[cook].GivenName + "!");
-					if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
+					int cook = NPC.FindFirstNPC(cookModNPC.Type);
+					if (cook >= 0 && npcTypeListVillage.Contains(thorium.Find<ModNPC>("Cook").Type))
 					{
-						chat.Add("Whatever " + Main.npc[cook].GivenName + " is cooking smells wonderful!");
+						chat.Add("I am thankful to see somebody like " + Main.npc[cook].GivenName + "!");
+						if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
+						{
+							chat.Add("Whatever " + Main.npc[cook].GivenName + " is cooking smells wonderful!");
+						}
 					}
 				}
-				int blacksmith = NPC.FindFirstNPC(thorium.Find<ModNPC>("Blacksmith").Type);
-				if (blacksmith >= 0 && npcTypeListNearBy.Contains(thorium.Find<ModNPC>("Blacksmith").Type))
+				if (thorium.TryFind<ModNPC>("Blacksmith", out ModNPC blacksmithModNPC))
 				{
-					chat.Add("I'm not sure what kind of Durasteel " + Main.npc[blacksmith].GivenName + " is working with, but it's certainly not the one I'm familiar with.");
+					int blacksmith = NPC.FindFirstNPC(blacksmithModNPC.Type);
+					if (blacksmith >= 0 && npcTypeListNearBy.Contains(thorium.Find<ModNPC>("Blacksmith").Type))
+					{
+						chat.Add("I'm not sure what kind of Durasteel " + Main.npc[blacksmith].GivenName + " is working with, but it's certainly not the one I'm familiar with.");
+					}
 				}
 			}
 			if (ModLoader.TryGetMod("AlchemistNPC", out Mod alchemistNPC) && townNPCsCrossModSupport) //Alchemist NPC
 			{
-				int brewer = NPC.FindFirstNPC(alchemistNPC.Find<ModNPC>("Brewer").Type);
-				if (brewer >= 0 && npcTypeListNearBy.Contains(alchemistNPC.Find<ModNPC>("Brewer").Type))
+				if (alchemistNPC.TryFind<ModNPC>("Brewer", out ModNPC brewerModNPC))
 				{
-					chat.Add(Main.npc[brewer].GivenName + " has all sorts of interesting potions. I might have to try some for myself.");
+					int brewer = NPC.FindFirstNPC(brewerModNPC.Type);
+					if (brewer >= 0 && npcTypeListNearBy.Contains(alchemistNPC.Find<ModNPC>("Brewer").Type))
+					{
+						chat.Add(Main.npc[brewer].GivenName + " has all sorts of interesting potions. I might have to try some for myself.");
+					}
 				}
 			}
 			if (ModLoader.TryGetMod("AlchemistNPCLite", out Mod alchemistNPCLite) && townNPCsCrossModSupport) //Alchemist NPC Lite
 			{
-				int brewer2 = NPC.FindFirstNPC(alchemistNPCLite.Find<ModNPC>("Brewer").Type);
-				if (brewer2 >= 0 && npcTypeListNearBy.Contains(alchemistNPCLite.Find<ModNPC>("Brewer").Type))
+				if (alchemistNPCLite.TryFind<ModNPC>("Brewer", out ModNPC brewer2ModNPC))
 				{
-					chat.Add(Main.npc[brewer2].GivenName + " has all sorts of interesting potions. I might have to try some for myself.");
+					int brewer2 = NPC.FindFirstNPC(brewer2ModNPC.Type);
+					if (brewer2 >= 0 && npcTypeListNearBy.Contains(alchemistNPCLite.Find<ModNPC>("Brewer").Type))
+					{
+						chat.Add(Main.npc[brewer2].GivenName + " has all sorts of interesting potions. I might have to try some for myself.");
+					}
 				}
 			}
 			if (ModLoader.TryGetMod("ExampleMod", out Mod exampleMod) && townNPCsCrossModSupport) //Example Mod
 			{
-				int examplePerson = NPC.FindFirstNPC(exampleMod.Find<ModNPC>("ExamplePerson").Type);
-				if (examplePerson >= 0 && npcTypeListNearBy.Contains(exampleMod.Find<ModNPC>("ExamplePerson").Type))
+				if (exampleMod.TryFind<ModNPC>("ExamplePerson", out ModNPC examplePersonModNPC))
 				{
-					chat.Add("I feel like I'm not supposed to see " + Main.npc[examplePerson].GivenName + ".");
+					int examplePerson = NPC.FindFirstNPC(examplePersonModNPC.Type);
+					if (examplePerson >= 0 && npcTypeListNearBy.Contains(exampleMod.Find<ModNPC>("ExamplePerson").Type))
+					{
+						chat.Add("I feel like I'm not supposed to see " + Main.npc[examplePerson].GivenName + ".");
+					}
 				}
 			}
 			if (ModLoader.TryGetMod("HappinessRemoval", out Mod _) && townNPCsCrossModSupport) //Happiness Removal
@@ -588,7 +626,6 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
 		{
-
 			if (firstButton)
 			{
 				shop = true;
@@ -889,7 +926,9 @@ namespace RijamsMod.NPCs.TownNPCs
 		#region Shop
 		public override void SetupShop(Chest shop, ref int nextSlot)
 		{
-			NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>())], 3, out List<int> _, out List<int> _, out List<int> _, out List<int> npcTypeListAll);
+			NPC intTrav = Main.npc[NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>())];
+			isShimmered = intTrav.IsShimmerVariant;
+			NPCHelper.GetNearbyResidentNPCs(intTrav, 3, out List<int> _, out List<int> _, out List<int> _, out List<int> npcTypeListAll);
 
 			int armsDealer = NPC.FindFirstNPC(NPCID.ArmsDealer);
 			if (armsDealer > 0 && NPC.downedBoss3)
@@ -1106,15 +1145,28 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.FluffaloEgg>());
 				nextSlot++;
 			}
-			if (Main.moonPhase >= 6 && !Main.dayTime) //first quarter & waxing gibbous
+			if (NPC.IsShimmerVariant || isShimmered)
 			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Helmet>());
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperHat>());
+				nextSlot++;
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperShirt>());
+				nextSlot++;
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperTrousers>());
 				nextSlot++;
 			}
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Chestplate>());
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Leggings>());
-			nextSlot++;
+			else
+			{
+				if (Main.moonPhase >= 6 && !Main.dayTime) //first quarter & waxing gibbous
+				{
+					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Helmet>());
+					nextSlot++;
+				}
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Chestplate>());
+				nextSlot++;
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Leggings>());
+				nextSlot++;
+			}
+			
 			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.MusicBoxOSW>());
 			nextSlot++;
 		}
@@ -1191,12 +1243,27 @@ namespace RijamsMod.NPCs.TownNPCs
 				closeness = 18;
 			}
 		}
+
+		/*public override void SaveData(TagCompound tag)
+		{
+			//tag["IntTravIsShimmerVariant"] = isShimmered;
+			//Mod.Logger.DebugFormat("Interstellar Traveler Save: NPC.townNpcVariationIndex {0}, tag[\"IntTravIsShimmerVariant\"] {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag["IntTravIsShimmerVariant"].ToString(), isShimmered);
+		}
+
+		public override void LoadData(TagCompound tag)
+		{
+			//isShimmered = tag.GetBool("IntTravIsShimmerVariant");
+			//Mod.Logger.DebugFormat("Interstellar Traveler Load: NPC.townNpcVariationIndex {0}, tag.GetBool(\"IntTravIsShimmerVariant\") {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag.GetBool("IntTravIsShimmerVariant").ToString(), isShimmered);
+		}*/
+
 		#endregion
 	}
 	#region ITownNPCProfile
 	public class InterstellarTravelerProfile : ITownNPCProfile
 	{
-		public string Path => (GetType().Namespace + "." + GetType().Name.Split("Profile")[0]).Replace('.', '/');
+		private string Namespace => GetType().Namespace.Replace('.', '/');
+		private string NPCName => (GetType().Name.Split("Profile")[0]).Replace('.', '/');
+		private string Path => (Namespace + "/" + NPCName);
 
 		public int RollVariation() => 0;
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
@@ -1216,11 +1283,24 @@ namespace RijamsMod.NPCs.TownNPCs
 				return ModContent.Request<Texture2D>(Path + "_Casual");
 			}
 
+			if (npc.IsShimmerVariant && npc.altTexture != 1)
+			{
+				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
+			}
+			if (npc.IsShimmerVariant && npc.altTexture == 1)
+			{
+				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Hatless");
+			}
+
 			return ModContent.Request<Texture2D>(Path);
 		}
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
+			/*if (npc.IsShimmerVariant)
+			{
+				return ModContent.GetModHeadSlot(Namespace + "/Shimmered/" + NPCName + "_Head");
+			}*/
 			//string headTexture = ModContent.GetInstance<RijamsModConfigClient>().Ornithophobia ? Path + "_Helmet_Head" : Path + "_Head";
 			return ModContent.GetModHeadSlot(Path + "_Head");
 		}

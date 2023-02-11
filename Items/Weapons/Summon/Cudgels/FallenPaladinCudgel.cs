@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Fallen Paladin Cudgel");
-			Tooltip.SetDefault("Summons a Fallen Paladin to defend you\nPlayers within its aura receive:\n+10 defense\n+5% damage reduction\n20 tile radius");
+			// DisplayName.SetDefault("Fallen Paladin Cudgel");
+			// Tooltip.SetDefault("Summons a Fallen Paladin to defend you\nPlayers within its aura receive:\n+10 defense\n+5% damage reduction\n20 tile radius");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Paladin]", null, null });
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
@@ -28,6 +28,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
+			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.value = Item.sellPrice(gold: 8);
 			Item.rare = ItemRarityID.Yellow;
 			Item.UseSound = SoundID.Item90; //131, 123
@@ -36,8 +37,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// These below are needed for a minion weapon
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Summon;
-			//item.buffType = ModContent.BuffType<ShadowflamePhantomBuff>();
-			Item.buffType = ModContent.BuffType<Buffs.FallenPaladinBuff>();
+
+			Item.buffType = ModContent.BuffType<Buffs.Minions.FallenPaladinBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ModContent.ProjectileType<FallenPaladin>();
 		}
@@ -50,6 +51,13 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
+
+			if (projectile.ModProjectile is FallenPaladin modProjectile)
+			{
+				modProjectile.additionalDefense = 10; // 10 defense
+				modProjectile.additionalDR = 0.05f; // 5% damage reduction
+				modProjectile.distRadius = 20; // 20 tile radius
+			}
 
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;

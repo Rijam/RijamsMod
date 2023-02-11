@@ -29,7 +29,7 @@ namespace RijamsMod.Projectiles.Melee
 		public override string Texture => Mod.Name + "/Items/Weapons/Melee/StabbyShiv";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stabby Shiv");
+			// DisplayName.SetDefault("Stabby Shiv");
 		}
 
 		public override void SetDefaults()
@@ -142,7 +142,7 @@ namespace RijamsMod.Projectiles.Melee
 		public override string Texture => Mod.Name + "/Items/Weapons/Melee/FrostyShiv";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Frosty Shiv");
+			// DisplayName.SetDefault("Frosty Shiv");
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{

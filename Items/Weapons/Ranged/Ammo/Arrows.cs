@@ -8,7 +8,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("7% damage penalty per enemy pierced");
+			// Tooltip.SetDefault("7% damage penalty per enemy pierced");
 		}
 		public override void SetDefaults()
 		{
@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
+			// Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
 		}
 		public override void SetDefaults()
 		{
@@ -58,7 +58,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Both an Unholy Arrow and Bloody Arrow");
+			// Tooltip.SetDefault("Both an Unholy Arrow and Bloody Arrow");
 		}
 		public override void SetDefaults()
 		{

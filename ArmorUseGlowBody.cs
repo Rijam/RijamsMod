@@ -31,7 +31,6 @@ namespace RijamsMod
 				GlowListBody.Add(bodySlot, color);
 			}
 		}
-
 		public override void Load()
 		{
 			GlowListBody = new Dictionary<int, Color>();

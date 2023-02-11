@@ -36,7 +36,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			Projectile.ai[0]++;
 			if (Projectile.ai[0] == 30) //Wait 0.5 seconds
             {
-				int newTarget = FindTargetWithLineOfSight();
+				int newTarget = Projectile.FindTargetWithLineOfSight();
 				if (newTarget != -1) //fly to the target
 				{
 					NPC nPC2 = Main.npc[newTarget];
@@ -111,31 +111,6 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				}
 			}
 			return false;
-		}
-		//Copied from vanilla (1.4) Projectiles.cs
-		public int FindTargetWithLineOfSight(float maxRange = 800f)
-		{
-			float newMaxRange = maxRange;
-			int result = -1;
-			for (int i = 0; i < Main.maxNPCs; i++)
-			{
-				NPC nPC = Main.npc[i];
-				bool nPCCanBeChased = nPC.CanBeChasedBy(this);
-				if (Projectile.localNPCImmunity[i] != 0)
-				{
-					nPCCanBeChased = false;
-				}
-				if (nPCCanBeChased)
-				{
-					float projDist = Projectile.Distance(Main.npc[i].Center);
-					if (projDist < newMaxRange && Collision.CanHit(Projectile.position, Projectile.width, Projectile.height, nPC.position, nPC.width, nPC.height))
-					{
-						newMaxRange = projDist;
-						result = i;
-					}
-				}
-			}
-			return result;
 		}
 		public override void Kill(int timeLeft)
 		{

@@ -82,7 +82,6 @@
 	* Fixed some damage class related issues such as Skyware Headgear giving magic damage instead of summon damage.
 	* Added Warrior Ring, Life Sapper Ring, and Mana Sapper Ring.
 	* Reduced the file size of the mod a little by turning all of the WAV sounds into OGG.
-	* Fixed Dark Soldier not being to open doors.
 	* Harpy now uses her alternate sprite when first rescued.
 	* Increased the stack size of stackable items to 9999.
 	* Added a glow mask to the Hell Trader.
@@ -97,3 +96,32 @@
 	* Fixed Flask of Sulfuric Acid not applying to whips.
 	* Added Ammo Pouch, an early ranged accessory.
 
+1.2.0.0 - (? ?, 202?)
+	* Added Shimmered versions of each Town NPC.
+	* Added Star Caller Staff. A light pet that is dropped from Deerclops.
+	* Changed Sulfuric Whip: Damage reduced from 45 to 30 but can now hit enemies through tiles.
+	* Added Forbidden Whip. It has the special ability to reduce enemy velocity when struck by a minion.
+	* Ancient Garments now gives +5 support minion radius.
+	* Skyware Headgear now gives +2 support minion radius.
+	* Added Cave Carrot.
+	* Added Hardy Stew.
+	* Added extra functionality to the Strip Light. Actuators will halve the light. Illuminant Coating will double the light.
+	* Dark Soldiers are much less likely to spawn in Towns and in Don't Dig Up/Get Fixed Boi worlds in Pre-Hardmode.
+	* Hell Trader can now spawn on Ash Grass.
+	* Certain items now transform into other items when thrown in shimmer.
+	* Added a muzzle flash effect to the Plasma Rifle, Interstellar guns, Cresceptre, AGM Missle Launcher, and Thompson.
+	* Reworked the Interstellar guns. They now fire a laser that takes on characteristics of the bullets used as ammo.
+	* Added Red Skyware Armor.
+	* Fixed Endless Rocket Box not working with Celebration Mk2.
+	* Changed the sounds of several weapons to make them slightly more interesting.
+	* Updated the sprite of the Thompson slightly.
+	* Added two healing support summons: Sanity Flower Cudgel and Radiant Lantern Cudgel.
+	* Made cross mod dialog even safer.
+	* Fixed Red Harpy Wings not allowing the player to move left or right.
+	* Fixed Hailfire Pygmy Scarf giving +4 minions instead of 1.
+	* Added a new Town Pet: Snugget!
+	* Buffed Stockade Crossbow: Now shoots a water stream every 10 shots.
+	* Added Pianist's Glove which allows the player to play pianos!
+	* Added Hornet Tail, a fish from fishing in honey below the surface layer.
+	* Added Ferocious Potion. Gives +10 armor penetration.
+	* Added 4 new magic weapons: Shining Lantern, Sulfuric Lantern, Vile Lantern, and Vicious Lantern.

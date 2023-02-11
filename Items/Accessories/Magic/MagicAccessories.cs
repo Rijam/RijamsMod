@@ -10,8 +10,8 @@ namespace RijamsMod.Items.Accessories.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Destroyer Cuffs");
-			Tooltip.SetDefault("+10% Magic damage\n+8% Magic Critical Strike chance\n+20 Max Mana\nIncreases pickup range for mana stars\nRestores mana when damage");
+			// DisplayName.SetDefault("Destroyer Cuffs");
+			// Tooltip.SetDefault("+10% Magic damage\n+8% Magic Critical Strike chance\n+20 Max Mana\nIncreases pickup range for mana stars\nRestores mana when damage");
 		}
 
 		public override void SetDefaults()
@@ -54,8 +54,8 @@ namespace RijamsMod.Items.Accessories.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Cosmic Sorcery");
-			Tooltip.SetDefault("+15% Magic damage\n+10% Magic Critical Strike chance\n+20 Max Mana\nIncreased mana regeneration rate\nIncreases pickup range for mana stars\nRestores mana when damage\nAutomatically use mana potions when needed\nCauses stars to fall when injured\nGain a little bit of mana after slaying an enemy\n  Scales with max mana\nEnemies are a little less likely to target you");
+			// DisplayName.SetDefault("Cosmic Sorcery");
+			// Tooltip.SetDefault("+15% Magic damage\n+10% Magic Critical Strike chance\n+20 Max Mana\nIncreased mana regeneration rate\nIncreases pickup range for mana stars\nRestores mana when damage\nAutomatically use mana potions when needed\nCauses stars to fall when injured\nGain a little bit of mana after slaying an enemy\n  Scales with max mana\nEnemies are a little less likely to target you");
 		}
 
 		public override void SetDefaults()

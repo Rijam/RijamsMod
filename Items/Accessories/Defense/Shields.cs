@@ -11,10 +11,10 @@ namespace RijamsMod.Items.Accessories.Defense
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stellar Shield");
-			Tooltip.SetDefault("+2 Defense\nGrants immunity to knockback\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled" +
+			// DisplayName.SetDefault("Stellar Shield");
+			/* Tooltip.SetDefault("+2 Defense\nGrants immunity to knockback\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled" +
 				"\nReduce damage from touching lava\nCauses stars to fall after taking damage\nIncreases length of invincibility after taking damage" +
-				"\nReleases bees and douses the user in honey after taking damage\nIncreases movement after taking damage\n(Hide to disable Star Cloak and Honey Comb)");
+				"\nReleases bees and douses the user in honey after taking damage\nIncreases movement after taking damage\n(Hide to disable Star Cloak and Honey Comb)"); */
 		}
 
 		public override void SetDefaults()
@@ -59,11 +59,11 @@ namespace RijamsMod.Items.Accessories.Defense
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Citadel");
-			Tooltip.SetDefault("+4 Defense\nGrants immunity to knockback\nGrants immunity to fire blocks\nGrants immunity to most debuffs" +
+			// DisplayName.SetDefault("Citadel");
+			/* Tooltip.SetDefault("+4 Defense\nGrants immunity to knockback\nGrants immunity to fire blocks\nGrants immunity to most debuffs" +
 				"\nReduce damage from touching lava\nCauses stars to fall after taking damage\nIncreases length of invincibility after taking damage" +
 				"\nReleases bees and douses the user in honey after taking damage\nIncreases movement after taking damage\n(Hide to disable Star Cloak and Honey Comb)" +
-				"\n'I've never see it lit up like this!'");
+				"\n'I've never see it lit up like this!'"); */
 		}
 
 		public override void SetDefaults()

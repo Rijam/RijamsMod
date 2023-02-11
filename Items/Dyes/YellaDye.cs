@@ -15,8 +15,8 @@ namespace RijamsMod.Items.Dyes
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Yella Dye");
-			Tooltip.SetDefault("'It may or may not be a color'");
+			// DisplayName.SetDefault("Yella Dye");
+			// Tooltip.SetDefault("'It may or may not be a color'");
 			// Avoid loading assets on dedicated servers. They don't use graphics cards.
 			if (!Main.dedServ)
 			{

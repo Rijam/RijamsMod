@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.Items.Weapons.Melee;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -13,7 +14,7 @@ namespace RijamsMod.Projectiles.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Horseman's Jousting Lance"); // The English name of the projectile
+			// DisplayName.SetDefault("Horseman's Jousting Lance"); // The English name of the projectile
 
 			// This will cause the player to dismount if they are hit by another Jousting Lance.
 			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.
@@ -141,6 +142,33 @@ namespace RijamsMod.Projectiles.Melee
 				if (Main.rand.NextBool(dustChance + 3))
 				{
 					Dust.NewDust(Projectile.Center - new Vector2(offset, offset), offset * 2, offset * 2, dustTypeRare, 0f, 0f, 150, default, 1.4f);
+				}
+			}
+		}
+
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			int itemType = ModContent.ItemType<HorsemansJoustingLance>();
+			if (target.active)
+			{
+				Player owner = Main.player[Projectile.owner];
+				if (owner.inventory[owner.selectedItem].type == itemType && (target.value > 0f || (target.damage > 0 && !target.friendly)))
+				{
+					if (Main.rand.NextBool(5)) // Better than the normal The Horseman's Blade without this
+					{
+						Vector2 center = target.Center;
+						int logicCheckScreenHeight = Main.LogicCheckScreenHeight;
+						int logicCheckScreenWidth = Main.LogicCheckScreenWidth;
+						int posX = Main.rand.Next(100, 300);
+						int posY = Main.rand.Next(100, 300);
+						posX = ((!Main.rand.NextBool(2)) ? (posX + (logicCheckScreenWidth / 2 - posX)) : (posX - (logicCheckScreenWidth / 2 + posX)));
+						posY = ((!Main.rand.NextBool(2)) ? (posY + (logicCheckScreenHeight / 2 - posY)) : (posY - (logicCheckScreenHeight / 2 + posY)));
+						Vector2 position = new(posX + (int)Projectile.position.X, posY + (int)Projectile.position.Y);
+						Vector2 velocity = new(center.X - posX, center.Y - posY);
+						float velocityDistance = 8f / (float)Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
+						velocity *= velocityDistance;
+						Projectile.NewProjectile(Projectile.GetSource_ItemUse(owner.HeldItem), position, velocity, ProjectileID.FlamingJack, damage / 2, knockback / 2, owner.whoAmI, target.whoAmI);
+					}
 				}
 			}
 		}

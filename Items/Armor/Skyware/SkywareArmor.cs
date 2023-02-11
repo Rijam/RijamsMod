@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Projectiles.Misc;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -12,8 +13,8 @@ namespace RijamsMod.Items.Armor.Skyware
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skyware Mask");
-			Tooltip.SetDefault("+5% Melee damage\n+5% Melee critical strike chance");
+			// DisplayName.SetDefault("Skyware Mask");
+			// Tooltip.SetDefault("+5% Melee damage\n+5% Melee critical strike chance");
 		}
 
 		public override void SetDefaults()
@@ -66,8 +67,8 @@ namespace RijamsMod.Items.Armor.Skyware
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skyware Helmet");
-			Tooltip.SetDefault("+5% Ranged damage\n+5% Ranged critical strike chance");
+			// DisplayName.SetDefault("Skyware Helmet");
+			// Tooltip.SetDefault("+5% Ranged damage\n+5% Ranged critical strike chance");
 		}
 
 		public override void SetDefaults()
@@ -107,7 +108,6 @@ namespace RijamsMod.Items.Armor.Skyware
 			{
 				modPlayer.skywareArmorSetBonusTimer--;
 			}
-			ArmorSetShadows(player);
 		}
 		public override void ArmorSetShadows(Player player)
 		{
@@ -119,8 +119,8 @@ namespace RijamsMod.Items.Armor.Skyware
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skyware Hood");
-			Tooltip.SetDefault("+5% Magic damage\n+5% Magic critical strike chance");
+			// DisplayName.SetDefault("Skyware Hood");
+			// Tooltip.SetDefault("+5% Magic damage\n+5% Magic critical strike chance");
 		}
 
 		public override void SetDefaults()
@@ -171,8 +171,8 @@ namespace RijamsMod.Items.Armor.Skyware
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skyware Headgear");
-			Tooltip.SetDefault("+5% Summon damage\n+1 summon capacity");
+			// DisplayName.SetDefault("Skyware Headgear");
+			// Tooltip.SetDefault("+5% Summon damage\n+1 minion capacity\n+2 Support minion radius");
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
 
@@ -188,6 +188,7 @@ namespace RijamsMod.Items.Armor.Skyware
 		{
 			player.GetDamage(DamageClass.Summon) += 0.05f;
 			player.maxMinions++;
+			player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 2;
 		}
 
 		public override void AddRecipes()
@@ -224,8 +225,8 @@ namespace RijamsMod.Items.Armor.Skyware
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skyware Chestplate");
-			Tooltip.SetDefault("+10% all attack speed");
+			// DisplayName.SetDefault("Skyware Chestplate");
+			// Tooltip.SetDefault("+10% all attack speed");
 		}
 
 		public override void SetDefaults()
@@ -267,15 +268,15 @@ namespace RijamsMod.Items.Armor.Skyware
 		}
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skyware Leggings");
-			Tooltip.SetDefault("Increased fall resistance");
+			// DisplayName.SetDefault("Skyware Leggings");
+			// Tooltip.SetDefault("Increased fall resistance");
 		}
 
 		public override void SetDefaults()
 		{
 			Item.width = 22;
 			Item.height = 18;
-			Item.value = 20000;
+			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;
 			Item.defense = 4;
 		}
@@ -381,9 +382,45 @@ namespace RijamsMod.Items.Armor.Skyware
 			}
 		}
 	}*/
+
 	public class SkywareArmorSetPlayer : ModPlayer
 	{
-		public override void OnHitAnything(float x, float y, Entity victim)
+		public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+		{
+			if (target.CanBeChasedBy(item))
+			{
+				SpawnAttack(target);
+			}
+		}
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
+		{
+			if (proj.type != ModContent.ProjectileType<SkywareArmorHarpyFeather>() || proj.type != ModContent.ProjectileType<RedSkywareArmorHarpyFeather>())
+			{
+				if (target.CanBeChasedBy(proj))
+				{
+					SpawnAttack(target);
+				}
+			}
+		}
+		public override void OnHitPvp(Item item, Player target, int damage, bool crit)
+		{
+			if (!target.dead && Player.InOpposingTeam(target))
+			{
+				SpawnAttack(target);
+			}
+		}
+		public override void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
+		{
+			if (proj.type != ModContent.ProjectileType<SkywareArmorHarpyFeather>() || proj.type != ModContent.ProjectileType<RedSkywareArmorHarpyFeather>())
+			{
+				if (!target.dead && Player.InOpposingTeam(target))
+				{
+					SpawnAttack(target);
+				}
+			}
+		}
+
+		public void SpawnAttack(Entity victim)
 		{
 			if (Main.myPlayer != Player.whoAmI)
 			{
@@ -392,19 +429,29 @@ namespace RijamsMod.Items.Armor.Skyware
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
 				RijamsModPlayer modPlayer = Player.GetModPlayer<RijamsModPlayer>();
-				if (modPlayer.skywareArmorSetBonus > 0 && modPlayer.skywareArmorSetBonusTimer == 0)
+				if (modPlayer.skywareArmorSetBonus > 0 && modPlayer.skywareArmorSetBonusTimer == 0 && victim.active)
 				{
 					modPlayer.skywareArmorSetBonusTimer = 60;
 
-					Vector2 direction = Utils.DirectionTo(Player.Center, new Vector2(x, y));
+					int baseDamage = 20;
+
+					Vector2 direction = Utils.DirectionTo(Player.Center, victim.Center);
 					Vector2 velocity = direction * 20f;
+					if (modPlayer.skywareArmorSetBonus >= 5) // Red Skyware armor
+					{
+						velocity *= 0.5f; // The Red variant has extraUpdates
+						baseDamage += 40;
+					}
 					velocity *= Main.rand.NextFloat(0.7f, 1.6f);
+					int damageMelee = (int)Math.Round(baseDamage * Player.GetTotalDamage(DamageClass.Melee).Additive * Player.GetTotalDamage(DamageClass.Melee).Multiplicative);
+					int damageRanged = (int)Math.Round(baseDamage * Player.GetTotalDamage(DamageClass.Ranged).Additive * Player.GetTotalDamage(DamageClass.Ranged).Multiplicative);
+					int damageMagic = (int)Math.Round(baseDamage * Player.GetTotalDamage(DamageClass.Magic).Additive * Player.GetTotalDamage(DamageClass.Magic).Multiplicative);
+					int damageSummon = (int)Math.Round(baseDamage * Player.GetTotalDamage(DamageClass.Summon).Additive * Player.GetTotalDamage(DamageClass.Summon).Multiplicative);
 
 					switch (modPlayer.skywareArmorSetBonus)
 					{
 						case 1:
-							int damageMelee = (int)Math.Round(20 * Player.GetTotalDamage(DamageClass.Melee).Additive * Player.GetTotalDamage(DamageClass.Melee).Multiplicative);
-							int projMelee = Projectile.NewProjectile(
+							Projectile projMelee = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
 								velocity,
@@ -412,11 +459,10 @@ namespace RijamsMod.Items.Armor.Skyware
 								damageMelee,
 								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
 								Player.whoAmI);
-							Main.projectile[projMelee].DamageType = DamageClass.Melee;
+							projMelee.DamageType = DamageClass.Melee;
 							break;
 						case 2:
-							int damageRanged = (int)Math.Round(20 * Player.GetTotalDamage(DamageClass.Ranged).Additive * Player.GetTotalDamage(DamageClass.Ranged).Multiplicative);
-							int projRanged = Projectile.NewProjectile(
+							Projectile projRanged = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
 								velocity,
@@ -424,11 +470,10 @@ namespace RijamsMod.Items.Armor.Skyware
 								damageRanged,
 								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
 								Player.whoAmI);
-							Main.projectile[projRanged].DamageType = DamageClass.Ranged;
+							projRanged.DamageType = DamageClass.Ranged;
 							break;
 						case 3:
-							int damageMagic = (int)Math.Round(20 * Player.GetTotalDamage(DamageClass.Magic).Additive * Player.GetTotalDamage(DamageClass.Magic).Multiplicative);
-							int projMagic = Projectile.NewProjectile(
+							Projectile projMagic = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
 								velocity,
@@ -436,11 +481,10 @@ namespace RijamsMod.Items.Armor.Skyware
 								damageMagic,
 								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
 								Player.whoAmI);
-							Main.projectile[projMagic].DamageType = DamageClass.Magic;
+							projMagic.DamageType = DamageClass.Magic;
 							break;
 						case 4:
-							int damageSummon = (int)Math.Round(20 * Player.GetTotalDamage(DamageClass.Summon).Additive * Player.GetTotalDamage(DamageClass.Summon).Multiplicative);
-							int projSummon = Projectile.NewProjectile(
+							Projectile projSummon = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
 								velocity,
@@ -448,7 +492,51 @@ namespace RijamsMod.Items.Armor.Skyware
 								damageSummon,
 								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
 								Player.whoAmI);
-							Main.projectile[projSummon].DamageType = DamageClass.Summon;
+							projSummon.DamageType = DamageClass.Summon;
+							break;
+						case 5: // Red sets
+							Projectile projMelee2 = Projectile.NewProjectileDirect(
+								Entity.GetSource_OnHit(victim),
+								Player.Center,
+								velocity,
+								ModContent.ProjectileType<Projectiles.Misc.RedSkywareArmorHarpyFeather>(),
+								damageMelee,
+								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
+								Player.whoAmI);
+							projMelee2.DamageType = DamageClass.Melee;
+							break;
+						case 6:
+							Projectile projRanged2 = Projectile.NewProjectileDirect(
+								Entity.GetSource_OnHit(victim),
+								Player.Center,
+								velocity,
+								ModContent.ProjectileType<Projectiles.Misc.RedSkywareArmorHarpyFeather>(),
+								damageRanged,
+								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
+								Player.whoAmI);
+							projRanged2.DamageType = DamageClass.Ranged;
+							break;
+						case 7:
+							Projectile projMagic2 = Projectile.NewProjectileDirect(
+								Entity.GetSource_OnHit(victim),
+								Player.Center,
+								velocity,
+								ModContent.ProjectileType<Projectiles.Misc.RedSkywareArmorHarpyFeather>(),
+								damageMagic,
+								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
+								Player.whoAmI);
+							projMagic2.DamageType = DamageClass.Magic;
+							break;
+						case 8:
+							Projectile projSummon2 = Projectile.NewProjectileDirect(
+								Entity.GetSource_OnHit(victim),
+								Player.Center,
+								velocity,
+								ModContent.ProjectileType<Projectiles.Misc.RedSkywareArmorHarpyFeather>(),
+								damageSummon,
+								Player.HeldItem != null ? Player.GetWeaponKnockback(Player.HeldItem) : 0f,
+								Player.whoAmI);
+							projSummon2.DamageType = DamageClass.Summon;
 							break;
 						default:
 							break;

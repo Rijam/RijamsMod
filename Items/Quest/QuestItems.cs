@@ -12,8 +12,8 @@ namespace RijamsMod.Items.Quest
 		public override string Texture => "Terraria/Images/UI/Cursor_2";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Keep searching!");
-			Tooltip.SetDefault("[c/403638:UI Item]");
+			// DisplayName.SetDefault("Keep searching!");
+			// Tooltip.SetDefault("[c/403638:UI Item]");
 		}
 
 		public override void SetDefaults()
@@ -30,8 +30,8 @@ namespace RijamsMod.Items.Quest
 		public override string Texture => "Terraria/Images/UI/Cursor_3";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("You have completed all of the quests!");
-			Tooltip.SetDefault("[c/403638:UI Item]");
+			// DisplayName.SetDefault("You have completed all of the quests!");
+			// Tooltip.SetDefault("[c/403638:UI Item]");
 		}
 
 		public override void SetDefaults()
@@ -52,7 +52,7 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults() 
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 16;
 			Item.height = 34;
 			Item.value = 100;
@@ -103,7 +103,7 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 32;
 			Item.height = 24;
 			Item.value = 100;
@@ -147,7 +147,7 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 28;
 			Item.height = 40;
 			Item.value = 50000;
@@ -182,7 +182,7 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 42;
 			Item.height = 24;
 			Item.value = 5000;
@@ -217,7 +217,7 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 42;
 			Item.height = 24;
 			Item.value = 10000;
@@ -261,7 +261,7 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 60;
 			Item.height = 36;
 			Item.value = 15000;

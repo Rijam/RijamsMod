@@ -9,14 +9,14 @@ namespace RijamsMod.Items.Accessories.Movement
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Allows flight, super fast running, and extra mobility on ice\n" +
+			/* Tooltip.SetDefault("Allows flight, super fast running, and extra mobility on ice\n" +
 				"+10% increased movement speed and +0.5 seconds of flight time\n" +
 				"Provides the ability to walk on water, honey, & lava\n" +
 				"Grants immunity to fire blocks and 7 seconds of immunity to lava\n" +			
 				"Grants immunity to On Fire!, Frostburn, Frozen, and Chilled\n" +
 				"Reduces damage from touching lava\n" +
 				"Increases jump speed and allows auto-jump\n" +
-				"Increases fall resistance");
+				"Increases fall resistance"); */
 		}
 
 		public override void SetDefaults()

@@ -153,7 +153,7 @@ namespace RijamsMod
 			Player player = Main.LocalPlayer;
 			if (player.chest >= 0)
 			{
-				for (int i = 0; i <= 39; i++)
+				for (int i = 0; i < Chest.maxItems; i++)
 				{
 					if (Main.chest[player.chest].item[i].type == item)
 					{
@@ -173,7 +173,7 @@ namespace RijamsMod
 		{
 			if (Main.npcShop != 0)
 			{
-				for (int i = 0; i <= 39; i++)
+				for (int i = 0; i < Chest.maxItems; i++)
 				{
 					if (Main.instance.shop[Main.npcShop].item[i].type == item)
 					{
@@ -198,7 +198,7 @@ namespace RijamsMod
 			// -5	bank4	Void Bag/Vault
 			if (player.chest <= -2 && player.chest >= -5)
 			{
-				for (int i = 0; i <= 39; i++)
+				for (int i = 0; i < Chest.maxItems; i++)
 				{
 					switch ((player.chest + 1) * -1)
 					{

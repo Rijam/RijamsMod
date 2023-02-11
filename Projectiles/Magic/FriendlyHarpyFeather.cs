@@ -11,7 +11,7 @@ namespace RijamsMod.Projectiles.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Harpy Feather");
+			// DisplayName.SetDefault("Harpy Feather");
 		}
 
 		public override void SetDefaults()
@@ -43,7 +43,7 @@ namespace RijamsMod.Projectiles.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Red Harpy Feather");
+			// DisplayName.SetDefault("Red Harpy Feather");
 		}
 
 		public override void SetDefaults()
@@ -121,7 +121,7 @@ namespace RijamsMod.Projectiles.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Razor Harpy Feather");
+			// DisplayName.SetDefault("Razor Harpy Feather");
 		}
 
 		public override void SetDefaults()

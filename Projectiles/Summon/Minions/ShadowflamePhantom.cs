@@ -16,7 +16,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Shadowflame Phantom");
+			// DisplayName.SetDefault("Shadowflame Phantom");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 6;
 			// This is necessary for right-click targeting
@@ -84,10 +84,10 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active) {
 				//player.ClearBuff(ModContent.BuffType<ShadowflamePhantomBuff>());
-				player.ClearBuff(ModContent.BuffType<Buffs.ShadowflamePhantomBuff>());
+				player.ClearBuff(ModContent.BuffType<Buffs.Minions.ShadowflamePhantomBuff>());
 			}
 			//if (player.HasBuff(ModContent.BuffType<ShadowflamePhantomBuff>()))
-			if (player.HasBuff(ModContent.BuffType<Buffs.ShadowflamePhantomBuff>()))
+			if (player.HasBuff(ModContent.BuffType<Buffs.Minions.ShadowflamePhantomBuff>()))
 			{
 				Projectile.timeLeft = 2;
 			}

@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stardust Protector Cudgel");
-			Tooltip.SetDefault("Summons a Stardust Protector to defend you\nPlayers within its aura receive:\n+13 defense\n+8% damage reduction\n30 tile radius\nWill occasionally attack targeted enemies");
+			// DisplayName.SetDefault("Stardust Protector Cudgel");
+			// Tooltip.SetDefault("Summons a Stardust Protector to defend you\nPlayers within its aura receive:\n+13 defense\n+8% damage reduction\n30 tile radius\nWill occasionally attack targeted enemies");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
@@ -27,6 +27,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
+			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.value = Item.sellPrice(gold: 10);
 			Item.rare = ItemRarityID.Red;
 			Item.UseSound = SoundID.Item90; //131, 123
@@ -35,8 +36,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// These below are needed for a minion weapon
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Summon;
-			//item.buffType = ModContent.BuffType<ShadowflamePhantomBuff>();
-			Item.buffType = ModContent.BuffType<Buffs.StardustProtectorBuff>();
+
+			Item.buffType = ModContent.BuffType<Buffs.Minions.StardustProtectorBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ModContent.ProjectileType<StardustProtector>();
 		}
@@ -49,6 +50,16 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
+
+			if (projectile.ModProjectile is StardustProtector modProjectile)
+			{
+				modProjectile.additionalDefense = 13; // 13 defense
+				modProjectile.additionalDR = 0.08f; // 8% damage reduction
+				modProjectile.distRadius = 30; // 30 tile radius
+
+				modProjectile.baseDamage = 20;
+				modProjectile.baseAttackSpeed = 420; // 7 seconds
+			}
 
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;

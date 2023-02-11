@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Accessories.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Daybreak Gauntlet");
-			Tooltip.SetDefault("+12% Melee damage\n+12% Melee attack speed\n+100% Knockback\n+8 Defense\nEnables auto swing for melee weapons\nIncreases the size of melee weapons\nMelee attacks inflict Daybroken\nGives the user master yoyo skills\nYoyos have infinite duration\nCounterweights are 1.5x bigger\nEnemies are more likely to target you");
+			// DisplayName.SetDefault("Daybreak Gauntlet");
+			// Tooltip.SetDefault("+12% Melee damage\n+12% Melee attack speed\n+100% Knockback\n+8 Defense\nEnables auto swing for melee weapons\nIncreases the size of melee weapons\nMelee attacks inflict Daybroken\nGives the user master yoyo skills\nYoyos have infinite duration\nCounterweights are 1.5x bigger\nEnemies are more likely to target you");
 		}
 
 		public override void SetDefaults()
@@ -54,8 +54,8 @@ namespace RijamsMod.Items.Accessories.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Yoyo Backpack");
-			Tooltip.SetDefault("Gives the user master yoyo skills\nYoyos have infinite duration\nCounterweights are 1.5x bigger\nRainbow colored string!");
+			// DisplayName.SetDefault("Yoyo Backpack");
+			// Tooltip.SetDefault("Gives the user master yoyo skills\nYoyos have infinite duration\nCounterweights are 1.5x bigger\nRainbow colored string!");
 		}
 
 		public override void SetDefaults()

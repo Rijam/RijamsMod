@@ -10,13 +10,13 @@ namespace RijamsMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Paints will affect the color of the light\nDeep paints are brighter");
+			// Tooltip.SetDefault("Paints will affect the color of the light\n Deep paints are brighter\n Actuators halve the light\n Illuminant Coating doubles the light");
 		}
 		public override void SetDefaults()
 		{
 			Item.width = 16;
 			Item.height = 6;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.noWet = false;
 			Item.useTurn = true;
 			Item.autoReuse = true;

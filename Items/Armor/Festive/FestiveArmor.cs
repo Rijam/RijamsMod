@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Armor.Festive
@@ -11,8 +12,8 @@ namespace RijamsMod.Items.Armor.Festive
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Festive Mask");
-			Tooltip.SetDefault("+1 Minion capacity\n+15% Summon damage");
+			// DisplayName.SetDefault("Festive Mask");
+			// Tooltip.SetDefault("+1 Minion capacity\n+15% Summon damage");
 			if (!Main.dedServ)
 			{
 				ArmorUseGlowHead.RegisterData(Item.headSlot, new string[] { Texture + "_Head_Glowmask", "255", "255", "255", "lerpOnOff" });
@@ -40,11 +41,11 @@ namespace RijamsMod.Items.Armor.Festive
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "\n+35% Whip speed\n+50% Whip range\n+5% whip damage\n+2% whip critical strike chance";
+			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Festive"); ;
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.35f;
 			player.whipRangeMultiplier += 0.5f;
 			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.05f;
-			player.GetCritChance(DamageClass.SummonMeleeSpeed) += 0.02f; // Don't even know if this works lol. It's so low that hopefully nobody will notice if it doesn't work.
+			// player.GetCritChance(DamageClass.SummonMeleeSpeed) += 0.02f; // Don't even know if this works lol. It's so low that hopefully nobody will notice if it doesn't work.
 			if (Math.Abs(player.velocity.X) > 2 || Math.Abs(player.velocity.Y) > 2)
 			{
 				float x2 = player.position.X - player.velocity.X / 10f;
@@ -70,8 +71,8 @@ namespace RijamsMod.Items.Armor.Festive
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Festive Chestplate");
-			Tooltip.SetDefault("+1 Minion capacity\n+15% Summon damage");
+			// DisplayName.SetDefault("Festive Chestplate");
+			// Tooltip.SetDefault("+1 Minion capacity\n+15% Summon damage");
 		}
 
 		public override void SetDefaults()
@@ -101,8 +102,8 @@ namespace RijamsMod.Items.Armor.Festive
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Festive Leggings");
-			Tooltip.SetDefault("+1 Minion capacity\n+20% Movement speed");
+			// DisplayName.SetDefault("Festive Leggings");
+			// Tooltip.SetDefault("+1 Minion capacity\n+20% Movement speed");
 		}
 
 		public override void SetDefaults()

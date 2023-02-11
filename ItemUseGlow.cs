@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -30,6 +31,11 @@ namespace RijamsMod
 		public int glowOffsetX = 0;
 		public float angleAdd = 0f;
 		public bool blendAlpha = false;
+		public bool drawOnGround = true;
+		public bool drawOnPlayer = true;
+		public Color drawColor = Color.White;
+		public bool flameFlicker = false;
+
 		public override bool InstancePerEntity => true;
 		public override GlobalItem Clone(Item item, Item itemClone)
 		{
@@ -37,25 +43,41 @@ namespace RijamsMod
 		}
 		public override void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
-			if (glowTexture != null)
+			if (glowTexture != null && drawOnGround)
 			{
 				Texture2D texture = glowTexture;
-				spriteBatch.Draw
+				Vector2 pos = new
 				(
-					texture,
-					new Vector2
-					(
-						item.position.X - Main.screenPosition.X + item.width * 0.5f,
-						item.position.Y - Main.screenPosition.Y + item.height - texture.Height * 0.5f
-					),
-					new Rectangle(0, 0, texture.Width, texture.Height),
-					Color.White,
-					rotation,
-					texture.Size() * 0.5f,
-					scale,
-					SpriteEffects.None,
-					0f
+					item.position.X - Main.screenPosition.X + item.width * 0.5f - glowOffsetX,
+					item.position.Y - Main.screenPosition.Y + item.height - texture.Height * 0.5f - glowOffsetY
 				);
+				int numTimesToDraw = 1;
+				ulong seed = 0;
+
+				if (flameFlicker)
+				{
+					numTimesToDraw = 7;
+					seed = Main.TileFrameSeed ^ (ulong)(((long)item.position.Y << 32) | (uint)item.position.X);
+				}
+				for (int i = 0; i < numTimesToDraw; i++)
+				{
+					if (flameFlicker)
+					{
+						pos += new Vector2(Utils.RandomInt(ref seed, -5, 6) * 0.05f, Utils.RandomInt(ref seed, -8, 6) * 0.15f);
+					}
+					spriteBatch.Draw
+					(
+						texture,
+						pos,
+						new Rectangle(0, 0, texture.Width, texture.Height),
+						drawColor,
+						rotation + angleAdd,
+						texture.Size() * 0.5f,
+						scale,
+						SpriteEffects.None,
+						0f
+					);
+				}
 			}
 		}
 	}
@@ -84,17 +106,24 @@ namespace RijamsMod
 			Item heldItem = drawInfo.heldItem;
 			int itemID = heldItem.type;
 			float adjustedItemScale = drawInfo.drawPlayer.GetAdjustedItemScale(heldItem);
+			
+
 			Main.instance.LoadItem(itemID);
 
 			if (heldItem.TryGetGlobalItem(out ItemUseGlow result))
 			{
 				Texture2D glowTexture = result.glowTexture;
+				int glowOffsetY = result.glowOffsetY;
+				int glowOffsetX = result.glowOffsetX;
+				bool blendAlpha = result.blendAlpha;
+				float angleAdd = result.angleAdd;
+				Color drawColor = result.drawColor;
 
-				if (glowTexture != null)
+				if (glowTexture != null && result.drawOnPlayer)
 				{
 					Texture2D itemTexture = TextureAssets.Item[itemID].Value;
-					Vector2 position = new((int)(drawInfo.ItemLocation.X - Main.screenPosition.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y));
-					Rectangle? sourceRect = new Rectangle(0, 0, itemTexture.Width, itemTexture.Height);
+					Vector2 position = new((int)(drawInfo.ItemLocation.X - Main.screenPosition.X - glowOffsetX), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y - glowOffsetY));
+					Rectangle? sourceRect = new(0, 0, itemTexture.Width, itemTexture.Height);
 
 					if (ItemID.Sets.IsFood[itemID])
 					{
@@ -136,18 +165,10 @@ namespace RijamsMod
 					{
 						return;
 					}
-					//_ = drawInfo.drawPlayer.name;
-					//Color color = new(250, 250, 250, heldItem.alpha);
-					//Vector2 vector = Vector2.Zero;
 
-					Color drawColor;
-					if (heldItem.GetGlobalItem<ItemUseGlow>().blendAlpha)
+					if (blendAlpha)
 					{
-						drawColor = new(255, 255, 255, heldItem.alpha);
-					}
-					else
-					{
-						drawColor = Color.White;
+						drawColor = new(drawColor.R, drawColor.G, drawColor.B, heldItem.alpha);
 					}
 
 					Vector2 origin = new((float)sourceRect.Value.Width * 0.5f - (float)sourceRect.Value.Width * 0.5f * (float)drawInfo.drawPlayer.direction, sourceRect.Value.Height);
@@ -161,7 +182,7 @@ namespace RijamsMod
 						origin.Y = sourceRect.Value.Height - origin.Y;
 					}
 					//origin += vector;
-					float itemRotation = drawInfo.drawPlayer.itemRotation;
+					float itemRotation = drawInfo.drawPlayer.itemRotation + angleAdd;
 					if (heldItem.useStyle == ItemUseStyleID.GolfPlay)
 					{
 						ref float x = ref position.X;
@@ -175,73 +196,91 @@ namespace RijamsMod
 					ItemSlot.GetItemLight(ref drawInfo.itemColor, heldItem);
 					DrawData drawData;
 
-					if (heldItem.useStyle == ItemUseStyleID.Shoot)
+					int numTimesToDraw = 1;
+					ulong seed = 0;
+
+					if (result.flameFlicker)
 					{
-						if (Item.staff[itemID])
+						numTimesToDraw = 7;
+						seed = Main.TileFrameSeed ^ (ulong)(((long)drawInfo.drawPlayer.position.Y << 32) | (uint)drawInfo.drawPlayer.position.X);
+					}
+
+					for (int i = 0; i < numTimesToDraw; i++)
+					{
+						Vector2 flameRandom = Vector2.Zero;
+						if (result.flameFlicker)
 						{
-							float rotation = drawInfo.drawPlayer.itemRotation + 0.785f * (float)drawInfo.drawPlayer.direction;
-							int posX = 0;
-							int posY = 0;
-							Vector2 origin5 = new(0f, itemTexture.Height);
-							if (drawInfo.drawPlayer.gravDir == -1f)
+							flameRandom = new Vector2(Utils.RandomInt(ref seed, -10, 11) * 0.15f, Utils.RandomInt(ref seed, -10, 6) * 0.35f);
+						}
+
+						if (heldItem.useStyle == ItemUseStyleID.Shoot)
+						{
+							if (Item.staff[itemID])
 							{
-								if (drawInfo.drawPlayer.direction == -1)
+								float rotation = drawInfo.drawPlayer.itemRotation + 0.785f * (float)drawInfo.drawPlayer.direction;
+								int posX = 0;
+								int posY = 0;
+								Vector2 origin5 = new(0f, itemTexture.Height);
+								if (drawInfo.drawPlayer.gravDir == -1f)
 								{
-									rotation += 1.57f;
-									origin5 = new Vector2(itemTexture.Width, 0f);
+									if (drawInfo.drawPlayer.direction == -1)
+									{
+										rotation += 1.57f;
+										origin5 = new Vector2(itemTexture.Width, 0f);
+										posX -= itemTexture.Width;
+									}
+									else
+									{
+										rotation -= 1.57f;
+										origin5 = Vector2.Zero;
+									}
+								}
+								else if (drawInfo.drawPlayer.direction == -1)
+								{
+									origin5 = new Vector2(itemTexture.Width, itemTexture.Height);
 									posX -= itemTexture.Width;
 								}
-								else
-								{
-									rotation -= 1.57f;
-									origin5 = Vector2.Zero;
-								}
+								drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)posX), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + (float)posY)) + flameRandom, sourceRect, drawColor, rotation, origin5, adjustedItemScale, drawInfo.itemEffect, 0);
+								drawInfo.DrawDataCache.Add(drawData);
+								return;
 							}
-							else if (drawInfo.drawPlayer.direction == -1)
+							int vector4X;
+							Vector2 vector3 = new(itemTexture.Width / 2, itemTexture.Height / 2);
+							Vector2 vector4 = Main.DrawPlayerItemPos(drawInfo.drawPlayer.gravDir, itemID);
+							vector4X = (int)vector4.X;
+							vector3.Y = vector4.Y;
+							Vector2 origin6 = new(-vector4X, itemTexture.Height / 2);
+							if (drawInfo.drawPlayer.direction == -1)
 							{
-								origin5 = new Vector2(itemTexture.Width, itemTexture.Height);
-								posX -= itemTexture.Width;
+								origin6 = new Vector2(itemTexture.Width + vector4X, itemTexture.Height / 2);
 							}
-							drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)posX), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + (float)posY)), sourceRect, drawColor, rotation, origin5, adjustedItemScale, drawInfo.itemEffect, 0);
-							drawInfo.DrawDataCache.Add(drawData);
-							return;
-						}
-						int vector4X;
-						Vector2 vector3 = new(itemTexture.Width / 2, itemTexture.Height / 2);
-						Vector2 vector4 = Main.DrawPlayerItemPos(drawInfo.drawPlayer.gravDir, itemID);
-						vector4X = (int)vector4.X;
-						vector3.Y = vector4.Y;
-						Vector2 origin6 = new(-vector4X, itemTexture.Height / 2);
-						if (drawInfo.drawPlayer.direction == -1)
-						{
-							origin6 = new Vector2(itemTexture.Width + vector4X, itemTexture.Height / 2);
-						}
-						drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
-						drawInfo.DrawDataCache.Add(drawData);
-						if (heldItem.color != default)
-						{
 							drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
 							drawInfo.DrawDataCache.Add(drawData);
+							if (heldItem.color != default)
+							{
+								drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)) + flameRandom, sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+								drawInfo.DrawDataCache.Add(drawData);
+							}
+							return;
 						}
-						return;
-					}
-					if (drawInfo.drawPlayer.gravDir == -1f)
-					{
-						drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+						if (drawInfo.drawPlayer.gravDir == -1f)
+						{
+							drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawInfo.DrawDataCache.Add(drawData);
+							if (heldItem.color != default)
+							{
+								drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+								drawInfo.DrawDataCache.Add(drawData);
+							}
+							return;
+						}
+						drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
 						drawInfo.DrawDataCache.Add(drawData);
 						if (heldItem.color != default)
 						{
-							drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
 							drawInfo.DrawDataCache.Add(drawData);
 						}
-						return;
-					}
-					drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
-					drawInfo.DrawDataCache.Add(drawData);
-					if (heldItem.color != default)
-					{
-						drawData = new DrawData(glowTexture, position, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
-						drawInfo.DrawDataCache.Add(drawData);
 					}
 				}
 			}

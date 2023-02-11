@@ -20,7 +20,7 @@ namespace RijamsMod.Items.Tools
 		public override string Texture => "RijamsMod/Items/Tools/MMPickaxe";
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Right click to bring up the tool UI\n  The UI can be dragged around on the screen\n  Pickaxe takes priority over hammer");
+			// Tooltip.SetDefault("Right click to bring up the tool UI\n  The UI can be dragged around on the screen\n  Pickaxe takes priority over hammer");
 		}
 
 		public override void SetDefaults()

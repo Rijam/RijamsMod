@@ -9,8 +9,8 @@ namespace RijamsMod.Items.Accessories.Movement
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Guide to Proper Flight Techniques");
-			Tooltip.SetDefault("Only works while Wings are equipped\n+1 Second Flight Time\nIncreased vertical and horizontal flight speed\nIncreased jump height\nIncreased movement speed");
+			// DisplayName.SetDefault("Guide to Proper Flight Techniques");
+			// Tooltip.SetDefault("Only works while Wings are equipped\n+1 Second Flight Time\nIncreased vertical and horizontal flight speed\nIncreased jump height\nIncreased movement speed");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy]", "[c/474747:After defeating Mechanical Bosses]", null } );
 		}
 

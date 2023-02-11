@@ -12,7 +12,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Spiked Green Slime");
+			// DisplayName.SetDefault("Spiked Green Slime");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SlimeSpiked];
 		}
 

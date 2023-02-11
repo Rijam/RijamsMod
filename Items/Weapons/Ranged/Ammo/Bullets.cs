@@ -8,7 +8,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
+			// Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
 		}
 		public override void SetDefaults()
 		{

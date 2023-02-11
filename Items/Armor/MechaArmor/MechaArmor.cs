@@ -13,8 +13,8 @@ namespace RijamsMod.Items.Armor.MechaArmor
 		}
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Mecha Helmet");
-			Tooltip.SetDefault("This is a modded helmet.");
+			// DisplayName.SetDefault("Mecha Helmet");
+			// Tooltip.SetDefault("This is a modded helmet.");
 		}
 
 		public override void SetDefaults()
@@ -60,10 +60,10 @@ namespace RijamsMod.Items.Armor.MechaArmor
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Mecha Chestplate");
-			Tooltip.SetDefault("This is a modded body armor."
+			// DisplayName.SetDefault("Mecha Chestplate");
+			/* Tooltip.SetDefault("This is a modded body armor."
 				+ "\nImmunity to 'On Fire!'"
-				+ "\n+20 max mana and +1 max minions");
+				+ "\n+20 max mana and +1 max minions"); */
 		}
 
 		public override void SetDefaults()
@@ -105,9 +105,9 @@ namespace RijamsMod.Items.Armor.MechaArmor
 		}
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Mecha Leggings");
-			Tooltip.SetDefault("This is a modded leg armor."
-				+ "\n5% increased movement speed");
+			// DisplayName.SetDefault("Mecha Leggings");
+			/* Tooltip.SetDefault("This is a modded leg armor."
+				+ "\n5% increased movement speed"); */
 		}
 
 		public override void SetDefaults()

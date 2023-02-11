@@ -17,7 +17,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Firmament Harpy");
+			// DisplayName.SetDefault("Firmament Harpy");
 			Main.npcFrameCount[NPC.type] = 12;
 
 			// Influences how the NPC looks in the Bestiary
@@ -61,11 +61,11 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
-				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Helmet").Type, 1f);
+				Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Helmet").Type, 1f);
 				for (int k = 0; k < 2; k++)
 				{
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Wing").Type, 1f);
-					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Gore_Leg").Type, 1f);
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Wing").Type, 1f);
+					Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity, ModContent.Find<ModGore>(Mod.Name + "/" + Name + "_Leg").Type, 1f);
 				}
 			}
 		}
@@ -232,7 +232,7 @@ namespace RijamsMod.NPCs.Enemies
 				{
 					target.AddBuff(BuffID.Bleeding, 1200);
 				}
-				target.AddBuff(ModContent.BuffType<Buffs.BleedingOut>(), 300);
+				target.AddBuff(ModContent.BuffType<Buffs.Debuffs.BleedingOut>(), 300);
 			}
 		}
 

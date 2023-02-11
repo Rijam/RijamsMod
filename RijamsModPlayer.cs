@@ -9,6 +9,8 @@ using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
 using Terraria.Audio;
+using RijamsMod.Items.Weapons.Magic;
+using RijamsMod.Items;
 
 namespace RijamsMod
 {
@@ -41,6 +43,11 @@ namespace RijamsMod
 		public bool warriorRing;
 		public bool lifeSapperRing;
 		public bool manaSapperRing;
+		public bool terraStepStool;
+		public bool dwarfStarPet;
+		public bool redSkywareLeggings;
+
+		public int supportMinionRadiusIncrease = 0;
 
 		public override void ResetEffects()
 		{
@@ -70,24 +77,22 @@ namespace RijamsMod
 			warriorRing = false;
 			lifeSapperRing = false;
 			manaSapperRing = false;
+			terraStepStool = false;
+			dwarfStarPet = false;
+			redSkywareLeggings = false;
+
+			supportMinionRadiusIncrease = 0;
 		}
+
 		public override void UpdateDead()
 		{
 			sulfuricAcid = false;
-		}
-		public override void clientClone(ModPlayer clientClone)
-		{
-			RijamsModPlayer _ = clientClone as RijamsModPlayer;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 		{
 			ModPacket packet = Mod.GetPacket();
 			packet.Write((byte)Player.whoAmI);
 			packet.Send(toWho, fromWho);
-		}
-		public override void SendClientChanges(ModPlayer clientPlayer)
-		{
-			RijamsModPlayer _ = clientPlayer as RijamsModPlayer;
 		}
 
 		public static readonly SoundStyle BreathingPackBeep = new($"{nameof(RijamsMod)}/Sounds/Custom/beep")
@@ -114,6 +119,12 @@ namespace RijamsMod
 			if (soaringPotion)
 			{
 				Player.wingTimeMax += 30;
+			}
+			if (redSkywareLeggings)
+			{
+				Player.wingTimeMax += 60;
+				Player.moveSpeed += 0.2f;
+				Player.maxRunSpeed += 0.2f;
 			}
 			if (hailfireBootsBoost)
 			{
@@ -156,12 +167,12 @@ namespace RijamsMod
 						Player.breath += Player.breathMax;
 					}
 				}
-				/*if (player.wet == false || player.honeyWet == false || player.lavaWet == false)
-				{
-					breathingPackTimer = 0;
+				//if (player.wet == false || player.honeyWet == false || player.lavaWet == false)
+				//{
+					//breathingPackTimer = 0;
 					//breathingPackUsed = false;
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = false;
-				}*/
+				//}
 			}
 			if (yoyoBackpack)
 			{
@@ -243,6 +254,14 @@ namespace RijamsMod
 			{
 				Player.runAcceleration += 0.1f;
 				Player.maxRunSpeed += 2;
+			}
+		}
+		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
+		{
+			// Move the lantern weapons to draw behind the back arm.
+			if (GlobalItems.isLanternWeapon.Contains(drawInfo.drawPlayer.HeldItem.type))
+			{
+				drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
 			}
 		}
 	}

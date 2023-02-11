@@ -10,7 +10,7 @@ namespace RijamsMod.Projectiles.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Green Slime Spike");
+			// DisplayName.SetDefault("Green Slime Spike");
 		}
 
 		public override void SetDefaults()

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,11 +10,12 @@ namespace RijamsMod.Items.Materials
 		public override void SetStaticDefaults() 
 		{
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Harpy or]", "[c/474747:dropped by Firmament Harpies]", "[c/474747:After defeating Golem]" } );
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.GiantHarpyFeather; // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults() 
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 14;
 			Item.height = 34;
 			Item.value = 125000;
@@ -29,7 +31,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 20;
 			Item.height = 20;
 			Item.value = 7500;
@@ -41,11 +43,12 @@ namespace RijamsMod.Items.Materials
 		public override void SetStaticDefaults()
 		{
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Blood Crawlers]", null, null } );
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.WormTooth; // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 20;
 			Item.height = 10;
 			Item.value = 25;
@@ -57,11 +60,12 @@ namespace RijamsMod.Items.Materials
 		public override void SetStaticDefaults()
 		{
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Eye of Cthulhu]", null } );
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.Silk; // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 24;
 			Item.height = 24;
 			Item.value = 5000;
@@ -77,7 +81,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 20;
 			Item.height = 20;
 			Item.value = 7500;
@@ -93,7 +97,7 @@ namespace RijamsMod.Items.Materials
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.width = 22;
 			Item.height = 22;
 			Item.value = 8000;

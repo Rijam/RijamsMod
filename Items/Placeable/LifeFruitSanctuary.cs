@@ -9,14 +9,14 @@ namespace RijamsMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Life Fruit Sanctuary");
-			Tooltip.SetDefault("Increases life by 20 when placed nearby");
+			// DisplayName.SetDefault("Life Fruit Sanctuary");
+			// Tooltip.SetDefault("Increases life by 20 when placed nearby");
 		}
 		public override void SetDefaults()
 		{
 			Item.width = 30;
 			Item.height = 29;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 15;

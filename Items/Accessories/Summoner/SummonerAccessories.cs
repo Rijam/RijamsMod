@@ -10,8 +10,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Obsidian Pygmy Necklace");
-			Tooltip.SetDefault("+1 Minion capacity\n+1 Defense\nGrants immunity to fire blocks");
+			// DisplayName.SetDefault("Obsidian Pygmy Necklace");
+			// Tooltip.SetDefault("+1 Minion capacity\n+1 Defense\nGrants immunity to fire blocks");
 		}
 
 		public override void SetDefaults()
@@ -43,8 +43,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hailfire Pygmy Necklace");
-			Tooltip.SetDefault("+1 Minion capacity\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled");
+			// DisplayName.SetDefault("Hailfire Pygmy Necklace");
+			// Tooltip.SetDefault("+1 Minion capacity\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled");
 		}
 
 		public override void SetDefaults()
@@ -83,8 +83,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Naughty List");
-			Tooltip.SetDefault("+1 Minion capacity\n+1 Sentry capacity");
+			// DisplayName.SetDefault("Naughty List");
+			// Tooltip.SetDefault("+1 Minion capacity\n+1 Sentry capacity");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Santa-NK1]", null, null });
 		}
 
@@ -106,8 +106,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Naughty Scarab");
-			Tooltip.SetDefault("+2 Minion capacity\n+1 Sentry capacity\n+15% Minion damage\n+2 Minion knockback");
+			// DisplayName.SetDefault("Naughty Scarab");
+			// Tooltip.SetDefault("+2 Minion capacity\n+1 Sentry capacity\n+15% Summon damage\n+2 Summon knockback");
 		}
 
 		public override void SetDefaults()
@@ -123,7 +123,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 			player.maxMinions += 2;
 			player.maxTurrets++;
 			player.GetDamage(DamageClass.Summon) += 0.15f;
-			player.GetKnockback(DamageClass.Summon) += 2f;
+			player.GetKnockback(DamageClass.Summon).Base += 2f;
 			player.fireWalk = true;
 			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 		}
@@ -143,8 +143,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hailfire Pygmy Scarf");
-			Tooltip.SetDefault("+1 Minion capacity\n+1 Sentry capacity\n+15% Minion damage\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled\n'Don't question it.'");
+			// DisplayName.SetDefault("Hailfire Pygmy Scarf");
+			// Tooltip.SetDefault("+1 Minion capacity\n+1 Sentry capacity\n+15% Summon damage\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled\n'Don't question it.'");
 		}
 
 		public override void SetDefaults()
@@ -157,7 +157,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.maxMinions += 4;
+			player.maxMinions += 1;
 			player.maxTurrets += 1;
 			player.GetDamage(DamageClass.Summon) += 0.30f;
 			player.statDefense++;
@@ -181,8 +181,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Assemble Assemble");
-			Tooltip.SetDefault("+3 Minion capacity\n+2 Sentry capacity\n+30% Minion damage\n+200% Summon knockback\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled\nEnemies are less likely to target you\n'FlavorText BYTE \"It all comes together\", 0'");
+			// DisplayName.SetDefault("Assemble Assemble");
+			// Tooltip.SetDefault("+3 Minion capacity\n+2 Sentry capacity\n+30% Summon damage\n+2 Summon knockback\n+1 Defense\nGrants immunity to fire blocks\nGrants immunity to Frostburn, Frozen, and Chilled\nEnemies are less likely to target you\n'FlavorText BYTE \"It all comes together\", 0'");
 		}
 
 		public override void SetDefaults()
@@ -198,7 +198,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 			player.maxMinions += 3;
 			player.maxTurrets += 2;
 			player.GetDamage(DamageClass.Summon) += 0.30f;
-			player.GetKnockback(DamageClass.Summon) += 2f;
+			player.GetKnockback(DamageClass.Summon).Base += 2f;
 			player.statDefense++;
 			player.fireWalk = true;
 			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
@@ -223,8 +223,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Control Glove");
-			Tooltip.SetDefault("Enables auto swing for all minion and sentry weapons");
+			// DisplayName.SetDefault("Control Glove");
+			// Tooltip.SetDefault("Enables auto swing for all minion and sentry weapons");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Deerclops]", "[c/474747:Or in Hardmode]" });
 		}
 
@@ -247,8 +247,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Summoner's Glove");
-			Tooltip.SetDefault("+12% Whip speed\n+10% Whip size\n+100% Summon knockback\nEnables auto swing for all summon weapons");
+			// DisplayName.SetDefault("Summoner's Glove");
+			// Tooltip.SetDefault("+12% Whip speed\n+10% Whip size\n+1 Summon knockback\nEnables auto swing for all summon weapons");
 		}
 
 		public override void SetDefaults()
@@ -262,7 +262,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<RijamsModPlayer>().summonersGlove = true;
-			player.GetKnockback(DamageClass.Summon) += 1f;
+			player.GetKnockback(DamageClass.Summon).Base += 1f;
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.12f;
 			player.whipRangeMultiplier += 0.1f;
 		}
@@ -281,8 +281,8 @@ namespace RijamsMod.Items.Accessories.Summoner
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Reinforced Summoner's Glove");
-			Tooltip.SetDefault("+12% All Summon speed\n+10% Whip size\n+5% Whip damage\n+100% Summon knockback\n+4 Defense\nEnables auto swing for all summon weapons");
+			// DisplayName.SetDefault("Reinforced Summoner's Glove");
+			// Tooltip.SetDefault("+12% All Summon speed\n+10% Whip size\n+5% Whip damage\n+1 Summon knockback\n+4 Defense\nEnables auto swing for all summon weapons");
 		}
 
 		public override void SetDefaults()
@@ -296,7 +296,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<RijamsModPlayer>().summonersGlove = true;
-			player.GetKnockback(DamageClass.Summon) += 1f;
+			player.GetKnockback(DamageClass.Summon).Base += 1f;
 			player.GetAttackSpeed(DamageClass.Summon) += 0.12f;
 			player.whipRangeMultiplier += 0.1f;
 			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.05f;

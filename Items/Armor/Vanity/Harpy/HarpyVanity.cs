@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Armor.Vanity.Harpy
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Harpy's Shirt");
+			// DisplayName.SetDefault("Harpy's Shirt");
 			ArmorIDs.Body.Sets.HidesArms[Item.bodySlot] = false;
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
 		}
@@ -34,7 +34,7 @@ namespace RijamsMod.Items.Armor.Vanity.Harpy
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Harpy's Shorts");
+			// DisplayName.SetDefault("Harpy's Shorts");
 		}
 		public override void SetDefaults()
 		{

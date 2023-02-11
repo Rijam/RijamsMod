@@ -8,9 +8,13 @@ namespace RijamsMod.Projectiles.Summon.Support
 {
 	public class HarpyIdol : ModProjectile
 	{
+		public int additionalDefense = 0;
+		public float additionalDR = 0;
+		public int distRadius = 0;
+
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Harpy Idol");
+			// DisplayName.SetDefault("Harpy Idol");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 6;
 			// This is necessary for right-click targeting
@@ -68,9 +72,9 @@ namespace RijamsMod.Projectiles.Summon.Support
 			// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active)
 			{
-				player.ClearBuff(ModContent.BuffType<Buffs.HarpyIdolBuff>());
+				player.ClearBuff(ModContent.BuffType<Buffs.Minions.HarpyIdolBuff>());
 			}
-			if (player.HasBuff(ModContent.BuffType<Buffs.HarpyIdolBuff>()))
+			if (player.HasBuff(ModContent.BuffType<Buffs.Minions.HarpyIdolBuff>()))
 			{
 				Projectile.timeLeft = 2;
 			}
@@ -103,13 +107,19 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 			}
 
-			int radius = 5 * 16; // 5 tiles
-			for (int i = 0; i < 20; i++)
+			int radius = (distRadius + player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease) * 16; // 5 tiles
+			if (Main.netMode != NetmodeID.Server)
 			{
-				Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-				Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, 150, Color.Gold, 0.75f);
-				d.noGravity = true;
-				d.noLightEmittence = true;
+				if (ModContent.GetInstance<RijamsModConfigClient>().DisplayDefenseSupportSummonsAura)
+				{
+					for (int i = 0; i < 20; i++)
+					{
+						Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+						Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, 150, Color.Gold, 0.75f);
+						d.noGravity = true;
+						d.noLightEmittence = true;
+					}
+				}
 			}
 
 			for (int i = 0; i < Main.maxPlayers; i++)
@@ -120,8 +130,8 @@ namespace RijamsMod.Projectiles.Summon.Support
 					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 					if (distance <= radius)
 					{
-						searchPlayer.statDefense += 3;
-						searchPlayer.endurance += 0.01f;
+						searchPlayer.statDefense += additionalDefense;
+						searchPlayer.endurance += additionalDR;
 					}
 				}
 			}

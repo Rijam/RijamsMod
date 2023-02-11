@@ -145,5 +145,32 @@ namespace RijamsMod
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool Ornithophobia { get; set; }
+
+		[Label("[i:4672]   Display Whip Multihit Penalty By Default")]
+		[Tooltip("This option toggles if whips will display the mutlihit penalty in the tooltip.\n" +
+			"  When On: Multihit Penalty will always be displayed.\n" +
+			"  When Off: Multihit Penalty will only be displayed when holding left shift.\n" +
+			"   Turn Off if you don't want to see the tooltip.\n" +
+			"Default value: On")]
+		[DefaultValue(true)]
+		public bool DisplayWhipMultihitPenalty { get; set; }
+
+		[Label("[i:RijamsMod/CobaltProtectorCudgel]   Display Defense Support Summons Auras")]
+		[Tooltip("This option toggles if defense support summons will show their aura.\n" +
+			"  When On: The dust indicator will be shown.\n" +
+			"  When Off: The dust indicator will be hidden.\n" +
+			"   Turn Off if you don't want to see the auras.\n" +
+			"Default value: On")]
+		[DefaultValue(true)]
+		public bool DisplayDefenseSupportSummonsAura { get; set; }
+
+		[Label("[i:RijamsMod/RadiantLanternCudgel]   Display Healing Support Summons Auras")]
+		[Tooltip("This option toggles if healing support summons will show their aura.\n" +
+			"  When On: The dust indicator will be shown.\n" +
+			"  When Off: The dust indicator will be hidden.\n" +
+			"   Turn Off if you don't want to see the auras.\n" +
+			"Default value: On")]
+		[DefaultValue(true)]
+		public bool DisplayHealingSupportSummonsAura { get; set; }
 	}
 }

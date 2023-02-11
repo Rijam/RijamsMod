@@ -28,7 +28,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
             Projectile.DamageType = DamageClass.SummonMeleeSpeed;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.ownerHitCheck = true; // This prevents the projectile from hitting through solid tiles.
+            Projectile.ownerHitCheck = false; // This prevents the projectile from hitting through solid tiles.
             Projectile.extraUpdates = 1;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
@@ -87,8 +87,8 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            target.AddBuff(ModContent.BuffType<Buffs.SulfuricWhipDebuff>(), 240);
-            target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 240);
+            target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricWhipDebuff>(), 240);
+            target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 240);
             Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
             Projectile.damage = (int)(damage * 0.6f);
         }
@@ -180,8 +180,12 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
                 float rotation = diff.ToRotation() - MathHelper.PiOver2; // This projectile's sprite faces down, so PiOver2 is used to correct rotation.
                 Color color = Lighting.GetColor(element.ToTileCoordinates());
+				if (i == list.Count - 2) // Make the head full bright
+				{
+					color = Color.White;
+				}
 
-                Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
+				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, flip, 0);
 
                 pos += diff;
             }

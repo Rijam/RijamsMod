@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Spike Trap Staff");
-			Tooltip.SetDefault("Summons a sentry Spike Trap\nDeals damage every 0.5 seconds");
+			// DisplayName.SetDefault("Spike Trap Staff");
+			// Tooltip.SetDefault("Summons a sentry Spike Trap\nDeals damage every 0.5 seconds");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
@@ -66,8 +66,8 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Super Spike Trap Staff");
-			Tooltip.SetDefault("Summons a sentry Super Spike Trap\nDeals damage every 0.25 seconds");
+			// DisplayName.SetDefault("Super Spike Trap Staff");
+			// Tooltip.SetDefault("Summons a sentry Super Spike Trap\nDeals damage every 0.25 seconds");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
@@ -102,8 +102,8 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Slime Trap Staff");
-			Tooltip.SetDefault("Summons a sentry Slime Trap\nReduces enemy movement speed by 25%");
+			// DisplayName.SetDefault("Slime Trap Staff");
+			// Tooltip.SetDefault("Summons a sentry Slime Trap\nReduces enemy movement speed by 25%");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}

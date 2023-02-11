@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Armor.Vanity
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Sir Slush's Top Hat");
+			// DisplayName.SetDefault("Sir Slush's Top Hat");
 			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
 		}
 		public override void SetDefaults()

@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Armor.Vanity.HellTrader
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Hell Trader's Hood");
+			// DisplayName.SetDefault("Hell Trader's Hood");
 		}
 		public override void SetDefaults()
 		{
@@ -33,7 +33,7 @@ namespace RijamsMod.Items.Armor.Vanity.HellTrader
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			DisplayName.SetDefault("Hell Trader's Robes");
+			// DisplayName.SetDefault("Hell Trader's Robes");
 			ArmorIDs.Body.Sets.HidesArms[Item.bodySlot] = true;
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
 		}
@@ -52,7 +52,7 @@ namespace RijamsMod.Items.Armor.Vanity.HellTrader
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hell Trader's Trousers");
+			// DisplayName.SetDefault("Hell Trader's Trousers");
 		}
 		public override void SetDefaults()
 		{

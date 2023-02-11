@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Items.Information;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,16 +10,17 @@ namespace RijamsMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Interface Anchor");
-			Tooltip.SetDefault("Purely for decoration");
+			// DisplayName.SetDefault("Interface Anchor");
+			// Tooltip.SetDefault("Purely for decoration");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:when Information Interface]", "[c/474747:is in the player's inventory]" });
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InformationInterface>(); // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults()
 		{
 			Item.width = 32;
 			Item.height = 32;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 15;

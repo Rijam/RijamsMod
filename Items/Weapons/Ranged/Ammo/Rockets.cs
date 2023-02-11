@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.RocketI"));
+			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.RocketI"));
 		}
 
 		public override void SetDefaults()

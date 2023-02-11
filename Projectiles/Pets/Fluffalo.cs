@@ -10,7 +10,7 @@ namespace RijamsMod.Projectiles.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Fluffalo");
+			// DisplayName.SetDefault("Fluffalo");
 			Main.projFrames[Projectile.type] = 11;
 			Main.projPet[Projectile.type] = true;
 		}

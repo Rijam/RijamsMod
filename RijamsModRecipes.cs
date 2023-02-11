@@ -55,15 +55,6 @@ namespace RijamsMod
 				.AddTile(TileID.Anvils)
 				.Register();
 
-			Recipe.Create(ItemID.ThornsPotion)
-				.AddIngredient(ItemID.BottledWater, 1)
-				.AddIngredient(ItemID.Deathweed, 1)
-				.AddIngredient(ItemID.Cactus, 1)
-				.AddIngredient(ModContent.ItemType<Items.Materials.CrawlerChelicera>(), 1)
-				.AddIngredient(ItemID.Stinger, 1)
-				.AddTile(TileID.Bottles)
-				.Register();
-
 			Recipe.Create(ItemID.RainbowString)
 				.AddIngredient(ItemID.WhiteString, 1)
 				.AddIngredient(ItemID.LivingRainbowDye, 1)
@@ -89,6 +80,11 @@ namespace RijamsMod
 
 			Recipe.Create(ItemID.BlueBerries)
 				.AddIngredient(ModContent.ItemType<Items.Consumables.FreshBlueberry>(), 3)
+				.Register();
+
+			Recipe.Create(ItemID.SeafoodDinner)
+				.AddIngredient(ModContent.ItemType<Items.Fishing.HornetTail>(), 2)
+				.AddTile(TileID.CookingPots)
 				.Register();
 
 			Recipe.Create(ItemID.FleshBlock, 25)

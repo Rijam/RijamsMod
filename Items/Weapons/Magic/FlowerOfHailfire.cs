@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Weapons.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Flower of Hailfire");
-			Tooltip.SetDefault("Throws balls of fire and frost");
+			// DisplayName.SetDefault("Flower of Hailfire");
+			// Tooltip.SetDefault("Throws balls of fire and frost");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Crafted in the Snow biome near lava]", null, null } );
 		}
 

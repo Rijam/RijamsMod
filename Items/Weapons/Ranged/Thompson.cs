@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -26,12 +27,25 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.knockBack = 4;
 			Item.value = 50000;
 			Item.rare = ItemRarityID.LightRed;//4
-			Item.UseSound = SoundID.Item11;
+			Item.UseSound = SoundID.Item11 with { Pitch = -0.2f };
 			Item.autoReuse = true;
 			Item.shoot = AmmoID.Bullet; //idk why but all the guns in the vanilla source have this
 			Item.shootSpeed = 16f;
 			Item.scale = 0.875f;
 			Item.useAmmo = AmmoID.Bullet;
+
+			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
+			{
+				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
+				flash.posOffsetXLeft = 8;
+				flash.posOffsetXRight = -24;
+				flash.posOffsetY = 0;
+				flash.frameCount = 2;
+				flash.frameRate = 4;
+				flash.colorNoAlpha = new(255, 150, 0);
+				flash.alpha = 255;
+			}
 		}
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

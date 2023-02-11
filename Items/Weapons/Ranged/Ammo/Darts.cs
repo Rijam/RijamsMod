@@ -75,7 +75,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
+			// Tooltip.SetDefault("Goes through tiles\nInflicts Sulfuric Acid");
 		}
 
 		public override void SetDefaults()
@@ -106,7 +106,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Grants Dryad's Blessing if consumed\n10% damage penalty per enemy pierced");
+			// Tooltip.SetDefault("Grants Dryad's Blessing if consumed\n10% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()
@@ -146,7 +146,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Splits into five darts\n30% damage penalty per enemy pierced");
+			// Tooltip.SetDefault("Splits into five darts\n30% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()
@@ -178,7 +178,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Moves extremely fast\n10% damage penalty per enemy pierced");
+			// Tooltip.SetDefault("Moves extremely fast\n10% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()
@@ -210,7 +210,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Homing\n25% damage penalty per enemy pierced");
+			// Tooltip.SetDefault("Homing\n25% damage penalty per enemy pierced");
 		}
 
 		public override void SetDefaults()

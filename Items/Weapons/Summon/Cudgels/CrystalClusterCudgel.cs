@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Crystal Cluster Cudgel");
-			Tooltip.SetDefault("Summons a Crystal Cluster to defend you\nPlayers within its aura receive:\n+7 defense\n+4% damage reduction\n15 tile radius");
+			// DisplayName.SetDefault("Crystal Cluster Cudgel");
+			// Tooltip.SetDefault("Summons a Crystal Cluster to defend you\nPlayers within its aura receive:\n+7 defense\n+4% damage reduction\n15 tile radius");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Queen Slime]", null, null });
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
@@ -28,6 +28,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
+			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.value = Item.sellPrice(gold: 2);
 			Item.rare = ItemRarityID.Pink;
 			Item.UseSound = SoundID.Item90; //131, 123
@@ -36,8 +37,8 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// These below are needed for a minion weapon
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Summon;
-			//item.buffType = ModContent.BuffType<ShadowflamePhantomBuff>();
-			Item.buffType = ModContent.BuffType<Buffs.CrystalClusterBuff>();
+
+			Item.buffType = ModContent.BuffType<Buffs.Minions.CrystalClusterBuff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
 			Item.shoot = ModContent.ProjectileType<CrystalCluster>();
 		}
@@ -50,6 +51,13 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
+
+			if (projectile.ModProjectile is CrystalCluster modProjectile)
+			{
+				modProjectile.additionalDefense = 7; // 7 defense
+				modProjectile.additionalDR = 0.04f; // 4% damage reduction
+				modProjectile.distRadius = 15; // 15 tile radius
+			}
 
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;

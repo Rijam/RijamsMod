@@ -14,7 +14,7 @@ namespace RijamsMod.Projectiles.Melee
 		public override void SetStaticDefaults()
 		{
 			// In case anyone is curious, Lonkhe is a butchering of the Greek word for Lance. So then name is like "Lance Jousting Lance" lol.
-			DisplayName.SetDefault("Lonkhe Jousting Lance"); // The English name of the projectile
+			// DisplayName.SetDefault("Lonkhe Jousting Lance"); // The English name of the projectile
 
 			// This will cause the player to dismount if they are hit by another Jousting Lance.
 			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.

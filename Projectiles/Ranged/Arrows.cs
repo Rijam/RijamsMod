@@ -13,7 +13,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Bloody Arrow");     //The English name of the projectile
+			// DisplayName.SetDefault("Bloody Arrow");     //The English name of the projectile
 		}
 
 		public override void SetDefaults()
@@ -50,7 +50,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sulfur Arrow");     //The English name of the projectile
+			// DisplayName.SetDefault("Sulfur Arrow");     //The English name of the projectile
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 2;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
 		}
@@ -75,11 +75,11 @@ namespace RijamsMod.Projectiles.Ranged
 
 		public override void OnHitPlayer(Player target, int damage, bool crit)
 		{
-			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 		}
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
 		{
-			target.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			target.netUpdate = true;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity) => false;
@@ -125,7 +125,7 @@ namespace RijamsMod.Projectiles.Ranged
 		public override Color? GetAlpha(Color lightColor) => Color.White * 0f;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Evil Arrows");     //The English name of the projectile
+			// DisplayName.SetDefault("Evil Arrows");     //The English name of the projectile
 		}
 
 		public override void SetDefaults()

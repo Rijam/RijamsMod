@@ -157,18 +157,18 @@ namespace RijamsMod.NPCs
 		}
 
 		/// <summary>
-		/// Returns a list of all of the Town NPCs within 25 tiles.
-		/// searchMode = 1: Everything that could be a Town NPC, including Town Pets, Old Man, Traveling Merchant, and Skeleton Merchant.
-		/// searchMode = 2: Town NPCs and Town Pets. Excludes Old Man, Traveling Merchant, and Skeleton Merchant.
-		/// searchMode = 3: Only real Town NPCs. Excludes Town Pets, Old Man, Traveling Merchant, and Skeleton Merchant.
-		/// npcTypeListHouse is a list of the npc.type for all of the Town NPCs within 25 tiles.
-		/// npcTypeListNearBy is a list of the npc.type for all of the Town NPCs within 50 tiles.
-		/// npcTypeListVillage is a list of the npc.type for all of the Town NPCs within 120 tiles.
-		/// npcTypeListAll is a list of the npc.type for all of the Town NPCs in the world.
-		/// Use .Count if you want the total number of Town NPCs for the given list.
-		/// Adapted from vanilla
+		/// <br>Returns a list of all of the Town NPCs within 25 tiles.</br>
+		/// <br>searchMode = 1: Everything that could be a Town NPC, including Town Pets, Old Man, Traveling Merchant, and Skeleton Merchant.</br>
+		/// <br>searchMode = 2: Town NPCs and Town Pets. Excludes Old Man, Traveling Merchant, and Skeleton Merchant.</br>
+		/// <br>searchMode = 3: Only real Town NPCs. Excludes Town Pets, Old Man, Traveling Merchant, and Skeleton Merchant.</br>
+		/// <br>npcTypeListHouse is a list of the npc.type for all of the Town NPCs within 25 tiles.</br>
+		/// <br>npcTypeListNearBy is a list of the npc.type for all of the Town NPCs within 50 tiles.</br>
+		/// <br>npcTypeListVillage is a list of the npc.type for all of the Town NPCs within 120 tiles.</br>
+		/// <br>npcTypeListAll is a list of the npc.type for all of the Town NPCs in the world.</br>
+		/// <br>Use .Count if you want the total number of Town NPCs for the given list.</br>
+		/// <br>Adapted from vanilla</br>
 		/// </summary>
-		/// <returns>List<NPC> of all the Town NPCs within 25 tiles.</returns>
+		/// <returns>List NPC of all the Town NPCs within 25 tiles.</returns>
 		public static List<NPC> GetNearbyResidentNPCs(NPC npc, int searchMode, out List<int> npcTypeListHouse, out List<int> npcTypeListNearBy, out List<int> npcTypeListVillage, out List<int> npcTypeListAll)
 		{
 			List<NPC> list = new();
@@ -181,7 +181,7 @@ namespace RijamsMod.NPCs
 			{
 				npc1Home = new Vector2(npc.Center.X / 16f, npc.Center.Y / 16f);
 			}
-			for (int i = 0; i < 200; i++)
+			for (int i = 0; i < Main.maxNPCs; i++)
 			{
 				if (i == npc.whoAmI)
 				{
@@ -229,7 +229,7 @@ namespace RijamsMod.NPCs
 					{
 						return true;
 					}
-					return true;
+					return false;
 				case 2: // Town NPCs and Town Pets. Excludes Old Man, Traveling Merchant, and Skeleton Merchant.
 					if (npc2.type != NPCID.OldMan || npc2.type != NPCID.TravellingMerchant || npc2.type != NPCID.SkeletonMerchant || !NPCID.Sets.ActsLikeTownNPC[npc2.type])
 					{
@@ -254,7 +254,7 @@ namespace RijamsMod.NPCs
 		public static bool FindItemInShop(int[] shop, int item, out int? slotNumber)
 		{
 			slotNumber = null;
-			for (int i = 0; i < 40; i++)
+			for (int i = 0; i < Chest.maxItems; i++)
 			{
 				if (shop[i] == item)
 				{
@@ -272,7 +272,7 @@ namespace RijamsMod.NPCs
 		public static bool FindItemInShop(Chest shop, int item, out int? slotNumber)
 		{
 			slotNumber = null;
-			for (int i = 0; i < 40; i++)
+			for (int i = 0; i < Chest.maxItems; i++)
 			{
 				if (shop.item[i].type == item)
 				{

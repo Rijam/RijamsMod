@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Accessories.Ranger
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Ammo Pouch");
-			Tooltip.SetDefault("+5% bullet damage\n+5% ranged attack speed");
+			// DisplayName.SetDefault("Ammo Pouch");
+			// Tooltip.SetDefault("+5% bullet damage\n+5% ranged attack speed");
 		}
 
 		public override void SetDefaults()
@@ -41,8 +41,8 @@ namespace RijamsMod.Items.Accessories.Ranger
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Rocket Booster");
-			Tooltip.SetDefault("+10% rocket damage\n+20% rocket velocity\n+10% rocket knockback");
+			// DisplayName.SetDefault("Rocket Booster");
+			// Tooltip.SetDefault("+10% rocket damage\n+20% rocket velocity\n+10% rocket knockback");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]", null });
 		}
 
@@ -67,8 +67,8 @@ namespace RijamsMod.Items.Accessories.Ranger
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Gamut Apparatus");
-			Tooltip.SetDefault("+15% Ranged damage\n+10% Ranged Critical Strike chance\n20% chance to not consume ammo\n+20% projectile velocity and knockback\nLights wooden arrows ablaze\nEnemies are slightly less likely to target you\nRight Click to zoom out (Hide to disable)");
+			// DisplayName.SetDefault("Gamut Apparatus");
+			// Tooltip.SetDefault("+15% Ranged damage\n+10% Ranged Critical Strike chance\n20% chance to not consume ammo\n+20% projectile velocity and knockback\nLights wooden arrows ablaze\nEnemies are slightly less likely to target you\nRight Click to zoom out (Hide to disable)");
 		}
 
 		public override void SetDefaults()

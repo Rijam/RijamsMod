@@ -10,8 +10,8 @@ namespace RijamsMod.Items.Armor
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Pumpkin Hat");
-			Tooltip.SetDefault("+1 Minion Capacity");
+			// DisplayName.SetDefault("Pumpkin Hat");
+			// Tooltip.SetDefault("+1 Minion Capacity");
 		}
 
 		public override void SetDefaults()

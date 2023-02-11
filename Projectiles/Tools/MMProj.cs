@@ -75,7 +75,7 @@ namespace RijamsMod.Projectiles.Tools
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Matter Manipulator");
+			// DisplayName.SetDefault("Matter Manipulator");
 		}
 		public override void SetDefaults()
 		{

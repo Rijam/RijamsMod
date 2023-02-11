@@ -55,8 +55,8 @@ namespace RijamsMod.Projectiles.Summon.Whips
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				int dust = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.BlueTorch);
-				Main.dust[dust].noGravity = true;
+				Dust dust = Dust.NewDustDirect(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.BlueTorch);
+				dust.noGravity = true;
 			}
 			SoundEngine.PlaySound(new("Terraria/Sounds/Item_29") { Volume = 0.25f }, Projectile.position);
 		}

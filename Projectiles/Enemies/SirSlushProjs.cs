@@ -10,7 +10,7 @@ namespace RijamsMod.Projectiles.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Sir Slush Snowball");
+			// DisplayName.SetDefault("Sir Slush Snowball");
 		}
 
 		public override void SetDefaults()
@@ -32,14 +32,14 @@ namespace RijamsMod.Projectiles.Enemies
 			target.AddBuff(BuffID.Frozen, 60);
 			if (Main.netMode != NetmodeID.SinglePlayer)
             {
-				NetMessage.SendData(MessageID.SendNPCBuffs, number: BuffID.Frozen, number2: 60);
+				NetMessage.SendData(MessageID.NPCBuffs, number: BuffID.Frozen, number2: 60);
 			}
 			if (Main.expertMode)
             {
 				target.AddBuff(BuffID.Chilled, 600);
 				if (Main.netMode != NetmodeID.SinglePlayer)
                 {
-					NetMessage.SendData(MessageID.SendNPCBuffs, number: BuffID.Chilled, number2: 600);
+					NetMessage.SendData(MessageID.NPCBuffs, number: BuffID.Chilled, number2: 600);
 				}
 			}
 		}

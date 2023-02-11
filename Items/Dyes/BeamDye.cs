@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Dyes
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Beam Dye");
+			// DisplayName.SetDefault("Beam Dye");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Dye Trader]", "[c/474747:when Interstellar Traveler is present]", null });
 			// Avoid loading assets on dedicated servers. They don't use graphics cards.
 			if (!Main.dedServ)
@@ -41,7 +41,7 @@ namespace RijamsMod.Items.Dyes
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Orange Beam Dye");
+			// DisplayName.SetDefault("Orange Beam Dye");
 			// Avoid loading assets on dedicated servers. They don't use graphics cards.
 			if (!Main.dedServ)
 			{

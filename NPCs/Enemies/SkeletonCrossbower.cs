@@ -14,7 +14,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skeleton Crossbower");
+			// DisplayName.SetDefault("Skeleton Crossbower");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.GoblinArcher]; //21
 
 			// Influences how the NPC looks in the Bestiary

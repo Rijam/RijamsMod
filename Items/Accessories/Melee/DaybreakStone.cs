@@ -14,8 +14,8 @@ namespace RijamsMod.Items.Accessories.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Daybreak Stone");
-			Tooltip.SetDefault("Melee attacks inflict Daybroken");
+			// DisplayName.SetDefault("Daybreak Stone");
+			// Tooltip.SetDefault("Melee attacks inflict Daybroken");
 		}
 
 		public override void SetDefaults()

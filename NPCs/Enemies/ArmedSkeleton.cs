@@ -11,9 +11,13 @@ namespace RijamsMod.NPCs.Enemies
 {
 	public class ArmedSkeleton : ModNPC
 	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return false;
+		}
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Armed Skeleton");
+			// DisplayName.SetDefault("Armed Skeleton");
 			Main.npcFrameCount[NPC.type] = 7;
 			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
 			{

@@ -11,9 +11,9 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Master Builder Pack");
-			Tooltip.SetDefault("+5 block placement & tool range\n+25% increased mining speed\nIncreases block & wall placement speed\nAutomatically paints placed objects\n" +
-				"Creates measurement lines on screen for block placement\nEnables Echo Sight, showing hidden blocks (Hide to disable)");
+			// DisplayName.SetDefault("Master Builder Pack");
+			/* Tooltip.SetDefault("+5 block placement & tool range\n+25% mining speed\nIncreases block & wall placement speed\nAutomatically paints placed objects\n" +
+				"Creates measurement lines on screen for block placement\nIncreases pickup range for items\nHold Up to reach higher\nEnables Echo Sight, showing hidden blocks (Hide to disable)"); */
 		}
 
 		public override void SetDefaults()
@@ -29,6 +29,7 @@ namespace RijamsMod.Items.Accessories.Misc
 			player.equippedAnyWallSpeedAcc = true;
 			player.equippedAnyTileSpeedAcc = true;
 			player.autoPaint = true;
+			player.portableStoolInfo.SetStats(26, 26, 26);
 			//player.equippedAnyTileRangeAcc = true;
 			//player.blockRange++;
 			if (player.whoAmI == Main.myPlayer)
@@ -36,8 +37,10 @@ namespace RijamsMod.Items.Accessories.Misc
 				Player.tileRangeX += 5;
 				Player.tileRangeY += 5;
 			}
+			player.treasureMagnet = true;
 			player.rulerGrid = true;
-			player.pickSpeed -= 0.25f;
+			//player.pickSpeed -= 0.25f;
+			player.chiselSpeed = true;
 			if (!hideVisual)
 			{
 				player.CanSeeInvisibleBlocks = true;
@@ -46,11 +49,10 @@ namespace RijamsMod.Items.Accessories.Misc
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.ArchitectGizmoPack)
+				.AddIngredient(ItemID.HandOfCreation)
 				.AddIngredient(ItemID.Toolbelt)
 				.AddIngredient(ItemID.Toolbox)
 				.AddIngredient(ItemID.LaserRuler) // Mechanical Ruler
-				.AddIngredient(ItemID.AncientChisel)
 				.AddIngredient(ItemID.SpectreGoggles)
 				.AddIngredient(ItemID.SpectreBar)
 				.AddTile(TileID.TinkerersWorkbench)

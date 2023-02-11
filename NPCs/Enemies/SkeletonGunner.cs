@@ -14,7 +14,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Skeleton Gunner");
+			// DisplayName.SetDefault("Skeleton Gunner");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.PirateDeadeye]; //20
 
 			// Influences how the NPC looks in the Bestiary

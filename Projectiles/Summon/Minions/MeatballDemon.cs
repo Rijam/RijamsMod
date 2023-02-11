@@ -17,7 +17,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Hissy Demon");
+			// DisplayName.SetDefault("Hissy Demon");
 			// Sets the amount of frames projectile minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 8;
 			// projectile is necessary for right-click targeting
@@ -89,9 +89,9 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			// projectile is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active)
 			{
-				player.ClearBuff(ModContent.BuffType<Buffs.MeatballDemonBuff>());
+				player.ClearBuff(ModContent.BuffType<Buffs.Minions.MeatballDemonBuff>());
 			}
-			if (player.HasBuff(ModContent.BuffType<Buffs.MeatballDemonBuff>()))
+			if (player.HasBuff(ModContent.BuffType<Buffs.Minions.MeatballDemonBuff>()))
 			{
 				Projectile.timeLeft = 2;
 			}

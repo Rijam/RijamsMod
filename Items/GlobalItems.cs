@@ -9,11 +9,14 @@ using Terraria.Localization;
 using RijamsMod.Items.Armor;
 using RijamsMod.Items.Weapons.Ranged.Ammo;
 using RijamsMod.Items.Weapons.Summon.Whips;
-using RijamsMod.Buffs;
+using RijamsMod.Buffs.Minions;
 using System.Linq;
 using Terraria.GameContent.Creative;
 using Terraria.Utilities;
 using Terraria.GameContent.ItemDropRules;
+using RijamsMod.Items.Accessories.Misc;
+using RijamsMod.Items.Materials;
+using RijamsMod.Items.Weapons.Ranged;
 
 namespace RijamsMod.Items
 {
@@ -22,14 +25,24 @@ namespace RijamsMod.Items
 		public static List<int> isWhip = new() { ItemID.BlandWhip, ItemID.ThornWhip, ItemID.BoneWhip, ItemID.FireWhip,
 			ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip };
 		public static List<int> isJoustingLance = new() { ItemID.JoustingLance, ItemID.HallowJoustingLance, ItemID.ShadowJoustingLance };
+		public static List<int> isLanternWeapon = new(); // Nightglow not included.
 
 		public override void SetDefaults(Item item)
 		{
 			bool vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
 
+			if (item.type == ItemID.WormTooth)
+			{
+				ItemID.Sets.ShimmerTransformToItem[item.type] = ModContent.ItemType<CrawlerChelicera>(); // Shimmer transforms the item.
+			}
+			if (item.type == ItemID.Handgun)
+			{
+				ItemID.Sets.ShimmerTransformToItem[item.type] = ModContent.ItemType<StockadeCrossbow>(); // Shimmer transforms the item.
+			}
+
 			if (item.type == ItemID.Coal)
 			{
-				item.maxStack = 9999;
+				item.maxStack = Item.CommonMaxStack;
 			}
 			if (item.type == ItemID.PharaohsMask && vanillaVanityToArmor)
 			{
@@ -66,57 +79,61 @@ namespace RijamsMod.Items
 				item.useTime = 15;
 				item.useTurn = true;
 				item.UseSound = SoundID.Item2;
-				item.buffType = ModContent.BuffType<Buffs.Satiated>(); //Specify an existing buff to be applied when used.
+				item.buffType = ModContent.BuffType<Buffs.Potions.Satiated>(); //Specify an existing buff to be applied when used.
 				item.buffTime = 3600; //1 minute
 			}
 			if (item.ModItem != null && item.ModItem.Mod == Mod) //Hacky solution because I'm lazy lol
 			{
+				if (item.ResearchUnlockCount != 0)
+				{
+					return;
+				}
 				if (item.maxStack == 1)
 				{
-					item.ModItem.SacrificeTotal = 1;
+					item.ResearchUnlockCount = 1;
 				}
 				else if (item.consumable)
 				{
-					if (item.buffType > 1)
+					if (item.buffType > BuffID.ObsidianSkin)
 					{
-						item.ModItem.SacrificeTotal = 30;
+						item.ResearchUnlockCount = 30;
 					}
 					else if (item.createTile > TileID.Stone)
 					{
-						item.ModItem.SacrificeTotal = 100;
+						item.ResearchUnlockCount = 100;
 					}
-					else if (item.createWall > 1)
+					else if (item.createWall > WallID.Stone)
 					{
-						item.ModItem.SacrificeTotal = 400;
+						item.ResearchUnlockCount = 400;
 					}
 					else if (item.ammo > 1)
 					{
-						item.ModItem.SacrificeTotal = 99;
+						item.ResearchUnlockCount = 99;
 					}
 					else if (item.makeNPC > 1)
 					{
-						item.ModItem.SacrificeTotal = 3;
+						item.ResearchUnlockCount = 3;
 					}
 					else if (ItemID.Sets.BossBag[item.type])
 					{
-						item.ModItem.SacrificeTotal = 3;
+						item.ResearchUnlockCount = 3;
 					}
 					else
 					{
-						item.ModItem.SacrificeTotal = 10;
+						item.ResearchUnlockCount = 10;
 					}
 				}
 				else if (item.ModItem.GetType().Namespace.ToString() == "RijamsMod.Items.Materials")
 				{
-					item.ModItem.SacrificeTotal = 25;
+					item.ResearchUnlockCount = 25;
 				}
 				else if (item.dye > 1)
 				{
-					item.ModItem.SacrificeTotal = 3;
+					item.ResearchUnlockCount = 3;
 				}
 				else
 				{
-					item.ModItem.SacrificeTotal = 2;
+					item.ResearchUnlockCount = 2;
 				}
 			}
 		}
@@ -146,7 +163,7 @@ namespace RijamsMod.Items
 			bool vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
 			bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
-			if (item.buffType == ModContent.BuffType<Buffs.ExceptionalFeast>())
+			if (item.buffType == ModContent.BuffType<Buffs.Potions.ExceptionalFeast>())
 			{
 				if (isLeftShiftHeld)
 				{
@@ -165,7 +182,7 @@ namespace RijamsMod.Items
 					tooltips.Add(new TooltipLine(Mod, "EFInfo", "Hold Left Shift for more information"));
 				}
 			}
-			if (item.buffType == ModContent.BuffType<Buffs.Satiated>())
+			if (item.buffType == ModContent.BuffType<Buffs.Potions.Satiated>())
 			{
 				if (item.type == ItemID.PinkPricklyPear)
 				{
@@ -206,6 +223,7 @@ namespace RijamsMod.Items
 				{
 					tooltips.Insert(index + 1, new TooltipLine(Mod, "AncientGarments", "20% increased damage"));
 					tooltips.Insert(index + 2, new TooltipLine(Mod, "AncientGarments", "+1 Minion capacity"));
+					tooltips.Insert(index + 3, new TooltipLine(Mod, "AncientGarments", "+5 Support minion radius"));
 				}
 			}
 			if (item.type == ItemID.AncientArmorPants && vanillaVanityToArmor)
@@ -225,7 +243,7 @@ namespace RijamsMod.Items
 					line.Text = Language.GetTextValue("ItemTooltip.ShadowJoustingLance") + "\nInflicts Shadowflame";
 				}
 			}
-			if (isWhip.Contains(item.type) && isLeftShiftHeld)
+			if (isWhip.Contains(item.type) && (isLeftShiftHeld || ModContent.GetInstance<RijamsModConfigClient>().DisplayWhipMultihitPenalty))
 			{
 				if (item.type == ModContent.ItemType<Belt>())
 				{
@@ -288,6 +306,13 @@ namespace RijamsMod.Items
 					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
 					{
 						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "30% damage penalty per enemy pierced"));
+					}
+				}
+				if (item.type == ModContent.ItemType<ForbiddenWhip>())
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "ModWhipDamageReduction", "10% damage penalty per enemy pierced"));
 					}
 				}
 				if (item.type == ItemID.SwordWhip)
@@ -386,6 +411,7 @@ namespace RijamsMod.Items
 			{
 				player.maxMinions += 1;
 				player.GetDamage(DamageClass.Generic) *= 1.2f;
+				player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 5;
 			}
 			if (item.type == ItemID.AncientArmorPants && vanillaVanityToArmor)
 			{
@@ -421,9 +447,8 @@ namespace RijamsMod.Items
 			}
 			if ((player.setStardust || set == "Stardust") && vanillaVanityToArmor)
 			{
-				player.setBonus = Language.GetTextValue("ArmorSetBonus.Stardust") + "\n+15% Whip speed\n+20% Whip range";
+				player.setBonus = Language.GetTextValue("ArmorSetBonus.Stardust") + "\n+15% Whip speed";
 				player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.15f;
-				player.whipRangeMultiplier += 0.2f;
 			}
 		}
 		public override void ArmorSetShadows(Player player, string set)
@@ -442,6 +467,13 @@ namespace RijamsMod.Items
 				if (ammo.type == ModContent.ItemType<EndlessRocketBox>())
 				{
 					type = ProjectileID.RocketSnowmanI;
+				}
+			}
+			if (weapon.type == ItemID.Celeb2)
+			{
+				if (ammo.type == ModContent.ItemType<EndlessRocketBox>())
+				{
+					type = ProjectileID.Celeb2Rocket;
 				}
 			}
 		}
@@ -463,12 +495,24 @@ namespace RijamsMod.Items
 			{
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.CrystalClusterCudgel>(), 4));
 			}
+			if (item.type == ItemID.DeerclopsBossBag)
+			{
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pets.StarCallerStaff>(), 4));
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.SanityFlowerCudgel> (), 4));
+			}
+			if (item.type == ItemID.FairyQueenBossBag)
+			{
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.RadiantLanternCudgel>(), 4));
+			}
 		}
 
 		// The player can't use the support minion weapons if they already have one active.
 		private static readonly List<int> SupportMinionsDefenseBuffs = new() { ModContent.BuffType<HarpyIdolBuff>(), 
 			ModContent.BuffType<CobaltProtectorBuff>(), ModContent.BuffType<CrystalClusterBuff>(), ModContent.BuffType<FallenPaladinBuff>(),
 			ModContent.BuffType<StardustProtectorBuff>() };
+		private static readonly List<int> SupportMinionsHealingBuffs = new() { ModContent.BuffType<SanityFlowerBuff>(),
+			ModContent.BuffType<RadiantLanternBuff>() };
+
 		public override bool CanUseItem(Item item, Player player)
 		{
 			if (item.ModItem is CudgelDefenseItem)
@@ -476,6 +520,16 @@ namespace RijamsMod.Items
 				for (int i = 0; i < SupportMinionsDefenseBuffs.Count; i++)
 				{
 					if (player.HasBuff(SupportMinionsDefenseBuffs[i]))
+					{
+						return false;
+					}
+				}
+			}
+			if (item.ModItem is CudgelHealingItem)
+			{
+				for (int i = 0; i < SupportMinionsHealingBuffs.Count; i++)
+				{
+					if (player.HasBuff(SupportMinionsHealingBuffs[i]))
 					{
 						return false;
 					}

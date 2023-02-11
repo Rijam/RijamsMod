@@ -87,7 +87,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            target.AddBuff(ModContent.BuffType<Buffs.VileWhipDebuff>(), 240);
+            target.AddBuff(ModContent.BuffType<Buffs.Debuffs.VileWhipDebuff>(), 240);
             Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
             Projectile.damage = (int)(damage * 0.7f);
         }

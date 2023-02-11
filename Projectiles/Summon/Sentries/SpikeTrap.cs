@@ -11,7 +11,7 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Spike Trap");
+			// DisplayName.SetDefault("Spike Trap");
 		}
 		public override void SetDefaults()
 		{
@@ -98,7 +98,7 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Super Spike Trap");
+			// DisplayName.SetDefault("Super Spike Trap");
 		}
 		public override void SetDefaults()
         {
@@ -145,7 +145,7 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Slime Trap");
+			// DisplayName.SetDefault("Slime Trap");
 		}
 		public override void SetDefaults()
 		{
@@ -197,7 +197,7 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 								//NetMessage.SendData(MessageID.AddNPCBuff, number: BuffID.Slow, number2: 2);
 								npc.velocity.X *= 0.75f;
 								npc.AddBuff(BuffID.Slimed, 2);
-								NetMessage.SendData(MessageID.SendNPCBuffs, number: BuffID.Slimed, number2: 2);
+								NetMessage.SendData(MessageID.NPCBuffs, number: BuffID.Slimed, number2: 2);
 								npc.netUpdate = true;
 							}
 							if (Projectile.ai[0] % 4 == 0)

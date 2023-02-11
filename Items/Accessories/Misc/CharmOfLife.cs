@@ -11,8 +11,8 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Charm of Life");
-			Tooltip.SetDefault("\n+25 Max Life\nProvides life regeneration\nReduces the cooldown of healing potions by 25%\nGain a little bit of life after slaying an enemy\n  Scales with max health");
+			// DisplayName.SetDefault("Charm of Life");
+			// Tooltip.SetDefault("\n+25 Max Life\nProvides life regeneration\nReduces the cooldown of healing potions by 25%\nGain a little bit of life after slaying an enemy\n  Scales with max health");
 		}
 
 		public override void SetDefaults()

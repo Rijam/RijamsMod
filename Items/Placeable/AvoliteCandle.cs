@@ -10,13 +10,13 @@ namespace RijamsMod.Items.Placeable
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("'The crystal never runs out of light'");
+			// Tooltip.SetDefault("'The crystal never runs out of light'");
 		}
 		public override void SetDefaults()
 		{
 			Item.width = 16;
 			Item.height = 16;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.holdStyle = ItemHoldStyleID.HoldFront;
 			Item.noWet = false;
 			Item.useTurn = true;

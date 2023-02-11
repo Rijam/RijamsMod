@@ -10,7 +10,7 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Refills the player's air supply two seconds after it reaches zero");
+			// Tooltip.SetDefault("Refills the player's air supply two seconds after it reaches zero");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]", null });
 		}
 
@@ -32,7 +32,7 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("Grants immunity to On Fire!, Sulfuric Acid, Ichor, Cursed Inferno, and Frostburn\nRefills the player's air supply two seconds after it reaches zero");
+			// Tooltip.SetDefault("Grants immunity to On Fire!, Sulfuric Acid, Ichor, Cursed Inferno, and Frostburn\nRefills the player's air supply two seconds after it reaches zero");
 		}
 
 		public override void SetDefaults()
@@ -47,7 +47,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		{
 			player.GetModPlayer<RijamsModPlayer>().breathingPack = true;
 			player.buffImmune[BuffID.OnFire] = true;
-			player.buffImmune[ModContent.BuffType<Buffs.SulfuricAcid>()] = true;
+			player.buffImmune[ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>()] = true;
 			player.buffImmune[BuffID.Ichor] = true;
 			player.buffImmune[BuffID.CursedInferno] = true;
 			player.buffImmune[BuffID.Frostburn] = true;

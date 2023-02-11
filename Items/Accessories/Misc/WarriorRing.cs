@@ -13,8 +13,8 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Warrior Ring");
-			Tooltip.SetDefault("Occasionally infuses the wearer with\n\"Warrior Energy\" after slaying an enemy\nWarrior Energy gives:\n  +10% damage\n  +5% attack speed");
+			// DisplayName.SetDefault("Warrior Ring");
+			// Tooltip.SetDefault("Occasionally infuses the wearer with\n\"Warrior Energy\" after slaying an enemy\nWarrior Energy gives:\n  +10% damage\n  +5% attack speed");
 		}
 
 		public override void SetDefaults()

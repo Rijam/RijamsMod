@@ -17,6 +17,7 @@ using RijamsMod.Items.Accessories.Vanity;
 using RijamsMod.Items.Materials;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Audio;
+using RijamsMod.Items.Pets;
 
 namespace RijamsMod
 {
@@ -52,7 +53,7 @@ namespace RijamsMod
 						// Mod.Logger.Debug($"npc.lastInteraction is {npc.lastInteraction}");
 						// Mod.Logger.Debug($"player.lastCreatureHit is {player.lastCreatureHit}");
 
-						if (npc.immortal || npc.dontCountMe || !npc.active || npc.lastInteraction == Main.maxPlayers)
+						if (npc.immortal || npc.dontCountMe || !npc.active || npc.lastInteraction == Main.maxPlayers || npc.CountsAsACritter)
 						{
 							continue;
 						}
@@ -70,10 +71,10 @@ namespace RijamsMod
 						// If the player has the Warrior Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
 						if (moddedplayer.warriorRing)
 						{
-							int chance = (int)(20 * (1 / player.luck)); //1 in 20 chance (5%) but is affected by luck.
+							int chance = (int)Math.Round(20 - (player.luck * 10)); //1 in 20 chance (5%) but is affected by luck.
 							if (Main.rand.NextBool(chance))
 							{
-								player.AddBuff(ModContent.BuffType<Buffs.WarriorEnergy>(), 300);
+								player.AddBuff(ModContent.BuffType<Buffs.Other.WarriorEnergy>(), 300);
 								if (Main.netMode != NetmodeID.Server)
 								{
 									SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/RingPowerup") { Volume = 0.75f });
@@ -116,6 +117,7 @@ namespace RijamsMod
 			}
 			return base.SpecialOnKill(npc);
 		}
+
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 			if (npc.type == NPCID.SnowmanGangsta)
@@ -162,7 +164,7 @@ namespace RijamsMod
 			}
 			if (ModLoader.TryGetMod("Consolaria", out Mod consolaria)) //Consolaria's Spectral Elemental can also drop it
 			{
-				if (npc.type == consolaria.Find<ModNPC>("SpectralElemental").Type)
+				if (consolaria.TryFind<ModNPC>("SpectralElemental", out ModNPC spectralElemental) && npc.type == spectralElemental.Type)
 				{
 					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.TeleportationCore>(), 20));
 				}
@@ -237,11 +239,27 @@ namespace RijamsMod
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FallenPaladinCudgel>(), 10));
 			}
-			if (npc.type == NPCID.QueenSlimeBoss && !Main.expertMode)
+			if (npc.type == NPCID.QueenSlimeBoss)
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CrystalClusterCudgel>(), 4));
+				LeadingConditionRule notExpertRule = new(new Conditions.NotExpert());
+				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<CrystalClusterCudgel>(), 4));
+				npcLoot.Add(notExpertRule);
+			}
+			if (npc.type == NPCID.Deerclops)
+			{
+				LeadingConditionRule notExpertRule = new (new Conditions.NotExpert());
+				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StarCallerStaff>(), 4));
+				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SanityFlowerCudgel>(), 4));
+				npcLoot.Add(notExpertRule);
+			}
+			if (npc.type == NPCID.HallowBoss)
+			{
+				LeadingConditionRule notExpertRule = new(new Conditions.NotExpert());
+				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<RadiantLanternCudgel>(), 4));
+				npcLoot.Add(notExpertRule);
 			}
 		}
+
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
 		{
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
@@ -283,7 +301,7 @@ namespace RijamsMod
 				{
 					if (moddedplayer.flaskBuff == 1)
 					{
-						npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+						npc.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 					}
 					if (moddedplayer.flaskBuff == 2)
 					{
@@ -333,7 +351,7 @@ namespace RijamsMod
 			{
 				if (moddedplayer.flaskBuff == 1)
 				{
-					npc.AddBuff(ModContent.BuffType<Buffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+					npc.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 				}
 				if (moddedplayer.flaskBuff == 2)
 				{

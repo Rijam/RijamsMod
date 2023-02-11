@@ -4,6 +4,8 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Buffs.Potions;
+using RijamsMod.Items.Armor.Vanity.IntTrav;
 
 namespace RijamsMod.Items.Consumables
 {
@@ -11,8 +13,8 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Strange Roll");
-			Tooltip.SetDefault("{$CommonItemTooltip.MediumStats}\n'A strange food from an unknown place'\n'What's inside?'");
+			// DisplayName.SetDefault("Strange Roll");
+			// Tooltip.SetDefault("{$CommonItemTooltip.MediumStats}\n'A strange food from an unknown place'\n'What's inside?'");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Traveling Merchant]", "[c/474747:After defeating Eye of Cthulhu]", null } );
 			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
@@ -39,8 +41,8 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Rye Jam");
-			Tooltip.SetDefault("Extreme improvements to all stats\n'Wait, how do you pronounce it?'");
+			// DisplayName.SetDefault("Rye Jam");
+			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.ExtremeStats}\n'Wait, how do you pronounce it?'");
 			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
 			{
@@ -49,6 +51,7 @@ namespace RijamsMod.Items.Consumables
 				new Color(105, 56, 15)
 			};
 			ItemID.Sets.IsFood[Type] = true;
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<StrangeRoll>(); // Shimmer transforms the item.
 		}
 		/*public override bool CanUseItem(Player player)
 		{
@@ -57,7 +60,7 @@ namespace RijamsMod.Items.Consumables
 
 		public override void SetDefaults()
 		{
-			Item.DefaultToFood(26, 28, ModContent.BuffType<Buffs.ExceptionalFeast>(), 18000);
+			Item.DefaultToFood(26, 28, ModContent.BuffType<ExceptionalFeast>(), 18000);
 			Item.rare = ItemRarityID.Cyan;
 			Item.value = 200000;
 		}
@@ -67,8 +70,8 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Reef-Cola");
-			Tooltip.SetDefault("Move freely in liquids\n'Taste the ocean, with Reef-Cola.'");
+			// DisplayName.SetDefault("Reef-Cola");
+			// Tooltip.SetDefault("Move freely in liquids\n'Taste the ocean, with Reef-Cola.'");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Duke Fishron]", null } );
 			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
@@ -81,7 +84,7 @@ namespace RijamsMod.Items.Consumables
 		}
 		public override void SetDefaults()
 		{
-			Item.DefaultToFood(16, 28, ModContent.BuffType<Buffs.SwimBoostBuff>(), 3600, true); //The extra true here tells it the item is a drink.
+			Item.DefaultToFood(16, 28, ModContent.BuffType<SwimBoostBuff>(), 3600, true); //The extra true here tells it the item is a drink.
 			Item.rare = ItemRarityID.Blue;
 			Item.value = 4000;
 		}
@@ -90,8 +93,8 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Roasted Mushroom");
-			Tooltip.SetDefault("Minuscule improvements to all stats");
+			// DisplayName.SetDefault("Roasted Mushroom");
+			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.MinusculeStats}");
 			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
 			{
@@ -103,16 +106,13 @@ namespace RijamsMod.Items.Consumables
 		}
 		public override void SetDefaults()
 		{
-			Item.DefaultToFood(16, 28, ModContent.BuffType<Buffs.Satiated>(), 3600);
+			Item.DefaultToFood(16, 28, ModContent.BuffType<Satiated>(), 3600);
 			Item.rare = ItemRarityID.White;
 			Item.value = 300;
 		}
 		public override void AddRecipes()
 		{
-			CreateRecipe()
-				.AddIngredient(ItemID.Mushroom)
-				.AddTile(TileID.Campfire)
-				.Register();
+			
 			CreateRecipe()
 				.AddIngredient(ItemID.GreenMushroom)
 				.AddTile(TileID.Campfire)
@@ -121,14 +121,39 @@ namespace RijamsMod.Items.Consumables
 				.AddIngredient(ItemID.TealMushroom)
 				.AddTile(TileID.Campfire)
 				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.GlowingMushroom)
+				.AddTile(TileID.Campfire)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.Mushroom)
+				.AddTile(TileID.Campfire)
+				.Register();
+			
+			CreateRecipe()
+				.AddIngredient(ItemID.GreenMushroom)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.TealMushroom)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.GlowingMushroom)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.Mushroom)
+				.AddTile(TileID.CookingPots)
+				.Register();
 		}
 	}
 	public class FreshBlueberry : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Fresh Blueberry");
-			Tooltip.SetDefault("Minuscule improvements to all stats");
+			// DisplayName.SetDefault("Fresh Blueberry");
+			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.MinusculeStats}");
 			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
 			{
@@ -140,7 +165,7 @@ namespace RijamsMod.Items.Consumables
 		}
 		public override void SetDefaults()
 		{
-			Item.DefaultToFood(16, 28, ModContent.BuffType<Buffs.Satiated>(), 1200);
+			Item.DefaultToFood(16, 28, ModContent.BuffType<Satiated>(), 1200);
 			Item.rare = ItemRarityID.White;
 			Item.value = 650;
 		}
@@ -148,6 +173,102 @@ namespace RijamsMod.Items.Consumables
 		{
 			CreateRecipe(3)
 				.AddIngredient(ItemID.BlueBerries)
+				.Register();
+		}
+	}
+	public class CaveCarrot : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Cave Carrot");
+			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.MinusculeStats}");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by pots]", "[c/474747:in the Caverns layer]", null });
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
+			{
+				new Color(193, 112, 38),
+				new Color(116, 57, 2),
+				new Color(74, 93, 13)
+			};
+			ItemID.Sets.IsFood[Type] = true;
+		}
+		public override void SetDefaults()
+		{
+			Item.DefaultToFood(30, 32, ModContent.BuffType<Satiated>(), 1800);
+			Item.rare = ItemRarityID.White;
+			Item.value = 100;
+		}
+	}
+	public class HardyStew : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Hardy Stew");
+			// Tooltip.SetDefault("{$CommonItemTooltip.MajorStats}");
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
+			ItemID.Sets.FoodParticleColors[Item.type] = new Color[3]
+			{
+				new Color(205, 139, 15),
+				new Color(105, 83, 30),
+				new Color(74, 32, 1)
+			};
+			ItemID.Sets.IsFood[Type] = true;
+		}
+		public override void SetDefaults()
+		{
+			Item.DefaultToFood(30, 22, BuffID.WellFed3, 18000, true);
+			Item.rare = ItemRarityID.Orange;
+			Item.value = 10000;
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.SeafoodDinner)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.CookedFish, 2)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.Sashimi, 2)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.RoastedDuck)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.RoastedBird, 2)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.LobsterTail)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.GrilledSquirrel, 2)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.BunnyStew, 2)
+				.AddIngredient(ModContent.ItemType<RoastedMushroom>(), 2)
+				.AddIngredient(ModContent.ItemType<CaveCarrot>(), 2)
+				.AddTile(TileID.CookingPots)
 				.Register();
 		}
 	}

@@ -5,12 +5,41 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Pets
 {
+	public class StarCallerStaff : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Star Caller Staff");
+			// Tooltip.SetDefault("Summons a light pet Dwarf Star\nEnemies are lit ablaze upon contact");
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Deerclops]", null, null });
+		}
+
+		public override void SetDefaults()
+		{
+			Item.CloneDefaults(ItemID.DD2PetGato);
+			Item.width = 40;
+			Item.height = 42;
+			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.DwarfStar>();
+			Item.buffType = ModContent.BuffType<Buffs.Pets.DwarfStarBuff>();
+			Item.rare = ItemRarityID.Green;
+			Item.value = 15000;
+			Item.UseSound = SoundID.Item25;
+		}
+
+		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		{
+			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
+			{
+				player.AddBuff(Item.buffType, 3600, true);
+			}
+		}
+	}
 	public class LumothBulb : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Lumoth Bulb");
-			Tooltip.SetDefault("Summons a light pet Lumoth");
+			// DisplayName.SetDefault("Lumoth Bulb");
+			// Tooltip.SetDefault("Summons a light pet Lumoth");
 		}
 
 		public override void SetDefaults()
@@ -19,9 +48,9 @@ namespace RijamsMod.Items.Pets
 			Item.width = 16;
 			Item.height = 28;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.Lumoth>();
-			Item.buffType = ModContent.BuffType<Buffs.LumothBuff>();
+			Item.buffType = ModContent.BuffType<Buffs.Pets.LumothBuff>();
 			Item.rare = ItemRarityID.LightRed;
-			Item.value = 40000;
+			Item.value = 50000;
 			Item.UseSound = SoundID.Item25;
 		}
 
@@ -46,8 +75,8 @@ namespace RijamsMod.Items.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("LED Lumoth Bulb");
-			Tooltip.SetDefault("Summons a light pet LED Lumoth");
+			// DisplayName.SetDefault("LED Lumoth Bulb");
+			// Tooltip.SetDefault("Summons a light pet LED Lumoth");
 		}
 
 		public override void SetDefaults()
@@ -56,7 +85,7 @@ namespace RijamsMod.Items.Pets
 			Item.width = 16;
 			Item.height = 28;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>();
-			Item.buffType = ModContent.BuffType<Buffs.LEDLumothBuff>();
+			Item.buffType = ModContent.BuffType<Buffs.Pets.LEDLumothBuff>();
 			Item.rare = ItemRarityID.Red;
 			Item.value = 80000;
 			Item.UseSound = SoundID.Item25;
@@ -83,8 +112,8 @@ namespace RijamsMod.Items.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Interesting Sphere");
-			Tooltip.SetDefault("Summons a pet Snugget");
+			// DisplayName.SetDefault("Interesting Sphere");
+			// Tooltip.SetDefault("Summons a pet Snugget");
 		}
 
 		public override void SetDefaults()
@@ -93,7 +122,7 @@ namespace RijamsMod.Items.Pets
 			Item.width = 22;
 			Item.height = 22;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.Snugget>();
-			Item.buffType = ModContent.BuffType<Buffs.SnuggetBuff>();
+			Item.buffType = ModContent.BuffType<Buffs.Pets.SnuggetBuff>();
 			Item.rare = ItemRarityID.Orange;
 			Item.value = 50000;
 			Item.UseSound = SoundID.Item46;
@@ -111,8 +140,8 @@ namespace RijamsMod.Items.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Fluffalo Egg");
-			Tooltip.SetDefault("Summons a pet Fluffalo");
+			// DisplayName.SetDefault("Fluffalo Egg");
+			// Tooltip.SetDefault("Summons a pet Fluffalo");
 		}
 
 		public override void SetDefaults()
@@ -121,7 +150,7 @@ namespace RijamsMod.Items.Pets
 			Item.width = 26;
 			Item.height = 32;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.Fluffalo>();
-			Item.buffType = ModContent.BuffType<Buffs.FluffaloBuff>();
+			Item.buffType = ModContent.BuffType<Buffs.Pets.FluffaloBuff>();
 			Item.rare = ItemRarityID.LightPurple;
 			Item.value = 70000;
 			Item.UseSound = SoundID.Item46;

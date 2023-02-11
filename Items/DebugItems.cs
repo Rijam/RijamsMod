@@ -4,6 +4,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using static Terraria.ModLoader.PlayerDrawLayer;
+using System;
 
 namespace RijamsMod.Items
 {
@@ -16,15 +18,15 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.PurpleSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Display States");
-			Tooltip.SetDefault("Left click to show all current states");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Display States");
+			// Tooltip.SetDefault("Left click to show all current states");
 		}
 
 		public override void SetDefaults()
 		{
 			Item.width = 14;
 			Item.height = 14;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
 			Item.useStyle = ItemUseStyleID.EatFood;
@@ -46,6 +48,7 @@ namespace RijamsMod.Items
 			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArrived);
 			Main.NewText("hellTraderArrivable is currenty: " + RijamsModWorld.hellTraderArrivable);
 			Main.NewText("harpyJustRescued is currenty: " + RijamsModWorld.harpyJustRescued);
+			Main.NewText("boughtTestPet is currenty: " + RijamsModWorld.boughtSnuggetPet);
 			return true;
 		}
 	}
@@ -58,8 +61,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Odd Device Quest");
-			Tooltip.SetDefault("Changes the states of the Odd Device quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Odd Device Quest");
+			// Tooltip.SetDefault("Changes the states of the Odd Device quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
 
 		public override void SetDefaults()
@@ -67,7 +70,7 @@ namespace RijamsMod.Items
 			Item.color = Color.Orange;
 			Item.width = 14;
 			Item.height = 14;
-			Item.maxStack = 9999;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
 			Item.useStyle = ItemUseStyleID.EatFood;
@@ -103,8 +106,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Blank Display Quest");
-			Tooltip.SetDefault("Changes the states of the Blank Display quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Blank Display Quest");
+			// Tooltip.SetDefault("Changes the states of the Blank Display quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
 		public override bool? UseItem(Player player)
 		{
@@ -128,8 +131,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Teleportation Core Quest");
-			Tooltip.SetDefault("Changes the states of the Teleportation Core quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Teleportation Core Quest");
+			// Tooltip.SetDefault("Changes the states of the Teleportation Core quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
 		public override bool? UseItem(Player player)
 		{
@@ -153,8 +156,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Rye Jam");
-			Tooltip.SetDefault("Changes the states of the Rye Jam quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Rye Jam");
+			// Tooltip.SetDefault("Changes the states of the Rye Jam quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
 		public override bool? UseItem(Player player)
 		{
@@ -178,8 +181,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Magic Oxygenizer");
-			Tooltip.SetDefault("Changes the states of the Magic Oxygenizer quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Magic Oxygenizer");
+			// Tooltip.SetDefault("Changes the states of the Magic Oxygenizer quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
 		public override bool? UseItem(Player player)
 		{
@@ -203,8 +206,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Prime Thruster");
-			Tooltip.SetDefault("Changes the states of the Prime Thruster quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Prime Thruster");
+			// Tooltip.SetDefault("Changes the states of the Prime Thruster quest from the Interstellar Traveler\nLeft click to set false\nRight click to set true");
 		}
 		public override bool? UseItem(Player player)
 		{
@@ -228,8 +231,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Interstellar Traveler Arrived Flag");
-			Tooltip.SetDefault("Changes the flag that the Interstellar Traveler has arrived\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Interstellar Traveler Arrived Flag");
+			// Tooltip.SetDefault("Changes the flag that the Interstellar Traveler has arrived\nLeft click to set false\nRight click to set true");
 		}
 		public override void SetDefaults()
 		{
@@ -256,8 +259,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Saved Harpy Flag");
-			Tooltip.SetDefault("Changes the flag that says the Harpy has been saved\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Saved Harpy Flag");
+			// Tooltip.SetDefault("Changes the flag that says the Harpy has been saved\nLeft click to set false\nRight click to set true");
 		}
 		public override void SetDefaults()
 		{
@@ -287,8 +290,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Hell Trader Arrivable Flag");
-			Tooltip.SetDefault("Changes the flag that the Hell Trader can arrive\nLeft click to set false\nRight click to set true");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Hell Trader Arrivable Flag");
+			// Tooltip.SetDefault("Changes the flag that the Hell Trader can arrive\nLeft click to set false\nRight click to set true");
 		}
 		public override void SetDefaults()
 		{
@@ -310,6 +313,35 @@ namespace RijamsMod.Items
 			tooltips.Add(new TooltipLine(Mod, "CurrentState", "hellTraderArrivable == " + currentState));
 		}
 	}
+
+	public class DebugBoughtTestPet : DebugIntTravQuestOddDevice
+	{
+		public override string Texture => "Terraria/Images/Item_" + ItemID.GreenSolution;
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Bought Snugget Pet Flag");
+			// Tooltip.SetDefault("Changes the flag that the Snugget Pet can arrive\nLeft click to set false\nRight click to set true");
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Item.color = Color.Red;
+		}
+		public override bool? UseItem(Player player)
+		{
+			RijamsModWorld.boughtSnuggetPet = false;
+			return true;
+		}
+		public override void RightClick(Player player)
+		{
+			RijamsModWorld.boughtSnuggetPet = true;
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			string currentState = RijamsModWorld.boughtSnuggetPet.ToString();
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "boughtSnuggetPet == " + currentState));
+		}
+	}
 	public class DebugMethodTester : ModItem
 	{
 		public override bool IsLoadingEnabled(Mod mod)
@@ -319,8 +351,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.PurpleSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Method Tester");
-			Tooltip.SetDefault("Left click to show all current states");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Method Tester");
+			// Tooltip.SetDefault("Left click to show all current states");
 		}
 
 		public override void SetDefaults()
@@ -361,8 +393,8 @@ namespace RijamsMod.Items
 		public override string Texture => "Terraria/Images/Item_" + ItemID.BlueSolution;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("[c/ff0000:Debug] - Angler Quest Changer");
-			Tooltip.SetDefault("Changes the number of Angler quests you have completed\nLeft click to add one\nRight click to remove one");
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Angler Quest Changer");
+			// Tooltip.SetDefault("Changes the number of Angler quests you have completed\nLeft click to add one\nRight click to remove one");
 		}
 
 		public override void SetDefaults()
@@ -401,6 +433,135 @@ namespace RijamsMod.Items
 		{
 			string anglerQuestsCompleted = Main.player[Main.myPlayer].anglerQuestsFinished.ToString();
 			tooltips.Add(new TooltipLine(Mod, "AnglerQuestsCompleted", "You have completed " + anglerQuestsCompleted + " Angler quests"));
+		}
+	}
+	public class DebugShimmerer : ModItem
+	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
+		public override string Texture => "Terraria/Images/Item_" + ItemID.Flymeal;
+
+		public override void SetDefaults()
+		{
+			Item.width = 30;
+			Item.height = 30;
+			Item.maxStack = 999;
+			Item.rare = ItemRarityID.White;
+			Item.value = 0;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useAnimation = 10;
+			Item.useTime = 10;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item1;
+			Item.damage = 1;
+			Item.DamageType = DamageClass.Generic;
+			Item.shoot = ModContent.ProjectileType<DebugShimmererProj>();
+			Item.shootSpeed = 10;
+			Item.color = Color.Orange;
+		}
+		public override bool CanRightClick()
+		{
+			return true;
+		}
+		public override void RightClick(Player player)
+		{
+			Main.NewText("NPC.ShimmeredTownNPCs is:\n");
+			for (int i = 0; i < NPC.ShimmeredTownNPCs.Length; i++)
+			{
+				if (NPC.ShimmeredTownNPCs[i] == true)
+				{
+					Main.NewText("i: " + i + " " + NPC.ShimmeredTownNPCs[i]);
+				}
+			}
+		}
+	}
+	public class DebugShimmererProj : ModProjectile
+	{
+		public override string Texture => "Terraria/Images/Item_" + ItemID.Stinkbug;
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("Town NPC Killer");
+		}
+		public override void SetDefaults()
+		{
+			Projectile.CloneDefaults(ProjectileID.RottenEgg);
+			Projectile.hostile = true;
+			Projectile.timeLeft = 30;
+		}
+		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		{
+			GetShimmered(target);
+		}
+		// Copied from NPC.cs
+		public static void GetShimmered(NPC target)
+		{
+			if (target.SpawnedFromStatue)
+			{
+				if (Main.netMode == NetmodeID.SinglePlayer)
+					Item.ShimmerEffect(target.Center);
+				else
+					NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 0, (int)target.Center.X, (int)target.Center.Y);
+
+				//target.noSpawnCycle = true; // Private
+				target.active = false;
+				if (Main.netMode == NetmodeID.Server)
+				{
+					target.netSkip = -1;
+					target.life = 0;
+					NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, target.whoAmI);
+				}
+			}
+			else if (NPCID.Sets.ShimmerTransformToNPC[target.type] >= 0)
+			{
+				target.Transform(NPCID.Sets.ShimmerTransformToNPC[target.type]);
+				if (Main.netMode == NetmodeID.SinglePlayer)
+					Item.ShimmerEffect(target.Center);
+				else
+					NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 0, (int)target.Center.X, (int)target.Center.Y);
+			}
+			else if (NPCID.Sets.ShimmerTransformToItem[target.type] >= 0)
+			{
+				int num = Item.NewItem(target.GetSource_DropAsItem(), (int)target.position.X, (int)target.position.Y, target.width, target.height, NPCID.Sets.ShimmerTransformToItem[target.type]);
+				Main.item[num].stack = 1;
+				Main.item[num].shimmerTime = 1f;
+				Main.item[num].shimmered = true;
+				Main.item[num].shimmerWet = true;
+				Main.item[num].wet = true;
+				Main.item[num].velocity *= 0.1f;
+				Main.item[num].playerIndexTheItemIsReservedFor = Main.myPlayer;
+				NetMessage.SendData(145, -1, -1, null, num, 1f);
+				if (Main.netMode == NetmodeID.SinglePlayer)
+					Item.ShimmerEffect(target.Center);
+				else
+					NetMessage.SendData(MessageID.ShimmerActions, -1, -1, null, 0, (int)target.Center.X, (int)target.Center.Y);
+
+				//target.noSpawnCycle = true; // Private
+				target.active = false;
+				if (Main.netMode == NetmodeID.Server)
+				{
+					target.netSkip = -1;
+					target.life = 0;
+					NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, target.whoAmI);
+				}
+			}
+			else if (NPCID.Sets.ShimmerTownTransform[target.type])
+			{
+				target.ai[0] = 25f;
+				target.ai[1] = 0f;
+				target.ai[2] = 0f;
+				target.ai[3] = 0f;
+				target.netUpdate = true;
+				target.shimmerTransparency = 0.89f;
+				int num2 = target.FindBuffIndex(353);
+				if (num2 != -1)
+					target.DelBuff(num2);
+			}
 		}
 	}
 }

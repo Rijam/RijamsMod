@@ -10,9 +10,17 @@ namespace RijamsMod.Projectiles.Summon.Support
 {
 	public class StardustProtector : ModProjectile
 	{
+		public int additionalDefense = 0;
+		public float additionalDR = 0;
+		public int distRadius = 0;
+
+		private bool attacking = false;
+		public int baseDamage = 20;
+		public int baseAttackSpeed = 420; // 7 seconds
+
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Stardust Protector");
+			// DisplayName.SetDefault("Stardust Protector");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 8;
 			// This is necessary for right-click targeting
@@ -61,10 +69,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 			return false;
 		}
 
-		private bool attacking = false;
-		public int baseDamage = 20;
-		public int baseAttackSpeed = 420; // 7 seconds
-        public override void AI()
+		public override void AI()
 		{
 			Player player = Main.player[Projectile.owner];
 
@@ -72,9 +77,9 @@ namespace RijamsMod.Projectiles.Summon.Support
 			// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
 			if (player.dead || !player.active)
 			{
-				player.ClearBuff(ModContent.BuffType<Buffs.StardustProtectorBuff>());
+				player.ClearBuff(ModContent.BuffType<Buffs.Minions.StardustProtectorBuff>());
 			}
-			if (player.HasBuff(ModContent.BuffType<Buffs.StardustProtectorBuff>()))
+			if (player.HasBuff(ModContent.BuffType<Buffs.Minions.StardustProtectorBuff>()))
 			{
 				Projectile.timeLeft = 2;
 			}
@@ -110,13 +115,19 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 			}
 
-			int radius = 30 * 16; // 30 tiles
-			for (int i = 0; i < 70; i++)
+			int radius = (distRadius + player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease) * 16; // 30 tiles
+			if (Main.netMode != NetmodeID.Server)
 			{
-				Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-				Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, 150, Color.LightBlue, 0.75f);
-				d.noGravity = true;
-				d.noLightEmittence = true;
+				if (ModContent.GetInstance<RijamsModConfigClient>().DisplayDefenseSupportSummonsAura)
+				{
+					for (int i = 0; i < 70; i++)
+					{
+						Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
+						Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, 150, Color.LightBlue, 0.75f);
+						d.noGravity = true;
+						d.noLightEmittence = true;
+					}
+				}
 			}
 
 			for (int i = 0; i < Main.maxPlayers; i++)
@@ -127,8 +138,8 @@ namespace RijamsMod.Projectiles.Summon.Support
 					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 					if (distance <= radius)
 					{
-						searchPlayer.statDefense += 13;
-						searchPlayer.endurance += 0.08f;
+						searchPlayer.statDefense += additionalDefense;
+						searchPlayer.endurance += additionalDR;
 					}
 				}
 			}
@@ -152,6 +163,10 @@ namespace RijamsMod.Projectiles.Summon.Support
 				{
 					Projectile.frame = 4;
 					attacking = true;
+					if (player.setBonus == "Stardust" || player.setStardust) // Bonus damage if the player is wearing Stardust armor
+					{
+						baseDamage += 20;
+					}
 					Projectile.ai[0] = (int)(baseAttackSpeed * (1f / player.GetAttackSpeed(DamageClass.Summon)));
 					if (Main.netMode == NetmodeID.SinglePlayer)
 					{

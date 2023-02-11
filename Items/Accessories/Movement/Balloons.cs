@@ -10,8 +10,8 @@ namespace RijamsMod.Items.Accessories.Movement
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Different Bundle of Balloons");
-			Tooltip.SetDefault("Allows the holder to triple jump\nIncreases jump height\nReleases bees and douses the user in honey when damaged");
+			// DisplayName.SetDefault("Different Bundle of Balloons");
+			// Tooltip.SetDefault("Allows the holder to triple jump\nIncreases jump height\nReleases bees and douses the user in honey when damaged");
 		}
 
 		public override void SetDefaults()
@@ -28,7 +28,6 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.hasJumpOption_Fart = true;
 			player.hasJumpOption_Sail = true;
 			player.honeyCombItem = Item;
-			//player.GetModPlayer<RijamsModPlayer>().honeyComb = true;
 		}
 
 		public override void AddRecipes()
@@ -47,8 +46,8 @@ namespace RijamsMod.Items.Accessories.Movement
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Different Bundle of Horseshoe Balloons");
-			Tooltip.SetDefault("Allows the holder to triple jump\nIncreases jump height\nReleases bees and douses the user in honey when damaged\nNegates fall damage");
+			// DisplayName.SetDefault("Different Bundle of Horseshoe Balloons");
+			// Tooltip.SetDefault("Allows the holder to triple jump\nIncreases jump height\nReleases bees and douses the user in honey when damaged\nNegates fall damage");
 		}
 
 		public override void SetDefaults()
@@ -111,8 +110,8 @@ namespace RijamsMod.Items.Accessories.Movement
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Too Many Balloons");
-			Tooltip.SetDefault("Allows the holder to sextuple jump\nGreatly increases jump height\nReleases bees and douses the user in honey when damaged");
+			// DisplayName.SetDefault("Too Many Balloons");
+			// Tooltip.SetDefault("Allows the holder to sextuple jump\nGreatly increases jump height\nReleases bees and douses the user in honey when damaged");
 		}
 
 		public override void SetDefaults()
@@ -132,7 +131,6 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.hasJumpOption_Fart = true;
 			player.hasJumpOption_Sail = true;
 			player.honeyCombItem = Item;
-			//player.GetModPlayer<RijamsModPlayer>().honeyComb = true;
 		}
 
 		public override void AddRecipes()
@@ -156,8 +154,8 @@ namespace RijamsMod.Items.Accessories.Movement
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Too Many Horseshoe Balloons");
-			Tooltip.SetDefault("Allows the holder to sextuple jump\nGreatly increases jump height\nReleases bees and douses the user in honey when damaged\nNegates fall damage\nImmunity to fire blocks");
+			// DisplayName.SetDefault("Too Many Horseshoe Balloons");
+			// Tooltip.SetDefault("Allows the holder to sextuple jump\nGreatly increases jump height\nReleases bees and douses the user in honey when damaged\nNegates fall damage\nImmunity to fire blocks");
 		}
 
 		public override void SetDefaults()
@@ -179,7 +177,6 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.hasJumpOption_Fart = true;
 			player.hasJumpOption_Sail = true;
 			player.honeyCombItem = Item;
-			//player.GetModPlayer<RijamsModPlayer>().honeyComb = true;
 		}
 
 		public override void AddRecipes()
@@ -193,8 +190,7 @@ namespace RijamsMod.Items.Accessories.Movement
 				.Register();
 
 			CreateRecipe()
-				.AddIngredient(ItemID.BundleofBalloons, 1)
-				//.AddIngredient(ItemID.BundleofHorseshoeBalloons, 1)
+				.AddIngredient(ItemID.HorseshoeBundle, 1)
 				.AddIngredient(ModContent.ItemType<DifferentBundleOfHorseshoeBalloons>(), 1)
 				.AddIngredient(ItemID.ObsidianSkull, 2)
 				.AddIngredient(ItemID.PartyBundleOfBalloonsAccessory, 1)
