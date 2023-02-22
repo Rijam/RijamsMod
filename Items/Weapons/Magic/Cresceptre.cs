@@ -77,7 +77,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup("RijamsMod:GoldBars", 10)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 10)
 				.AddIngredient(ItemID.CrystalShard, 5)
 				.AddIngredient(ItemID.GoldDust, 5)
 				.AddIngredient(ItemID.SoulofNight, 3)

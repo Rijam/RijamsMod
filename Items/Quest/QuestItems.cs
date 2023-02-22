@@ -131,7 +131,7 @@ namespace RijamsMod.Items.Quest
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup("RijamsMod:SilverBars", 5)
+				.AddRecipeGroup(RijamsModRecipes.SilverBars, 5)
 				.AddIngredient(ItemID.Lens, 1)
 				.AddIngredient(ItemID.Glass, 2)
 				.AddTile(TileID.TinkerersWorkbench)

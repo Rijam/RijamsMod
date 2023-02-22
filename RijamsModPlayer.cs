@@ -149,22 +149,26 @@ namespace RijamsMod
 					breathingPackTimer++;
 					if (breathingPackTimer == 1 && !Main.dedServ)
 					{
-						SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/beep") { Volume = 0.5f, Pitch = 1.5f } );
+						SoundEngine.PlaySound(BreathingPackBeep with { Pitch = 1.5f } );
 					}
 					if (breathingPackTimer == 60 && !Main.dedServ)
 					{
-						SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/beep") { Volume = 0.5f, Pitch = 2f });
+						SoundEngine.PlaySound(BreathingPackBeep with { Pitch = 2f });
 					}
 					if (breathingPackTimer >= 120)
 					{
 						if (!Main.dedServ)
 						{
-							SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/beep") { Volume = 0.5f, Pitch = 0.5f });
+							SoundEngine.PlaySound(BreathingPackBeep with { Pitch = 0.5f });
 						}
 						breathingPackTimer = 0;
 						//breathingPackUsed = true;
 						//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = true;
 						Player.breath += Player.breathMax;
+						if (Main.netMode == NetmodeID.Server)
+						{
+							NetMessage.SendData(MessageID.SyncPlayer);
+						}
 					}
 				}
 				//if (player.wet == false || player.honeyWet == false || player.lavaWet == false)

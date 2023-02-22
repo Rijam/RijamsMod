@@ -71,21 +71,21 @@ namespace RijamsMod.Items.Accessories.Movement
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.BalloonHorseshoeHoney, 1)
-				.AddRecipeGroup("RijamsMod:FartBalloons", 1)
-				.AddRecipeGroup("RijamsMod:SharkronBalloons", 1)
+				.AddRecipeGroup(RijamsModRecipes.FartBalloons, 1)
+				.AddRecipeGroup(RijamsModRecipes.SharkronBalloons, 1)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();
 
 			CreateRecipe()
 				.AddIngredient(ItemID.BalloonHorseshoeFart, 1)
-				.AddRecipeGroup("RijamsMod:HoneyBalloons", 1)
-				.AddRecipeGroup("RijamsMod:SharkronBalloons", 1)
+				.AddRecipeGroup(RijamsModRecipes.HoneyBalloons, 1)
+				.AddRecipeGroup(RijamsModRecipes.SharkronBalloons, 1)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();
 			CreateRecipe()
 				.AddIngredient(ItemID.BalloonHorseshoeSharkron, 1)
-				.AddRecipeGroup("RijamsMod:HoneyBalloons", 1)
-				.AddRecipeGroup("RijamsMod:FartBalloons", 1)
+				.AddRecipeGroup(RijamsModRecipes.HoneyBalloons, 1)
+				.AddRecipeGroup(RijamsModRecipes.FartBalloons, 1)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();
 

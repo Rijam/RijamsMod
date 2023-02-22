@@ -1,18 +1,10 @@
+using RijamsMod.Items.Weapons;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
-using Terraria.GameContent.Dyes;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
-using Terraria.UI;
-using RijamsMod.UI;
-using System.Linq.Expressions;
 
 namespace RijamsMod
 {
@@ -26,6 +18,7 @@ namespace RijamsMod
 		public static ArmorUseGlowHead ArmorUseGlowHead;
 		public static ArmorUseGlowBody ArmorUseGlowBody;
 		public static ArmorUseGlowLegs ArmorUseGlowLegs;
+		public static WeaponAttackFlash WeaponAttackFlash;
 
 		public override void Load()
 		{
@@ -37,6 +30,8 @@ namespace RijamsMod
 			ItemOriginDesc.itemList.Clear();
 			Items.GlobalItems.isWhip.Clear();
 			Items.GlobalItems.isJoustingLance.Clear();
+			Items.GlobalItems.isLanternWeapon.Clear();
+			Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Clear();
 			Instance = null;
 			ConfigClient = null;
 			ConfigServer = null;
@@ -45,6 +40,7 @@ namespace RijamsMod
 			ArmorUseGlowHead = null;
 			ArmorUseGlowBody = null;
 			ArmorUseGlowLegs = null;
+			WeaponAttackFlash = null;
 		}
 
 		public override void PostSetupContent()

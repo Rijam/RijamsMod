@@ -96,7 +96,7 @@
 	* Fixed Flask of Sulfuric Acid not applying to whips.
 	* Added Ammo Pouch, an early ranged accessory.
 
-1.2.0.0 - (? ?, 202?)
+1.2.0.0 - (? ?, 2023)
 	* Added Shimmered versions of each Town NPC.
 	* Added Star Caller Staff. A light pet that is dropped from Deerclops.
 	* Changed Sulfuric Whip: Damage reduced from 45 to 30 but can now hit enemies through tiles.
@@ -124,4 +124,5 @@
 	* Added Pianist's Glove which allows the player to play pianos!
 	* Added Hornet Tail, a fish from fishing in honey below the surface layer.
 	* Added Ferocious Potion. Gives +10 armor penetration.
-	* Added 4 new magic weapons: Shining Lantern, Sulfuric Lantern, Vile Lantern, and Vicious Lantern.
+	* Added 9 new magic weapons: Shining Lantern, Frostburn Lantern, Ultrabright Lantern, Peace Lantern, Water Lantern, Shadow Lantern, Sulfuric Lantern, Vile Lantern, and Vicious Lantern.
+	* Buffed Sulfuric Acid slightly: now does a minimum of 4 damage per tick instead of 2.

@@ -1,3 +1,4 @@
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,6 +27,19 @@ namespace RijamsMod.Buffs.Debuffs
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.GetGlobalNPC<RijamsModNPCs>().sulfuricAcid = true;
+			// It works but it is a little janky if the AI sets the npc.damage to something else.
+			/*if (!npc.boss || NPCID.Sets.ShouldBeCountedAsBoss[npc.type])
+			{
+				Main.NewText("npc.damage = " + npc.damage + " npc.defDamage = " + npc.defDamage);
+				if (npc.buffTime[buffIndex] > 2)
+				{
+					npc.damage = (int)Math.Ceiling(npc.defDamage * 0.9f);
+				}
+				if (npc.buffTime[buffIndex] <= 2)
+				{
+					npc.damage = npc.defDamage;
+				}
+			}*/
 		}
 	}
 }

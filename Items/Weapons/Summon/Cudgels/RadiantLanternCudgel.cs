@@ -16,6 +16,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Empress of Light]", null, null });
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+			GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add(Item.type);
 		}
 
 		public override void SetDefaults()

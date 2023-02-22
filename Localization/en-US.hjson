@@ -1134,8 +1134,65 @@ Mods: {
 				DisplayName: Shining Lantern
 				Tooltip:
 					'''
-					Slow projectile speed
+					1 Slow projectile
 					20 tile homing radius
+					'''
+			}
+
+			FrostburnLantern: {
+				DisplayName: Frostburn Lantern
+				Tooltip:
+					'''
+					1 Slow projectile
+					25 tile homing radius
+					Inflicts Frostburn
+					'''
+			}
+
+			UltrabrightLantern: {
+				DisplayName: Ultrabright Lantern
+				Tooltip:
+					'''
+					1 Average speed projectile
+					25 tile homing radius
+					Bounces off tiles
+					Pierces 1 time
+					'''
+			}
+
+			PeaceLantern: {
+				DisplayName: Peace Lantern
+				Tooltip:
+					'''
+					2 Average speed projectiles
+					30 tile homing radius
+					Bounces off tiles
+					Pierces 1 time
+					{$ItemTooltip.PeaceCandle}
+					'''
+			}
+
+			ShadowLantern: {
+				DisplayName: Shadow Lantern
+				Tooltip:
+					'''
+					2 Slow projectiles
+					35 tile homing radius
+					Bounces off tiles
+					Pierces 1 time
+					{$ItemTooltip.ShadowCandle}
+					'''
+			}
+
+			WaterLantern: {
+				DisplayName: Water Lantern
+				Tooltip:
+					'''
+					2 Average speed projectiles
+					25 tile homing radius
+					Bounces off tiles
+					Pierces 1 time
+					{$ItemTooltip.WaterCandle}
 					'''
 			}
 
@@ -1143,9 +1200,10 @@ Mods: {
 				DisplayName: Sulfuric Lantern
 				Tooltip:
 					'''
-					2 Fast projectile speed
+					2 Fast projectiles
 					40 tile homing radius
 					Travels through tiles
+					Pierces 2 times
 					Inflicts Sulfuric Acid
 					'''
 			}
@@ -1154,9 +1212,10 @@ Mods: {
 				DisplayName: Vile Lantern
 				Tooltip:
 					'''
-					3 Fast projectile speed
+					3 Fast projectiles
 					30 tile homing radius
 					Bounces off tiles
+					Pierces 1 time
 					Inflicts Cursed Inferno
 					'''
 			}
@@ -1165,9 +1224,10 @@ Mods: {
 				DisplayName: Vicious Lantern
 				Tooltip:
 					'''
-					3 Fast projectile speed
+					3 Fast projectiles
 					30 tile homing radius
 					Bounces off tiles
+					Pierces 1 time
 					Inflicts Ichor
 					'''
 			}
@@ -2004,14 +2064,14 @@ Mods: {
 			Happiness: {
 				// These are automatically translated from other localization. Leave as is.
 				Harpy: {
-					Love: "{$Mods.RijamsMod.NPCName.InterstellarTraveler}"
-					Like: "{$Mods.RijamsMod.Common.Forest}, {$Mods.RijamsMod.NPCName.HellTrader}, {$NPCName.Guide}, {$NPCName.Dryad}, {$NPCName.Pirate}, {$NPCName.Stylist}, {$NPCName.Steampunker}, {$NPCName.Golfer}, {$NPCName.Painter}, {$NPCName.WitchDoctor}, {$NPCName.PartyGirl}, {$NPCName.Mechanic}"
+					Love: "{$Mods.RijamsMod.NPCs.InterstellarTraveler.DisplayName}"
+					Like: "{$Mods.RijamsMod.Common.Forest}, {$Mods.RijamsMod.NPCs.HellTrader.DisplayName}, {$NPCName.Guide}, {$NPCName.Dryad}, {$NPCName.Pirate}, {$NPCName.Stylist}, {$NPCName.Steampunker}, {$NPCName.Golfer}, {$NPCName.Painter}, {$NPCName.WitchDoctor}, {$NPCName.PartyGirl}, {$NPCName.Mechanic}"
 					Dislike: "{$Mods.RijamsMod.Common.Caverns}, {$NPCName.TaxCollector}"
 					Hate: "{$NPCName.Angler}"
 				}
 
 				InterstellarTraveler: {
-					Love: "{$Mods.RijamsMod.NPCName.Harpy}"
+					Love: "{$Mods.RijamsMod.NPCs.Harpy.DisplayName}"
 					Like: "{$Mods.RijamsMod.Common.Forest}, {$NPCName.Guide}, {$NPCName.Dryad}, {$NPCName.BestiaryGirl}, {$NPCName.Mechanic}, {$NPCName.Cyborg}, {$NPCName.Steampunker}, {$NPCName.PartyGirl}"
 					Dislike: "{$Mods.RijamsMod.Common.Caverns}, {$NPCName.Demolitionist}, {$NPCName.Wizard}, {$NPCName.TaxCollector}, {$NPCName.Painter}"
 					Hate: "{$NPCName.Merchant}"
@@ -2019,7 +2079,7 @@ Mods: {
 
 				HellTrader: {
 					Love: "{$Mods.RijamsMod.Common.Caverns}, {$NPCName.Wizard}"
-					Like: "{$Mods.RijamsMod.Common.Desert}, {$Mods.RijamsMod.NPCName.Harpy}, {$NPCName.DD2Bartender}, {$NPCName.WitchDoctor}, {$NPCName.GoblinTinkerer}, {$NPCName.Clothier}, {$NPCName.Truffle}, {$NPCName.Demolitionist}"
+					Like: "{$Mods.RijamsMod.Common.Desert}, {$Mods.RijamsMod.NPCs.Harpy.DisplayName}, {$NPCName.DD2Bartender}, {$NPCName.WitchDoctor}, {$NPCName.GoblinTinkerer}, {$NPCName.Clothier}, {$NPCName.Truffle}, {$NPCName.Demolitionist}"
 					Dislike: "{$Mods.RijamsMod.Common.Snow}, {$NPCName.ArmsDealer}, {$NPCName.Stylist}, {$NPCName.DyeTrader}"
 					Hate: "{$NPCName.Cyborg}"
 				}

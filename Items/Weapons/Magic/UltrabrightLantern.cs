@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
-	public class ShiningLantern : ModItem
+	public class UltrabrightLantern : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -23,28 +23,28 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.shoot = ModContent.ProjectileType<LanternLight>();
 			Item.shootSpeed = 4;
-			Item.rare = ItemRarityID.White;
-			Item.value = 2000;
+			Item.rare = ItemRarityID.Blue;
+			Item.value = 7000;
 			Item.DamageType = DamageClass.Magic;
-			Item.damage = 17;
-			Item.knockBack = 1.2f;
+			Item.damage = 25;
+			Item.knockBack = 1.3f;
 			Item.noMelee = true;
-			Item.useTime = 40;
-			Item.useAnimation = 40;
+			Item.useTime = 35;
+			Item.useAnimation = 35;
 			Item.autoReuse = true;
-			Item.mana = 10;
-			Item.UseSound = SoundID.Item82 with { Pitch = 1f };
+			Item.mana = 15;
+			Item.UseSound = SoundID.Item82 with { Pitch = 0.8f };
 			Item.scale = 0.75f;
 			if (!Main.dedServ)
 			{
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
-				flash.posOffsetXLeft = 4;
-				flash.posOffsetXRight = -22;
-				flash.posOffsetY = -28;
+				flash.posOffsetXLeft = 14;
+				flash.posOffsetXRight = -32;
+				flash.posOffsetY = -34;
 				flash.frameCount = 1;
 				flash.frameRate = 20;
-				flash.alpha = 255;
+				flash.alpha = 120;
 				flash.forceFirstFrame = true;
 				flash.animationLoop = false;
 				
@@ -60,7 +60,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		{
 			// NextVector2Circular is like how far it can randomly choose to target. It'll spread out more with bigger numbers. Nightglow uses 1f, 1f
 			// NextVector2CircularEdge determines it's "velocity" or how fast out it'll travel. Nightglow uses 3f, 3f
-			Vector2 randomCircular = Main.rand.NextVector2Circular(3f, 3f) + Main.rand.NextVector2CircularEdge(3f, 3f);
+			Vector2 randomCircular = Main.rand.NextVector2Circular(3f, 3f) + Main.rand.NextVector2CircularEdge(4f, 4f);
 			
 			// This will make it always go up instead of sometimes going down.
 			if (randomCircular.Y > 0f)
@@ -74,7 +74,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			// 	randomCircular.X *= -1f;
 			//}
 
-			float itemAnimation = (float)player.itemAnimation / (float)player.itemAnimationMax * 0.66f + player.miscCounterNormalized;
 			Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
 			
 			// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
@@ -85,23 +84,22 @@ namespace RijamsMod.Items.Weapons.Magic
 				playerHandPos = player.MountedCenter;
 			}
 
-			// itemAnimation % 1f
-			Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.6f);
+			Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.9f);
 			projectile.tileCollide = true;
 			projectile.ignoreWater = false;
-			projectile.penetrate = 1;
+			projectile.penetrate = 2;
 			projectile.timeLeft = 500;
 			if (projectile.ModProjectile is LanternLight modProjectile)
 			{
 				modProjectile.timeLeftMax = projectile.timeLeft;
-				modProjectile.vecolityMultiplier = 5f;
-				modProjectile.timeBeforeItCanStartHoming = 380;
-				modProjectile.timeLeftBeforeItStopsHoming = 60;
-				modProjectile.trailLength = 7;
-				modProjectile.shineScale = 0.5f;
-				modProjectile.bounceOnTiles = false;
-				modProjectile.homingRange = 20 * 16; // 20 tiles
-				TorchID.TorchColor(TorchID.Torch, out float r, out float g, out float b);
+				modProjectile.vecolityMultiplier = 7f;
+				modProjectile.timeBeforeItCanStartHoming = 420;
+				modProjectile.timeLeftBeforeItStopsHoming = 30;
+				modProjectile.trailLength = 9;
+				modProjectile.shineScale = 0.6f;
+				modProjectile.bounceOnTiles = true;
+				modProjectile.homingRange = 25 * 16; // 25 tiles
+				TorchID.TorchColor(TorchID.UltraBright, out float r, out float g, out float b);
 				modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
 			}
 
@@ -118,11 +116,11 @@ namespace RijamsMod.Items.Weapons.Magic
 
 			Vector2 itemPos = player.itemLocation + new Vector2(8 * player.direction, -10f * player.gravDir);
 			Vector2 playerPos = player.RotatedRelativePoint(itemPos);
-			Lighting.AddLight(playerPos, TorchID.Torch);
+			Lighting.AddLight(playerPos, TorchID.UltraBright);
 			if (Main.rand.NextBool(40))
 			{
 				Vector2 randomCirclular = Main.rand.NextVector2Circular(4f, 4f);
-				TorchID.TorchColor(TorchID.Torch, out float r, out float g, out float b);
+				TorchID.TorchColor(TorchID.UltraBright, out float r, out float g, out float b);
 				Dust dust = Dust.NewDustPerfect(playerPos + randomCirclular, DustID.TintableDustLighted, Vector2.Zero, 254, new Color(r, b, g, 1f), 0.3f);
 				if (randomCirclular != Vector2.Zero)
 				{
@@ -135,16 +133,16 @@ namespace RijamsMod.Items.Weapons.Magic
 		}
 		public override void PostUpdate()
 		{
-			Lighting.AddLight(Item.Center, TorchID.Torch);
+			Lighting.AddLight(Item.Center, TorchID.UltraBright);
 		}
 
 		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.Chain)
-				.AddRecipeGroup(RecipeGroupID.IronBar, 3)
-				.AddIngredient(ItemID.Torch, 3)
-				.AddTile(TileID.WorkBenches)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 3)
+				.AddIngredient(ItemID.UltrabrightTorch, 3)
+				.AddTile(TileID.Anvils)
 				.Register();
 		}
 	}

@@ -44,7 +44,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					break;
 				case NPCID.Pirate:
-					if (Main.rand.Next(0, 10) == 0)
+					if (Main.rand.NextBool(10))
 					{
 						chat = "I were in this fine game...";
 					}

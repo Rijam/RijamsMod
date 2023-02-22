@@ -35,7 +35,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.FallenStar, 1)
-				.AddRecipeGroup("RijamsMod:CopperBars", 1)
+				.AddRecipeGroup(RijamsModRecipes.CopperBars, 1)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 		}
@@ -116,7 +116,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup("RijamsMod:EvilBars", 1)
+				.AddRecipeGroup(RijamsModRecipes.EvilBars, 1)
 				.AddIngredient(ItemID.AncientCloth, 1)
 				.AddIngredient(ItemID.SpiderFang, 1)
 				.AddIngredient(ItemID.GoldDust, 1)

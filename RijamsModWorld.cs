@@ -189,10 +189,10 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-								//Mod.Logger.Debug("RijamsMod: Belt added.");
-								chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Whips.Belt>());
-								chest.item[inventoryIndex].stack = 1;
-								break;
+									//Mod.Logger.Debug("RijamsMod: Belt added.");
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Whips.Belt>());
+									chest.item[inventoryIndex].stack = 1;
+									break;
 								}
 							}
 						}
@@ -236,7 +236,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Cobalt Protector Cudgel added.");
+									//Mod.Logger.Debug("RijamsMod: Stockade Crossbow added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Ranged.StockadeCrossbow>());
 									chest.item[inventoryIndex].stack = 1;
 									break;

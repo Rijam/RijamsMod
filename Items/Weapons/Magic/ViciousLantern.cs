@@ -1,11 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RijamsMod.Items.Materials;
-using RijamsMod.Items.Placeable;
 using RijamsMod.Projectiles.Magic;
-using RijamsMod.Projectiles.Summon.Support;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,6 +14,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		public override void SetStaticDefaults()
 		{
 			GlobalItems.isLanternWeapon.Add(Item.type);
+			GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add(Item.type);
 		}
 		public override void SetDefaults()
 		{
@@ -104,7 +102,7 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.shineScale = 0.8f;
 					modProjectile.bounceOnTiles = true;
 					modProjectile.homingRange = 30 * 16; // 30 tiles
-					TorchID.TorchColor(TorchID.Cursed, out float r, out float g, out float b);
+					TorchID.TorchColor(TorchID.Ichor, out float r, out float g, out float b);
 					modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
 					modProjectile.buffType = BuffID.Ichor;
 					modProjectile.buffTime = 240;
@@ -118,9 +116,15 @@ namespace RijamsMod.Items.Weapons.Magic
 
 		public override void HoldItem(Player player)
 		{
+			// Don't add the light or dust if the player is on a rope or is petting a town pet. This is because the item is hidden when doing those actions.
+			if (player.pulley || player.isPettingAnimal)
+			{
+				return;
+			}
+
 			Vector2 itemPos = player.itemLocation + new Vector2(8 * player.direction, -10f * player.gravDir);
 			Vector2 playerPos = player.RotatedRelativePoint(itemPos);
-			TorchID.TorchColor(TorchID.Cursed, out float r, out float g, out float b);
+			TorchID.TorchColor(TorchID.Ichor, out float r, out float g, out float b);
 			Lighting.AddLight(playerPos, new Vector3(r, g, b));
 			if (Main.rand.NextBool(40))
 			{

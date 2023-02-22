@@ -359,19 +359,7 @@ namespace RijamsMod
 				}
 			}
 		}
-		/*public override void SetupShop(int type, Chest shop, ref int nextSlot)
-		{
-			/*int shopPriceScaling = ModContent.GetInstance<RijamsModConfigServer>().ShopPriceScaling;
-			float shopMulti = (shopPriceScaling / 100f);
-			if (type == ModContent.NPCType<NPCs.TownNPCs.Fisherman>())
-			{
-				foreach (Item item in shop.item)
-				{
-					int shopPrice = item.shopCustomPrice ?? 0; //Some hackery with changing the int? type into int
-					item.shopCustomPrice = (int?)Math.Round(shopPrice * shopMulti);
-				}
-			}
-		}*/
+
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
 			if (sulfuricAcid)
@@ -381,19 +369,10 @@ namespace RijamsMod
 					npc.lifeRegen = 0;
 				}
 				npc.lifeRegen -= 16;
-				if (damage < 2)
+				if (damage < 4)
 				{
-					damage = 2;
+					damage = 4;
 				}
-				/*int index = npc.FindBuffIndex(ModContent.BuffType<Buffs.SulfuricAcid>());
-				if (npc.buffTime[index] > 2)
-				{
-					npc.damage = (int)(npc.defDamage * 0.9f);
-				}
-				if (npc.buffTime[index] <= 2)
-				{
-					npc.damage = npc.defDamage;
-				}*/
 			}
 			if (bleedingOut)
 			{

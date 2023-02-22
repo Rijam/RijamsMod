@@ -1,10 +1,7 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Reflection.Metadata;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -179,7 +176,7 @@ namespace RijamsMod.Projectiles.Magic
 
 				projOldPos.DirectionTo(target2).SafeNormalize(Vector2.Zero);
 				target2 = projOldPos;
-				for (float i = 0f; i < random; i++)
+				for (int i = 0; i < random; i++)
 				{
 					Dust dust = Dust.NewDustDirect(projOldPos, Projectile.width, Projectile.height, DustID.RainbowMk2, 0f, 0f, 0, colorToUse);
 					dust.velocity *= Main.rand.NextFloat() * 0.8f;
@@ -190,11 +187,10 @@ namespace RijamsMod.Projectiles.Magic
 					if (dust.dustIndex != 6000)
 					{
 						Dust dust12 = Dust.CloneDust(dust.dustIndex);
-						dust = dust12;
-						dust.scale /= 2f;
-						dust = dust12;
-						dust.fadeIn *= 0.85f;
+						dust12.scale /= 2f;
+						dust12.fadeIn *= 0.85f;
 						dust12.color = new Color(255, 255, 255, 255);
+						dust12.noLightEmittence = true;
 					}
 				}
 			}

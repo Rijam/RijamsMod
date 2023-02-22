@@ -31,7 +31,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup("RijamsMod:MythrilBars", 5)
+				.AddRecipeGroup(RijamsModRecipes.MythrilBars, 5)
 				.AddIngredient(ItemID.AncientCloth, 5)
 				.AddIngredient(ItemID.AncientBattleArmorMaterial, 1)
 				.AddTile(TileID.MythrilAnvil)

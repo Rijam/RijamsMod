@@ -26,6 +26,10 @@ namespace RijamsMod.Items
 			ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip };
 		public static List<int> isJoustingLance = new() { ItemID.JoustingLance, ItemID.HallowJoustingLance, ItemID.ShadowJoustingLance };
 		public static List<int> isLanternWeapon = new(); // Nightglow not included.
+		/// <summary>
+		/// The front arm of the player will not animate correctly when the useStyle is set to RaiseLamp (14). Items in this set will be corrected with an IL Edit.
+		/// </summary>
+		public static List<int> fixItemUseStyleIDRaiseLampFrontArmAnimation = new();
 
 		public override void SetDefaults(Item item)
 		{

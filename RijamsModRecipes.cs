@@ -101,6 +101,18 @@ namespace RijamsMod
 				.Register();
 		}
 
+		public const string DefendersGear = "RijamsMod:DefendersGear";
+		public const string CopperBars = "RijamsMod:CopperBars";
+		public const string SilverBars = "RijamsMod:SilverBars";
+		public const string GoldBars = "RijamsMod:GoldBars";
+		public const string EvilBars = "RijamsMod:EvilBars";
+		public const string CobaltBars = "RijamsMod:CobaltBars";
+		public const string MythrilBars = "RijamsMod:MythrilBars";
+		public const string AdamantiteBars = "RijamsMod:AdamantiteBars";
+		public const string HoneyBalloons = "RijamsMod:HoneyBalloons";
+		public const string FartBalloons = "RijamsMod:FartBalloons";
+		public const string SharkronBalloons = "RijamsMod:SharkronBalloons";
+
 		public override void AddRecipeGroups()
 		{
 			RecipeGroup group = new(() => Language.GetTextValue("LegacyMisc.37") + " OOA Sentry accessories", new int[]
@@ -110,68 +122,68 @@ namespace RijamsMod
 				ItemID.HuntressBuckler,
 				ItemID.SquireShield
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:Defender's Gear", group);
+			RecipeGroup.RegisterGroup(DefendersGear, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Bar", new int[]
 			{
 				ItemID.CopperBar,
 				ItemID.TinBar
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:CopperBars", group);
+			RecipeGroup.RegisterGroup(CopperBars, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Silver Bar", new int[]
 			{
 				ItemID.SilverBar,
 				ItemID.TungstenBar
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:SilverBars", group);
+			RecipeGroup.RegisterGroup(SilverBars, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gold Bar", new int[]
 			{
 				ItemID.GoldBar,
 				ItemID.PlatinumBar
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:GoldBars", group);
+			RecipeGroup.RegisterGroup(GoldBars, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Bar", new int[]
 			{
 				ItemID.DemoniteBar,
 				ItemID.CrimtaneBar
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:EvilBars", group);
+			RecipeGroup.RegisterGroup(EvilBars, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Cobalt Bar", new int[]
 			{
 				ItemID.CobaltBar,
 				ItemID.PalladiumBar
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:CobaltBars", group);
+			RecipeGroup.RegisterGroup(CobaltBars, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Mythril Bar", new int[]
 			{
 				ItemID.MythrilBar,
 				ItemID.OrichalcumBar
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:MythrilBars", group);
+			RecipeGroup.RegisterGroup(MythrilBars, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Adamantite Bar", new int[]
 			{
 				ItemID.AdamantiteBar,
 				ItemID.TitaniumBar
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:AdamantiteBars", group);
+			RecipeGroup.RegisterGroup(AdamantiteBars, group);
 
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Honey Balloon", new int[]
 			{
 				ItemID.HoneyBalloon,
 				ItemID.BalloonHorseshoeHoney
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:HoneyBalloons", group);
+			RecipeGroup.RegisterGroup(HoneyBalloons, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Fart Balloon", new int[]
 			{
 				ItemID.FartInABalloon,
 				ItemID.BalloonHorseshoeFart
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:FartBalloons", group);
+			RecipeGroup.RegisterGroup(FartBalloons, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Sharkron Balloon", new int[]
 			{
 				ItemID.SharkronBalloon,
 				ItemID.BalloonHorseshoeSharkron
 			});
-			RecipeGroup.RegisterGroup("RijamsMod:SharkronBalloons", group);
+			RecipeGroup.RegisterGroup(SharkronBalloons, group);
 
 			if (RecipeGroup.recipeGroupIDs.ContainsKey("Fruit"))
 			{

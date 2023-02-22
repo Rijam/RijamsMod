@@ -35,8 +35,8 @@ namespace RijamsMod.Items.Armor.Skyware
 			CreateRecipe()
 				.AddIngredient(ItemID.GiantHarpyFeather, 1)
 				.AddIngredient(ModContent.ItemType<Placeable.SunplatePillarBlock>(), 20)
-				.AddRecipeGroup("RijamsMod:GoldBars", 5)
-				.AddRecipeGroup("RijamsMod:EvilBars", 2)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 5)
+				.AddRecipeGroup(RijamsModRecipes.EvilBars, 2)
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
@@ -90,8 +90,8 @@ namespace RijamsMod.Items.Armor.Skyware
 			CreateRecipe()
 				.AddIngredient(ItemID.GiantHarpyFeather, 1)
 				.AddIngredient(ModContent.ItemType<Placeable.SunplatePillarBlock>(), 20)
-				.AddRecipeGroup("RijamsMod:GoldBars", 5)
-				.AddRecipeGroup("RijamsMod:EvilBars", 2)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 5)
+				.AddRecipeGroup(RijamsModRecipes.EvilBars, 2)
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
@@ -142,8 +142,8 @@ namespace RijamsMod.Items.Armor.Skyware
 			CreateRecipe()
 				.AddIngredient(ItemID.GiantHarpyFeather, 1)
 				.AddIngredient(ModContent.ItemType<Placeable.SunplatePillarBlock>(), 20)
-				.AddRecipeGroup("RijamsMod:GoldBars", 5)
-				.AddRecipeGroup("RijamsMod:EvilBars", 2)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 5)
+				.AddRecipeGroup(RijamsModRecipes.EvilBars, 2)
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
@@ -196,8 +196,8 @@ namespace RijamsMod.Items.Armor.Skyware
 			CreateRecipe()
 				.AddIngredient(ItemID.GiantHarpyFeather, 1)
 				.AddIngredient(ModContent.ItemType<Placeable.SunplatePillarBlock>(), 20)
-				.AddRecipeGroup("RijamsMod:GoldBars", 5)
-				.AddRecipeGroup("RijamsMod:EvilBars", 2)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 5)
+				.AddRecipeGroup(RijamsModRecipes.EvilBars, 2)
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
@@ -247,8 +247,8 @@ namespace RijamsMod.Items.Armor.Skyware
 			CreateRecipe()
 				.AddIngredient(ItemID.Feather, 5)
 				.AddIngredient(ItemID.SunplateBlock, 20)
-				.AddRecipeGroup("RijamsMod:GoldBars", 5)
-				.AddRecipeGroup("RijamsMod:EvilBars", 2)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 5)
+				.AddRecipeGroup(RijamsModRecipes.EvilBars, 2)
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
@@ -290,8 +290,8 @@ namespace RijamsMod.Items.Armor.Skyware
 			CreateRecipe()
 				.AddIngredient(ItemID.Cloud, 10)
 				.AddIngredient(ItemID.SunplateBlock, 20)
-				.AddRecipeGroup("RijamsMod:GoldBars", 5)
-				.AddRecipeGroup("RijamsMod:EvilBars", 2)
+				.AddRecipeGroup(RijamsModRecipes.GoldBars, 5)
+				.AddRecipeGroup(RijamsModRecipes.EvilBars, 2)
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}

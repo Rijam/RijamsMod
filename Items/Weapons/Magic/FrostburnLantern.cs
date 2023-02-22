@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
-	public class ShiningLantern : ModItem
+	public class FrostburnLantern : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -23,28 +23,28 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.shoot = ModContent.ProjectileType<LanternLight>();
 			Item.shootSpeed = 4;
-			Item.rare = ItemRarityID.White;
-			Item.value = 2000;
+			Item.rare = ItemRarityID.Blue;
+			Item.value = 5000;
 			Item.DamageType = DamageClass.Magic;
-			Item.damage = 17;
-			Item.knockBack = 1.2f;
+			Item.damage = 20;
+			Item.knockBack = 1.25f;
 			Item.noMelee = true;
-			Item.useTime = 40;
-			Item.useAnimation = 40;
+			Item.useTime = 35;
+			Item.useAnimation = 35;
 			Item.autoReuse = true;
-			Item.mana = 10;
-			Item.UseSound = SoundID.Item82 with { Pitch = 1f };
+			Item.mana = 12;
+			Item.UseSound = SoundID.Item82 with { Pitch = 0.9f };
 			Item.scale = 0.75f;
 			if (!Main.dedServ)
 			{
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
-				flash.posOffsetXLeft = 4;
-				flash.posOffsetXRight = -22;
-				flash.posOffsetY = -28;
+				flash.posOffsetXLeft = 10;
+				flash.posOffsetXRight = -28;
+				flash.posOffsetY = -34;
 				flash.frameCount = 1;
 				flash.frameRate = 20;
-				flash.alpha = 255;
+				flash.alpha = 120;
 				flash.forceFirstFrame = true;
 				flash.animationLoop = false;
 				
@@ -74,7 +74,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			// 	randomCircular.X *= -1f;
 			//}
 
-			float itemAnimation = (float)player.itemAnimation / (float)player.itemAnimationMax * 0.66f + player.miscCounterNormalized;
 			Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
 			
 			// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
@@ -85,8 +84,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				playerHandPos = player.MountedCenter;
 			}
 
-			// itemAnimation % 1f
-			Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.6f);
+			Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.05f);
 			projectile.tileCollide = true;
 			projectile.ignoreWater = false;
 			projectile.penetrate = 1;
@@ -94,15 +92,18 @@ namespace RijamsMod.Items.Weapons.Magic
 			if (projectile.ModProjectile is LanternLight modProjectile)
 			{
 				modProjectile.timeLeftMax = projectile.timeLeft;
-				modProjectile.vecolityMultiplier = 5f;
-				modProjectile.timeBeforeItCanStartHoming = 380;
+				modProjectile.vecolityMultiplier = 6f;
+				modProjectile.timeBeforeItCanStartHoming = 420;
 				modProjectile.timeLeftBeforeItStopsHoming = 60;
-				modProjectile.trailLength = 7;
-				modProjectile.shineScale = 0.5f;
+				modProjectile.trailLength = 8;
+				modProjectile.shineScale = 0.6f;
 				modProjectile.bounceOnTiles = false;
-				modProjectile.homingRange = 20 * 16; // 20 tiles
-				TorchID.TorchColor(TorchID.Torch, out float r, out float g, out float b);
+				modProjectile.homingRange = 25 * 16; // 25 tiles
+				TorchID.TorchColor(TorchID.Ice, out float r, out float g, out float b);
 				modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
+				modProjectile.buffType = BuffID.Frostburn;
+				modProjectile.buffTime = 240;
+				modProjectile.buffChance = 2;
 			}
 
 			return false;
@@ -118,11 +119,11 @@ namespace RijamsMod.Items.Weapons.Magic
 
 			Vector2 itemPos = player.itemLocation + new Vector2(8 * player.direction, -10f * player.gravDir);
 			Vector2 playerPos = player.RotatedRelativePoint(itemPos);
-			Lighting.AddLight(playerPos, TorchID.Torch);
+			Lighting.AddLight(playerPos, TorchID.Ice);
 			if (Main.rand.NextBool(40))
 			{
 				Vector2 randomCirclular = Main.rand.NextVector2Circular(4f, 4f);
-				TorchID.TorchColor(TorchID.Torch, out float r, out float g, out float b);
+				TorchID.TorchColor(TorchID.Ice, out float r, out float g, out float b);
 				Dust dust = Dust.NewDustPerfect(playerPos + randomCirclular, DustID.TintableDustLighted, Vector2.Zero, 254, new Color(r, b, g, 1f), 0.3f);
 				if (randomCirclular != Vector2.Zero)
 				{
@@ -135,16 +136,16 @@ namespace RijamsMod.Items.Weapons.Magic
 		}
 		public override void PostUpdate()
 		{
-			Lighting.AddLight(Item.Center, TorchID.Torch);
+			Lighting.AddLight(Item.Center, TorchID.Ice);
 		}
 
 		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.Chain)
-				.AddRecipeGroup(RecipeGroupID.IronBar, 3)
-				.AddIngredient(ItemID.Torch, 3)
-				.AddTile(TileID.WorkBenches)
+				.AddRecipeGroup(RijamsModRecipes.SilverBars, 3)
+				.AddIngredient(ItemID.IceTorch, 3)
+				.AddTile(TileID.Anvils)
 				.Register();
 		}
 	}

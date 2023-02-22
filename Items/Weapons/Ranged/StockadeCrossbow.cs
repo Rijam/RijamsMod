@@ -1,7 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RijamsMod.Items.Armor.Vanity.IntTrav;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

@@ -169,7 +169,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<HailfirePygmyNecklace>(), 1)
 				.AddIngredient(ModContent.ItemType<Misc.LegionScarf>(), 1)
-				.AddRecipeGroup("RijamsMod:Defender's Gear", 1)
+				.AddRecipeGroup(RijamsModRecipes.DefendersGear, 1)
 				.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 10)
 				.AddTile(TileID.TinkerersWorkbench)
 				.AddTile(TileID.LunarCraftingStation)
