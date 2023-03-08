@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -158,10 +159,13 @@ namespace RijamsMod.Projectiles.Summon.Support
 					}
 					targetPlayer = playerWithLowestHP.whoAmI; // Set the target player as the player with the lowest HP.
 				}
-				// Spawn the Curative Butterfly projectile with the player with the lowest HP as its target.
-				Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, new(0, -1), ModContent.ProjectileType<CurativeButterfly>(),
-					Projectile.damage, Projectile.knockBack, Projectile.owner,
-					targetPlayer);
+				if (Main.myPlayer == Projectile.owner)
+				{
+					// Spawn the Curative Butterfly projectile with the player with the lowest HP as its target.
+					Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, new(0, -1), ModContent.ProjectileType<CurativeButterfly>(),
+						Projectile.damage, Projectile.knockBack, Projectile.owner,
+						targetPlayer);
+				}
 
 				SoundEngine.PlaySound(SoundID.Item8 with { Pitch = 0.5f }, Projectile.Center);
 
@@ -232,6 +236,16 @@ namespace RijamsMod.Projectiles.Summon.Support
 			int b = (int)MathHelper.Lerp(lightColor.B, 255, LerpValue());
 
 			return new(r, g, b, 255);
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(cooldownTime);
+			writer.Write(distRadius);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			cooldownTime = reader.ReadInt32();
+			distRadius = reader.ReadInt32();
 		}
 	}
 }

@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
+using System.IO.Pipelines;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -355,6 +357,22 @@ namespace RijamsMod.Projectiles.Tools
 			Main.EntitySpriteDraw(projTexture, projPos, null, tipColorLerp, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, spriteEffects, 0);
 			//Main.EntitySpriteDraw(TextureAssets.GlowMask[40].Value, vector58, null, alpha2 * (0.5f - num369) * 2f, Projectile.rotation, new Vector2(value146.Width, value146.Height) / 2f, Projectile.scale, spriteEffects, 0);
 			return false;
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(pick);
+			writer.Write(axe);
+			writer.Write(hammer);
+			writer.Write(colorMode[0]);
+			writer.Write(colorMode[1]);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			pick = reader.ReadBoolean();
+			axe = reader.ReadBoolean();
+			hammer = reader.ReadBoolean();
+			colorMode[0] = reader.ReadInt32();
+			colorMode[1] = reader.ReadInt32();
 		}
 	}
 }

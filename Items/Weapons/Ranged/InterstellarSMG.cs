@@ -9,6 +9,7 @@ using Terraria.DataStructures;
 using RijamsMod.Items.Armor.Vanity.IntTrav;
 using RijamsMod.Projectiles.Ranged;
 using Terraria.Audio;
+using Microsoft.CodeAnalysis;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -49,7 +50,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
 				flash.posOffsetXLeft = 14;
-				flash.posOffsetXRight = -34;
+				flash.posOffsetXRight = -2;
 				flash.posOffsetY = 14;
 				flash.frameCount = 3;
 				flash.frameRate = 4;
@@ -98,6 +99,11 @@ namespace RijamsMod.Items.Weapons.Ranged
 				modProjectile.homingDetectionRange = 7;
 			}
 			SoundEngine.PlaySound(SoundID.Item67 with { Pitch = 0.6f, Volume = 0.5f }, laser.position);
+
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, laser.whoAmI);
+			}
 
 			return false;
 		}

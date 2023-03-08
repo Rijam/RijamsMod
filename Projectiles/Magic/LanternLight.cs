@@ -1,9 +1,12 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
 using Terraria;
+using Terraria.Chat;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Magic
@@ -74,6 +77,16 @@ namespace RijamsMod.Projectiles.Magic
 
 		public override void AI()
 		{
+			if (Projectile.ai[2] == 0 || Projectile.ai[2] == timeBeforeItCanStartHoming || Projectile.ai[2] == timeLeftBeforeItStopsHoming)
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+					"vecolityMultiplier " + vecolityMultiplier + " homingRange " + homingRange + " timeLeftMax " + timeLeftMax
+					+ " timeBeforeItCanStartHoming " + timeBeforeItCanStartHoming + " timeLeftBeforeItStopsHoming " + timeLeftBeforeItStopsHoming
+					+ " trailLength " + trailLength + " shineScale " + shineScale + " bounceOnTiles " + bounceOnTiles + " homingNeedsLineOfSight " + homingNeedsLineOfSight
+					+ " overrideColor " + overrideColor + " buffType " + buffType + " buffTime " + buffTime + " buffChance " + buffChance
+					+ " Projectile.Center " + Projectile.Center), new Color(100, 100, 100));
+
+			Projectile.ai[2]++;
+
 			// Projectile.ai[1] controls the color
 
 			bool beforeHoming = false;
@@ -148,7 +161,6 @@ namespace RijamsMod.Projectiles.Magic
 				Projectile.velocity = Vector2.SmoothStep(Projectile.velocity, projVelocity, lerpAmount);
 				Projectile.velocity *= MathHelper.Lerp(0.85f, 1f, Utils.GetLerpValue(0f, 90f, Projectile.timeLeft, clamped: true));
 			}
-
 			Projectile.Opacity = Utils.GetLerpValue(timeLeftMax, timeLeftMax - 20f, Projectile.timeLeft, clamped: true);
 			Projectile.rotation = Projectile.velocity.ToRotation() + (float)Math.PI / 2f;
 		}
@@ -280,6 +292,41 @@ namespace RijamsMod.Projectiles.Magic
 			Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRect, projColor, projRotation, projOrigin, projScale, spriteEffects);
 
 			return false;
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(vecolityMultiplier);
+			writer.Write(homingRange);
+			writer.Write(timeLeftMax);
+			writer.Write(timeBeforeItCanStartHoming);
+			writer.Write(timeLeftBeforeItStopsHoming);
+			writer.Write(trailLength);
+			writer.Write(shineScale);
+			writer.Write(bounceOnTiles);
+			writer.Write(homingNeedsLineOfSight);
+			writer.WriteRGB(overrideColor);
+			writer.Write(overrideColor.A);
+			writer.Write(buffType);
+			writer.Write(buffTime);
+			writer.Write(buffChance);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			vecolityMultiplier = reader.ReadSingle();
+			homingRange = reader.ReadInt32();
+			timeLeftMax = reader.ReadInt32();
+			timeBeforeItCanStartHoming = reader.ReadSingle();
+			timeLeftBeforeItStopsHoming = reader.ReadSingle();
+			trailLength = reader.ReadInt32();
+			shineScale = reader.ReadSingle();
+			bounceOnTiles = reader.ReadBoolean();
+			homingNeedsLineOfSight = reader.ReadBoolean();
+			overrideColor = reader.ReadRGB();
+			overrideColor.A = reader.ReadByte();
+			buffType = reader.ReadInt32();
+			buffTime = reader.ReadInt32();
+			buffChance = reader.ReadInt32();
 		}
 	}
 }

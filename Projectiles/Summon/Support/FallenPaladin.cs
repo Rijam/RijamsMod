@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -164,6 +165,18 @@ namespace RijamsMod.Projectiles.Summon.Support
 			// Some visuals here
 			Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.5f);
 			#endregion
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(additionalDefense);
+			writer.Write(additionalDR);
+			writer.Write(distRadius);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			additionalDefense = reader.ReadInt32();
+			additionalDR = reader.ReadSingle();
+			distRadius = reader.ReadInt32();
 		}
 	}
 }

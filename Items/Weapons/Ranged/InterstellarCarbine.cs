@@ -49,7 +49,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
 				flash.posOffsetXLeft = 13;
-				flash.posOffsetXRight = -38;
+				flash.posOffsetXRight = -6;
 				flash.posOffsetY = 6;
 				flash.frameCount = 3;
 				flash.frameRate = 4;
@@ -99,6 +99,9 @@ namespace RijamsMod.Items.Weapons.Ranged
 				modProjectile.homing = homing;
 				modProjectile.homingDetectionRange = 10;
 			}
+			laser.netUpdate = true;
+			NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, laser.whoAmI);
+
 			SoundEngine.PlaySound(SoundID.Item67 with { Pitch = 0.7f, Volume = 0.5f }, laser.position);
 
 			return false;

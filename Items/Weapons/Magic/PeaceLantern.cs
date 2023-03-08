@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using RijamsMod.Projectiles.Magic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -40,8 +41,9 @@ namespace RijamsMod.Items.Weapons.Magic
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
 				flash.posOffsetXLeft = 13;
-				flash.posOffsetXRight = -34;
+				flash.posOffsetXRight = -53;
 				flash.posOffsetY = -36;
+				flash.posOffsetYGravity = 53;
 				flash.frameCount = 1;
 				flash.frameRate = 20;
 				flash.alpha = 120;
@@ -102,6 +104,10 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.bounceOnTiles = true;
 					modProjectile.homingRange = 30 * 16; // 30 tiles
 					modProjectile.overrideColor = new Color(0.9f, 0.1f, 0.75f, 1f) * 0.5f;
+				}
+				if (Main.dedServ)
+				{
+					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 			}
 			return false;

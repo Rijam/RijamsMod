@@ -1,5 +1,4 @@
 ﻿using RijamsMod.Items.Quest;
-using RijamsMod.Items.Weapons;
 using RijamsMod.Items.Weapons.Melee;
 using RijamsMod.Items.Weapons.Magic;
 using RijamsMod.Items.Weapons.Ranged;
@@ -11,8 +10,6 @@ using RijamsMod.Items.Accessories.Ranger;
 using RijamsMod.Items.Accessories.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Linq;
 using System.Text;
 using Terraria;
 using Terraria.ID;
@@ -25,12 +22,7 @@ using System.Collections.Generic;
 using Terraria.Audio;
 using ReLogic.Content;
 using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.IO;
 using Terraria.GameContent.UI;
-using System.Drawing.Printing;
-using RijamsMod.NPCs.TownNPCs.SnuggetPet;
-using System.Xml;
-using log4net.Repository.Hierarchy;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -42,6 +34,18 @@ namespace RijamsMod.NPCs.TownNPCs
 		private bool isShimmered; // NPC.IsShimmerVariant is not kept when opening the shop.
 
 		#region Set Defaults
+
+		internal static int ShimmerHeadIndex;
+		internal static int HelmetHeadIndex;
+		private static ITownNPCProfile NPCProfile;
+
+		public override void Load()
+		{
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, GetType().Namespace.Replace('.', '/') + "/Shimmered/" + Name + "_Head");
+			HelmetHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Helmet_Head");
+		}
+
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Interstellar Traveler");
@@ -86,6 +90,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Hate)
 				//Princess is automatically set
 			; // < Mind the semicolon!
+
+			NPCProfile = new InterstellarTravelerProfile();
 		}
 
 		public override void SetDefaults()
@@ -183,7 +189,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override ITownNPCProfile TownNPCProfile()
 		{
-			return new InterstellarTravelerProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList()
@@ -1297,11 +1303,14 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
-			/*if (npc.IsShimmerVariant)
+			if (ModContent.GetInstance<RijamsModConfigClient>().Ornithophobia)
 			{
-				return ModContent.GetModHeadSlot(Namespace + "/Shimmered/" + NPCName + "_Head");
-			}*/
-			//string headTexture = ModContent.GetInstance<RijamsModConfigClient>().Ornithophobia ? Path + "_Helmet_Head" : Path + "_Head";
+				return InterstellarTraveler.HelmetHeadIndex;
+			}
+			if (npc.IsShimmerVariant)
+			{
+				return InterstellarTraveler.ShimmerHeadIndex;
+			}
 			return ModContent.GetModHeadSlot(Path + "_Head");
 		}
 	}

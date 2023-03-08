@@ -3,6 +3,11 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Buffs.Potions
 {
+	public static class FlaskIDs
+	{
+		public const int SulfuricAcid = 1;
+		public const int Oiled = 2;
+	}
 	public class ImbueSulfuricAcid : ModBuff
 	{
 		public override void SetStaticDefaults()
@@ -14,7 +19,7 @@ namespace RijamsMod.Buffs.Potions
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().flaskBuff = 1;
+			player.GetModPlayer<RijamsModPlayer>().flaskBuff = FlaskIDs.SulfuricAcid;
 		}
 	}
 	public class ImbueOiled : ModBuff
@@ -28,7 +33,7 @@ namespace RijamsMod.Buffs.Potions
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().flaskBuff = 2;
+			player.GetModPlayer<RijamsModPlayer>().flaskBuff = FlaskIDs.Oiled;
 		}
 	}
 }

@@ -17,14 +17,21 @@ using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Accessories.Misc;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Weapons.Ranged;
+using RijamsMod.Buffs.Potions;
 
 namespace RijamsMod.Items
 {
 	public class GlobalItems : GlobalItem
 	{
+		/// <summary> This set is a set of all whips. </summary>
 		public static List<int> isWhip = new() { ItemID.BlandWhip, ItemID.ThornWhip, ItemID.BoneWhip, ItemID.FireWhip,
 			ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip };
+		/// <summary> This set is a set of all jousting lances. </summary>
 		public static List<int> isJoustingLance = new() { ItemID.JoustingLance, ItemID.HallowJoustingLance, ItemID.ShadowJoustingLance };
+		/// <summary>
+		/// This set is a set of all lantern weapons (like the Nightglow, but does not include the Nightglow).
+		/// Items in this set will automatically be drawn behind the player's back hand.
+		/// </summary>
 		public static List<int> isLanternWeapon = new(); // Nightglow not included.
 		/// <summary>
 		/// The front arm of the player will not animate correctly when the useStyle is set to RaiseLamp (14). Items in this set will be corrected with an IL Edit.
@@ -147,11 +154,11 @@ namespace RijamsMod.Items
 			if (moddedplayer.flaskBuff >= 1 && item.CountsAsClass(DamageClass.Melee) && !item.noMelee && !item.noUseGraphic && Main.rand.NextBool(2))
 			{
 				int dustType = DustID.Dirt;
-				if (moddedplayer.flaskBuff == 1)
+				if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
 				{
 					dustType = ModContent.DustType<Dusts.SulfurDust>();
 				}
-				if (moddedplayer.flaskBuff == 2)
+				if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
 				{
 					dustType = DustID.Asphalt;
 				}

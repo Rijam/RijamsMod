@@ -20,7 +20,14 @@ namespace RijamsMod.NPCs.TownNPCs
 	[AutoloadHead]
 	public class Harpy : ModNPC
 	{
-		private bool isShimmered; // NPC.IsShimmerVariant is not kept when opening the shop.
+		internal static int ShimmerHeadIndex;
+		private static ITownNPCProfile NPCProfile;
+
+		public override void Load()
+		{
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, GetType().Namespace.Replace('.', '/') + "/Shimmered/" + Name + "_Head");
+		}
 
 		public override void SetStaticDefaults()
 		{
@@ -67,6 +74,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				.SetNPCAffection(NPCID.Angler, AffectionLevel.Hate)
 				//Princess is automatically set
 			; // < Mind the semicolon!
+
+			NPCProfile = new HarpyProfile();
 		}
 
 		public override void SetDefaults()
@@ -172,7 +181,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override ITownNPCProfile TownNPCProfile()
 		{
-			return new HarpyProfile();
+			return NPCProfile;
 		}
 
 		public override List<string> SetNPCNameList()
@@ -609,10 +618,10 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
-			/*if (npc.IsShimmerVariant)
+			if (npc.IsShimmerVariant)
 			{
-				return ModContent.GetModHeadSlot(Namespace + "/Shimmered/" + NPCName + "_Head");
-			}*/
+				return Harpy.ShimmerHeadIndex;
+			}
 			return ModContent.GetModHeadSlot(Path + "_Head");
 		}
 	}

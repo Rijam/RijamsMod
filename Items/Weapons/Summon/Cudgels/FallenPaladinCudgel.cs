@@ -59,7 +59,10 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 				modProjectile.additionalDR = 0.05f; // 5% damage reduction
 				modProjectile.distRadius = 20; // 20 tile radius
 			}
-
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
+			}
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
 		}

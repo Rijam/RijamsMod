@@ -61,7 +61,10 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 				modProjectile.baseDamage = 20;
 				modProjectile.baseAttackSpeed = 420; // 7 seconds
 			}
-
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
+			}
 			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
 		}

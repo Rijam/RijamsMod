@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using ReLogic.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -58,8 +59,11 @@ namespace RijamsMod.Items.Tools
 
 		public void HoldItemInner(Player player, int octave)
 		{
-			player.handon = EquipLoader.GetEquipTexture(Mod, "PianistsGloveHandsOn", EquipType.HandsOn).Slot;
-			player.handoff = EquipLoader.GetEquipTexture(Mod, "PianistsGloveHandsOff", EquipType.HandsOff).Slot;
+			if (!Main.dedServ)
+			{
+				player.handon = EquipLoader.GetEquipTexture(Mod, "PianistsGloveHandsOn", EquipType.HandsOn).Slot;
+				player.handoff = EquipLoader.GetEquipTexture(Mod, "PianistsGloveHandsOff", EquipType.HandsOff).Slot;
+			}
 			int note = CalcNote(player, out float _);
 			if (note > 0)
 			{
@@ -73,7 +77,7 @@ namespace RijamsMod.Items.Tools
 			if (Main.mouseLeft && Main.mouseLeftRelease && note > 0)
 			{
 				PlayPiano(note, player, octave);
-				NetMessage.SendData(MessageID.InstrumentSound, -1, -1, null, player.whoAmI, range);
+				//NetMessage.SendData(MessageID.InstrumentSound, -1, -1, null, player.whoAmI, range);
 
 				return false;
 			}
@@ -243,10 +247,13 @@ namespace RijamsMod.Items.Tools
 				_ => PianoC3
 			};
 
+			SlotId soundIndex = SlotId.Invalid;
+
 			switch (noteValue)
 			{
 				case 1:
-					SoundEngine.PlaySound(note with { Pitch = -0.5f }, player.position); // C low
+					soundIndex = SoundEngine.PlaySound(note with { Pitch = -0.5f }, player.position); // C low
+					NetMessage.PlayNetSound(new(player.position, (ushort)soundIndex.Value, pitchOffset: -0.5f));
 					break;
 				case 2:
 					SoundEngine.PlaySound(note with { Pitch = -0.4703f }, player.position); // C#

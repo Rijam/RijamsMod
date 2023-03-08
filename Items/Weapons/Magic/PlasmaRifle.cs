@@ -40,7 +40,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
 				flash.posOffsetXLeft = 6;
-				flash.posOffsetXRight = 2;
+				flash.posOffsetXRight = -4;
 				flash.posOffsetY = 0;
 				flash.frameCount = 2;
 				flash.frameRate = 7;

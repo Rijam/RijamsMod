@@ -23,10 +23,12 @@ namespace RijamsMod.Items.Weapons
 		public Texture2D flashTexture = null;
 		/// <summary> Positive numbers moves the origin down. </summary>
 		public int posOffsetY = 0;
-		/// <summary> Moves the origin away from the player. This value is for when facing left. </summary>
+		/// <summary> Positive numbers moves the origin away from the player. This value is for when facing left. </summary>
 		public int posOffsetXLeft = 0;
-		/// <summary> Moves the origin away from the player. This value is for when facing right. </summary>
+		/// <summary> Positive numbers moves the origin away from the player. This value is for when facing right. </summary>
 		public int posOffsetXRight = 0;
+		/// <summary> Positive numbers moves the origin down (relative to the player when upside-down). This is used for when the player has reversed gravity. The normal posOffsetY will be already included. </summary>
+		public int posOffsetYGravity = 0;
 		/// <summary> Draw alpha </summary>
 		public int alpha = 255;
 		/// <summary> Rotates the drawing </summary>
@@ -49,6 +51,8 @@ namespace RijamsMod.Items.Weapons
 		public Func<bool> flashCondition = () => true;
 		/// <summary> If true, the flash will only draw if the item is being used. Aka, it won't draw when it's just being held. </summary>
 		public bool onlyDrawInUse = true;
+		/// <summary> If true, overrides colorNoAlpha to use Main.DiscoColor </summary>
+		public bool discoColor = false;
 
 		public override bool InstancePerEntity => true;
 		public override GlobalItem Clone(Item item, Item itemClone)
@@ -124,9 +128,9 @@ namespace RijamsMod.Items.Weapons
 
 				if (flashTexture != null && result.flashCondition.Invoke()) // If a flash texture for the weapon exists and the flashCondition is true
 				{
-					bool flag = drawPlayer.itemAnimation > 0 && heldItem.useStyle != ItemUseStyleID.None;
-					bool flag2 = heldItem.holdStyle != 0 && !drawPlayer.pulley;
-					if (drawInfo.shadow != 0f || drawPlayer.frozen || !(flag || flag2) || itemID <= 0 || drawPlayer.dead || heldItem.noUseGraphic || (drawPlayer.wet && heldItem.noWet) || (drawPlayer.happyFunTorchTime && drawPlayer.inventory[drawPlayer.selectedItem].createTile == TileID.Torches && drawPlayer.itemAnimation == 0))
+					bool usingItem = drawPlayer.itemAnimation > 0 && heldItem.useStyle != ItemUseStyleID.None;
+					bool holdingAndNotPully = heldItem.holdStyle != 0 && !drawPlayer.pulley;
+					if (drawInfo.shadow != 0f || drawPlayer.frozen || !(usingItem || holdingAndNotPully) || itemID <= 0 || drawPlayer.dead || heldItem.noUseGraphic || (drawPlayer.wet && heldItem.noWet) || (drawPlayer.happyFunTorchTime && drawPlayer.inventory[drawPlayer.selectedItem].createTile == TileID.Torches && drawPlayer.itemAnimation == 0))
 					{
 						return;
 					}
@@ -169,19 +173,28 @@ namespace RijamsMod.Items.Weapons
 					Vector2 halfTextureSize = itemTexture.Size() / 2f;
 					Vector2 itemPos = Main.DrawPlayerItemPos(drawPlayer.gravDir, itemID);
 					halfTextureSize.Y = itemPos.Y;
-					Vector2 origin = new(-itemTexture.Width + (int)itemPos.X - posOffsetXRight, itemTexture.Height / 2 - posOffsetY); // facing right
+					Vector2 origin = new((-itemTexture.Width - (int)itemPos.X - posOffsetXRight), itemTexture.Height - itemPos.Y - posOffsetY); // facing right
 
 					if (drawPlayer.direction == -1) // If facing left
 					{
-						origin = new Vector2(itemTexture.Width + (int)itemPos.X + posOffsetXLeft, itemTexture.Height / 2 - posOffsetY);
+						origin = new Vector2(itemTexture.Width + (int)itemPos.X + posOffsetXLeft, itemTexture.Height - itemPos.Y - posOffsetY);
 					}
 
 					if (drawPlayer.gravDir == -1f) // If up-side-down
 					{
-						origin.Y = sourceRect.Height - origin.Y;
+						origin.Y = sourceRect.Height - origin.Y + result.posOffsetYGravity;
 					}
 
+					// Dust.NewDustPerfect(drawInfo.ItemLocation, DustID.Pixie, Vector2.Zero);
+					// Dust.NewDustPerfect(origin + drawPlayer.position, DustID.RedTorch, Vector2.Zero);
+					// Dust.NewDustPerfect(itemPos + drawPlayer.position, DustID.GreenTorch, Vector2.Zero);
+
 					float itemRotation = drawPlayer.itemRotation + angleAdd;
+
+					if (result.discoColor)
+					{
+						colorNoAlpha = Main.DiscoColor;
+					}
 
 					DrawData drawData = new(flashTexture, position + halfTextureSize, sourceRect, new(colorNoAlpha.R, colorNoAlpha.G, colorNoAlpha.B, alpha), itemRotation, origin, adjustedItemScale * scale, drawInfo.itemEffect, 0);
 					drawInfo.DrawDataCache.Add(drawData);

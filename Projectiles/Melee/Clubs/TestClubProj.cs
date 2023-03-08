@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System;
 using Terraria.Audio;
+using System.IO;
 
 namespace RijamsMod.Projectiles.Melee.Clubs
 {
@@ -363,6 +364,18 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			
 			// It's important to return false, otherwise we also draw the original texture.
 			return false;
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(useTurn);
+			writer.Write(firingAnimation);
+			writer.Write(firingTime);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			useTurn = reader.ReadBoolean();
+			firingAnimation = reader.ReadInt32();
+			firingTime = reader.ReadInt32();
 		}
 	}
 }

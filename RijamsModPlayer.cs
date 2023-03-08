@@ -222,14 +222,14 @@ namespace RijamsMod
 				{
 					if (Main.rand.NextBool(4) && drawInfo.shadow == 0f)
 					{
-						int dust = Dust.NewDust(drawInfo.drawPlayer.position - new Vector2(2f, 2f), Player.width + 4, Player.height + 4, ModContent.DustType<Dusts.SulfurDust>(), Player.velocity.X * 0.4f, Player.velocity.Y * 0.4f, 100, default, 2f);
-						Main.dust[dust].noGravity = true;
-						Main.dust[dust].velocity *= 1.8f;
-						Main.dust[dust].velocity.Y -= 0.5f;
+						Dust dust = Dust.NewDustDirect(drawInfo.drawPlayer.position - new Vector2(2f, 2f), Player.width + 4, Player.height + 4, ModContent.DustType<Dusts.SulfurDust>(), Player.velocity.X * 0.4f, Player.velocity.Y * 0.4f, 100, default, 2f);
+						dust.noGravity = true;
+						dust.velocity *= 1.8f;
+						dust.velocity.Y -= 0.5f;
 						if (Main.rand.NextBool(4))
 						{
-							Main.dust[dust].noGravity = false;
-							Main.dust[dust].scale *= 0.5f;
+							dust.noGravity = false;
+							dust.scale *= 0.5f;
 						}
 					}
 					r *= 1.0f;

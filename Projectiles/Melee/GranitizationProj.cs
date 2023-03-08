@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
@@ -260,5 +261,19 @@ namespace RijamsMod.Projectiles.Melee
 
             return false;
         }
-    }
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.WriteVector2(chainHeadPosition);
+			writer.Write(firingSpeed);
+			writer.Write(firingAnimation);
+			writer.Write(firingTime);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			chainHeadPosition = reader.ReadVector2();
+			firingSpeed = reader.ReadSingle();
+			firingAnimation = reader.ReadSingle();
+			firingTime = reader.ReadSingle();
+		}
+	}
 }

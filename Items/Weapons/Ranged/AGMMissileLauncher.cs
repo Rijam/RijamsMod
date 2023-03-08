@@ -2,8 +2,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -40,7 +42,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
 				flash.posOffsetXLeft = 8;
-				flash.posOffsetXRight = -66;
+				flash.posOffsetXRight = -36;
 				flash.posOffsetY = 2;
 				flash.frameCount = 4;
 				flash.frameRate = 7;

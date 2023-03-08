@@ -1,10 +1,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
+using System.Xml.Linq;
 using Terraria;
+using Terraria.Chat;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
@@ -256,6 +261,26 @@ namespace RijamsMod.Projectiles.Summon.Support
 				//Main.EntitySpriteDraw(texture, drawPos, sourceRectangle, color, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects, 0);
 			}
 			return true;
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(additionalDefense);
+			writer.Write(additionalDR);
+			writer.Write(distRadius);
+
+			writer.Write(attacking);
+			writer.Write(baseDamage);
+			writer.Write(baseAttackSpeed);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			additionalDefense = reader.ReadInt32();
+			additionalDR = reader.ReadSingle();
+			distRadius = reader.ReadInt32();
+
+			attacking = reader.ReadBoolean();
+			baseDamage = reader.ReadInt32();
+			baseAttackSpeed = reader.ReadInt32();
 		}
 	}
 }

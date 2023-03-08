@@ -1,9 +1,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
+using RijamsMod.Items.Weapons.Ranged;
 using System;
+using System.IO;
+using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -181,6 +186,41 @@ namespace RijamsMod.Projectiles.Ranged
 				Dust.NewDust(Projectile.Center, 1, 1, ModContent.DustType<Dusts.AuraDust>(), 0, 0, 0, drawColor, 1f);
 			}
 			SoundEngine.PlaySound(SoundID.NPCDeath3, Projectile.position);
+		}
+
+		public override void OnSpawn(IEntitySource source)
+		{
+			/*if (source is EntitySource_Parent parent
+				&& parent.Entity is Player player
+				&& player.whoAmI == Projectile.owner)
+			{
+				Projectile.netUpdate = true;
+			}*/
+			Projectile.netUpdate = true;
+			//Mod.Logger.DebugFormat("IntersetllarLaser: drawColor {0}, homing {1}, homingDetectionRange {2}", drawColor, homing, homingDetectionRange);
+			//Mod.Logger.DebugFormat("IntersetllarLaser: penetrate {0}, coldDamage {1}, tileCollide {2}", Projectile.penetrate, Projectile.coldDamage, Projectile.tileCollide);
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.WriteRGB(drawColor);
+			writer.Write(drawColor.A);
+			writer.Write(homing);
+			writer.Write(homingDetectionRange);
+			writer.Write(bounceOnTiles);
+			writer.Write(bounceOnNPCs);
+			writer.Write(inflictBuff);
+			writer.Write(buffTime);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			drawColor = reader.ReadRGB();
+			drawColor.A = reader.ReadByte();
+			homing = reader.ReadBoolean();
+			homingDetectionRange = reader.ReadInt32();
+			bounceOnTiles = reader.ReadBoolean();
+			bounceOnNPCs = reader.ReadBoolean();
+			inflictBuff = reader.ReadInt32();
+			buffTime = reader.ReadInt32();
 		}
 	}
 }

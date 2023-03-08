@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Buffs.Potions;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -41,11 +42,11 @@ namespace RijamsMod.Projectiles
 					if (moddedplayer.flaskBuff >= 1 && projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 					{
 						int dustType = DustID.Dirt;
-						if (moddedplayer.flaskBuff == 1)
+						if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
 						{
 							dustType = ModContent.DustType<Dusts.SulfurDust>();
 						}
-						if (moddedplayer.flaskBuff == 2)
+						if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
 						{
 							dustType = DustID.Asphalt;
 						}
@@ -55,7 +56,7 @@ namespace RijamsMod.Projectiles
 						Main.dust[dust].velocity.Y -= 0.5f;
 						Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.1f);
 					}
-					if (moddedplayer.flaskBuff == 2)
+					if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
 					{
 						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 						{

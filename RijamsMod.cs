@@ -120,6 +120,8 @@ namespace RijamsMod
 					return RijamsModWorld.intTravArrived;
 				case "hellTraderArrivable":
 					return RijamsModWorld.hellTraderArrivable;
+				case "boughtSnuggetPet":
+					return RijamsModWorld.boughtSnuggetPet;
 				case "intTravQuest":
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
 					return args[1].ToString() switch
@@ -139,6 +141,22 @@ namespace RijamsMod
 					return NPCs.NPCHelper.StatusShop1();
 				case "GetStatusShop2":
 					return NPCs.NPCHelper.StatusShop2();
+				case "AddItemToIsJoustingLance":
+					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					Items.GlobalItems.isJoustingLance.Add((int)args[1]);
+					return Items.GlobalItems.isJoustingLance.Contains((int)args[1]);
+				case "AddItemToIsLanternWeapon":
+					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					Items.GlobalItems.isLanternWeapon.Add((int)args[1]);
+					return Items.GlobalItems.isLanternWeapon.Contains((int)args[1]);
+				case "AddItemToIsWhip":
+					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					Items.GlobalItems.isWhip.Add((int)args[1]);
+					return Items.GlobalItems.isWhip.Contains((int)args[1]);
+				case "AddItemToRaiseLampFix":
+					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add((int)args[1]);
+					return Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Contains((int)args[1]);
 				default:
 					throw new ArgumentException($"Function \"{function}\" is not defined by Rijam's Mod");
 			}

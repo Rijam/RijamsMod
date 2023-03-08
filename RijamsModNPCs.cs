@@ -18,6 +18,7 @@ using RijamsMod.Items.Materials;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Audio;
 using RijamsMod.Items.Pets;
+using RijamsMod.Buffs.Potions;
 
 namespace RijamsMod
 {
@@ -299,11 +300,11 @@ namespace RijamsMod
 				}
 				if (projectile.owner == Main.LocalPlayer.whoAmI && (projectile.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[projectile.type]))
 				{
-					if (moddedplayer.flaskBuff == 1)
+					if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
 					{
 						npc.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 					}
-					if (moddedplayer.flaskBuff == 2)
+					if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
 					{
 						npc.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
 					}
@@ -349,11 +350,11 @@ namespace RijamsMod
 			}
 			if (item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && (item.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[item.shoot]))
 			{
-				if (moddedplayer.flaskBuff == 1)
+				if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
 				{
 					npc.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 				}
-				if (moddedplayer.flaskBuff == 2)
+				if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
 				{
 					npc.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
 				}

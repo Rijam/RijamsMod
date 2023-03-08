@@ -39,8 +39,9 @@ namespace RijamsMod.Items.Weapons.Ranged
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
 				flash.posOffsetXLeft = 8;
-				flash.posOffsetXRight = -24;
-				flash.posOffsetY = 0;
+				flash.posOffsetXRight = -8;
+				flash.posOffsetY = -2;
+				flash.posOffsetYGravity = 4;
 				flash.frameCount = 2;
 				flash.frameRate = 4;
 				flash.colorNoAlpha = new(255, 150, 0);

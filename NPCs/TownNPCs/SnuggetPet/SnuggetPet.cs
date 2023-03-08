@@ -10,6 +10,8 @@ using Terraria.GameContent;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader.IO;
+using System.Xml;
+using System;
 
 namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 {
@@ -20,6 +22,30 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 		{
 			return true;
 		}
+
+		internal static int HeadIndex1;
+		internal static int HeadIndex2;
+		internal static int HeadIndex3;
+		internal static int HeadIndex4;
+		internal static int HeadIndex5;
+		internal static int HeadIndex6;
+		internal static int HeadIndex7;
+		internal static int HeadIndex8;
+		private static ITownNPCProfile NPCProfile;
+
+		public override void Load()
+		{
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			HeadIndex1 = Mod.AddNPCHeadTexture(Type, Texture + "_1_Head");
+			HeadIndex2 = Mod.AddNPCHeadTexture(Type, Texture + "_2_Head");
+			HeadIndex3 = Mod.AddNPCHeadTexture(Type, Texture + "_3_Head");
+			HeadIndex4 = Mod.AddNPCHeadTexture(Type, Texture + "_4_Head");
+			HeadIndex5 = Mod.AddNPCHeadTexture(Type, Texture + "_5_Head");
+			HeadIndex6 = Mod.AddNPCHeadTexture(Type, Texture + "_6_Head");
+			HeadIndex7 = Mod.AddNPCHeadTexture(Type, Texture + "_7_Head");
+			HeadIndex8 = Mod.AddNPCHeadTexture(Type, Texture + "_8_Head");
+		}
+
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Snugget");
@@ -48,6 +74,8 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			NPCProfile = new SnuggetPetProfile();
 		}
 
 		public override void SetDefaults()
@@ -89,7 +117,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 		{
 			// Profiles.VariantNPCProfile("RijamsMod/NPCs/TownNPCs/TestPet", "TestPet", TestPetHeadIDs, "1", "2"); doesn't work because
 			// It uses Main.Assets.Request<>() which won't find mod assets (ModContent.Request<>() is needed instead).
-			return new SnuggetPetProfile();
+			return NPCProfile;
 		}
 
 		public int variationType = 0;
@@ -168,21 +196,6 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			return NPC.IsShimmerVariant ? Main.DiscoColor : Color.White; // variationType of 1 makes it shimmered, even when it isn't.
 			// return Color.White;
 		}
-
-		public override void SaveData(TagCompound tag)
-		{
-			tag["SnuggetVariationType"] = variationType;
-			if (NPC.townNpcVariationIndex == 1)
-			{
-				tag["SnuggetIsShimmerVariant"] = NPC.townNpcVariationIndex;
-			}
-		}
-
-		public override void LoadData(TagCompound tag)
-		{
-			variationType = tag.GetInt("SnuggetVariationType");
-			NPC.townNpcVariationIndex = tag.GetInt("SnuggetIsShimmerVariant");
-		}
 	}
 
 	public class SnuggetPetProfile : ITownNPCProfile
@@ -193,10 +206,14 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 
 		private static SnuggetPet GetModNPCForPet() // bit of a hack
 		{
-			ModNPC thePet = Main.npc[NPC.FindFirstNPC(ModContent.NPCType<SnuggetPet>())].ModNPC;
-			if (thePet is SnuggetPet snuggetPet)
+			int index = NPC.FindFirstNPC(ModContent.NPCType<SnuggetPet>());
+			if (index > -1)
 			{
-				return snuggetPet;
+				ModNPC thePet = Main.npc[index].ModNPC;
+				if (thePet is SnuggetPet snuggetPet)
+				{
+					return snuggetPet;
+				}
 			}
 			return null;
 		}
@@ -210,6 +227,10 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			if (GetModNPCForPet() is not null)
 			{
 				GetModNPCForPet().variationType = random;
+			}
+			else
+			{
+				return 0;
 			}
 			return random;
 		}
@@ -227,6 +248,22 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
+			if (GetModNPCForPet() is not null)
+			{
+				return GetModNPCForPet().variationType switch
+				{
+					0 => ModContent.GetModHeadSlot(FilePath + "_Head"),
+					1 => SnuggetPet.HeadIndex1, // Shimmered?
+					2 => SnuggetPet.HeadIndex2,
+					3 => SnuggetPet.HeadIndex3,
+					4 => SnuggetPet.HeadIndex4,
+					5 => SnuggetPet.HeadIndex5,
+					6 => SnuggetPet.HeadIndex6,
+					7 => SnuggetPet.HeadIndex7,
+					8 => SnuggetPet.HeadIndex8,
+					_ => ModContent.GetModHeadSlot(FilePath + "_Head")
+				};
+			}
 			return ModContent.GetModHeadSlot(FilePath + "_Head");
 		}
 	}

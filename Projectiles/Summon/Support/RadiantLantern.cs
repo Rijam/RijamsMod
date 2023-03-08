@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -265,6 +266,16 @@ namespace RijamsMod.Projectiles.Summon.Support
 				sourceRectangle, drawColor, rotation, origin, LerpValue(), spriteEffects, 0);
 
 			Lighting.AddLight(Projectile.Center, Color.Green.ToVector3() * LerpValue());
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(cooldownTime);
+			writer.Write(distRadius);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			cooldownTime = reader.ReadInt32();
+			distRadius = reader.ReadInt32();
 		}
 	}
 }

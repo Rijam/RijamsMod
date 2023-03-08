@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -181,6 +182,18 @@ namespace RijamsMod.Projectiles.Summon.Support
 					fadeInOrOut = 0;
 				}
 			}
+		}
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(additionalDefense);
+			writer.Write(additionalDR);
+			writer.Write(distRadius);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			additionalDefense = reader.ReadInt32();
+			additionalDR = reader.ReadSingle();
+			distRadius = reader.ReadInt32();
 		}
 	}
 }

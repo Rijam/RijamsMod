@@ -52,6 +52,10 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 				modProjectile.firingAnimation = (int)Math.Round(Item.useAnimation * 2f / player.GetTotalAttackSpeed(DamageClass.Melee));
 				modProjectile.firingTime = (int)Math.Round(Item.useTime * 2f / player.GetTotalAttackSpeed(DamageClass.Melee));
 			}
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
+			}
 			return false;
 		}
 

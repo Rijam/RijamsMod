@@ -23,8 +23,6 @@ namespace RijamsMod.NPCs.TownNPCs
 	[AutoloadHead]
 	public class HellTrader : ModNPC
 	{
-		private bool isShimmered; // NPC.IsShimmerVariant is not kept when opening the shop.
-
 		public override void BossHeadSlot(ref int index)
 		{
 			if (!RijamsModWorld.hellTraderArrivable)
@@ -32,7 +30,15 @@ namespace RijamsMod.NPCs.TownNPCs
 				index = -1;
 			}
 		}
-		//public override string HeadTexture => "RijamsMod/NPCs/TownNPCs/HellTrader_Head";
+
+		internal static int ShimmerHeadIndex;
+		private static ITownNPCProfile NPCProfile;
+
+		public override void Load()
+		{
+			// Adds our Shimmer Head to the NPCHeadLoader.
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, GetType().Namespace.Replace('.', '/') + "/Shimmered/" + Name + "_Head");
+		}
 
 		public override void SetStaticDefaults()
 		{
@@ -79,6 +85,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				.SetNPCAffection(NPCID.Cyborg, AffectionLevel.Hate)
 				//Princess is automatically set
 			; // < Mind the semicolon!
+
+			NPCProfile = new HellTraderProfile();
 		}
 
 		public override void SetDefaults()
@@ -181,7 +189,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override ITownNPCProfile TownNPCProfile()
 		{
-			return new HellTraderProfile();
+			return NPCProfile;
 		}
 		public override List<string> SetNPCNameList()
 		{
@@ -692,18 +700,6 @@ namespace RijamsMod.NPCs.TownNPCs
 			multiplier = 6f;
 			randomOffset = 0.15f;
 		}
-
-		/*public override void SaveData(TagCompound tag)
-		{
-			//tag["HellTraderIsShimmerVariant"] = isShimmered;
-			//Mod.Logger.DebugFormat("Hell Trader Save: NPC.townNpcVariationIndex {0}, tag[\"HellTraderIsShimmerVariant\"] {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag["HellTraderIsShimmerVariant"].ToString(), isShimmered);
-		}
-
-		public override void LoadData(TagCompound tag)
-		{
-			//isShimmered = tag.GetBool("HellTraderIsShimmerVariant");
-			//Mod.Logger.DebugFormat("Hell Trader Load: NPC.townNpcVariationIndex {0}, tag.GetBool(\"HellTraderIsShimmerVariant\") {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag.GetBool("HellTraderIsShimmerVariant").ToString(), isShimmered);
-		}*/
 	}
 	public class HellTraderProfile : ITownNPCProfile
 	{
@@ -754,10 +750,10 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
-			/*if (npc.IsShimmerVariant)
+			if (npc.IsShimmerVariant)
 			{
-				return ModContent.GetModHeadSlot(Namespace + "/Shimmered/" + NPCName + "_Head");
-			}*/
+				return HellTrader.ShimmerHeadIndex;
+			}
 			return ModContent.GetModHeadSlot(Path + "_Head");
 		}
 	}

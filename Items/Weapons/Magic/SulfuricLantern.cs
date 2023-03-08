@@ -4,8 +4,11 @@ using RijamsMod.Items.Materials;
 using RijamsMod.Items.Placeable;
 using RijamsMod.Projectiles.Magic;
 using Terraria;
+using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Magic
@@ -42,8 +45,9 @@ namespace RijamsMod.Items.Weapons.Magic
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
 				flash.posOffsetXLeft = 12;
-				flash.posOffsetXRight = -30;
+				flash.posOffsetXRight = -58;
 				flash.posOffsetY = -36;
+				flash.posOffsetYGravity = 53;
 				flash.frameCount = 1;
 				flash.frameRate = 20;
 				flash.alpha = 120;
@@ -87,7 +91,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				{
 					playerHandPos = player.MountedCenter;
 				}
-
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("playerHandPos " + playerHandPos + " randomCircular " + randomCircular + " player.whoAmI " + player.whoAmI), new Color(200, 200, 200));
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.575f);
 				projectile.tileCollide = false;
 				projectile.ignoreWater = true;
@@ -108,6 +112,10 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.buffTime = 180;
 					modProjectile.buffChance = 2;
 					modProjectile.homingNeedsLineOfSight = false;
+				}
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 			}
 

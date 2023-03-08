@@ -124,5 +124,5 @@
 	* Added Pianist's Glove which allows the player to play pianos!
 	* Added Hornet Tail, a fish from fishing in honey below the surface layer.
 	* Added Ferocious Potion. Gives +10 armor penetration.
-	* Added 9 new magic weapons: Shining Lantern, Frostburn Lantern, Ultrabright Lantern, Peace Lantern, Water Lantern, Shadow Lantern, Sulfuric Lantern, Vile Lantern, and Vicious Lantern.
+	* Added 13 new magic weapons: Shining Lantern, Frostburn Lantern, Ultrabright Lantern, Peace Lantern, Water Lantern, Shadow Lantern, Sulfuric Lantern, Vile Lantern, Vicious Lantern, Rainbow Lantern, Spectre Lantern, Jack-o'-Lantern, Avolite Lantern.
 	* Buffed Sulfuric Acid slightly: now does a minimum of 4 damage per tick instead of 2.

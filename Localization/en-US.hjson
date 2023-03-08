@@ -1232,6 +1232,50 @@ Mods: {
 					'''
 			}
 
+			RainbowLantern: {
+				DisplayName: Rainbow Lantern
+				Tooltip:
+					'''
+					3 Fast projectiles
+					35 tile homing radius
+					Bounces off tiles
+					Pierces 2 times
+					'''
+			}
+
+			SpectreLantern: {
+				DisplayName: Spectre Lantern
+				Tooltip:
+					'''
+					3 Extremely Fast projectiles
+					40 tile homing radius
+					Travels through tiles
+					Pierces 2 times
+					'''
+			}
+
+			JackOLantern: {
+				DisplayName: Jack-o'-Lantern
+				Tooltip:
+					'''
+					3 Very Fast projectiles
+					45 tile homing radius
+					Bounces off tiles
+					Pierces 2 times
+					'''
+			}
+
+			AvoliteLantern: {
+				DisplayName: Avolite Lantern
+				Tooltip:
+					'''
+					4 projectiles
+					50 tile homing radius
+					Each of the 3 colors acts differently
+					Pierces 2 times
+					'''
+			}
+
 			# Items/Weapons/Melee
 
 			BoneHeadJoustingLance: {

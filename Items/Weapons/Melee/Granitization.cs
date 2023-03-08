@@ -53,7 +53,11 @@ namespace RijamsMod.Items.Weapons.Melee
 			{
 				modProjectile.firingSpeed = Item.shootSpeed * 2f * player.GetTotalAttackSpeed(DamageClass.Melee);
 				modProjectile.firingAnimation = Item.useAnimation / player.GetTotalAttackSpeed(DamageClass.Melee);
-				modProjectile.firingTime = Item.useTime / player.GetTotalAttackSpeed(DamageClass.Melee);
+				modProjectile.firingTime = Item.useTime / player.GetTotalAttackSpeed(DamageClass.Melee);	
+			}
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 			}
 			return false;
 		}

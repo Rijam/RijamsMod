@@ -35,6 +35,7 @@ namespace RijamsMod
 		public bool drawOnPlayer = true;
 		public Color drawColor = Color.White;
 		public bool flameFlicker = false;
+		public bool discoColor = false;
 
 		public override bool InstancePerEntity => true;
 		public override GlobalItem Clone(Item item, Item itemClone)
@@ -53,6 +54,11 @@ namespace RijamsMod
 				);
 				int numTimesToDraw = 1;
 				ulong seed = 0;
+
+				if (discoColor)
+				{
+					drawColor = new(Main.DiscoR, Main.DiscoG, Main.DiscoB, drawColor.A);
+				}
 
 				if (flameFlicker)
 				{
@@ -107,7 +113,6 @@ namespace RijamsMod
 			int itemID = heldItem.type;
 			float adjustedItemScale = drawInfo.drawPlayer.GetAdjustedItemScale(heldItem);
 			
-
 			Main.instance.LoadItem(itemID);
 
 			if (heldItem.TryGetGlobalItem(out ItemUseGlow result))
@@ -150,13 +155,13 @@ namespace RijamsMod
 						//_ = (1f + num4 * 10f) / 11f;
 						drawInfo.itemColor = drawInfo.itemColor.MultiplyRGBA(new Color(Vector4.Lerp(Vector4.One, new Vector4(0f, 0.12f, 0.16f, 0f), 1f - num4)));
 					}
-					bool flag = drawInfo.drawPlayer.itemAnimation > 0 && heldItem.useStyle != ItemUseStyleID.None;
-					bool flag2 = heldItem.holdStyle != 0 && !drawInfo.drawPlayer.pulley;
+					bool usingItem = drawInfo.drawPlayer.itemAnimation > 0 && heldItem.useStyle != ItemUseStyleID.None;
+					bool holdingAndNotPully = heldItem.holdStyle != 0 && !drawInfo.drawPlayer.pulley;
 					if (!drawInfo.drawPlayer.CanVisuallyHoldItem(heldItem))
 					{
-						flag2 = false;
+						holdingAndNotPully = false;
 					}
-					if (drawInfo.shadow != 0f || drawInfo.drawPlayer.frozen || !(flag || flag2) || itemID <= 0 || drawInfo.drawPlayer.dead || heldItem.noUseGraphic || (drawInfo.drawPlayer.wet && heldItem.noWet) || (drawInfo.drawPlayer.happyFunTorchTime && drawInfo.drawPlayer.inventory[drawInfo.drawPlayer.selectedItem].createTile == TileID.Torches && drawInfo.drawPlayer.itemAnimation == 0))
+					if (drawInfo.shadow != 0f || drawInfo.drawPlayer.frozen || !(usingItem || holdingAndNotPully) || itemID <= 0 || drawInfo.drawPlayer.dead || heldItem.noUseGraphic || (drawInfo.drawPlayer.wet && heldItem.noWet) || (drawInfo.drawPlayer.happyFunTorchTime && drawInfo.drawPlayer.inventory[drawInfo.drawPlayer.selectedItem].createTile == TileID.Torches && drawInfo.drawPlayer.itemAnimation == 0))
 					{
 						return;
 					}
@@ -166,6 +171,10 @@ namespace RijamsMod
 						return;
 					}
 
+					if (result.discoColor)
+					{
+						drawColor = new(Main.DiscoR, Main.DiscoG, Main.DiscoB, drawColor.A);
+					}
 					if (blendAlpha)
 					{
 						drawColor = new(drawColor.R, drawColor.G, drawColor.B, heldItem.alpha);
@@ -185,10 +194,6 @@ namespace RijamsMod
 					float itemRotation = drawInfo.drawPlayer.itemRotation + angleAdd;
 					if (heldItem.useStyle == ItemUseStyleID.GolfPlay)
 					{
-						ref float x = ref position.X;
-						float num6 = x;
-						//_ = drawInfo.drawPlayer.direction;
-						x = num6 - 0f;
 						itemRotation -= (float)Math.PI / 2f * (float)drawInfo.drawPlayer.direction;
 						origin.Y = 2f;
 						origin.X += 2 * drawInfo.drawPlayer.direction;
@@ -259,17 +264,6 @@ namespace RijamsMod
 							if (heldItem.color != default)
 							{
 								drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)) + flameRandom, sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
-								drawInfo.DrawDataCache.Add(drawData);
-							}
-							return;
-						}
-						if (drawInfo.drawPlayer.gravDir == -1f)
-						{
-							drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
-							drawInfo.DrawDataCache.Add(drawData);
-							if (heldItem.color != default)
-							{
-								drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
 								drawInfo.DrawDataCache.Add(drawData);
 							}
 							return;

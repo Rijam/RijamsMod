@@ -16,6 +16,8 @@ namespace RijamsMod.Items.Weapons.Ranged
 {
 	public class InterstellarPistol : ModItem
 	{
+		//public static bool tileCollide;
+
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Inherits many aspects of the bullets used");
@@ -50,7 +52,8 @@ namespace RijamsMod.Items.Weapons.Ranged
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
 				flash.posOffsetXLeft = 10;
 				flash.posOffsetXRight = -2;
-				flash.posOffsetY = 2;
+				flash.posOffsetY = 0;
+				flash.posOffsetYGravity = 4;
 				flash.frameCount = 3;
 				flash.frameRate = 4;
 				flash.colorNoAlpha = new(100, 150, 255);
@@ -93,7 +96,15 @@ namespace RijamsMod.Items.Weapons.Ranged
 				modProjectile.drawColor = new(100, 150, 255, 0);
 				modProjectile.homing = homing;
 				modProjectile.homingDetectionRange = 5;
+				Mod.Logger.DebugFormat("IntersetllarPistol: drawColor {0}, homing {1}, homingDetectionRange {2}", modProjectile.drawColor, modProjectile.homing, modProjectile.homingDetectionRange);
 			}
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				laser.netUpdate = true;
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, laser.whoAmI);
+			}
+			Mod.Logger.DebugFormat("IntersetllarPistol: penetrate {0}, coldDamage {1}, tileCollide {2}", laser.penetrate, laser.coldDamage, laser.tileCollide);
+
 			SoundEngine.PlaySound(SoundID.Item67 with { Pitch = 0.5f, Volume = 0.5f }, laser.position);
 
 			return false;
