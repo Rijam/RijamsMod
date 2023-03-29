@@ -23,7 +23,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.shoot = ModContent.ProjectileType<LanternLight>();
-			Item.shootSpeed = 4;
+			Item.shootSpeed = 1;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = 7000;
 			Item.DamageType = DamageClass.Magic;
@@ -93,7 +93,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			projectile.timeLeft = 500;
 			if (projectile.ModProjectile is LanternLight modProjectile)
 			{
-				modProjectile.timeLeftMax = projectile.timeLeft;
+				modProjectile.timeLeftMax = 500;
 				modProjectile.vecolityMultiplier = 7f;
 				modProjectile.timeBeforeItCanStartHoming = 420;
 				modProjectile.timeLeftBeforeItStopsHoming = 30;
@@ -103,11 +103,19 @@ namespace RijamsMod.Items.Weapons.Magic
 				modProjectile.homingRange = 25 * 16; // 25 tiles
 				TorchID.TorchColor(TorchID.UltraBright, out float r, out float g, out float b);
 				modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
+
+				modProjectile.orgTileCollide = true;
+				modProjectile.orgIgnoreWater = false;
+				modProjectile.orgPenetrate = 2;
+
+				/*modProjectile.Projectile.tileCollide = true;
+				modProjectile.Projectile.ignoreWater = false;
+				modProjectile.Projectile.penetrate = 2;
+				modProjectile.Projectile.timeLeft = 500;*/
 			}
 
-			if (Main.netMode == NetmodeID.Server)
+			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
-				projectile.netUpdate = true;
 				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 			}
 

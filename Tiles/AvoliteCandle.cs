@@ -30,14 +30,12 @@ namespace RijamsMod.Tiles
 
 			AddMapEntry(new Color(255, 6, 63), Language.GetText("Avolite Candle"));
 			DustType = DustID.RedTorch;
-			ItemDrop = ModContent.ItemType<Items.Placeable.AvoliteCandle>();
 
 			AnimationFrameHeight = 18;
 		}
 
 		public override bool RightClick(int i, int j)
 		{
-			//Item.NewItem(i * 16, j * 16, 16, 16, ModContent.ItemType<Items.Placeable.SGAmod.NoviteCandle>());
 			WorldGen.KillTile(i, j);
 			return true;
 		}

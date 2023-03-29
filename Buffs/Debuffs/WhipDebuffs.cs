@@ -1,23 +1,23 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using rail;
+using RijamsMod.Items.Weapons.Summon.Whips;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace RijamsMod.Buffs.Debuffs
 {
 	public class VileWhipDebuff : ModBuff
 	{
+		public static readonly int TagDamage = 8;
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Vile Whipped");
-			// Description.SetDefault("+8 summon tag damage");
 			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
 			// Other mods may check it for different purposes.
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedByVileWhip = true;
@@ -25,15 +25,14 @@ namespace RijamsMod.Buffs.Debuffs
 	}
 	public class ViciousWhipDebuff : ModBuff
 	{
+		public static readonly int TagDamage = 8;
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Vicious Whipped");
-			// Description.SetDefault("+8 summon tag damage");
 			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
 			// Other mods may check it for different purposes.
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedByViciousWhip = true;
@@ -41,15 +40,14 @@ namespace RijamsMod.Buffs.Debuffs
 	}
 	public class SulfuricWhipDebuff : ModBuff
 	{
+		public static readonly int TagDamage = 10;
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Sulfuric Whipped");
-			// Description.SetDefault("+5 summon tag damage");
 			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
 			// Other mods may check it for different purposes.
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedBySulfuricWhip = true;
@@ -59,13 +57,10 @@ namespace RijamsMod.Buffs.Debuffs
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Forbidden Whipped");
-			// Description.SetDefault("");
 			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
 			// Other mods may check it for different purposes.
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedByForbiddenWhip = true;
@@ -73,15 +68,14 @@ namespace RijamsMod.Buffs.Debuffs
 	}
 	public class FestiveWhipDebuff : ModBuff
 	{
+		public static readonly int TagDamage = 8;
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Festive Whipped");
-			// Description.SetDefault("+8 summon tag damage");
 			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
 			// Other mods may check it for different purposes.
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedByFestiveWhip = true;
@@ -89,15 +83,14 @@ namespace RijamsMod.Buffs.Debuffs
 	}
 	public class SupernovaWhipDebuff : ModBuff
 	{
+		public static readonly int TagDamage = 20;
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Supernova Whipped");
-			// Description.SetDefault("+20 summon tag damage");
 			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
 			// Other mods may check it for different purposes.
 			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
 		}
-
 		public override void Update(NPC npc, ref int buffIndex)
 		{
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedBySupernovaWhip = true;
@@ -126,65 +119,71 @@ namespace RijamsMod.Buffs.Debuffs
 			markedBySupernovaWhip = false;
 		}
 
-		// TODO: Inconsistent with vanilla, increasing damage AFTER it is randomised, not before. Change to a different hook in the future.
-		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
 		{
 			// Only player attacks should benefit from this buff, hence the NPC and trap checks.
-			if (!projectile.npcProj && !projectile.trap && (projectile.minion || ProjectileID.Sets.MinionShot[projectile.type]))
+			if (projectile.npcProj || projectile.trap || !projectile.IsMinionOrSentryRelated)
 			{
-				if (markedByVileWhip)
-				{
-					damage += 8;
-				}
-				if (markedByViciousWhip)
-				{
-					damage += 8;
-				}
-				if (markedBySulfuricWhip)
-				{
-					damage += 10;
-					Dust.NewDust(npc.Center, npc.width, npc.height, ModContent.DustType<Dusts.SulfurDust>(), 1f * hitDirection, 1f * hitDirection, 150, default, 1f);
-				}
-				if (markedByForbiddenWhip)
-				{
-					// Player owner = Main.player[projectile.owner];
-					// float ownerSummonKB = owner.GetTotalKnockback(DamageClass.Summon).Additive * owner.GetTotalKnockback(DamageClass.Summon).Multiplicative;
-					// float ownerSummonKB2 = owner.GetTotalKnockback(DamageClass.Summon).Base; // Vanilla uses .Base instead of the others
+				return;
+			}
 
-					// Oddly, the projectile doesn't update it's knockback dynamically like it does with damage.
+			// SummonTagDamageMultiplier scales down tag damage for some specific minion and sentry projectiles for balance purposes.
+			float projTagMultiplier = ProjectileID.Sets.SummonTagDamageMultiplier[projectile.type];
 
-					float multiplier = 0.8f;
-					if (knockback != 0)
-					{
-						multiplier -= (knockback / 50f); // multiplier becomes less with more knockback
-					}
-					npc.velocity *= multiplier;
-					// Main.NewText("ownerSummonKB " + ownerSummonKB + " ownerSummonKB2 " + ownerSummonKB2 + " knockback " + knockback + " multiplier " + multiplier);
-					// Main.NewText("damage " + damage + " knockback " + knockback + " crit " + crit + " multiplier " + multiplier);
-					Dust.NewDust(npc.Center, npc.width, npc.height, DustID.GemAmber, 1f * hitDirection, 1f * hitDirection, 150, default, 1f);
-				}
-				if (markedByFestiveWhip)
+			if (markedByVileWhip)
+			{
+				// Apply a flat bonus to every hit
+				modifiers.FlatBonusDamage += VileWhipDebuff.TagDamage * projTagMultiplier;
+			}
+			if (markedByViciousWhip)
+			{
+				modifiers.FlatBonusDamage += ViciousWhipDebuff.TagDamage * projTagMultiplier;
+			}
+			if (markedBySulfuricWhip)
+			{
+				modifiers.FlatBonusDamage += SulfuricWhipDebuff.TagDamage * projTagMultiplier;
+				Dust.NewDust(npc.Center, npc.width, npc.height, ModContent.DustType<Dusts.SulfurDust>(), modifiers.HitDirection, modifiers.HitDirection, 150, default, 1f);
+			}
+			if (markedByForbiddenWhip)
+			{
+				// Player owner = Main.player[projectile.owner];
+				// float ownerSummonKB = owner.GetTotalKnockback(DamageClass.Summon).Additive * owner.GetTotalKnockback(DamageClass.Summon).Multiplicative;
+				// float ownerSummonKB2 = owner.GetTotalKnockback(DamageClass.Summon).Base; // Vanilla uses .Base instead of the others
+
+				// Oddly, the projectile doesn't update it's knockback dynamically like it does with damage.
+
+				float multiplier = 0.8f;
+				if (projectile.knockBack != 0)
 				{
-					damage += 8;
-					for (int i = 0; i < 5; i++)
-					{
-						int selectRand = Utils.SelectRandom(Main.rand, DustID.GreenTorch, DustID.RedTorch);
-						Dust.NewDust(npc.position, npc.width, npc.height, selectRand, 1f * hitDirection, 1f * hitDirection, 0, Color.White, 1f);
-					}
+					multiplier -= (projectile.knockBack / 50f); // multiplier becomes less with more knockback
 				}
-				if (markedBySupernovaWhip)
+				npc.velocity *= multiplier;
+				npc.netUpdate = true;
+				// Main.NewText("ownerSummonKB " + ownerSummonKB + " ownerSummonKB2 " + ownerSummonKB2 + " knockback " + knockback + " multiplier " + multiplier);
+				// Main.NewText("damage " + damage + " knockback " + knockback + " crit " + crit + " multiplier " + multiplier);
+				Dust.NewDust(npc.Center, npc.width, npc.height, DustID.GemAmber, modifiers.HitDirection, modifiers.HitDirection, 150, default, 1f);
+			}
+			if (markedByFestiveWhip)
+			{
+				modifiers.FlatBonusDamage += FestiveWhipDebuff.TagDamage * projTagMultiplier;
+				for (int i = 0; i < 5; i++)
 				{
-					damage += 20;
-					if (Main.rand.NextBool(10))
-					{
-						crit = true;
-					}
-					for (int i = 0; i < 10; i++)
-					{
-						int selectRand = Utils.SelectRandom(Main.rand, DustID.YellowTorch, DustID.BlueTorch);
-						int dust = Dust.NewDust(npc.position, npc.width, npc.height, selectRand, 1f * hitDirection, 1f * hitDirection, 0, Color.White, 2.0f);
-						Main.dust[dust].noGravity = true;
-					}
+					int selectRand = Utils.SelectRandom(Main.rand, DustID.GreenTorch, DustID.RedTorch);
+					Dust.NewDust(npc.position, npc.width, npc.height, selectRand, modifiers.HitDirection, modifiers.HitDirection, 0, Color.White, 1f);
+				}
+			}
+			if (markedBySupernovaWhip)
+			{
+				modifiers.FlatBonusDamage += SupernovaWhipDebuff.TagDamage * projTagMultiplier;
+				if (Main.rand.NextBool(10))
+				{
+					modifiers.SetCrit();
+				}
+				for (int i = 0; i < 10; i++)
+				{
+					int selectRand = Utils.SelectRandom(Main.rand, DustID.YellowTorch, DustID.BlueTorch);
+					int dust = Dust.NewDust(npc.position, npc.width, npc.height, selectRand, modifiers.HitDirection, modifiers.HitDirection, 0, Color.White, 2.0f);
+					Main.dust[dust].noGravity = true;
 				}
 			}
 		}

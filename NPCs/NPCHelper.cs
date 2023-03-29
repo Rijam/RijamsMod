@@ -387,5 +387,69 @@ namespace RijamsMod.NPCs
 				ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelySetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
 			}
 		}
+
+		/// <summary>
+		/// Safely returns the Item of the ModItem from the given mod.
+		/// </summary>
+		/// <param name="mod">The mod that the item is from.</param>
+		/// <param name="itemString">The class name of the item.</param>
+		/// <returns>Item if found, null if not found.</returns>
+		public static Item SafelyGetCrossModItemWithPrice(Mod mod, string itemString, float priceDiv = 1f, float priceMulti = 1f)
+		{
+			mod.TryFind<ModItem>(itemString, out ModItem outItem);
+			if (outItem != null)
+			{
+				outItem.Item.shopCustomPrice = (int)Math.Round(outItem.Item.value / priceDiv * priceMulti);
+				return outItem.Item;
+			}
+			ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelyGetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
+			return null;
+		}
+
+		/// <summary>
+		/// Counts all of the Town NPCs in the world. Town Pets, Old Man, Traveling Merchant, and Skeleton Merchant are not included.
+		/// </summary>
+		public static int CountTownNPCs()
+		{
+			int counter = 0;
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				NPC nPC = Main.npc[i];
+				if (nPC.active && nPC.townNPC)
+				{
+					if (nPC.type != NPCID.OldMan || nPC.type != NPCID.TravellingMerchant || nPC.type != NPCID.SkeletonMerchant || !NPCID.Sets.ActsLikeTownNPC[nPC.type] || !NPCID.Sets.IsTownPet[nPC.type])
+					{
+						counter++;
+					}
+				}
+			}
+			return counter;
+		}
+	}
+	public static class ShopConditions
+	{
+#pragma warning disable CA2211 // Non-constant fields should not be visible
+
+		public static Condition TownNPCsCrossModSupport = new("\'Town NPCs Cross Mod Support\' config is enabled", () => ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport);
+
+		public static Condition HellTraderMovedIn = new("When the Hell Trader has moved in", () => RijamsModWorld.hellTraderArrivable);
+		public static Condition MoonPhase036 = new("During a full, waning crescent, or first quarter moon", () => Condition.MoonPhaseFull.IsMet() || Condition.MoonPhaseWaningCrescent.IsMet() || Condition.MoonPhaseFirstQuarter.IsMet());
+		public static Condition MoonPhase147 = new("During a waning gibbous, new, or waxing gibbous moon", () => Condition.MoonPhaseWaningGibbous.IsMet() || Condition.MoonPhaseNew.IsMet() || Condition.MoonPhaseWaxingGibbous.IsMet());
+		public static Condition MoonPhase25 = new("During a third quarter or waxing crescent moon", () => Condition.MoonPhaseThirdQuarter.IsMet() || Condition.MoonPhaseWaxingCrescent.IsMet());
+		
+		public static Condition IntTravQuestOddDevice = new("The Odd Device quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestOddDevice);
+		public static Condition IntTravQuestBlankDisplay = new("The Blank Display quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestBlankDisplay);
+		public static Condition IntTravQuestMagicOxygenizer = new("The Magic Oxygenizer quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestMagicOxygenizer);
+		public static Condition IntTravQuestTPCore = new("The Teleportation Core quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestTPCore);
+		public static Condition IntTravQuestPrimeThruster = new("The Prime Thruster quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestPrimeThruster);
+		public static Condition IntTravQuestBreadAndJelly = new("The secret quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestBreadAndJelly);
+		
+		public static Condition IsNotNpcShimmered = new("When the vendor is not a shimmer variant", () => !Condition.IsNpcShimmered.IsMet());
+
+		public static string TownNPCRangeS(string range) => $"Where there are {range} or more Town NPCs in the world";
+		public static string CountTownNPCsS(int number) => $"When there are {number} or more Town NPCs in the world";
+		public static Func<bool> CountTownNPCsFb(int number) => () => NPCHelper.CountTownNPCs() >= number;
+
+#pragma warning restore CA2211 // Non-constant fields should not be visible
 	}
 }

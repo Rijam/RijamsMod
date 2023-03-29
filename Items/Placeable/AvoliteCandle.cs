@@ -45,7 +45,7 @@ namespace RijamsMod.Items.Placeable
 				.AddIngredient(ItemID.DD2ElderCrystal)
 				.AddIngredient(ModContent.ItemType<Materials.SunEssence>())
 				.AddTile(TileID.CrystalBall)
-				.AddCondition(Recipe.Condition.InSkyHeight)
+				.AddCondition(Condition.InSkyHeight)
 				.Register();
 		}
 	}

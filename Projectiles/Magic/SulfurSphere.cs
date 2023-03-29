@@ -58,11 +58,11 @@ namespace RijamsMod.Projectiles.Magic
 				}
 			}
 		}
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300 + Main.rand.Next(0, 120));
 		}
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300 + Main.rand.Next(0, 120));
 			target.netUpdate = true;

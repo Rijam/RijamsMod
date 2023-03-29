@@ -144,12 +144,12 @@ namespace RijamsMod.Projectiles.Melee
 		{
 			// DisplayName.SetDefault("Frosty Shiv");
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			// 60 frames = 1 second
 			target.AddBuff(BuffID.Frostburn, 120);
 		}
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			target.AddBuff(BuffID.Frostburn, 120);
 		}

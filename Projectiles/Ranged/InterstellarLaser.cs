@@ -8,9 +8,11 @@ using System.Reflection.Emit;
 using System.Security.Cryptography.X509Certificates;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using static Humanizer.In;
 
@@ -53,6 +55,29 @@ namespace RijamsMod.Projectiles.Ranged
 
 			DrawOriginOffsetY = -16;
 		}
+
+		public override void OnSpawn(IEntitySource source)
+		{
+			/*if (source is EntitySource_ItemUse_WithAmmo itemUse && itemUse.Entity is Player player && player.whoAmI == Projectile.owner)
+			{
+				Projectile bullet = Projectile.NewProjectileDirect(source, Vector2.Zero, Vector2.Zero, itemUse.AmmoItemIdUsed, 0, 0, -1);
+				//int ammoExtraUpdates = bullet.extraUpdates;
+				Projectile.penetrate = bullet.penetrate;
+				Projectile.coldDamage = bullet.coldDamage;
+				Projectile.tileCollide = bullet.tileCollide;
+				//bool homing = ProjectileID.Sets.CultistIsResistantTo[bullet.type];
+				bullet.Kill();
+			}*/
+			/*if (source is EntitySource_Parent parent
+				&& parent.Entity is Player player
+				&& player.whoAmI == Projectile.owner)
+			{
+				Projectile.netUpdate = true;
+			}*/
+			//Projectile.netUpdate = true;
+			//Mod.Logger.DebugFormat("IntersetllarLaser: drawColor {0}, homing {1}, homingDetectionRange {2}", drawColor, homing, homingDetectionRange);
+			//Mod.Logger.DebugFormat("IntersetllarLaser: penetrate {0}, coldDamage {1}, tileCollide {2}", Projectile.penetrate, Projectile.coldDamage, Projectile.tileCollide);
+		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			//If collide with tile, reduce the penetrate.
@@ -82,7 +107,7 @@ namespace RijamsMod.Projectiles.Ranged
 			return true;
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (inflictBuff > 0)
 			{
@@ -95,7 +120,7 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 		}
 
-		public override void OnHitPvp(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			if (inflictBuff > 0)
 			{
@@ -106,11 +131,35 @@ namespace RijamsMod.Projectiles.Ranged
 				SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
 				Projectile.velocity *= -1;
 			}
+		}
+
+		public override bool PreAI()
+		{
+			if (Projectile.ai[0] == 0)
+			{
+				Projectile.tileCollide = false;
+			}
+			return true;
 		}
 
 		public override void AI()
 		{
 			//Projectile.velocity = Vector2.Zero;
+
+			/*if (Projectile.ai[2] == 0)
+			{
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+					"-> drawColor " + drawColor + " homing " + homing + " homingDetectionRange " + homingDetectionRange
+					+ " bounceOnTiles " + bounceOnTiles + " bounceOnNPCs " + bounceOnNPCs
+					+ " inflictBuff " + inflictBuff + " buffTime " + buffTime), new Color(100, 100, 100));
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+					"-> Projectile.timeLeft " + Projectile.timeLeft + " Projectile.tileCollide " + Projectile.tileCollide + " Projectile.ignoreWater " + Projectile.ignoreWater
+					+ " Projectile.penetrate " + Projectile.penetrate + " Projectile.coldDamage " + Projectile.coldDamage), new Color(150, 150, 150));
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+					"-> Projectile.ai[0] " + Projectile.ai[0] + " Projectile.ai[1] " + Projectile.ai[1] + " Projectile.ai[2] " + Projectile.ai[2]), new Color(170, 170, 170));
+			}
+
+			Projectile.ai[2]++;*/
 
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			Lighting.AddLight(Projectile.Center, drawColor.ToVector3() * 0.2f);
@@ -188,18 +237,6 @@ namespace RijamsMod.Projectiles.Ranged
 			SoundEngine.PlaySound(SoundID.NPCDeath3, Projectile.position);
 		}
 
-		public override void OnSpawn(IEntitySource source)
-		{
-			/*if (source is EntitySource_Parent parent
-				&& parent.Entity is Player player
-				&& player.whoAmI == Projectile.owner)
-			{
-				Projectile.netUpdate = true;
-			}*/
-			Projectile.netUpdate = true;
-			//Mod.Logger.DebugFormat("IntersetllarLaser: drawColor {0}, homing {1}, homingDetectionRange {2}", drawColor, homing, homingDetectionRange);
-			//Mod.Logger.DebugFormat("IntersetllarLaser: penetrate {0}, coldDamage {1}, tileCollide {2}", Projectile.penetrate, Projectile.coldDamage, Projectile.tileCollide);
-		}
 		public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.WriteRGB(drawColor);

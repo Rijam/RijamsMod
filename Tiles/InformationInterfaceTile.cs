@@ -23,11 +23,6 @@ namespace RijamsMod.Tiles
 			AnimationFrameHeight = 54;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 48, 48, ModContent.ItemType<Items.Placeable.InformationInterfaceTile>());
-		}
-
 		public override void AnimateTile(ref int frame, ref int frameCounter)
 		{
 			frameCounter++;

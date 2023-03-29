@@ -76,9 +76,6 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			return false;
 		}
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-		}
 		bool shooting = false;
 		public override void AI()
 		{

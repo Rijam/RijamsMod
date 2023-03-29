@@ -85,11 +85,11 @@ namespace RijamsMod.Projectiles.Summon.Whips
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+		{
             target.AddBuff(ModContent.BuffType<Buffs.Debuffs.ForbiddenWhipDebuff>(), 180); // 3 Seconds
             Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
-            Projectile.damage = (int)(damage * 0.9f);
+            Projectile.damage = (int)(Projectile.damage * 0.9f);
         }
 
         // This method draws a line between all points of the whip, in case there's empty space between the sprites.

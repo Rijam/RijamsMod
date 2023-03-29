@@ -77,7 +77,8 @@ namespace RijamsMod.Items.Tools
 			if (Main.mouseLeft && Main.mouseLeftRelease && note > 0)
 			{
 				PlayPiano(note, player, octave);
-				//NetMessage.SendData(MessageID.InstrumentSound, -1, -1, null, player.whoAmI, range);
+				// Main.musicPitch = range;
+				// NetMessage.SendData(MessageID.InstrumentSound, -1, -1, null, player.whoAmI, range);
 
 				return false;
 			}
@@ -103,7 +104,7 @@ namespace RijamsMod.Items.Tools
 			float OneSixth = 1f / 6f;
 			int playerPosX = (int)player.Center.X / 16;
 			int playerPosY = (int)player.Center.Y / 16;
-			if (WorldGen.InWorld(playerPosX, playerPosY) && Main.tile[playerPosX, playerPosY] != null && Main.tile[playerPosX, playerPosY].TileType == TileID.Pianos)
+			if (WorldGen.InWorld(playerPosX, playerPosY) && Main.tile[playerPosX, playerPosY] != null && Tiles.GlobalTiles.isPiano.Contains(Main.tile[playerPosX, playerPosY].TileType))
 			{
 				Vector2 vector6 = new(player.position.X + (float)player.width * 0.5f, player.position.Y + (float)player.height * 0.5f);
 				float mousePosX = (float)Main.mouseX + Main.screenPosition.X - vector6.X;
@@ -247,88 +248,87 @@ namespace RijamsMod.Items.Tools
 				_ => PianoC3
 			};
 
-			SlotId soundIndex = SlotId.Invalid;
+			RijamsMod modInstance = ModContent.GetInstance<RijamsMod>();
 
 			switch (noteValue)
 			{
 				case 1:
-					soundIndex = SoundEngine.PlaySound(note with { Pitch = -0.5f }, player.position); // C low
-					NetMessage.PlayNetSound(new(player.position, (ushort)soundIndex.Value, pitchOffset: -0.5f));
+					modInstance.PlayNetworkSound(note with { Pitch = -0.5f }, player.position, player); // C low
 					break;
 				case 2:
-					SoundEngine.PlaySound(note with { Pitch = -0.4703f }, player.position); // C#
+					modInstance.PlayNetworkSound(note with { Pitch = -0.4703f }, player.position, player); // C#
 					break;
 				case 3:
-					SoundEngine.PlaySound(note with { Pitch = -0.4388f }, player.position); // D
+					modInstance.PlayNetworkSound(note with { Pitch = -0.4388f }, player.position, player); // D
 					break;
 				case 4:
-					SoundEngine.PlaySound(note with { Pitch = -0.4054f }, player.position); // D#
+					modInstance.PlayNetworkSound(note with { Pitch = -0.4054f }, player.position, player); // D#
 					break;
 				case 5:
-					SoundEngine.PlaySound(note with { Pitch = -0.3700f }, player.position); // E
+					modInstance.PlayNetworkSound(note with { Pitch = -0.3700f }, player.position, player); // E
 					break;
 				case 6:
-					SoundEngine.PlaySound(note with { Pitch = -0.3326f }, player.position); // F
+					modInstance.PlayNetworkSound(note with { Pitch = -0.3326f }, player.position, player); // F
 					break;
 				case 7:
-					SoundEngine.PlaySound(note with { Pitch = -0.2929f }, player.position); // F#
+					modInstance.PlayNetworkSound(note with { Pitch = -0.2929f }, player.position, player); // F#
 					break;
 				case 8:
-					SoundEngine.PlaySound(note with { Pitch = -0.2508f }, player.position); // G
+					modInstance.PlayNetworkSound(note with { Pitch = -0.2508f }, player.position, player); // G
 					break;
 				case 9:
-					SoundEngine.PlaySound(note with { Pitch = -0.2063f }, player.position); // G#
+					modInstance.PlayNetworkSound(note with { Pitch = -0.2063f }, player.position, player); // G#
 					break;
 				case 10:
-					SoundEngine.PlaySound(note with { Pitch = -0.1591f }, player.position); // A
+					modInstance.PlayNetworkSound(note with { Pitch = -0.1591f }, player.position, player); // A
 					break;
 				case 11:
-					SoundEngine.PlaySound(note with { Pitch = -0.1091f }, player.position); // A#
+					modInstance.PlayNetworkSound(note with { Pitch = -0.1091f }, player.position, player); // A#
 					break;
 				case 12:
-					SoundEngine.PlaySound(note with { Pitch = -0.0561f }, player.position); // B
+					modInstance.PlayNetworkSound(note with { Pitch = -0.0561f }, player.position, player); // B
 					break;
 				case 13:
-					SoundEngine.PlaySound(note with { Pitch = 0f }, player.position); // C middle
+					modInstance.PlayNetworkSound(note with { Pitch = 0f }, player.position, player); // C middle
 					break;
 				case 14:
-					SoundEngine.PlaySound(note with { Pitch = 0.0595f }, player.position); // C#
+					modInstance.PlayNetworkSound(note with { Pitch = 0.0595f }, player.position, player); // C#
 					break;
 				case 15:
-					SoundEngine.PlaySound(note with { Pitch = 0.1225f }, player.position); // D
+					modInstance.PlayNetworkSound(note with { Pitch = 0.1225f }, player.position, player); // D
 					break;
 				case 16:
-					SoundEngine.PlaySound(note with { Pitch = 0.1892f }, player.position); // D#
+					modInstance.PlayNetworkSound(note with { Pitch = 0.1892f }, player.position, player); // D#
 					break;
 				case 17:
-					SoundEngine.PlaySound(note with { Pitch = 0.2599f }, player.position); // E
+					modInstance.PlayNetworkSound(note with { Pitch = 0.2599f }, player.position, player); // E
 					break;
 				case 18:
-					SoundEngine.PlaySound(note with { Pitch = 0.3348f }, player.position); // F
+					modInstance.PlayNetworkSound(note with { Pitch = 0.3348f }, player.position, player); // F
 					break;
 				case 19:
-					SoundEngine.PlaySound(note with { Pitch = 0.4142f }, player.position); // F#
+					modInstance.PlayNetworkSound(note with { Pitch = 0.4142f }, player.position, player); // F#
 					break;
 				case 20:
-					SoundEngine.PlaySound(note with { Pitch = 0.4983f }, player.position); // G
+					modInstance.PlayNetworkSound(note with { Pitch = 0.4983f }, player.position, player); // G
 					break;
 				case 21:
-					SoundEngine.PlaySound(note with { Pitch = 0.5874f }, player.position); // G#
+					modInstance.PlayNetworkSound(note with { Pitch = 0.5874f }, player.position, player); // G#
 					break;
 				case 22:
-					SoundEngine.PlaySound(note with { Pitch = 0.6818f }, player.position); // A
+					modInstance.PlayNetworkSound(note with { Pitch = 0.6818f }, player.position, player); // A
 					break;
 				case 23:
-					SoundEngine.PlaySound(note with { Pitch = 0.7818f }, player.position); // A#
+					modInstance.PlayNetworkSound(note with { Pitch = 0.7818f }, player.position, player); // A#
 					break;
 				case 24:
-					SoundEngine.PlaySound(note with { Pitch = 0.8877f }, player.position); // B
+					modInstance.PlayNetworkSound(note with { Pitch = 0.8877f }, player.position, player); // B
 					break;
 				case 25:
-					SoundEngine.PlaySound(note with { Pitch = 2f }, player.position); // C high
+					modInstance.PlayNetworkSound(note with { Pitch = 2f }, player.position, player); // C high
 					break;
 				default:
-					SoundEngine.PlaySound(note with { Pitch = 0f }, player.position); // C middle
+					modInstance.PlayNetworkSound(note with { Pitch = 0f }, player.position, player); // C middle
 					break;
 			};
 		}

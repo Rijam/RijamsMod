@@ -66,11 +66,11 @@ namespace RijamsMod.Projectiles.Ranged
 		}
 		public override Color? GetAlpha(Color lightColor) => Color.White;
 
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			target.netUpdate = true;
@@ -142,9 +142,9 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			Lighting.AddLight(Projectile.Center, 0.25f, 0.5f, 0.25f);
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Projectile.damage = (int)(damage * 0.9f);
+			Projectile.damage = (int)(hit.Damage * 0.9f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -220,9 +220,9 @@ namespace RijamsMod.Projectiles.Ranged
 			Projectile.localNPCHitCooldown = 60;
 			Projectile.timeLeft = 1200;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Projectile.damage = (int)(damage * 0.70f);
+			Projectile.damage = (int)(hit.Damage * 0.70f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -335,9 +335,9 @@ namespace RijamsMod.Projectiles.Ranged
 			Projectile.extraUpdates = 7;
 			Projectile.timeLeft = 1200;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Projectile.damage = (int)(damage * 0.9f);
+			Projectile.damage = (int)(Projectile.damage * 0.9f);
 		}
 		public override void AI()
 		{
@@ -417,9 +417,9 @@ namespace RijamsMod.Projectiles.Ranged
 			Projectile.localNPCHitCooldown = 30;
 			Projectile.timeLeft = 1200;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Projectile.damage = (int)(damage * 0.75f);
+			Projectile.damage = (int)(hit.Damage * 0.75f);
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{

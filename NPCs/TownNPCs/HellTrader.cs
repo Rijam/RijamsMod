@@ -31,6 +31,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
+		private const string ShopName = "Shop";
 		internal static int ShimmerHeadIndex;
 		private static ITownNPCProfile NPCProfile;
 
@@ -123,7 +124,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
@@ -239,15 +240,6 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				NPC.rarity = 0;
 			}
-
-			/*if (isShimmered && !NPC.IsShimmerVariant)
-			{
-				NPC.townNpcVariationIndex = 1;
-			}
-			if (NPC.IsShimmerVariant && !isShimmered)
-			{
-				isShimmered = true;
-			}*/
 		}
 
 		// Sitting frame height is corrected here.
@@ -489,11 +481,11 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
 			if (firstButton)
 			{
-				shop = true;
+				shop = ShopName;
 			}
 			if (!firstButton)
 			{
@@ -521,6 +513,55 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
+		public override void AddShops()
+		{
+			var npcShop = new NPCShop(Type, ShopName)
+				.Add(new Item(ItemID.ObsidianRose) { shopCustomPrice = 50000 })
+				.Add(ItemID.MagmaStone)
+				.Add(new Item(ItemID.DemonScythe) { shopCustomPrice = 250000 }, Condition.DownedEyeOfCthulhu)
+				.Add(ItemID.ShadowKey, Condition.DownedSkeletron)
+				.Add(ItemID.Cascade, Condition.DownedSkeletron)
+				.Add(ModContent.ItemType<Items.Weapons.Melee.TimonsAxe>(), Condition.DownedSkeletron)
+				.Add(ItemID.HelFire, Condition.Hardmode)
+				.Add(ItemID.Pwnhammer, Condition.Hardmode)
+				.Add(ItemID.LavaCharm, Condition.Hardmode)
+				.Add(ItemID.UnholyTrident, Condition.Hardmode, Condition.DownedMechBossAny)
+				.Add(ModContent.ItemType<Items.Weapons.Melee.HammerOfRetribution>(), Condition.Hardmode, Condition.DownedMechBossAny)
+				.Add(ModContent.ItemType<Items.Weapons.Melee.Quietus>(), Condition.Hardmode, Condition.DownedGolem)
+				.Add(new Item(ItemID.AshBlock) { shopCustomPrice = 70 })
+				.Add(new Item(ItemID.ObsidianBrick) { shopCustomPrice = 100 })
+				.Add(new Item(ItemID.Hellstone) { shopCustomPrice = 150 }, Condition.Hardmode)
+				.Add(new Item(ItemID.HellstoneBrick) { shopCustomPrice = 200 }, Condition.Hardmode)
+				.Add(new Item(ItemID.LivingFireBlock) { shopCustomPrice = 50 }, Condition.Hardmode)
+				.Add(new Item(ItemID.DemonTorch) { shopCustomPrice = 10 })
+				.Add(new Item(ItemID.Fireblossom) { shopCustomPrice = 10000 })
+				.Add(new Item(ItemID.Hellforge) { shopCustomPrice = 75000 }, Condition.DownedEowOrBoc);
+			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
+			{
+				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman))
+				{
+					npcShop.Add(new Item(ItemID.ObsidianLockbox) { shopCustomPrice = 50000 }, ShopConditions.HellTraderMovedIn, Condition.NpcIsPresent(fisherman.Type));
+				}
+			}
+			npcShop.Add(ModContent.ItemType<Items.Accessories.Misc.LifeSapperRing>());
+			npcShop.Add(ModContent.ItemType<Items.Accessories.Misc.ManaSapperRing>());
+			npcShop.Add(ModContent.ItemType<Items.Materials.InfernicFabric>(), Condition.DownedEarlygameBoss);
+			npcShop.Add(ModContent.ItemType<Items.Materials.Sulfur>(), Condition.Hardmode);
+			npcShop.Add(new Item(ItemID.PlumbersHat) { shopCustomPrice = 400000 }, ShopConditions.HellTraderMovedIn);
+			npcShop.Add(new Item(ItemID.KiteBoneSerpent) { shopCustomPrice = 50000 }, Condition.HappyWindyDay, ShopConditions.HellTraderMovedIn);
+			npcShop.Add(ItemID.HellMinecart,
+				ShopConditions.MoonPhase036, Condition.DownedSkeletron, ShopConditions.HellTraderMovedIn);
+			npcShop.Add(ItemID.OrnateShadowKey,
+				ShopConditions.MoonPhase147, Condition.DownedSkeletron, ShopConditions.HellTraderMovedIn);
+			npcShop.Add(ItemID.OrnateShadowKey,
+				ShopConditions.MoonPhase25, Condition.DownedSkeletron, ShopConditions.HellTraderMovedIn);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.HellTrader.HellTrader_Hood>(), ShopConditions.HellTraderMovedIn);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.HellTrader.HellTrader_Robes>(), ShopConditions.HellTraderMovedIn);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.HellTrader.HellTrader_Trousers>(), ShopConditions.HellTraderMovedIn);
+			npcShop.Register();
+		}
+
+		/*
 		public override void SetupShop(Chest shop, ref int nextSlot)
 		{
 			shop.item[nextSlot].SetDefaults(ItemID.ObsidianRose);
@@ -655,6 +696,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				nextSlot++;
 			}
 		}
+		*/
 
 		public override bool CanGoToStatue(bool toKingStatue)
 		{

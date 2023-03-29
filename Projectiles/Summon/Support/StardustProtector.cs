@@ -175,8 +175,8 @@ namespace RijamsMod.Projectiles.Summon.Support
 					Projectile.ai[0] = (int)(baseAttackSpeed * (1f / player.GetAttackSpeed(DamageClass.Summon)));
 					if (Main.netMode == NetmodeID.SinglePlayer)
 					{
-						npc.StrikeNPCNoInteraction((int)(baseDamage * Math.Round(player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative, 2)),
-							0f, npc.direction, false, true, true);
+						npc.SimpleStrikeNPC((int)(baseDamage * Math.Round(player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative)), npc.direction,
+							noPlayerInteraction: true);
 					}
 					else
 					{

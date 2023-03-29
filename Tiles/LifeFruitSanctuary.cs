@@ -35,10 +35,6 @@ namespace RijamsMod.Tiles
 			g = 0.45f;
 			b = 0.23f;
 		}
-		public override void KillMultiTile(int i, int j, int frameX, int frameY)
-		{
-			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Placeable.LifeFruitSanctuary>());
-		}
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{

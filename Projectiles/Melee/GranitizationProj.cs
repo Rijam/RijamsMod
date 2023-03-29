@@ -113,7 +113,7 @@ namespace RijamsMod.Projectiles.Melee
             Projectile.Center = player.RotatedRelativePoint(player.position + offset) - Projectile.velocity;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             //Player player = Main.player[Projectile.owner];
             //player.AddBuff(ModContent.BuffType<Buffs.LuckyStrike>(), 4 * 60);

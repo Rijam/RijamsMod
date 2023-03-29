@@ -14,8 +14,6 @@ namespace RijamsMod.NPCs.TownNPCs
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Unconscious Harpy");
-			//NPCID.Sets.TownCritter[npc.type] = true;
 			Main.npcFrameCount[NPC.type] = 1;
 			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
 			{
@@ -28,8 +26,6 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			NPC.friendly = true;
 			NPC.npcSlots = 5f;
-			//npc.townNPC = true;
-			//npc.dontTakeDamage = true;
 			NPC.width = 72;
 			NPC.height = 22;
 			NPC.aiStyle = 0;
@@ -41,59 +37,46 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.knockBackResist = 0.1f;
 			NPC.rarity = 1;
 		}
-		/*public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
-		{
-			return true;
-		}*/
 
-		/*public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			int associatedNPCType = ModContent.NPCType<Harpy>();
-			bestiaryEntry.UIInfoProvider = new CommonEnemyUICollectionInfoProvider(ContentSamples.NpcBestiaryCreditIdsByNpcNetIds[associatedNPCType], quickUnlock: true);
-
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-			{
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
-				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
-			});
-		}*/
-
-		public override bool CanChat() //from Calamity's Vanities
+		public override bool CanChat()
 		{
 			return true;
 		}
 
 		public override void AI()
 		{
-			NPC.breath += 2;
-			NPC.TargetClosest(false);
-			NPC.spriteDirection = 1;//npc.direction;
-			//From Spirit mod
+			NPC.spriteDirection = 1;
+
+			// This is where we check to see if a player has clicked on our NPC.
+			// First, don't run this code if it is a multiplayer client.
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
-				NPC.homeless = true;
-				NPC.homeTileX = -1;
-				NPC.homeTileY = -1;
-				NPC.netUpdate = true;
-			}
-			foreach (var player in Main.player)
-			{
-				if (!player.active) continue;
-				if (player.talkNPC == NPC.whoAmI)
+				// Loop through every player on the server.
+				for (int i = 0; i < Main.maxPlayers; i++)
 				{
-					Rescue();
-					return;
+					// If the player is active (on the server) and are talking to this NPC...
+					if (Main.player[i].active && Main.player[i].talkNPC == NPC.whoAmI)
+					{
+						NPC.Transform(ModContent.NPCType<Harpy>()); // Transform to our real Town NPC.																  
+						Main.BestiaryTracker.Chats.RegisterChatStartWith(NPC); // Unlock the Town NPC in the Bestiary.																  
+						Main.player[i].SetTalkNPC(NPC.whoAmI);  // Change who the player is talking to to the new Town NPC. 
+						RijamsModWorld.savedHarpy = true; // Set our rescue bool to true.
+						RijamsModWorld.harpyJustRescued = true;
+						Mod.Logger.Debug("RijamsMod: Harpy NPC rescued.");
+
+						// We need to sync these changes in multiplayer.
+						if (Main.netMode == NetmodeID.Server)
+						{
+							NetMessage.SendData(MessageID.SyncTalkNPC, -1, -1, null, i);
+							NetMessage.SendData(MessageID.WorldData);
+						}
+					}
 				}
 			}
 		}
 
 		public override string GetChat()
 		{
-			Rescue();
-			//RijamsModWorld.savedHarpy = true;
-			//RijamsModWorld.UpdateWorldBool();
-			//npc.Transform(ModContent.NPCType<Harpy>());
-			Mod.Logger.Debug("RijamsMod: Harpy NPC rescued.");
 			return "Ow, my head hurts... AHH! Don't attack me, please! I'm friendly... you too?";
 		}
 		
@@ -102,15 +85,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			return false;
 		}
 
-		public void Rescue()
-		{
-			NPC.dontTakeDamage = false;
-			RijamsModWorld.savedHarpy = true;
-			RijamsModWorld.UpdateWorldBool();
-			NPC.Transform(ModContent.NPCType<Harpy>());
-			RijamsModWorld.harpyJustRescued = true;
-		}
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) //from Calamity's Vanities
+		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (spawnInfo.Player.ZoneSkyHeight && !RijamsModWorld.savedHarpy && !NPC.AnyNPCs(ModContent.NPCType<UnconsciousHarpy>()) && !NPC.AnyNPCs(ModContent.NPCType<Harpy>()))
 			{
@@ -121,7 +96,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			return 0f;
 		}
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{

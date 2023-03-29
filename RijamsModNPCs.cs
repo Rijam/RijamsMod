@@ -33,91 +33,6 @@ namespace RijamsMod
 			sulfuricAcid = false;
 			bleedingOut = false;
 		}
-		public override bool SpecialOnKill(NPC npc)
-		{
-			bool burgRingWorked = false;
-			Player burgRingWorkedPlayer = null;
-			if (Main.netMode != NetmodeID.MultiplayerClient)
-			{
-				for (int i = 0; i < Main.maxPlayers; i++)
-				{
-					Player player = Main.player[i];
-					if (!player.active)
-					{
-						continue;
-					}
-					RijamsModPlayer moddedplayer = player.GetModPlayer<RijamsModPlayer>();
-					if (moddedplayer.burglarsRing || moddedplayer.warriorRing || moddedplayer.lifeSapperRing || moddedplayer.manaSapperRing)
-					{
-						// Mod.Logger.Debug($"Player {player.whoAmI} has Burglar's Ring");
-						// Mod.Logger.Debug($"NPC is: {npc.FullName}");
-						// Mod.Logger.Debug($"npc.lastInteraction is {npc.lastInteraction}");
-						// Mod.Logger.Debug($"player.lastCreatureHit is {player.lastCreatureHit}");
-
-						if (npc.immortal || npc.dontCountMe || !npc.active || npc.lastInteraction == Main.maxPlayers || npc.CountsAsACritter)
-						{
-							continue;
-						}
-
-						// If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-						if (moddedplayer.burglarsRing && !npc.boss)
-						{
-							// Mod.Logger.Debug($"NPCLoot called for NPC Id: {npc.type}. Who Am I: {npc.whoAmI}. To banner: {Item.NPCtoBanner(npc.type)}");
-							npc.NPCLoot();
-							// Mod.Logger.Debug("Success?");
-							burgRingWorked = true;
-							burgRingWorkedPlayer = player;
-						}
-
-						// If the player has the Warrior Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-						if (moddedplayer.warriorRing)
-						{
-							int chance = (int)Math.Round(20 - (player.luck * 10)); //1 in 20 chance (5%) but is affected by luck.
-							if (Main.rand.NextBool(chance))
-							{
-								player.AddBuff(ModContent.BuffType<Buffs.Other.WarriorEnergy>(), 300);
-								if (Main.netMode != NetmodeID.Server)
-								{
-									SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/RingPowerup") { Volume = 0.75f });
-								}
-							}
-						}
-
-						// If the player has the Life Sapper Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-						if (moddedplayer.lifeSapperRing)
-						{
-							int healAmount = 1 + (Math.Max(player.statLifeMax, player.statLifeMax2) / 100); // Base of 1 + 1 for every 100 max HP. Example: 100 HP = healed 2; 400 HP = healed 5; 
-							player.Heal(healAmount);
-						}
-
-						// If the player has the Life Sapper Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-						if (moddedplayer.manaSapperRing)
-						{
-							int manaAmount = 2 + (Math.Max(player.statManaMax, player.statManaMax2) / 100); // Base of 2 + 1 for every 100 max mana. Example: 20 MP = healed 2; 200 MP = healed 4; 
-							player.statMana += manaAmount;
-							player.ManaEffect(manaAmount);
-						}
-					}
-				}
-			}
-			// Still doesn't play the sound in multiplayer
-			if (burgRingWorked)
-			{
-				// Mod.Logger.Debug("Sound?");
-				float volume = ModContent.GetInstance<RijamsModConfigServer>().BurglarsRingSound / 100f;
-				if (volume > 0)
-				{
-					if (Main.CurrentPlayer.whoAmI == burgRingWorkedPlayer.whoAmI)
-					{
-						SoundEngine.PlaySound(SoundID.Item35 with { Volume = volume, Pitch = 0.75f }, burgRingWorkedPlayer.Center); // not being called?
-					}
-					// Mod.Logger.Debug("Main.CurrentPlayer.whoAmI " + Main.CurrentPlayer.whoAmI + " Main.LocalPlayer.whoAmI " + Main.LocalPlayer.whoAmI);
-					// Mod.Logger.Debug("workedPlayer.whoAmI " + workedPlayer.whoAmI + " workedPlayer.name " + workedPlayer.name + " workedPlayer.Center " + workedPlayer.Center);
-					// Mod.Logger.Debug("Played sound? volume = " + volume);
-				}
-			}
-			return base.SpecialOnKill(npc);
-		}
 
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
@@ -261,7 +176,7 @@ namespace RijamsMod
 			}
 		}
 
-		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit)
+		public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
 		{
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
 			if (projectile != null)
@@ -311,7 +226,7 @@ namespace RijamsMod
 				}
 			}
 		}
-		public override void OnHitByItem(NPC npc, Player player, Item item, int damage, float knockback, bool crit)
+		public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
 		{
 			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
 			if (moddedplayer.daybreakStone && item.playerIndexTheItemIsReservedFor == player.whoAmI && item.CountsAsClass(DamageClass.Melee))

@@ -36,7 +36,7 @@ namespace RijamsMod.Items.Accessories.Movement
 		private delegate void orig_DrawPlayer_03_PortableStool(ref PlayerDrawSet drawinfo);
 		private delegate void hook_DrawPlayer_03_PortableStool(orig_DrawPlayer_03_PortableStool orig, ref PlayerDrawSet drawinfo);
 
-		private static event hook_DrawPlayer_03_PortableStool On_DrawPlayer_03_PortableStool
+		/*private static event hook_DrawPlayer_03_PortableStool On_DrawPlayer_03_PortableStool
 		{
 			add => HookEndpointManager.Add<hook_DrawPlayer_03_PortableStool>(DrawPlayer_03_PortableStool, value);
 			remove => HookEndpointManager.Remove<hook_DrawPlayer_03_PortableStool>(DrawPlayer_03_PortableStool, value);
@@ -50,7 +50,7 @@ namespace RijamsMod.Items.Accessories.Movement
 		public override void Unload()
 		{
 			On_DrawPlayer_03_PortableStool -= Hook_DrawPlayer_03_PortableStool;
-		}
+		}*/
 
 		private void Hook_DrawPlayer_03_PortableStool(orig_DrawPlayer_03_PortableStool orig, ref PlayerDrawSet drawinfo)
 		{

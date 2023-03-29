@@ -61,55 +61,64 @@ namespace RijamsMod.Items.Weapons.Magic
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			// NextVector2Circular is like how far it can randomly choose to target. It'll spread out more with bigger numbers. Nightglow uses 1f, 1f
-			// NextVector2CircularEdge determines it's "velocity" or how fast out it'll travel. Nightglow uses 3f, 3f
-			Vector2 randomCircular = Main.rand.NextVector2Circular(3f, 3f) + Main.rand.NextVector2CircularEdge(3f, 3f);
-			
-			// This will make it always go up instead of sometimes going down.
-			if (randomCircular.Y > 0f)
+			if (Main.netMode != NetmodeID.Server)
 			{
-				randomCircular.Y *= -1f;
+				// NextVector2Circular is like how far it can randomly choose to target. It'll spread out more with bigger numbers. Nightglow uses 1f, 1f
+				// NextVector2CircularEdge determines it's "velocity" or how fast out it'll travel. Nightglow uses 3f, 3f
+				Vector2 randomCircular = Main.rand.NextVector2Circular(3f, 3f) + Main.rand.NextVector2CircularEdge(3f, 3f);
+
+				// This will make it always go up instead of sometimes going down.
+				if (randomCircular.Y > 0f)
+				{
+					randomCircular.Y *= -1f;
+				}
+
+				// This will make it go in the direction the player is facing instead of randomly any direction.
+				//if ((randomCircular.X > 0).ToDirectionInt() != player.direction)
+				//{
+				// 	randomCircular.X *= -1f;
+				//}
+
+				Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
+
+				// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
+				Point playerTileCoords = playerHandPos.ToTileCoordinates();
+				Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
+				if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
+				{
+					playerHandPos = player.MountedCenter;
+				}
+
+				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.05f);
+				projectile.tileCollide = true;
+				projectile.ignoreWater = false;
+				projectile.penetrate = 1;
+				projectile.timeLeft = 500;
+				if (projectile.ModProjectile is LanternLight modProjectile)
+				{
+					modProjectile.timeLeftMax = projectile.timeLeft;
+					modProjectile.vecolityMultiplier = 6f;
+					modProjectile.timeBeforeItCanStartHoming = 420;
+					modProjectile.timeLeftBeforeItStopsHoming = 60;
+					modProjectile.trailLength = 8;
+					modProjectile.shineScale = 0.6f;
+					modProjectile.bounceOnTiles = false;
+					modProjectile.homingRange = 25 * 16; // 25 tiles
+					TorchID.TorchColor(TorchID.Ice, out float r, out float g, out float b);
+					modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
+					modProjectile.buffType = BuffID.Frostburn;
+					modProjectile.buffTime = 240;
+					modProjectile.buffChance = 2;
+
+					modProjectile.orgTileCollide = true;
+					modProjectile.orgIgnoreWater = false;
+					modProjectile.orgPenetrate = 1;
+				}
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
+				}
 			}
-
-			// This will make it go in the direction the player is facing instead of randomly any direction.
-			//if ((randomCircular.X > 0).ToDirectionInt() != player.direction)
-			//{
-			// 	randomCircular.X *= -1f;
-			//}
-
-			Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
-			
-			// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
-			Point playerTileCoords = playerHandPos.ToTileCoordinates();
-			Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
-			if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
-			{
-				playerHandPos = player.MountedCenter;
-			}
-
-			Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.05f);
-			projectile.tileCollide = true;
-			projectile.ignoreWater = false;
-			projectile.penetrate = 1;
-			projectile.timeLeft = 500;
-			if (projectile.ModProjectile is LanternLight modProjectile)
-			{
-				modProjectile.timeLeftMax = projectile.timeLeft;
-				modProjectile.vecolityMultiplier = 6f;
-				modProjectile.timeBeforeItCanStartHoming = 420;
-				modProjectile.timeLeftBeforeItStopsHoming = 60;
-				modProjectile.trailLength = 8;
-				modProjectile.shineScale = 0.6f;
-				modProjectile.bounceOnTiles = false;
-				modProjectile.homingRange = 25 * 16; // 25 tiles
-				TorchID.TorchColor(TorchID.Ice, out float r, out float g, out float b);
-				modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
-				modProjectile.buffType = BuffID.Frostburn;
-				modProjectile.buffTime = 240;
-				modProjectile.buffChance = 2;
-			}
-			projectile.netUpdate = true;
-
 			return false;
 		}
 

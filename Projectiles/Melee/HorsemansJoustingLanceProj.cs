@@ -146,7 +146,7 @@ namespace RijamsMod.Projectiles.Melee
 			}
 		}
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			int itemType = ModContent.ItemType<HorsemansJoustingLance>();
 			if (target.active)
@@ -167,25 +167,19 @@ namespace RijamsMod.Projectiles.Melee
 						Vector2 velocity = new(center.X - posX, center.Y - posY);
 						float velocityDistance = 8f / (float)Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
 						velocity *= velocityDistance;
-						Projectile.NewProjectile(Projectile.GetSource_ItemUse(owner.HeldItem), position, velocity, ProjectileID.FlamingJack, damage / 2, knockback / 2, owner.whoAmI, target.whoAmI);
+						Projectile.NewProjectile(Projectile.GetSource_ItemUse(owner.HeldItem), position, velocity, ProjectileID.FlamingJack, Projectile.damage / 2, Projectile.knockBack / 2, owner.whoAmI, target.whoAmI);
 					}
 				}
 			}
 		}
 
 		// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-		{
-			if (damage > 0)
-			{
-				knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
-			}
-		}
-
 		// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyDamageScaling(ref float damageScale)
+
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 		{
-			damageScale *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
+			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
+			modifiers.SourceDamage *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
 		}
 
 		// Spawning the Flaming Jack is in the player class.

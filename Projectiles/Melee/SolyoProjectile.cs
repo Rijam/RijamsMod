@@ -53,7 +53,7 @@ namespace RijamsMod.Projectiles.Melee
 			}
 			Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.875f);
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(BuffID.Daybreak, 60);
 

@@ -105,8 +105,15 @@ namespace RijamsMod.Items.Weapons.Magic
 				modProjectile.homingRange = 20 * 16; // 20 tiles
 				TorchID.TorchColor(TorchID.Torch, out float r, out float g, out float b);
 				modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
+
+				modProjectile.orgTileCollide = true;
+				modProjectile.orgIgnoreWater = false;
+				modProjectile.orgPenetrate = 1;
 			}
-			projectile.netUpdate = true;
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
+			}
 
 			return false;
 		}

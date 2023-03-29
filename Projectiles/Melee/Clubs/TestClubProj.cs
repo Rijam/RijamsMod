@@ -265,16 +265,16 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 
 		public override bool? CanCutTiles() => true;
 
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (damage > 0)
+			if (damageDone > 0)
 			{
 				SoundEngine.PlaySound(clubHit, Projectile.Center);
 			}
 		}
-		public override void OnHitPvp(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
-			if (damage > 0)
+			if (info.Damage > 0)
 			{
 				SoundEngine.PlaySound(clubHit, Projectile.Center);
 			}

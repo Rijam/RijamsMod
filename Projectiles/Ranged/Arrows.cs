@@ -25,9 +25,9 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			return true;
 		}
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-			Projectile.damage = (int)(damage * 0.93f);
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			Projectile.damage = (int)(Projectile.damage * 0.93f);
 		}
         public override void PostAI()
         {
@@ -73,11 +73,11 @@ namespace RijamsMod.Projectiles.Ranged
 		}
 		public override Color? GetAlpha(Color lightColor) => Color.White;
 
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			target.netUpdate = true;

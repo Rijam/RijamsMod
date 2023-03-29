@@ -2169,7 +2169,7 @@ Mods: {
 
 			SulfuricWhipDebuff: {
 				DisplayName: Sulfuric Whipped
-				Description: +5 summon tag damage
+				Description: +10 summon tag damage
 			}
 
 			SupernovaWhipDebuff: {

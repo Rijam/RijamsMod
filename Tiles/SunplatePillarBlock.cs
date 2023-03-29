@@ -14,7 +14,6 @@ namespace RijamsMod.Tiles
 			Main.tileBlockLight[Type] = true;
 			Main.tileBrick[Type] = true;
 			DustType = DustID.Gold;
-			ItemDrop = ModContent.ItemType<Items.Placeable.SunplatePillarBlock>();
 			AddMapEntry(new Color(213, 178, 28));
 			HitSound = SoundID.Tink;
 		}

@@ -38,7 +38,6 @@ namespace RijamsMod.Tiles
 			TileObjectData.addTile(Type);
 
 			DustType = ModContent.DustType<Dusts.SulfurDust>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.LivingSulfurFireBlock>();
 			AddMapEntry(new Color(255, 255, 0));
 			AnimationFrameHeight = 90;
 		}

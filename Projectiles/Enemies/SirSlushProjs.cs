@@ -27,8 +27,8 @@ namespace RijamsMod.Projectiles.Enemies
 			AIType = -1;
 		}
 
-        public override void OnHitPlayer(Player target, int damage, bool crit)
-        {
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		{
 			target.AddBuff(BuffID.Frozen, 60);
 			if (Main.netMode != NetmodeID.SinglePlayer)
             {

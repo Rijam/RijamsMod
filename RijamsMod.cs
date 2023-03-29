@@ -1,10 +1,14 @@
+using Microsoft.Xna.Framework;
 using RijamsMod.Items.Weapons;
+using RijamsMod.NPCs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace RijamsMod
 {
@@ -32,6 +36,7 @@ namespace RijamsMod
 			Items.GlobalItems.isJoustingLance.Clear();
 			Items.GlobalItems.isLanternWeapon.Clear();
 			Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Clear();
+			Tiles.GlobalTiles.isPiano.Clear();
 			Instance = null;
 			ConfigClient = null;
 			ConfigServer = null;
@@ -70,16 +75,19 @@ namespace RijamsMod
 			}
 			if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs))
 			{
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "GoblinTinkerer", ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>(), () => (bool)bossesAsNPCs.Call("downedGoblinSummoner"));
-				bossesAsNPCs.Call("AddToShop", "WithDiv", "Pumpking", ModContent.ItemType<Items.Weapons.Melee.HorsemansJoustingLance>(), () => true, 0.1f);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Materials.FestivePlating>(), () => NPC.downedChristmasSantank);
-				bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), () => NPC.downedChristmasSantank, 0.1f);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>(), () => true);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "BrainOfCthulhu", ModContent.ItemType<Items.Materials.CrawlerChelicera>(), () => true);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "QueenSlime", ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>(), () => true);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), () => true);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), () => true);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), () => true);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "GoblinTinkerer", ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "DownedGoblinWarlock") });
+				bossesAsNPCs.Call("AddToShop", "WithDiv", "Pumpking", ModContent.ItemType<Items.Weapons.Melee.HorsemansJoustingLance>(), new List<Condition>() { }, 0.1f);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Materials.FestivePlating>(), new List<Condition>() { Condition.DownedSantaNK1 });
+				bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), new List<Condition>() { Condition.DownedSantaNK1 }, 0.1f);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "BrainOfCthulhu", ModContent.ItemType<Items.Materials.CrawlerChelicera>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "QueenSlime", ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CorruptWorld, Condition.Hardmode, Condition.DownedEowOrBoc }, 40);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CorruptWorld, Condition.PreHardmode, Condition.DownedEowOrBoc }, 80);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CorruptionOrHardmode"), Condition.NotDownedEowOrBoc }, 200);
 			}
 			if (ModLoader.TryGetMod("DialogueTweak", out Mod dialogueTweak))
 			{
@@ -157,9 +165,96 @@ namespace RijamsMod
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
 					Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add((int)args[1]);
 					return Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Contains((int)args[1]);
+				case "AddTileToPianos":
+					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					Tiles.GlobalTiles.isPiano.Add((int)args[1]);
+					return Tiles.GlobalTiles.isPiano.Contains((int)args[1]);
 				default:
 					throw new ArgumentException($"Function \"{function}\" is not defined by Rijam's Mod");
 			}
+		}
+
+		// Adapted from Thorium Mod
+		/// <summary>
+		/// Attempts to play a sound across the network. Only supports Volume and Pitch modifiers.
+		/// </summary>
+		/// <param name="soundStyle"> The SoundStyle of the sound. Can include Volume and Pitch modifiers. </param>
+		/// <param name="position"> The position of the sound. </param>
+		/// <param name="player"> The player who is creating the sound. </param>
+		/// <returns>True if multiplayer, false if single player.</returns>
+		public bool PlayNetworkSound(SoundStyle soundStyle, Vector2 position, Player player)
+		{
+			PlaySound(soundStyle, player);
+
+			if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient && player.whoAmI == Main.myPlayer)
+			{
+				// Create a packet to send.
+				ModPacket packet = GetPacket();
+				packet.Write((byte)RijamsModMessageType.PlayNetworkSound); // Message type
+				packet.Write(soundStyle.SoundPath); // Sound path
+				packet.Write(soundStyle.Volume); // Volume
+				packet.Write(soundStyle.Pitch); // Pitch
+				packet.WriteVector2(position); // Position
+				packet.Write((byte)player.whoAmI); // Who created the sound
+				packet.Send(-1, player.whoAmI);
+
+				return true;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Attempts to play a sound across the network. Only supports Volume and Pitch modifiers.
+		/// </summary>
+		/// <param name="soundPath"> The path to the sound to be played. </param>
+		/// <param name="volume"> The volume of the sound. </param>
+		/// <param name="pitch"> The pitch of the sound. 0 is normal pitch. </param>
+		/// <param name="position"> The position of the sound. </param>
+		/// <param name="player"> The player who is creating the sound. </param>
+		/// <returns>True if multiplayer, false if single player.</returns>
+		public bool PlayNetworkSound(string soundPath, float volume, float pitch, Vector2 position, Player player)
+		{
+			PlaySound(new SoundStyle(soundPath) with { Volume = volume, Pitch = pitch }, player);
+
+			if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient && player.whoAmI == Main.myPlayer)
+			{
+				// Create a packet to send.
+				ModPacket packet = GetPacket();
+				packet.Write((byte)RijamsModMessageType.PlayNetworkSound); // Message type
+				packet.Write(soundPath); // Sound path
+				packet.Write(volume); // Volume
+				packet.Write(pitch); // Pitch
+				packet.WriteVector2(position); // Position
+				packet.Write((byte)player.whoAmI); // Who created the sound
+				packet.Send(-1, player.whoAmI);
+
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Receives the packet and requests to play the sound.
+		/// </summary>
+		/// <param name="reader"></param>
+		internal void PlayNetworkSoundReceive(BinaryReader reader)
+		{
+			string soundPath = reader.ReadString();
+			float volume = reader.ReadSingle();
+			float pitch = reader.ReadSingle();
+			Vector2 position = reader.ReadVector2();
+			int playerIndex = reader.ReadByte();
+
+			Player player = Main.player[playerIndex];
+			PlayNetworkSound(new SoundStyle(soundPath) with { Volume = volume, Pitch = pitch }, position, player);
+		}
+		/// <summary>
+		/// Plays the sound at the player who created the sound's center.
+		/// </summary>
+		/// <param name="soundStyle"> The sound. </param>
+		/// <param name="player"> The player who created the sound. </param>
+		internal static void PlaySound(SoundStyle soundStyle, Player player)
+		{
+			SoundEngine.PlaySound(soundStyle, player.Center);
 		}
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -190,7 +285,7 @@ namespace RijamsMod
 					NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Teleportation Core quest completed (Multiplayer packet).");
 					break;
-				case RijamsModMessageType.SetQuestRyeJam:
+				case RijamsModMessageType.SetQuestBreadAndJelly:
 					RijamsModWorld.intTravQuestBreadAndJelly = true;
 					NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Rye Jam quest completed (Multiplayer packet).");
@@ -215,6 +310,9 @@ namespace RijamsMod
 					NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Snugget Town Pet Arrivable (Multiplayer packet).");
 					break;
+				case RijamsModMessageType.PlayNetworkSound:
+					PlayNetworkSoundReceive(reader);
+					break;
 				default:
 					Logger.WarnFormat("RijamsMod: Unknown Message type: {0}", msgType);
 					break;
@@ -227,10 +325,11 @@ namespace RijamsMod
 		SetQuestOddDevice,
 		SetQuestBlankDisplay,
 		SetQuestTPCore,
-		SetQuestRyeJam,
+		SetQuestBreadAndJelly,
 		SetQuestMagicOxygenizer,
 		SetQuestPrimeThruster,
 		SetHellTraderArrivable,
-		SetSnuggetTownPetArrivable
+		SetSnuggetTownPetArrivable,
+		PlayNetworkSound
 	}
 }

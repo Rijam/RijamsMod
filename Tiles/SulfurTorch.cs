@@ -45,7 +45,6 @@ namespace RijamsMod.Tiles
 			// name.SetDefault("Torch");
 			AddMapEntry(new Color(250, 250, 0), name);
 			DustType = ModContent.DustType<SulfurDust>();
-			ItemDrop = ModContent.ItemType<Items.Placeable.SulfurTorch>();
 			AdjTiles = new int[] { TileID.Torches };
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
 			// Assets

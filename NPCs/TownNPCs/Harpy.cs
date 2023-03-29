@@ -14,12 +14,14 @@ using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader.IO;
+using RijamsMod.Items.Placeable;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
 	[AutoloadHead]
 	public class Harpy : ModNPC
 	{
+		private const string ShopName = "Shop";
 		internal static int ShimmerHeadIndex;
 		private static ITownNPCProfile NPCProfile;
 
@@ -107,7 +109,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
@@ -144,6 +146,10 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (RijamsModWorld.harpyJustRescued && !NPC.homeless && !NPCHelper.IsFarFromHome(Main.npc[NPC.FindFirstNPC(Type)]))
 			{
 				RijamsModWorld.harpyJustRescued = false;
+			}
+			if (justRescuedTime > 0)
+			{
+				justRescuedTime--;
 			}
 			/*if (isShimmered && !NPC.IsShimmerVariant)
 			{
@@ -356,174 +362,73 @@ namespace RijamsMod.NPCs.TownNPCs
 			button = Language.GetTextValue("LegacyInterface.28"); //Shop
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
 			if (firstButton)
 			{
-				shop = true;
+				shop = ShopName;
 			}
 		}
 
-		public override void SetupShop(Chest shop, ref int nextSlot)
+		public override void AddShops()
 		{
-			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
-			NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<Harpy>())], 3, out List<int> _, out List<int> _, out List<int> _, out List<int> npcTypeListAll);
-
-			shop.item[nextSlot].SetDefaults(ItemID.Feather);
-			nextSlot++;
-			if (ModLoader.TryGetMod("CalamityMod", out Mod calamityMod) && townNPCsCrossModSupport)
+			var npcShop = new NPCShop(Type, ShopName)
+				.Add(ItemID.Feather);
+			if (ModLoader.TryGetMod("CalamityMod", out Mod calamityMod) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
-				NPCHelper.SafelySetCrossModItem(calamityMod, "DesertFeather", shop, ref nextSlot);
-
-				if ((bool)calamityMod.Call("GetBossDowned", "dragonfolly"))
-				{
-					NPCHelper.SafelySetCrossModItem(calamityMod, "EffulgentFeather", shop, ref nextSlot, 50000);
-				}
+				npcShop.Add(NPCHelper.SafelyGetCrossModItem(calamityMod, "CalamityMod/DesertFeather"));
+				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(calamityMod, "CalamityMod/EffulgentFeather", 1f, 5f),
+					new Condition("After defeating Dragonfolly", () => (bool)calamityMod.Call("GetBossDowned", "dragonfolly")));
 			}
-			if (ModLoader.TryGetMod("SacredTools", out Mod shadowsOfAbaddon) && townNPCsCrossModSupport) //Shadows of Abaddon
+			if (ModLoader.TryGetMod("SacredTools", out Mod shadowsOfAbaddon) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Shadows of Abaddon
 			{
-				NPCHelper.SafelySetCrossModItem(shadowsOfAbaddon, "BirdFeather", shop, ref nextSlot, 50); //White Feather
-				
-				/*if (SacredToolsDownedHarpyPreHM) //Jensen
-				{
-					//shop.item[nextSlot].SetDefaults(ModLoader.TryGetMod("SacredTools").ItemType("GrandHarpyFeather"));
-					shop.item[nextSlot].SetDefaults(ModLoader.TryGetMod("SacredTools").ItemType("HarpyDrop")); //Grand Harpy Feather
-					shop.item[nextSlot].shopCustomPrice = 10000;
-					nextSlot++;
-				}
-				if (SacredToolsDownedHarpyHM) //Raynare
-				{
-					//shop.item[nextSlot].SetDefaults(ModLoader.TryGetMod("SacredTools").ItemType("RoyalHarpyFeather"));
-					shop.item[nextSlot].SetDefaults(ModLoader.TryGetMod("SacredTools").ItemType("GoldenFeather")); //Royal Harpy Feather
-					shop.item[nextSlot].shopCustomPrice = 20000;
-					nextSlot++;
-				}*/
+				npcShop.Add(NPCHelper.SafelyGetCrossModItem(shadowsOfAbaddon, "SacredTools/BirdFeather")); //White Feather
 			}
-			if (ModLoader.TryGetMod("AAMod", out Mod ancientsAwakened) && townNPCsCrossModSupport) //Ancients Awakened
+			if (ModLoader.TryGetMod("AAMod", out Mod ancientsAwakened) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Ancients Awakened
 			{
-				NPCHelper.SafelySetCrossModItem(ancientsAwakened, "vulture_feather", shop, ref nextSlot, 5000);
-				if (NPC.downedPlantBoss)
-				{
-					NPCHelper.SafelySetCrossModItem(ancientsAwakened, "SeraphFeather", shop, ref nextSlot, 10000);
-				}
-				/*if (AAModDownedAthena) //Athena
-				{
-					shop.item[nextSlot].SetDefaults(ModLoader.TryGetMod("AAMod").ItemType("GoddessFeather"));
-					shop.item[nextSlot].shopCustomPrice = 150000;
-					nextSlot++;
-				}
-				*/
+				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(ancientsAwakened, "AAMod/vulture_feather", 1f, 2f));
+				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(ancientsAwakened, "AAMod/SeraphFeather", 1f, 2f), Condition.DownedPlantera);
 			}
-			/*Mod pinkyMod = ModLoader.TryGetMod("pinkymod");
-			if (pinkyMod != null) //Pinky Mod
+			if (ModLoader.TryGetMod("OrchidMod", out Mod orchidMod) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Orchid Mod
 			{
-				if (PinkymodDownedST) //Sunlight Trader
-				{
-					shop.item[nextSlot].SetDefaults(ModLoader.TryGetMod("PinkyMod").ItemType("SunsweptFeather"));
-					shop.item[nextSlot].shopCustomPrice = 100000;
-					nextSlot++;
-				}
-			}*/
-			if (ModLoader.TryGetMod("OrchidMod", out Mod orchidMod) && townNPCsCrossModSupport) //Orchid Mod
-			{
-				if (NPC.downedBoss1)
-				{
-					NPCHelper.SafelySetCrossModItem(orchidMod, "HarpyTalon", shop, ref nextSlot, 2000);
-				}
+				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(orchidMod, "OrchidMod/HarpyTalon", 1f, 2f), Condition.DownedEyeOfCthulhu);
 			}
-			if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport) //Thorium
+			if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Thorium
 			{
-				NPCHelper.SafelySetCrossModItem(thorium, "BirdTalon", shop, ref nextSlot, 100); //Talon
+				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(thorium, "ThoriumMod/BirdTalon", 1f, 10f)); //Talon
 			}
-			shop.item[nextSlot].SetDefaults(ItemID.SkyMill);
-			shop.item[nextSlot].shopCustomPrice = 17500;
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.LuckyHorseshoe);
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.CelestialMagnet);
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.Starfury);
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.ShinyRedBalloon);
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.CreativeWings); //Fledgling Wings
-			shop.item[nextSlot].shopCustomPrice = 160000;
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.SunplateBlock);
-			shop.item[nextSlot].shopCustomPrice = 20;
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.SunplatePillarBlock>());
-			shop.item[nextSlot].shopCustomPrice = 20;
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.Cloud);
-			shop.item[nextSlot].shopCustomPrice = 90;
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.RainCloud);
-			shop.item[nextSlot].shopCustomPrice = 90;
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.SnowCloudBlock);
-			shop.item[nextSlot].shopCustomPrice = 90;
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.GiantHarpyFeather);
-			nextSlot++;
-			if (Main.hardMode)
+			npcShop.Add(new Item(ItemID.SkyMill) { shopCustomPrice = 17500 });
+			npcShop.Add(ItemID.LuckyHorseshoe);
+			npcShop.Add(ItemID.CelestialMagnet);
+			npcShop.Add(ItemID.Starfury);
+			npcShop.Add(ItemID.ShinyRedBalloon);
+			npcShop.Add(new Item(ItemID.CreativeWings) { shopCustomPrice = 160000 }); //Fledgling Wings
+			npcShop.Add(new Item(ItemID.SunplateBlock) { shopCustomPrice = 20 });
+			npcShop.Add(new Item(ModContent.ItemType<SunplatePillarBlock>()) { shopCustomPrice = 20 });
+			npcShop.Add(new Item(ItemID.Cloud) { shopCustomPrice = 90 });
+			npcShop.Add(new Item(ItemID.RainCloud) { shopCustomPrice = 90 });
+			npcShop.Add(new Item(ItemID.SnowCloudBlock) { shopCustomPrice = 90 });
+			npcShop.Add(ItemID.GiantHarpyFeather);
+			npcShop.Add(ItemID.IceFeather, Condition.Hardmode);
+			if (ModLoader.TryGetMod("QwertysRandomContent", out Mod qwertysBossAndItems) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Qwertys Boss And Items
 			{
-				shop.item[nextSlot].SetDefaults(ItemID.IceFeather);
-				nextSlot++;
-				if (ModLoader.TryGetMod("QwertysRandomContent", out Mod qwertysBossAndItems) && townNPCsCrossModSupport) //Qwertys Boss And Items
-				{
-					NPCHelper.SafelySetCrossModItem(qwertysBossAndItems, "FortressHarpyFeather", shop, ref nextSlot);
-				}
-				if (NPC.downedMechBossAny)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.FireFeather);
-					nextSlot++;
-				}
-				if (NPC.downedPlantBoss)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.BoneFeather);
-					nextSlot++;
-				}
-				if (NPC.downedGolemBoss)
-				{
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>());
-					nextSlot++;
-				}
+				npcShop.Add(NPCHelper.SafelyGetCrossModItem(qwertysBossAndItems, "QwertysRandomContent/FortressHarpyFeather"));
 			}
-			if (NPCHelper.DownedMechBossAll())
+			npcShop.Add(ItemID.FireFeather, Condition.Hardmode, Condition.DownedMechBossAny);
+			npcShop.Add(ItemID.BoneFeather, Condition.Hardmode, Condition.DownedPlantera);
+			npcShop.Add(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>(), Condition.Hardmode, Condition.DownedGolem);
+			npcShop.Add(ItemID.SoulofFlight, Condition.Hardmode, Condition.DownedMechBossAll);
+			npcShop.Add(ItemID.HarpyWings, Condition.Hardmode, Condition.DownedPlantera);
+			npcShop.Add(ModContent.ItemType<GuideToProperFlightTechniques>(), Condition.Hardmode, Condition.DownedMechBossAll);
+			npcShop.Add(ModContent.ItemType<Items.Materials.SunEssence>(), Condition.Hardmode, Condition.DownedGolem);
+			npcShop.Add(ItemID.BirdieRattle, new Condition(ShopConditions.CountTownNPCsS(20), ShopConditions.CountTownNPCsFb(20)));
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.Harpy.Harpy_Shirt>());
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.Harpy.Harpy_Shorts>());
+			if (ModLoader.TryGetMod("Split", out Mod split) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Split Mod
 			{
-				shop.item[nextSlot].SetDefaults(ItemID.SoulofFlight);
-				shop.item[nextSlot].shopCustomPrice = 15000;
-				nextSlot++;
+				npcShop.Add(new Item(NPCHelper.SafelyGetCrossModItem(split, "Split/PosterHarpy")) { shopCustomPrice = 10000 });
 			}
-			if (NPC.downedPlantBoss)
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.HarpyWings);
-				nextSlot++;
-			}
-			if (NPCHelper.DownedMechBossAll())
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<GuideToProperFlightTechniques>());
-				nextSlot++;
-			}
-			if (NPC.downedGolemBoss)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.SunEssence>());
-				nextSlot++;
-			}
-			if (npcTypeListAll.Count >= 20)
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.BirdieRattle);
-				nextSlot++;
-			}
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy.Harpy_Shirt>());
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.Harpy.Harpy_Shorts>());
-			nextSlot++;
-			if (ModLoader.TryGetMod("Split", out Mod split) && townNPCsCrossModSupport) //Split Mod
-			{
-				NPCHelper.SafelySetCrossModItem(split, "PosterHarpy", shop, ref nextSlot, 10000);
-			}
+			npcShop.Register();
 		}
 
 		public override bool CanGoToStatue(bool toKingStatue)
@@ -572,18 +477,6 @@ namespace RijamsMod.NPCs.TownNPCs
 			multiplier = 12f;
 			randomOffset = 0.15f;
 		}
-
-		/*public override void SaveData(TagCompound tag)
-		{
-			//tag["HarpyIsShimmerVariant"] = isShimmered;
-			//Mod.Logger.DebugFormat("Harpy Save: NPC.townNpcVariationIndex {0}, tag[\"HarpyIsShimmerVariant\"] {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag["HarpyIsShimmerVariant"].ToString(), isShimmered);
-		}
-
-		public override void LoadData(TagCompound tag)
-		{
-			//isShimmered = tag.GetBool("HarpyIsShimmerVariant");
-			//Mod.Logger.DebugFormat("Harpy Load: NPC.townNpcVariationIndex {0}, tag.GetBool(\"HarpyIsShimmerVariant\") {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag.GetBool("HarpyIsShimmerVariant").ToString(), isShimmered);
-		}*/
 	}
 	public class HarpyProfile : ITownNPCProfile
 	{

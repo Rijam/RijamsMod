@@ -86,11 +86,11 @@ namespace RijamsMod.Projectiles.Summon.Whips
             }
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+		{
             target.AddBuff(ModContent.BuffType<Buffs.Debuffs.FestiveWhipDebuff>(), 240);
             Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
-            Projectile.damage = (int)(damage * 0.8f);
+            Projectile.damage = (int)(Projectile.damage * 0.8f);
 
             Player owner = Main.player[Projectile.owner];
             float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates;

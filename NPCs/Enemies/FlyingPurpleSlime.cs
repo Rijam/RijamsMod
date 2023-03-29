@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
@@ -54,21 +53,21 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.rotation = NPC.velocity.X * 0.1f;
 		}
 
-		public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+		public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
 		{
 			if (NPC.life > 0)
 			{
-				for (int num331 = 0; num331 < damage / NPC.lifeMax * 100.0; num331++)
+				for (int i = 0; i < hit.Damage / NPC.lifeMax * 100.0; i++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.t_Slime, 0f, 0f, NPC.alpha, Color.Magenta);
 				}
 			}
 		}
-		public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+		public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
 		{
 			if (NPC.life > 0)
 			{
-				for (int num331 = 0; num331 < damage / NPC.lifeMax * 100.0; num331++)
+				for (int i = 0; i < hit.Damage / NPC.lifeMax * 100.0; i++)
 				{
 					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.t_Slime, 0f, 0f, NPC.alpha, Color.Purple);
 				}
@@ -95,7 +94,7 @@ namespace RijamsMod.NPCs.Enemies
 				}
 			}
 		}
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{

@@ -76,7 +76,6 @@ namespace RijamsMod.Tiles
 			// name.SetDefault("Strip Light");
 			AddMapEntry(new Color(250, 250, 250), name);
 			DustType = DustID.WhiteTorch;
-			ItemDrop = ModContent.ItemType<Items.Placeable.StripLight>();
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
 		}
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)

@@ -36,7 +36,8 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.knockBack = 5;
 			Item.value = 750000;
 			Item.rare = ItemRarityID.Purple;//11
-			Item.UseSound = SoundID.Item41 with { Pitch = -0.2f, Volume = 0.5f };
+			Item.UseSound = new(Mod.Name + "/Sounds/Item/InterstellarRifle");
+			//Item.UseSound = SoundID.Item41 with { Pitch = -0.2f, Volume = 0.5f };
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<InterstellarLaser>();
 			Item.shootSpeed = 7f;
@@ -99,10 +100,12 @@ namespace RijamsMod.Items.Weapons.Ranged
 				modProjectile.homing = homing;
 				modProjectile.homingDetectionRange = 10;
 			}
-			laser.netUpdate = true;
-			NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, laser.whoAmI);
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, laser.whoAmI);
+			}
 
-			SoundEngine.PlaySound(SoundID.Item67 with { Pitch = 0.7f, Volume = 0.5f }, laser.position);
+			//SoundEngine.PlaySound(SoundID.Item67 with { Pitch = 0.7f, Volume = 0.5f }, laser.position);
 
 			return false;
 		}

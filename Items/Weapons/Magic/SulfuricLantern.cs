@@ -27,7 +27,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.shoot = ModContent.ProjectileType<LanternLight>();
-			Item.shootSpeed = 8;
+			Item.shootSpeed = 1;
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = 20000;
 			Item.DamageType = DamageClass.Magic;
@@ -91,7 +91,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				{
 					playerHandPos = player.MountedCenter;
 				}
-				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("playerHandPos " + playerHandPos + " randomCircular " + randomCircular + " player.whoAmI " + player.whoAmI), new Color(200, 200, 200));
+				// ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("playerHandPos " + playerHandPos + " randomCircular " + randomCircular + " player.whoAmI " + player.whoAmI), new Color(200, 200, 200));
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.575f);
 				projectile.tileCollide = false;
 				projectile.ignoreWater = true;
@@ -99,7 +99,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				projectile.timeLeft = 500;
 				if (projectile.ModProjectile is LanternLight modProjectile)
 				{
-					modProjectile.timeLeftMax = projectile.timeLeft;
+					modProjectile.timeLeftMax = 500;
 					modProjectile.vecolityMultiplier = 10f;
 					modProjectile.timeBeforeItCanStartHoming = 440;
 					modProjectile.timeLeftBeforeItStopsHoming = 60;
@@ -112,6 +112,15 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.buffTime = 180;
 					modProjectile.buffChance = 2;
 					modProjectile.homingNeedsLineOfSight = false;
+
+					modProjectile.orgTileCollide = false;
+					modProjectile.orgIgnoreWater = true;
+					modProjectile.orgPenetrate = 3;
+
+					/*modProjectile.Projectile.tileCollide = false;
+					modProjectile.Projectile.ignoreWater = true;
+					modProjectile.Projectile.penetrate = 3;
+					modProjectile.Projectile.timeLeft = 500;*/
 				}
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{

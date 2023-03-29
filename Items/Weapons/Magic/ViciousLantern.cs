@@ -111,10 +111,13 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.buffTime = 240;
 					modProjectile.buffChance = 1;
 					modProjectile.homingNeedsLineOfSight = true;
+
+					modProjectile.orgTileCollide = true;
+					modProjectile.orgIgnoreWater = true;
+					modProjectile.orgPenetrate = 2;
 				}
-				if (Main.netMode == NetmodeID.Server)
+				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					projectile.netUpdate = true;
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 			}

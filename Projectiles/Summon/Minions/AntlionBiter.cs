@@ -74,10 +74,6 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			return true;
 		}
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-		}
-
         public override void AI()
 		{
 			Player player = Main.player[Projectile.owner];

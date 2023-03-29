@@ -110,6 +110,14 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.homingRange = 35 * 16; // 35 tiles
 					modProjectile.overrideColor = Main.DiscoColor * 0.5f;
 					modProjectile.homingNeedsLineOfSight = true;
+
+					modProjectile.orgTileCollide = true;
+					modProjectile.orgIgnoreWater = false;
+					modProjectile.orgPenetrate = 3;
+				}
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 			}
 

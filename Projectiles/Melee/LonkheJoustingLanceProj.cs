@@ -147,18 +147,12 @@ namespace RijamsMod.Projectiles.Melee
 		}
 
 		// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-		{
-			if (damage > 0)
-			{
-				knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
-			}
-		}
-
 		// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
-		public override void ModifyDamageScaling(ref float damageScale)
+
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 		{
-			damageScale *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
+			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
+			modifiers.SourceDamage *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
 		}
 
 		// This is the custom collision that Jousting Lances uses. 

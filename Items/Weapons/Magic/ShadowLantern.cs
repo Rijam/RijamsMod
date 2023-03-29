@@ -104,10 +104,13 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.bounceOnTiles = true;
 					modProjectile.homingRange = 35 * 16; // 35 tiles
 					modProjectile.overrideColor = new Color(0.2f, 0.3f, 0.32f) * 0.5f;
+
+					modProjectile.orgTileCollide = true;
+					modProjectile.orgIgnoreWater = false;
+					modProjectile.orgPenetrate = 2;
 				}
-				if (Main.netMode == NetmodeID.Server)
+				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
-					projectile.netUpdate = true;
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 			}
@@ -153,7 +156,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				.AddRecipeGroup(RijamsModRecipes.EvilBars, 3)
 				.AddIngredient(ItemID.ShadowCandle, 3)
 				.AddTile(TileID.Anvils)
-				.AddCondition(Recipe.Condition.InGraveyardBiome)
+				.AddCondition(Condition.InGraveyard)
 				.Register();
 		}
 	}

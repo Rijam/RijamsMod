@@ -121,6 +121,10 @@ namespace RijamsMod.Items.Weapons.Magic
 				{
 					modProjectile.timeLeftMax = projectile.timeLeft;
 
+					modProjectile.orgTileCollide = true;
+					modProjectile.orgIgnoreWater = false;
+					modProjectile.orgPenetrate = 3;
+
 					switch (colorMode)
 					{
 						case 0: // Red
@@ -135,7 +139,7 @@ namespace RijamsMod.Items.Weapons.Magic
 							modProjectile.vecolityMultiplier = 10f;
 							modProjectile.timeBeforeItCanStartHoming = 400;
 							modProjectile.timeLeftBeforeItStopsHoming = 70;
-							projectile.tileCollide = false;
+							modProjectile.orgTileCollide = false;
 							modProjectile.bounceOnTiles = false;
 							modProjectile.overrideColor = new Color(1f, 0.99f, 0.47f, 1f) * 0.5f;
 							modProjectile.homingNeedsLineOfSight = false;
@@ -154,6 +158,10 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.trailLength = 18;
 					modProjectile.shineScale = 1.2f;
 					modProjectile.homingRange = 50 * 16; // 50 tiles
+				}
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 
 				switch (colorMode)

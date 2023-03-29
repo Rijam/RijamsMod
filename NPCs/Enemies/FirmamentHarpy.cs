@@ -57,7 +57,7 @@ namespace RijamsMod.NPCs.Enemies
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
@@ -224,7 +224,7 @@ namespace RijamsMod.NPCs.Enemies
 			}
 		}
 
-		public override void OnHitPlayer(Player target, int damage, bool crit)
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
 		{
 			if (AIState == 1)
 			{

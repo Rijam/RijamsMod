@@ -69,8 +69,8 @@ namespace RijamsMod.Items.Weapons.Magic
 				.AddIngredient(ItemID.Shiverthorn, 3)
 				.AddIngredient(ItemID.LivingFireBlock, 20)
 				.AddIngredient(ItemID.LivingFrostFireBlock, 20)
-				.AddCondition(Recipe.Condition.InSnow)
-				.AddCondition(Recipe.Condition.NearLava)
+				.AddCondition(Condition.InSnow)
+				.AddCondition(Condition.NearLava)
 				.Register();
 		}
 	}

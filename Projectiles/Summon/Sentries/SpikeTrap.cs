@@ -33,14 +33,7 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 		{
 			return true;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-		{
-			/*target.StrikeNPC(projectile.damage, 0f, projectile.spriteDirection, false, true, true);
-			target.netUpdate = true;*/
-			//Dust.NewDust(target.position, target.width, target.height, DustID.Blood);
-		}
 		
-
 		public override void AI()
         {
 			
@@ -62,14 +55,19 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 						Rectangle rec2 = new((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
 						if (rec1.Intersects(rec2))
 						{
+							NPC.HitInfo hitInfo = new()
+							{
+								Damage = damage,
+								HitDirection = npc.direction,
+								Knockback = 0f
+							};
 							if (Main.netMode == NetmodeID.SinglePlayer)
 							{
-								npc.StrikeNPC(damage, 0f, npc.direction, false, true, true);
-								npc.netUpdate = true;
+								npc.StrikeNPC(hitInfo, false, true);
 							}
 							else
-                            {
-								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage, number3: 0f, number4: npc.direction, number5: 0);
+							{
+								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage);
 								npc.netUpdate = true;
 							}
 							Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);
@@ -124,14 +122,19 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 						Rectangle rec2 = new((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
 						if (rec1.Intersects(rec2))
 						{
+							NPC.HitInfo hitInfo = new()
+							{
+								Damage = damage,
+								HitDirection = npc.direction,
+								Knockback = 0f
+							};
 							if (Main.netMode == NetmodeID.SinglePlayer)
 							{
-								npc.StrikeNPC(damage, 0f, npc.direction, false, true, true);
-								npc.netUpdate = true;
+								npc.StrikeNPC(hitInfo, false, true);
 							}
 							else
 							{
-								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage, number3: 0f, number4: npc.direction, number5: 0);
+								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage);
 								npc.netUpdate = true;
 							}
 							Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);

@@ -385,41 +385,6 @@ namespace RijamsMod.Items.Armor.Skyware
 
 	public class SkywareArmorSetPlayer : ModPlayer
 	{
-		public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
-		{
-			if (target.CanBeChasedBy(item))
-			{
-				SpawnAttack(target);
-			}
-		}
-		public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
-		{
-			if (proj.type != ModContent.ProjectileType<SkywareArmorHarpyFeather>() || proj.type != ModContent.ProjectileType<RedSkywareArmorHarpyFeather>())
-			{
-				if (target.CanBeChasedBy(proj))
-				{
-					SpawnAttack(target);
-				}
-			}
-		}
-		public override void OnHitPvp(Item item, Player target, int damage, bool crit)
-		{
-			if (!target.dead && Player.InOpposingTeam(target))
-			{
-				SpawnAttack(target);
-			}
-		}
-		public override void OnHitPvpWithProj(Projectile proj, Player target, int damage, bool crit)
-		{
-			if (proj.type != ModContent.ProjectileType<SkywareArmorHarpyFeather>() || proj.type != ModContent.ProjectileType<RedSkywareArmorHarpyFeather>())
-			{
-				if (!target.dead && Player.InOpposingTeam(target))
-				{
-					SpawnAttack(target);
-				}
-			}
-		}
-
 		public void SpawnAttack(Entity victim)
 		{
 			if (Main.myPlayer != Player.whoAmI)
@@ -540,6 +505,38 @@ namespace RijamsMod.Items.Armor.Skyware
 							break;
 						default:
 							break;
+					}
+				}
+			}
+		}
+
+		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			if (target.CanBeChasedBy(item))
+			{
+				SpawnAttack(target);
+			}
+		}
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			if (proj.type != ModContent.ProjectileType<SkywareArmorHarpyFeather>() || proj.type != ModContent.ProjectileType<RedSkywareArmorHarpyFeather>())
+			{
+				if (target.CanBeChasedBy(proj))
+				{
+					SpawnAttack(target);
+				}
+			}
+		}
+		public override void OnHurt(Player.HurtInfo info)
+		{
+			if (info.PvP)
+			{
+				Player target = Main.player[info.DamageSource.SourcePlayerIndex];
+				if (info.DamageSource.SourceProjectileType != ModContent.ProjectileType<SkywareArmorHarpyFeather>() || info.DamageSource.SourceProjectileType != ModContent.ProjectileType<RedSkywareArmorHarpyFeather>())
+				{
+					if (!target.dead && Player.InOpposingTeam(target))
+					{
+						SpawnAttack(target);
 					}
 				}
 			}

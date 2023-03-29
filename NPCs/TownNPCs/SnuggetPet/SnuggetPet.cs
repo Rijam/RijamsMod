@@ -178,13 +178,13 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			button = Language.GetTextValue("UI.PetTheAnimal"); // Pet
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+		/*public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
 			if (firstButton)
 			{
 				shop = false;
 			}
-		}
+		}*/
 
 		public override bool CanGoToStatue(bool toKingStatue)
 		{
@@ -195,6 +195,16 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 		{
 			return NPC.IsShimmerVariant ? Main.DiscoColor : Color.White; // variationType of 1 makes it shimmered, even when it isn't.
 			// return Color.White;
+		}
+
+		public override void SaveData(TagCompound tag)
+		{
+			tag["SnuggetVariationType"] = variationType;
+		}
+
+		public override void LoadData(TagCompound tag)
+		{
+			variationType = tag.GetInt("SnuggetVariationType");
 		}
 	}
 

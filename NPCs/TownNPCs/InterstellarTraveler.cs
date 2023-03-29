@@ -31,10 +31,10 @@ namespace RijamsMod.NPCs.TownNPCs
 	{
 		private bool usedMicronWrap = false;
 		private int usedMicronWrapTime = 0;
-		private bool isShimmered; // NPC.IsShimmerVariant is not kept when opening the shop.
 
 		#region Set Defaults
 
+		private const string ShopName = "Shop";
 		internal static int ShimmerHeadIndex;
 		internal static int HelmetHeadIndex;
 		private static ITownNPCProfile NPCProfile;
@@ -124,7 +124,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage)
+		public override void HitEffect(NPC.HitInfo hit)
 		{
 			if (Main.netMode != NetmodeID.Server && NPC.life <= 0)
 			{
@@ -630,11 +630,11 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+		public override void OnChatButtonClicked(bool firstButton, ref string shop)
 		{
 			if (firstButton)
 			{
-				shop = true;
+				shop = ShopName;
 			}
 			if (!firstButton)
 			{
@@ -729,11 +729,11 @@ namespace RijamsMod.NPCs.TownNPCs
 					NetMessage.SendData(MessageID.WorldData);
 					RijamsModWorld.intTravQuestBreadAndJelly = true;
 					ModPacket packet = Mod.GetPacket();
-					packet.Write((byte)RijamsModMessageType.SetQuestRyeJam);
+					packet.Write((byte)RijamsModMessageType.SetQuestBreadAndJelly);
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
-				Mod.Logger.Debug("RijamsMod: Rye Jam quest completed.");
+				Mod.Logger.Debug("RijamsMod: Bread and Jelly quest completed.");
 				PlayCompleteQuestSound(true);
 				return;
 			}
@@ -930,251 +930,93 @@ namespace RijamsMod.NPCs.TownNPCs
 		#endregion
 
 		#region Shop
-		public override void SetupShop(Chest shop, ref int nextSlot)
+		public override void AddShops()
 		{
-			NPC intTrav = Main.npc[NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>())];
-			isShimmered = intTrav.IsShimmerVariant;
-			NPCHelper.GetNearbyResidentNPCs(intTrav, 3, out List<int> _, out List<int> _, out List<int> _, out List<int> npcTypeListAll);
+			var npcShop = new NPCShop(Type, ShopName)
+				.Add(ModContent.ItemType<InterstellarPistol>(), Condition.DownedSkeletron, Condition.NpcIsPresent(NPCID.ArmsDealer))
+				.Add(ModContent.ItemType<PlasmaRifle>(), Condition.DownedPlantera)
+				.Add(ModContent.ItemType<InterstellarSMG>(), Condition.DownedPlantera)
+				.Add(ModContent.ItemType<AGMMissileLauncher>(), Condition.DownedGolem, Condition.NpcIsPresent(NPCID.Cyborg))
+				.Add(ModContent.ItemType<InterstellarCarbine>(), Condition.DownedMoonLord)
+				.Add(ModContent.ItemType<ControlGlove>(), new Condition("After defeating Deerclops or in Hardmode", () => Condition.DownedDeerclops.IsMet() || Condition.Hardmode.IsMet()));
 
-			int armsDealer = NPC.FindFirstNPC(NPCID.ArmsDealer);
-			if (armsDealer > 0 && NPC.downedBoss3)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<InterstellarPistol>());
-				nextSlot++;
-			}
-			if (NPC.downedPlantBoss)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<PlasmaRifle>());
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<InterstellarSMG>());
-				nextSlot++;
-			}
-			int cyborg = NPC.FindFirstNPC(NPCID.Cyborg);
-			if (cyborg > 0 && NPC.downedGolemBoss)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<AGMMissileLauncher>());
-				nextSlot++;
-			}
-			if (NPC.downedMoonlord)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<InterstellarCarbine>());
-				nextSlot++;
-			}
-			if (NPC.downedDeerclops || Main.hardMode)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ControlGlove>());
-				nextSlot++;
-			}
-			if (Main.rand.NextBool(2))
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.GoldWatch);
-				shop.item[nextSlot].shopCustomPrice = 10000;
-				nextSlot++;
-			}
-			else
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.PlatinumWatch);
-				shop.item[nextSlot].shopCustomPrice = 10000;
-				nextSlot++;
-			}
-			shop.item[nextSlot].SetDefaults(ItemID.DepthMeter);
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.Compass);
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.Radar);
-			nextSlot++;
-			shop.item[nextSlot].SetDefaults(ItemID.MetalDetector);
-			nextSlot++;
-			if (NPC.downedBoss3)
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.TallyCounter);
-				nextSlot++;
-			}
+			Condition watchRandom(int numberToCheck) => new("Swaps between Watches at random", () => Main.GameUpdateCount % 2 == numberToCheck);
+			npcShop.Add(new Item(ItemID.GoldWatch) { shopCustomPrice = 10000 }, watchRandom(0));
+			npcShop.Add(new Item(ItemID.PlatinumWatch) { shopCustomPrice = 10000 }, watchRandom(1));
+			npcShop.Add(ItemID.DepthMeter);
+			npcShop.Add(ItemID.Compass);
+			npcShop.Add(ItemID.Radar);
+			npcShop.Add(ItemID.MetalDetector);
+			npcShop.Add(ItemID.TallyCounter, Condition.DownedSkeletron);
+
 			// Sell more of the Traveling Merchant's info items the more Town NPCs there are.
-			if (npcTypeListAll.Count >= 5 && npcTypeListAll.Count <= 7)
-			{
-				if (Main.moonPhase == 0 || Main.moonPhase == 3 || Main.moonPhase == 6)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.LifeformAnalyzer);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-				}
-				if (Main.moonPhase == 1 || Main.moonPhase == 4 || Main.moonPhase == 7)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.DPSMeter);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-				}
-				if (Main.moonPhase == 2 || Main.moonPhase == 5)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.Stopwatch);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-				}
-			}
-			if (npcTypeListAll.Count >= 8 && npcTypeListAll.Count <= 11)
-			{
-				if (Main.moonPhase == 0 || Main.moonPhase == 3 || Main.moonPhase == 6)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.LifeformAnalyzer);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.DPSMeter);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-				}
-				if (Main.moonPhase == 1 || Main.moonPhase == 4 || Main.moonPhase == 7)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.DPSMeter);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.Stopwatch);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-				}
-				if (Main.moonPhase == 2 || Main.moonPhase == 5)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.Stopwatch);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.LifeformAnalyzer);
-					shop.item[nextSlot].shopCustomPrice = 55000;
-					nextSlot++;
-				}
-			}
-			if (npcTypeListAll.Count >= 12)
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.LifeformAnalyzer);
-				shop.item[nextSlot].shopCustomPrice = 55000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ItemID.DPSMeter);
-				shop.item[nextSlot].shopCustomPrice = 55000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ItemID.Stopwatch);
-				shop.item[nextSlot].shopCustomPrice = 55000;
-				nextSlot++;
-			}
-			if (NPC.savedAngler && Main.LocalPlayer.anglerQuestsFinished >= 1)
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.FishermansGuide);
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ItemID.Sextant);
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ItemID.WeatherRadio);
-				nextSlot++;
-			}
-			if (RijamsModWorld.intTravQuestBlankDisplay)
-			{
-				switch (Main.rand.Next(0, 4))// randomly choose a shop item
-				{
-					case 0:
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<LifeDisplay>());
-						shop.item[nextSlot].shopCustomPrice = 1000;
-						nextSlot++;
-						break;
-					case 1:
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<ManaDisplay>());
-						shop.item[nextSlot].shopCustomPrice = 1000;
-						nextSlot++;
-						break;
-					case 2:
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<DefenseDisplay>());
-						shop.item[nextSlot].shopCustomPrice = 1000;
-						nextSlot++;
-						break;
-					default:
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<MovementDisplay>());
-						shop.item[nextSlot].shopCustomPrice = 1000;
-						nextSlot++;
-						break;
-				}
-			}
+			Item lifeformAnalyzer = new(ItemID.LifeformAnalyzer) { shopCustomPrice = 55000 };
+			Item dPSMeter = new(ItemID.DPSMeter) { shopCustomPrice = 55000 };
+			Item stopwatch = new(ItemID.Stopwatch) { shopCustomPrice = 55000 };
 
-			if (RijamsModWorld.intTravQuestBlankDisplay)
-			{
-				switch (Main.rand.Next(0, 3))// randomly choose a shop item
-				{
-					case 1:
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<DamageDisplay>());
-						shop.item[nextSlot].shopCustomPrice = 1000;
-						nextSlot++;
-						break;
-					case 2:
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<CritDisplay>());
-						shop.item[nextSlot].shopCustomPrice = 1000;
-						nextSlot++;
-						break;
-					default:
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<SummonsDisplay>());
-						shop.item[nextSlot].shopCustomPrice = 1000;
-						nextSlot++;
-						break;
-				}
-			}
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<InformationInterface>()))
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.InformationInterfaceTile>());
-				shop.item[nextSlot].shopCustomPrice = 5000;
-				nextSlot++;
-			}
-			if (RijamsModWorld.intTravQuestTPCore)
-			{
-				shop.item[nextSlot].SetDefaults(ItemID.RodofDiscord);
-				nextSlot++;
-			}
-			if (RijamsModWorld.intTravQuestBreadAndJelly)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.RyeJam>());
-				nextSlot++;
-			}
-			if (RijamsModWorld.intTravQuestMagicOxygenizer)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<BreathingPack>());
-				shop.item[nextSlot].shopCustomPrice = 100000;
-				nextSlot++;
-			}
-			if (RijamsModWorld.intTravQuestPrimeThruster)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<RocketBooster>());
-				shop.item[nextSlot].shopCustomPrice = 200000;
-				nextSlot++;
-			}
-			if (NPC.downedFishron)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.ReefCola>());
-				nextSlot++;
-			}
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.InterestingSphere>());
-			nextSlot++;
-			if (Main.hardMode)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Pets.FluffaloEgg>());
-				nextSlot++;
-			}
-			if (NPC.IsShimmerVariant || isShimmered)
-			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperHat>());
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperShirt>());
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperTrousers>());
-				nextSlot++;
-			}
-			else
-			{
-				if (Main.moonPhase >= 6 && !Main.dayTime) //first quarter & waxing gibbous
-				{
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Helmet>());
-					nextSlot++;
-				}
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Chestplate>());
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Leggings>());
-				nextSlot++;
-			}
-			
-			shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.MusicBoxOSW>());
-			nextSlot++;
+			Condition TownNPCRange57 = new(ShopConditions.TownNPCRangeS("5-7"), () => NPCHelper.CountTownNPCs() >= 5 && NPCHelper.CountTownNPCs() <= 7);
+			Condition TownNPCRange811 = new(ShopConditions.TownNPCRangeS("8-11"), () => NPCHelper.CountTownNPCs() >= 8 && NPCHelper.CountTownNPCs() <= 11);
+			Condition TownNPCOver12 = new(ShopConditions.CountTownNPCsS(12), ShopConditions.CountTownNPCsFb(12));
+
+			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase036, TownNPCRange57);
+			npcShop.Add(dPSMeter, ShopConditions.MoonPhase147, TownNPCRange57);
+			npcShop.Add(stopwatch, ShopConditions.MoonPhase25, TownNPCRange57);
+
+			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase036, TownNPCRange811);
+			npcShop.Add(dPSMeter, ShopConditions.MoonPhase036, TownNPCRange811);
+
+			npcShop.Add(dPSMeter, ShopConditions.MoonPhase147, TownNPCRange811);
+			npcShop.Add(stopwatch, ShopConditions.MoonPhase147, TownNPCRange811);
+
+			npcShop.Add(stopwatch, ShopConditions.MoonPhase25, TownNPCRange811);
+			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase25, TownNPCRange811);
+
+			npcShop.Add(lifeformAnalyzer, TownNPCOver12);
+			npcShop.Add(dPSMeter, TownNPCOver12);
+			npcShop.Add(stopwatch, TownNPCOver12);
+
+			npcShop.Add(ItemID.FishermansGuide, Condition.AnglerQuestsFinishedOver(1), Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(ItemID.Sextant, Condition.AnglerQuestsFinishedOver(1), Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(ItemID.WeatherRadio, Condition.AnglerQuestsFinishedOver(1), Condition.NpcIsPresent(NPCID.Angler));
+
+			string displayRandom = "Swaps between the displays at random";
+			Condition displayRandom4(int numberToCheck) => new(displayRandom, () => Main.GameUpdateCount % 4 == numberToCheck);
+			Condition displayRandom3(int numberToCheck) => new(displayRandom, () => Main.GameUpdateCount % 3 == numberToCheck);
+
+			npcShop.Add(new Item(ModContent.ItemType<LifeDisplay>()) { shopCustomPrice = 1000 },
+				displayRandom4(0), ShopConditions.IntTravQuestBlankDisplay);
+			npcShop.Add(new Item(ModContent.ItemType<ManaDisplay>()) { shopCustomPrice = 1000 },
+				displayRandom4(1), ShopConditions.IntTravQuestBlankDisplay);
+			npcShop.Add(new Item(ModContent.ItemType<DefenseDisplay>()) { shopCustomPrice = 1000 },
+				displayRandom4(2), ShopConditions.IntTravQuestBlankDisplay);
+			npcShop.Add(new Item(ModContent.ItemType<MovementDisplay>()) { shopCustomPrice = 1000 },
+				displayRandom4(3), ShopConditions.IntTravQuestBlankDisplay);
+
+			npcShop.Add(new Item(ModContent.ItemType<DamageDisplay>()) { shopCustomPrice = 1000 },
+				displayRandom3(0), ShopConditions.IntTravQuestBlankDisplay);
+			npcShop.Add(new Item(ModContent.ItemType<CritDisplay>()) { shopCustomPrice = 1000 },
+				displayRandom3(1), ShopConditions.IntTravQuestBlankDisplay);
+			npcShop.Add(new Item(ModContent.ItemType<SummonsDisplay>()) { shopCustomPrice = 1000 },
+				displayRandom3(2), ShopConditions.IntTravQuestBlankDisplay);
+
+			npcShop.Add(new Item(ModContent.ItemType<Items.Placeable.InformationInterfaceTile>()) { shopCustomPrice = 5000 },
+				Condition.PlayerCarriesItem(ModContent.ItemType<InformationInterface>()));
+
+			npcShop.Add(ItemID.RodofDiscord, ShopConditions.IntTravQuestOddDevice);
+			npcShop.Add(ModContent.ItemType<Items.Consumables.RyeJam>(), ShopConditions.IntTravQuestBreadAndJelly);
+			npcShop.Add(ModContent.ItemType<BreathingPack>(), ShopConditions.IntTravQuestMagicOxygenizer);
+			npcShop.Add(ModContent.ItemType<RocketBooster>(), ShopConditions.IntTravQuestPrimeThruster);
+			npcShop.Add(ModContent.ItemType<Items.Consumables.ReefCola>(), Condition.DownedDukeFishron);
+			npcShop.Add(ModContent.ItemType<Items.Pets.InterestingSphere>());
+			npcShop.Add(ModContent.ItemType<Items.Pets.FluffaloEgg>(), Condition.Hardmode);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Helmet>(), ShopConditions.IsNotNpcShimmered);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Chestplate>(), ShopConditions.IsNotNpcShimmered);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.IntTrav.IntTrav_Leggings>(), ShopConditions.IsNotNpcShimmered);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperHat>(), Condition.IsNpcShimmered);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperShirt>(), Condition.IsNpcShimmered);
+			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.IntTrav.PeacekeeperTrousers>(), Condition.IsNpcShimmered);
+			npcShop.Add(ModContent.ItemType<Items.Placeable.MusicBoxOSW>());
+			npcShop.Register();
 		}
 		#endregion
 
@@ -1224,7 +1066,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			inBetweenShots = true;
 		}
 
-		public override void DrawTownAttackGun(ref float scale, ref int item, ref int closeness)
+		public override void DrawTownAttackGun(ref Texture2D item, ref Rectangle itemFrame, ref float scale, ref int horizontalHoldoutOffset)
 		//Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1).
 		//Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
 		{
@@ -1232,21 +1074,27 @@ namespace RijamsMod.NPCs.TownNPCs
 			//randomOffset = 2f;
 			if (!Main.hardMode)
 			{
-				item = ModContent.ItemType<InterstellarPistol>();
+				Main.GetItemDrawFrame(ModContent.ItemType<InterstellarPistol>(), out Texture2D itemTexture, out Rectangle itemRectangle);
+				item = itemTexture;
+				itemFrame = itemRectangle;
 				scale = 0.75f;
-				closeness = 12;
+				horizontalHoldoutOffset = 12;
 			}
 			if (Main.hardMode && !NPC.downedMoonlord)
 			{
-				item = ModContent.ItemType<InterstellarSMG>();
+				Main.GetItemDrawFrame(ModContent.ItemType<InterstellarSMG>(), out Texture2D itemTexture, out Rectangle itemRectangle);
+				item = itemTexture;
+				itemFrame = itemRectangle;
 				scale = 0.75f;
-				closeness = 18;
+				horizontalHoldoutOffset = 18;
 			}
 			if (NPC.downedMoonlord)
 			{
-				item = ModContent.ItemType<InterstellarCarbine>();
+				Main.GetItemDrawFrame(ModContent.ItemType<InterstellarCarbine>(), out Texture2D itemTexture, out Rectangle itemRectangle);
+				item = itemTexture;
+				itemFrame = itemRectangle;
 				scale = 0.75f;
-				closeness = 18;
+				horizontalHoldoutOffset = 18;
 			}
 		}
 

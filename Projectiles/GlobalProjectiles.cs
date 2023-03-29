@@ -154,18 +154,18 @@ namespace RijamsMod.Projectiles
 			}
 			return base.PreAI(projectile);
 		}
-		public override void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (projectile.type == ProjectileID.ShadowJoustingLance)
 			{
-				target.AddBuff(BuffID.ShadowFlame, damage * 2);
+				target.AddBuff(BuffID.ShadowFlame, damageDone * 2);
 			}
 		}
-		public override void OnHitPlayer(Projectile projectile, Player target, int damage, bool crit)
+		public override void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo info)
 		{
 			if (projectile.type == ProjectileID.ShadowJoustingLance)
 			{
-				target.AddBuff(BuffID.ShadowFlame, damage * 2);
+				target.AddBuff(BuffID.ShadowFlame, info.Damage * 2);
 			}
 		}
 	}

@@ -11,6 +11,8 @@ using Microsoft.CodeAnalysis;
 using Terraria.Audio;
 using Steamworks;
 using log4net;
+using Terraria.Chat;
+using Terraria.Localization;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -33,12 +35,13 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.height = 32;
 			Item.useTime = 16;
 			Item.useAnimation = 16;
-			Item.useStyle = ItemUseStyleID.Shoot; //5
+			Item.useStyle = ItemUseStyleID.Shoot; // 5
 			Item.noMelee = true; //so the item's animation doesn't do damage
 			Item.knockBack = 4;
 			Item.value = 100000;
-			Item.rare = ItemRarityID.Green;//2
-			Item.UseSound = SoundID.Item41 with { Volume = 0.5f };
+			Item.rare = ItemRarityID.Green; // 2
+			Item.UseSound = new(Mod.Name + "/Sounds/Item/InterstellarPistol");
+			//Item.UseSound = SoundID.Item41 with { Volume = 0.5f };
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<InterstellarLaser>();
 			Item.shootSpeed = 3f;
@@ -87,7 +90,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 				position += muzzleOffset;
 			}
 
-			Projectile laser = Projectile.NewProjectileDirect(source, position + new Vector2(0, -6), velocity * new Vector2(velocityMultiplier, velocityMultiplier), Item.shoot, damage, knockback, Main.myPlayer);
+			Projectile laser = Projectile.NewProjectileDirect(source, position + new Vector2(0, -6), velocity * new Vector2(velocityMultiplier, velocityMultiplier), Item.shoot, damage, knockback, Main.myPlayer, tileCollide.ToInt());
 			laser.penetrate = penetrate; // Seems to be 1 less than the normal bullet?
 			laser.coldDamage = coldDamage;
 			laser.tileCollide = tileCollide;
@@ -96,16 +99,24 @@ namespace RijamsMod.Items.Weapons.Ranged
 				modProjectile.drawColor = new(100, 150, 255, 0);
 				modProjectile.homing = homing;
 				modProjectile.homingDetectionRange = 5;
-				Mod.Logger.DebugFormat("IntersetllarPistol: drawColor {0}, homing {1}, homingDetectionRange {2}", modProjectile.drawColor, modProjectile.homing, modProjectile.homingDetectionRange);
+				//Mod.Logger.DebugFormat("IntersetllarPistol: drawColor {0}, homing {1}, homingDetectionRange {2}", modProjectile.drawColor, modProjectile.homing, modProjectile.homingDetectionRange);
 			}
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
-				laser.netUpdate = true;
 				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, laser.whoAmI);
 			}
-			Mod.Logger.DebugFormat("IntersetllarPistol: penetrate {0}, coldDamage {1}, tileCollide {2}", laser.penetrate, laser.coldDamage, laser.tileCollide);
+			//Mod.Logger.DebugFormat("IntersetllarPistol: penetrate {0}, coldDamage {1}, tileCollide {2}", laser.penetrate, laser.coldDamage, laser.tileCollide);
 
-			SoundEngine.PlaySound(SoundID.Item67 with { Pitch = 0.5f, Volume = 0.5f }, laser.position);
+			/*if (!Main.dedServ && Item.UseSound.HasValue)
+			{
+				SoundEngine.PlaySound(SoundID.Item67 with { Pitch = 0.5f, Volume = 0.5f }, laser.position);
+			}*/
+
+			//bool? playedSound = RijamsMod.PlayNetworkSound(SoundID.Item67 with { Pitch = 0.5f, Volume = 0.5f }, laser.position);
+
+			//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("playedSound " + playedSound.ToString()), Color.White);
+
+			//NetMessage.SendData(MessageID.Sync, -1, -1, null, laser.whoAmI);
 
 			return false;
 		}

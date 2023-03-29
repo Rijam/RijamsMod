@@ -1,3 +1,4 @@
+using RijamsMod.Items.Consumables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -155,235 +156,129 @@ namespace RijamsMod.NPCs.TownNPCs
 					break;
 			}
 		}
-		public override void SetupShop(int type, Chest shop, ref int nextSlot)
+		public override void ModifyShop(NPCShop shop)
 		{
-			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
-			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
+			//bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
+			//int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 
 			// BossesAsNPCs support in RijamsMod.cs PostSetupContent()
 
-			if (type == NPCID.ArmsDealer)
+			if (shop.NpcType == NPCID.ArmsDealer)
 			{
-				if ((!Main.dayTime && NPC.downedBoss2) || Main.hardMode) //EoW or BoC
-				{
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>());
-					shop.item[nextSlot].shopCustomPrice = 40;
-					nextSlot++;
-				}
+				shop.Add(new Item(ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>()) { shopCustomPrice = 40 },
+					new Condition(Condition.DownedEowOrBoc.Description + " and " + Condition.TimeNight.Description + ", or in Hardmode",
+					() => (Condition.DownedEowOrBoc.IsMet() && Condition.TimeNight.IsMet()) || Condition.Hardmode.IsMet()));
 			}
-			if (type == NPCID.WitchDoctor)
+			if (shop.NpcType == NPCID.WitchDoctor)
 			{
-				if (Main.hardMode || WorldGen.crimson)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.WormTooth);
-					shop.item[nextSlot].shopCustomPrice = 100;
-					nextSlot++;
-				}
-				if (Main.hardMode || !WorldGen.crimson)
-				{
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Materials.CrawlerChelicera>());
-					shop.item[nextSlot].shopCustomPrice = 125;
-					nextSlot++;
-				}
+				shop.Add(new Item(ItemID.WormTooth) { shopCustomPrice = 100 },
+					new Condition(Condition.CrimsonWorld.Description + ", or in Hardmode", () => Condition.CrimsonWorld.IsMet() || Condition.Hardmode.IsMet()));
+				shop.Add(new Item(ModContent.ItemType<Items.Materials.CrawlerChelicera>()) { shopCustomPrice = 125 },
+					new Condition(Condition.CorruptWorld.Description + ", or in Hardmode", () => Condition.CorruptWorld.IsMet() || Condition.Hardmode.IsMet()));
 			}
-			if (type == NPCID.DyeTrader)
+			if (shop.NpcType == NPCID.DyeTrader)
 			{
-				if (Main.LocalPlayer.ZoneRockLayerHeight) //Caverns layer
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.RedHusk);
-					nextSlot++;
-				}
-				if (Main.LocalPlayer.ZoneDirtLayerHeight || Main.LocalPlayer.ZoneRockLayerHeight) //Underground or Caverns layer
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.OrangeBloodroot);
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.LimeKelp);
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.GreenMushroom);
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.TealMushroom);
-					nextSlot++;
-				}
-				if (Main.LocalPlayer.ZoneOverworldHeight && !Main.LocalPlayer.ZoneSnow && !Main.LocalPlayer.ZoneJungle && !Main.LocalPlayer.ZoneDesert && !Main.LocalPlayer.ZoneHallow) //if Surface layer and forest or ocean
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.YellowMarigold);
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.BlueBerries);
-					nextSlot++;
-				}
-				if (Main.LocalPlayer.ZoneSnow) //if Snow biome
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.CyanHusk);
-					nextSlot++;
-				}
-				if (Main.LocalPlayer.ZoneJungle) //if Jungle biome
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.SkyBlueFlower);
-					nextSlot++;
-					if (Main.LocalPlayer.ZoneRockLayerHeight)
-					{
-						shop.item[nextSlot].SetDefaults(ItemID.VioletHusk);
-						nextSlot++;
-					}
-				}
-				if (Main.LocalPlayer.ZoneDesert) //if Desert biome
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.PinkPricklyPear);
-					nextSlot++;
-				}
-				if (Main.LocalPlayer.ZoneBeach) //if Ocean biome
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.PurpleMucos);
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.BlackInk);
-					nextSlot++;
-				}
-				if (interTravel > 0)
-				{
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Dyes.BeamDye>());
-					nextSlot++;
-				}
+				shop.Add(ItemID.RedHusk, Condition.InRockLayerHeight);
+				Condition undergroundOrCaverns = new("In the Underground or Caverns",
+					() => Condition.InDirtLayerHeight.IsMet() || Condition.InRockLayerHeight.IsMet());
+				shop.Add(ItemID.OrangeBloodroot, undergroundOrCaverns);
+				shop.Add(ItemID.LimeKelp, undergroundOrCaverns);
+				shop.Add(ItemID.GreenMushroom, undergroundOrCaverns);
+				shop.Add(ItemID.TealMushroom, undergroundOrCaverns);
+
+				Condition surfaceForestOrOcean = new("On the Surface in the Forest or Ocean",
+					() => Condition.InOverworldHeight.IsMet() && (Condition.InShoppingZoneForest.IsMet() || Condition.InBeach.IsMet()));
+
+				shop.Add(ItemID.YellowMarigold, surfaceForestOrOcean);
+				shop.Add(ItemID.BlueBerries, surfaceForestOrOcean);
+
+				shop.Add(ItemID.CyanHusk, Condition.InSnow);
+				shop.Add(ItemID.SkyBlueFlower, Condition.InJungle);
+				shop.Add(ItemID.VioletHusk, Condition.InJungle, Condition.InRockLayerHeight);
+
+				shop.Add(ItemID.PinkPricklyPear, Condition.InDesert);
+				shop.Add(ItemID.PurpleMucos, Condition.InBeach);
+				shop.Add(ItemID.BlackInk, Condition.InBeach);
+
+				shop.Add(ModContent.ItemType<Items.Dyes.BeamDye>(), Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
-			if (type == NPCID.Demolitionist)
+			if (shop.NpcType == NPCID.Demolitionist)
 			{
-				if (NPC.savedAngler)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.BombFish);
-					shop.item[nextSlot].shopCustomPrice = 1000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss1) //EoC
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.ScarabBomb);
-					shop.item[nextSlot].shopCustomPrice = 1500;
-					nextSlot++;
-				}
-				if (RijamsModWorld.hellTraderArrivable && NPC.FindFirstNPC(ModContent.NPCType<HellTrader>()) > 0)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.DryBomb);
-					shop.item[nextSlot].shopCustomPrice = 2500;
-					nextSlot++;
-				}
-				if (NPC.downedQueenBee)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.Beenade);
-					shop.item[nextSlot].shopCustomPrice = 200;
-					nextSlot++;
-				}
-				if (NPC.downedBoss3) //Skeletron
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.MolotovCocktail);
-					shop.item[nextSlot].shopCustomPrice = 500;
-					nextSlot++;
-				}
-				if (NPC.savedMech)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.Explosives);
-					shop.item[nextSlot].shopCustomPrice = 7000;
-					nextSlot++;
-				}
-				shop.item[nextSlot].SetDefaults(ItemID.Detonator);
-				shop.item[nextSlot].shopCustomPrice = 10000;
-				nextSlot++;
+				shop.Add(new Item(ItemID.BombFish) { shopCustomPrice = 1000 }, new Condition("Rescued Angler", () => NPC.savedAngler));
+				shop.Add(new Item(ItemID.ScarabBomb) { shopCustomPrice = 1500 }, Condition.DownedEyeOfCthulhu);
+				shop.Add(new Item(ItemID.DryBomb) { shopCustomPrice = 2500 }, ShopConditions.HellTraderMovedIn, Condition.NpcIsPresent(ModContent.NPCType<HellTrader>()));
+				shop.Add(new Item(ItemID.Beenade) { shopCustomPrice = 200 }, Condition.DownedQueenBee);
+				shop.Add(new Item(ItemID.MolotovCocktail) { shopCustomPrice = 500 }, Condition.DownedSkeletron);
+				shop.Add(new Item(ItemID.Explosives) { shopCustomPrice = 7000 }, new Condition("Rescued Mechanic", () => NPC.savedMech));
+				shop.Add(new Item(ItemID.Detonator) { shopCustomPrice = 10000 });
 			}
-			if (type == NPCID.Dryad)
+			if (shop.NpcType == NPCID.Dryad)
 			{
-				if (Main.LocalPlayer.ZoneJungle) //if Jungle biome
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.JungleGrassSeeds);
-					shop.item[nextSlot].shopCustomPrice = 1500;
-					nextSlot++;
-				}
-				if (NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3 && !Main.hardMode)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.FireBlossomPlanterBox);
-					shop.item[nextSlot].shopCustomPrice = 100;
-					nextSlot++;
-				}
+				shop.Add(new Item(ItemID.JungleGrassSeeds) { shopCustomPrice = 1500 }, Condition.InJungle);
+				shop.Add(new Item(ItemID.FireBlossomPlanterBox) { shopCustomPrice = 100 }, 
+					Condition.DownedEyeOfCthulhu, Condition.DownedEowOrBoc, Condition.DownedSkeletron, Condition.PreHardmode);
 			}
-			if (type == NPCID.Truffle)
+			if (shop.NpcType == NPCID.Truffle)
 			{
-				shop.item[nextSlot].SetDefaults(ItemID.MushroomGrassSeeds);
-				shop.item[nextSlot].shopCustomPrice = 1500;
-				nextSlot++;
+				shop.Add(new Item(ItemID.MushroomGrassSeeds) { shopCustomPrice = 1500 });
 			}
-			if (type == NPCID.Pirate)
+			if (shop.NpcType == NPCID.Pirate)
 			{
-				if (Main.LocalPlayer.ZoneSnow)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.SnowballLauncher);
-					nextSlot++;
-				}
+				shop.Add(ItemID.SnowballLauncher, Condition.InSnow);
 			}
-			if (type == NPCID.SkeletonMerchant)
+			if (shop.NpcType == NPCID.SkeletonMerchant)
 			{
-				if (NPC.downedGoblins)
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.Hook);
-					shop.item[nextSlot].shopCustomPrice = 5000;
-					nextSlot++;
-				}
-				if (NPC.downedBoss3) //Skeletron
-				{
-					shop.item[nextSlot].SetDefaults(ItemID.Bone);
-					shop.item[nextSlot].shopCustomPrice = 250;
-					nextSlot++;
-					shop.item[nextSlot].SetDefaults(ItemID.BoneWand);
-					shop.item[nextSlot].shopCustomPrice = 12500;
-					nextSlot++;
-				}
-				shop.item[nextSlot].SetDefaults(ItemID.BoneSword);
-				shop.item[nextSlot].shopCustomPrice = 45000;
-				nextSlot++;
-				shop.item[nextSlot].SetDefaults(ItemID.BonePickaxe);
-				shop.item[nextSlot].shopCustomPrice = 75000;
-				nextSlot++;
+				shop.Add(new Item(ItemID.Hook) { shopCustomPrice = 5000 }, Condition.DownedGoblinArmy);
+				shop.Add(new Item(ItemID.Bone) { shopCustomPrice = 250 }, Condition.DownedSkeletron);
+				shop.Add(new Item(ItemID.BoneWand) { shopCustomPrice = 12500 }, Condition.DownedSkeletron);
+				shop.Add(new Item(ItemID.BoneSword) { shopCustomPrice = 45000 });
+				shop.Add(new Item(ItemID.BonePickaxe) { shopCustomPrice = 75000 });
+				shop.Add(ModContent.ItemType<CaveCarrot>(), Condition.InBelowSurface, Condition.DownedOldOnesArmyAny, Condition.MoonPhasesEven);
 			}
-			if (type == NPCID.GoblinTinkerer && interTravel > 0)
+			if (shop.NpcType == NPCID.GoblinTinkerer)
 			{
-				shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Placeable.StripLight>());
-				nextSlot++;
+				shop.Add(ModContent.ItemType<Items.Placeable.StripLight>(), Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
 
-			if (type == NPCID.BestiaryGirl && interTravel > 0)
+			if (shop.NpcType == NPCID.BestiaryGirl)
 			{
-				if (Main.GetBestiaryProgressReport().CompletionPercent >= 0.6f)
-				{
-					shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Consumables.SnuggetPetLicense>());
-					nextSlot++;
-				}
+				shop.Add(ModContent.ItemType<Items.Consumables.SnuggetPetLicense>(),
+					new Condition(Language.GetText("Conditions.BestiaryPercentage").WithFormatArgs(60),
+					() => Main.GetBestiaryProgressReport().CompletionPercent >= 0.6f), 
+					Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
 			
-			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils) && townNPCsCrossModSupport)
+			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
-				if (pboneUtils.TryFind<ModNPC>("Miner", out ModNPC minerModNPC) && type == minerModNPC.Type)
+				if (pboneUtils.TryFind<ModNPC>("Miner", out ModNPC minerModNPC) && shop.NpcType == minerModNPC.Type)
 				{
-					if (Main.hardMode)
-					{
-						shop.item[nextSlot].SetDefaults(ItemID.MiningShirt);
-						shop.item[nextSlot].shopCustomPrice = 100000;
-						nextSlot++;
-						shop.item[nextSlot].SetDefaults(ItemID.MiningPants);
-						shop.item[nextSlot].shopCustomPrice = 100000;
-						nextSlot++;
-					}
+					shop.Add(new Item(ItemID.MiningShirt) { shopCustomPrice = 100000 }, Condition.Hardmode);
+					shop.Add(new Item(ItemID.MiningPants) { shopCustomPrice = 100000 }, Condition.Hardmode);
 				}
 			}
 
-			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && townNPCsCrossModSupport)
+			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
-				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman) && type == fisherman.Type)
+				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman) && shop.NpcType == fisherman.Type && shop.Name == "Fish")
 				{
-					if (Main.LocalPlayer.ZoneJungle && (int)fishermanNPC.Call("GetStatusShopCycle") == 2) // Fish shop is open
+					if ((int)fishermanNPC.Call("GetStatusShopCycle") == 2) // Fish shop is open
 					{
-						shop.item[nextSlot].SetDefaults(ModContent.ItemType<Items.Fishing.HornetTail>());
-						shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].GetStoreValue() * (float)fishermanNPC.Call("shopMulti"));
-						nextSlot++;
+						Item hornetTail = new(ModContent.ItemType<Items.Fishing.HornetTail>());
+						int itemValue = hornetTail.GetStoreValue();
+						shop.Add(new Item(hornetTail.type) { shopCustomPrice = (int)Math.Round(itemValue * (float)fishermanNPC.Call("shopMulti")) });
 					}
 				}
 			}
 
 		}
+		// TODO: Figure out the new way to add items to the Traveling Merchant.
+		/*public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
+		{
+			if (npc.type == NPCID.TravellingMerchant && shopName == "Shop")
+			{
+				TravellingMerchantShop.AddInfoEntry(ModContent.ItemType<Items.Consumables.StrangeRoll>(), Condition.DownedEyeOfCthulhu);
+			}
+		}*/
 		public override void SetupTravelShop(int[] shop, ref int nextSlot)
 		{
 			if (NPC.downedBoss1 && Main.rand.NextBool(5)) //EoC

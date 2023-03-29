@@ -1,9 +1,11 @@
+using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.Chat;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -15,7 +17,7 @@ namespace RijamsMod.Projectiles.Magic
 	{
 		public float vecolityMultiplier = 30f;
 		public int homingRange = 800;
-		public int timeLeftMax;
+		public int timeLeftMax = 300;
 		public float timeBeforeItCanStartHoming = 180f;
 		public float timeLeftBeforeItStopsHoming = 60f;
 		public int trailLength = 19;
@@ -26,6 +28,9 @@ namespace RijamsMod.Projectiles.Magic
 		public int buffType = 0;
 		public int buffTime = 60;
 		public int buffChance = 1;
+		public bool orgTileCollide = true;
+		public bool orgIgnoreWater = false;
+		public int orgPenetrate = 1;
 
 		// Nightglow projectile clone
 		public override void SetStaticDefaults()
@@ -43,7 +48,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.alpha = 255;
 			Projectile.penetrate = 1;
 			Projectile.friendly = true;
-			timeLeftMax = Projectile.timeLeft;
+			Projectile.timeLeft = 300;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.tileCollide = true;
 			Projectile.ignoreWater = false;
@@ -51,6 +56,15 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 60;
 		}
+		public override void OnSpawn(IEntitySource source)
+		{
+			/*Projectile.timeLeft = timeLeftMax;
+			Projectile.tileCollide = orgTileCollide;
+			Projectile.ignoreWater = orgIgnoreWater;
+			Projectile.maxPenetrate = orgPenetrate;
+			Projectile.penetrate = orgPenetrate;*/
+		}
+
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			if (bounceOnTiles)
@@ -67,7 +81,7 @@ namespace RijamsMod.Projectiles.Magic
 			}
 			return !bounceOnTiles;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (buffType > 0 && Main.rand.NextBool(buffChance))
 			{
@@ -75,16 +89,35 @@ namespace RijamsMod.Projectiles.Magic
 			}
 		}
 
+		public override bool PreAI()
+		{
+			if (Projectile.ai[2] == 0)
+			{
+				Projectile.timeLeft = timeLeftMax;
+				Projectile.maxPenetrate = orgPenetrate;
+				Projectile.penetrate = orgPenetrate;
+			}
+			Projectile.tileCollide = orgTileCollide;
+			Projectile.ignoreWater = orgIgnoreWater;
+			return true;
+		}
+
 		public override void AI()
 		{
-			if (Projectile.ai[2] == 0 || Projectile.ai[2] == timeBeforeItCanStartHoming || Projectile.ai[2] == timeLeftBeforeItStopsHoming)
+			/*
+			if (Projectile.ai[2] == 0 || Projectile.ai[2] == timeBeforeItCanStartHoming || Projectile.ai[2] == timeLeftBeforeItStopsHoming || Projectile.ai[2] == Projectile.timeLeft)
+			{
 				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
-					"vecolityMultiplier " + vecolityMultiplier + " homingRange " + homingRange + " timeLeftMax " + timeLeftMax
+					"-> vecolityMultiplier " + vecolityMultiplier + " homingRange " + homingRange + " timeLeftMax " + timeLeftMax
 					+ " timeBeforeItCanStartHoming " + timeBeforeItCanStartHoming + " timeLeftBeforeItStopsHoming " + timeLeftBeforeItStopsHoming
 					+ " trailLength " + trailLength + " shineScale " + shineScale + " bounceOnTiles " + bounceOnTiles + " homingNeedsLineOfSight " + homingNeedsLineOfSight
 					+ " overrideColor " + overrideColor + " buffType " + buffType + " buffTime " + buffTime + " buffChance " + buffChance
 					+ " Projectile.Center " + Projectile.Center), new Color(100, 100, 100));
-
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+					"-> Projectile.timeLeft " + Projectile.timeLeft + " Projectile.tileCollide " + Projectile.tileCollide + " Projectile.ignoreWater " + Projectile.ignoreWater
+					+ " Projectile.penetrate " + Projectile.penetrate), new Color(150, 150, 150));
+			}
+			*/
 			Projectile.ai[2]++;
 
 			// Projectile.ai[1] controls the color
@@ -104,6 +137,8 @@ namespace RijamsMod.Projectiles.Magic
 
 			if (Projectile.timeLeft >= timeLeftMax - 2)
 			{
+				/* ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+					"-> Projectile.timeLeft >= timeLeftMax - 2, Projectile.timeLeft " + Projectile.timeLeft + " timeLeftMax - 2 " + (timeLeftMax - 2)), new Color(150, 50, 50)); */
 				for (int i = 0; i < 3; i++)
 				{
 					Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.RainbowMk2, Main.rand.NextVector2CircularEdge(3f, 3f) * (Main.rand.NextFloat() * 0.5f + 0.5f), 0, colorToUse);
@@ -115,10 +150,14 @@ namespace RijamsMod.Projectiles.Magic
 
 			if (Projectile.timeLeft > timeBeforeItCanStartHoming)
 			{
+				//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+				//	"-> beforeHoming, Projectile.timeLeft " + Projectile.timeLeft + " timeBeforeItCanStartHoming " + timeBeforeItCanStartHoming), new Color(50, 150, 50));
 				beforeHoming = true;
 			}
 			else if (Projectile.timeLeft > timeLeftBeforeItStopsHoming)
 			{
+				//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+				//	"-> canHome, Projectile.timeLeft " + Projectile.timeLeft + " timeLeftBeforeItStopsHoming " + timeLeftBeforeItStopsHoming), new Color(50, 50, 150));
 				canHome = true;
 			}
 
@@ -129,20 +168,18 @@ namespace RijamsMod.Projectiles.Magic
 				Projectile.velocity = Projectile.velocity.RotatedBy(num6 * (Math.PI * 2f) * 0.125f * 1f / 30f);
 			}
 
-			int newTarget = (int)Projectile.ai[0];
-
-			if (newTarget == -1)
+			int newTarget;
+			if (homingNeedsLineOfSight)
 			{
-				if (homingNeedsLineOfSight)
-				{
-					newTarget = Projectile.FindTargetWithLineOfSight(homingRange);
-				}
-				else
-				{
-					NPC maybeTarget = Projectile.FindTargetWithinRange(homingRange);
-					newTarget = maybeTarget != null ? maybeTarget.whoAmI : -1;
-				}
+				newTarget = Projectile.FindTargetWithLineOfSight(homingRange);
 			}
+			else
+			{
+				NPC maybeTarget = Projectile.FindTargetWithinRange(homingRange);
+				newTarget = maybeTarget != null ? maybeTarget.whoAmI : -1;
+			}
+			//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
+			//	"-> newTarget " + newTarget), new Color(50, 50, 150));
 
 			if (canHome)
 			{
@@ -291,8 +328,16 @@ namespace RijamsMod.Projectiles.Magic
 
 			Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), sourceRect, projColor, projRotation, projOrigin, projScale, spriteEffects);
 
+			/*
+			Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value,
+				Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				Projectile.Hitbox, Color.Orange * 0.5f, 0, Projectile.Hitbox.Size() / 2, Projectile.scale, spriteEffects, 0);
+			*/
+
 			return false;
 		}
+
+		// I hope you have good internet D:
 		public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.Write(vecolityMultiplier);
@@ -309,6 +354,9 @@ namespace RijamsMod.Projectiles.Magic
 			writer.Write(buffType);
 			writer.Write(buffTime);
 			writer.Write(buffChance);
+			writer.Write(orgTileCollide);
+			writer.Write(orgIgnoreWater);
+			writer.Write(orgPenetrate);
 		}
 
 		public override void ReceiveExtraAI(BinaryReader reader)
@@ -327,6 +375,9 @@ namespace RijamsMod.Projectiles.Magic
 			buffType = reader.ReadInt32();
 			buffTime = reader.ReadInt32();
 			buffChance = reader.ReadInt32();
+			orgTileCollide = reader.ReadBoolean();
+			orgIgnoreWater = reader.ReadBoolean();
+			orgPenetrate = reader.ReadInt32();
 		}
 	}
 }
