@@ -58,6 +58,8 @@ namespace RijamsMod.Projectiles.Summon.Support
 			Projectile.minionSlots = 1f;
 			// Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.penetrate = -1;
+			// Sync this projectile if a player joins mid game.
+			Projectile.netImportant = true;
 
 			Projectile.alpha = 200;
 		}

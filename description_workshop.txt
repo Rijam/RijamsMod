@@ -9,15 +9,16 @@ Includes:
 [*] Harpy: sells sky related items and a few extra things. Find her in the sky.
 [*] Interstellar Traveler: sells information items and weapons. Has a quest system. Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
 [*] Hell Trader: sells Underworld related items. Spawns randomly in the Underworld, can move in in Hardmode.
+[*] Snugget Town Pet: License sold by Zoologist after 60% Bestiary completion.
 [/list]
 
-[b] 181 new items and weapons throughout the game's progression [/b]
+[b] 220 new items and weapons throughout the game's progression [/b]
 [list]
-[*] 45 weapons: 12 Melee, 8 Ranged, 8 Magic, 18 Summoner.
+[*] 45 weapons: 12 Melee, 8 Ranged, 21 Magic, 21 Summoner.
 [*] 12 ammo types.
-[*] 41 accessories.
-[*] 17 armor pieces.
-[*] 10 vanity items + 3 dyes.
+[*] 42 accessories.
+[*] 23 armor pieces.
+[*] 13 vanity items + 3 dyes.
 [/list]
 
 [b] Some QoL changes [/b]
@@ -32,6 +33,7 @@ Includes:
 [*] Support for Census - Town NPC Checklist.
 [*] Harpy sells some items from other mods.
 [*] Town NPC cross mod dialog and happiness.
+[*] Bosses As NPCs support.
 [/list]
 
 The code is open source if you extract the mod!
