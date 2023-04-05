@@ -37,6 +37,7 @@ namespace RijamsMod
 			Items.GlobalItems.isLanternWeapon.Clear();
 			Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Clear();
 			Tiles.GlobalTiles.isPiano.Clear();
+			Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Clear();
 			Instance = null;
 			ConfigClient = null;
 			ConfigServer = null;
@@ -167,6 +168,10 @@ namespace RijamsMod
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
 					Tiles.GlobalTiles.isPiano.Add((int)args[1]);
 					return Tiles.GlobalTiles.isPiano.Contains((int)args[1]);
+				case "AddProjectileToRocketBoosterExtraUpdates":
+					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add((int)args[1]);
+					return Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Contains((int)args[1]);
 				default:
 					throw new ArgumentException($"Function \"{function}\" is not defined by Rijam's Mod");
 			}

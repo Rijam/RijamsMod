@@ -4,9 +4,6 @@ using Terraria.ID;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using MonoMod.RuntimeDetour.HookGen;
-using System.Reflection;
-using Terraria.Localization;
 
 namespace RijamsMod.Items.Accessories.Movement
 {
@@ -28,46 +25,52 @@ namespace RijamsMod.Items.Accessories.Movement
 		{
 			player.portableStoolInfo.SetStats(112, 112, 112);
 			player.GetModPlayer<RijamsModPlayer>().terraStepStool = true;
+	
+			// Add the dye for the slot the step stool is in.
+			// Still a little weirdness when equipping the normal step stool (or Hand Of Creation for some reason) in different slots.
+			for (int i = 0; i < player.armor.Length; i++)
+			{
+				if (player.IsItemSlotUnlockedAndUsable(i))
+				{
+					int num = i % 10;
+					if (player.armor[i].type == Type)
+					{
+						player.cPortableStool = player.dye[num].dye;
+						break;
+					}
+				}
+			}
+			
 		}
 
 		// Detour the original method to add my drawing.
 
-		private static readonly MethodInfo DrawPlayer_03_PortableStool = typeof(PlayerDrawLayers).GetMethod(nameof(PlayerDrawLayers.DrawPlayer_03_PortableStool), BindingFlags.Public | BindingFlags.Static);
-		private delegate void orig_DrawPlayer_03_PortableStool(ref PlayerDrawSet drawinfo);
-		private delegate void hook_DrawPlayer_03_PortableStool(orig_DrawPlayer_03_PortableStool orig, ref PlayerDrawSet drawinfo);
-
-		/*private static event hook_DrawPlayer_03_PortableStool On_DrawPlayer_03_PortableStool
-		{
-			add => HookEndpointManager.Add<hook_DrawPlayer_03_PortableStool>(DrawPlayer_03_PortableStool, value);
-			remove => HookEndpointManager.Remove<hook_DrawPlayer_03_PortableStool>(DrawPlayer_03_PortableStool, value);
-		}
-
 		public override void Load()
 		{
-			On_DrawPlayer_03_PortableStool += Hook_DrawPlayer_03_PortableStool;
+			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_03_PortableStool += Player_Hook_DrawPlayer_03_PortableStool;
 		}
 
-		public override void Unload()
+		private static void Player_Hook_DrawPlayer_03_PortableStool(Terraria.DataStructures.On_PlayerDrawLayers.orig_DrawPlayer_03_PortableStool orig, ref PlayerDrawSet drawinfo)
 		{
-			On_DrawPlayer_03_PortableStool -= Hook_DrawPlayer_03_PortableStool;
-		}*/
-
-		private void Hook_DrawPlayer_03_PortableStool(orig_DrawPlayer_03_PortableStool orig, ref PlayerDrawSet drawinfo)
-		{
-			// Small bug, shaders (dyes) don't get applied unless the player also has the vanilla Step Stool (in vanity)
 			// Probably not the best way to do this since it is just drawing the new texture on top of the vanilla one.
 			// The check for the HeightBoost is so it doesn't draw when the vanilla Step Stool takes priority.
-			orig(ref drawinfo);
 			Player stoolPlayer = drawinfo.drawPlayer;
 			if (stoolPlayer.portableStoolInfo.IsInUse && stoolPlayer.portableStoolInfo.HeightBoost != 26 && stoolPlayer.GetModPlayer<RijamsModPlayer>().terraStepStool)
 			{
 				Texture2D value = ModContent.Request<Texture2D>("RijamsMod/Items/Accessories/Movement/TerraStepStoolWorld").Value;
-				Vector2 position = new ((int)(drawinfo.Position.X - Main.screenPosition.X + (float)(stoolPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)stoolPlayer.height + 112f));
+				Vector2 position = new((int)(drawinfo.Position.X - Main.screenPosition.X + (float)(stoolPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)stoolPlayer.height + 112f));
 				Rectangle rectangle = value.Frame();
 				Vector2 origin = rectangle.Size() * new Vector2(0.5f, 1f);
-				DrawData item = new(value, position, rectangle, drawinfo.colorArmorLegs, stoolPlayer.bodyRotation, origin, 1f, drawinfo.playerEffect);
-				item.shader = drawinfo.cPortableStool;
+				DrawData item = new(value, position, rectangle, drawinfo.colorArmorLegs, stoolPlayer.bodyRotation, origin, 1f, drawinfo.playerEffect)
+				{
+					shader = drawinfo.cPortableStool
+				};
 				drawinfo.DrawDataCache.Add(item);
+			}
+			else
+			{
+				// Draw the original step stool if the Terra Step Stool doesn't take priority.
+				orig(ref drawinfo);
 			}
 		}
 

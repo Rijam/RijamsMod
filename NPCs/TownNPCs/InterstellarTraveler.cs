@@ -23,6 +23,7 @@ using Terraria.Audio;
 using ReLogic.Content;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
+using System;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -31,6 +32,8 @@ namespace RijamsMod.NPCs.TownNPCs
 	{
 		private bool usedMicronWrap = false;
 		private int usedMicronWrapTime = 0;
+
+		private uint questExclamationTimer = 0;
 
 		#region Set Defaults
 
@@ -245,15 +248,10 @@ namespace RijamsMod.NPCs.TownNPCs
 				usedMicronWrap = false;
 				NPC.netUpdate = true;
 			}
-
-			/*if (isShimmered && !NPC.IsShimmerVariant)
+			if (!CheckIfQuestIsAvailableToTurnIn(out _, out _))
 			{
-				NPC.townNpcVariationIndex = 1;
+				questExclamationTimer = 0;
 			}
-			if (NPC.IsShimmerVariant && !isShimmered)
-			{
-				isShimmered = true;
-			}*/
 		}
 		#endregion
 
@@ -262,6 +260,9 @@ namespace RijamsMod.NPCs.TownNPCs
 		private readonly Asset<Texture2D> texture1 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Arm");
 		private readonly Asset<Texture2D> texture2 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Casual_Arm");
 		private readonly Asset<Texture2D> texture3 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/InterstellarTraveler_Arm");
+		private readonly Asset<Texture2D> questIcons = ModContent.Request<Texture2D>("RijamsMod/Items/Quest/QuestIcons");
+		private readonly Asset<Texture2D> questQuestion = ModContent.Request<Texture2D>("RijamsMod/Items/Quest/Question");
+
 
 		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
@@ -283,7 +284,44 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				spriteBatch.Draw(drawTexture.Value, NPC.Center - screenPos - new Vector2(0, 4), NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 			}
+
+			// Inspired by Magic Storage
+			if (CheckIfQuestIsAvailableToTurnIn(out int which, out bool secret))
+			{
+				questExclamationTimer++;
+
+				Texture2D icons = questIcons.Value;
+				Texture2D question = questQuestion.Value;
+
+				Rectangle iconsSource = icons.Frame(1, 6, 0, which);
+				Rectangle questionSource = icons.Frame(1, 6, 0, questExclamationTimer % 60 < 30 ? 1 : 0);
+
+				Vector2 center = NPC.Top - new Vector2(0, 32) - Main.screenPosition;
+
+				double sin = Math.Sin(questExclamationTimer / 30d);
+				center.Y += (float)sin * 5;
+				float transparency = (float)(0.75 + 0.25 * sin);
+
+				Color questionColor = Color.Gold;
+				if (secret)
+				{
+					questionColor = Main.DiscoColor;
+				}
+
+				spriteBatch.Draw(icons, center, iconsSource, Color.White * transparency, 0, iconsSource.Size() / 2f, 1f, SpriteEffects.None, 0);
+				spriteBatch.Draw(question, center, questionSource, questionColor * transparency, 0, questionSource.Size() / 2f, 1f, SpriteEffects.None, 0);
+			}
 		}
+
+		public override void FindFrame(int frameHeight)
+		{
+			// Force the frame to the attacking frame if attacking an aiming straight.
+			if (NPC.ai[0] == 12 && NPC.frame.Y == 17 * frameHeight)
+			{
+				NPC.frame.Y = 23 * frameHeight;
+			}
+		}
+
 		#endregion
 
 		#region Chat
@@ -927,6 +965,34 @@ namespace RijamsMod.NPCs.TownNPCs
 				SoundEngine.PlaySound(new($"{nameof(RijamsMod)}/Sounds/Custom/CelebrationJingle"));
 			}
 		}
+
+		public static bool CheckIfQuestIsAvailableToTurnIn(out int which, out bool secret)
+		{
+			secret = false;
+			which = 0;
+			if (NPCHelper.AllQuestsCompleted() && RijamsModWorld.intTravQuestBreadAndJelly)
+			{
+				return false;
+			}
+
+			for (int i = 0; i < Main.maxPlayers; i++)
+			{
+				Player searchPlayer = Main.player[i];
+				if (!searchPlayer.active)
+				{
+					continue;
+				}
+
+				if (searchPlayer.HasItem(ModContent.ItemType<OddDevice>()) && !RijamsModWorld.intTravQuestOddDevice) { which = 0; return true; }
+				if (searchPlayer.HasItem(ModContent.ItemType<BlankDisplay>()) && !RijamsModWorld.intTravQuestBlankDisplay) { which = 1; return true; }
+				if (searchPlayer.HasItem(ModContent.ItemType<TeleportationCore>()) && !RijamsModWorld.intTravQuestTPCore) { which = 2; return true; }
+				if (searchPlayer.HasItem(ModContent.ItemType<BreadAndJelly>()) && !RijamsModWorld.intTravQuestBreadAndJelly) { which = 3; secret = true; return true; }
+				if (searchPlayer.HasItem(ModContent.ItemType<MagicOxygenizer>()) && !RijamsModWorld.intTravQuestMagicOxygenizer) { which = 4; return true; }
+				if (searchPlayer.HasItem(ModContent.ItemType<PrimeThruster>()) && !RijamsModWorld.intTravQuestPrimeThruster) { which = 5; return true; }
+			}
+			return false;
+		}
+
 		#endregion
 
 		#region Shop
@@ -1070,6 +1136,8 @@ namespace RijamsMod.NPCs.TownNPCs
 		//Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1).
 		//Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
 		{
+			Main.NewText("NPC.ai[0] " + NPC.ai[0] + " NPC.frame.Y " + NPC.frame.Y + " NPC.frame.Height " + NPC.frame.Height);
+
 			//multiplier = 12f;
 			//randomOffset = 2f;
 			if (!Main.hardMode)
@@ -1078,37 +1146,25 @@ namespace RijamsMod.NPCs.TownNPCs
 				item = itemTexture;
 				itemFrame = itemRectangle;
 				scale = 0.75f;
-				horizontalHoldoutOffset = 12;
+				horizontalHoldoutOffset = -20;
 			}
-			if (Main.hardMode && !NPC.downedMoonlord)
+			else if (Main.hardMode && !NPC.downedMoonlord)
 			{
 				Main.GetItemDrawFrame(ModContent.ItemType<InterstellarSMG>(), out Texture2D itemTexture, out Rectangle itemRectangle);
 				item = itemTexture;
 				itemFrame = itemRectangle;
 				scale = 0.75f;
-				horizontalHoldoutOffset = 18;
+				horizontalHoldoutOffset = -34;
 			}
-			if (NPC.downedMoonlord)
+			else if (NPC.downedMoonlord)
 			{
 				Main.GetItemDrawFrame(ModContent.ItemType<InterstellarCarbine>(), out Texture2D itemTexture, out Rectangle itemRectangle);
 				item = itemTexture;
 				itemFrame = itemRectangle;
 				scale = 0.75f;
-				horizontalHoldoutOffset = 18;
+				horizontalHoldoutOffset = -34;
 			}
 		}
-
-		/*public override void SaveData(TagCompound tag)
-		{
-			//tag["IntTravIsShimmerVariant"] = isShimmered;
-			//Mod.Logger.DebugFormat("Interstellar Traveler Save: NPC.townNpcVariationIndex {0}, tag[\"IntTravIsShimmerVariant\"] {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag["IntTravIsShimmerVariant"].ToString(), isShimmered);
-		}
-
-		public override void LoadData(TagCompound tag)
-		{
-			//isShimmered = tag.GetBool("IntTravIsShimmerVariant");
-			//Mod.Logger.DebugFormat("Interstellar Traveler Load: NPC.townNpcVariationIndex {0}, tag.GetBool(\"IntTravIsShimmerVariant\") {1}, isShimmered {2}", NPC.townNpcVariationIndex, tag.GetBool("IntTravIsShimmerVariant").ToString(), isShimmered);
-		}*/
 
 		#endregion
 	}

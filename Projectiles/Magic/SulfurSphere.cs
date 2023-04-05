@@ -57,6 +57,7 @@ namespace RijamsMod.Projectiles.Magic
 					Main.dust[dust].noGravity = false;
 				}
 			}
+			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {

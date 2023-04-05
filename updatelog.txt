@@ -127,3 +127,5 @@
 	* Added 13 new magic weapons: Shining Lantern, Frostburn Lantern, Ultrabright Lantern, Peace Lantern, Water Lantern, Shadow Lantern, Sulfuric Lantern, Vile Lantern, Vicious Lantern, Rainbow Lantern, Spectre Lantern, Jack-o'-Lantern, Avolite Lantern.
 	* Buffed Sulfuric Acid slightly: now does a minimum of 4 damage per tick instead of 2.
 	* Improved/fixed many things in multiplayer.
+	* Added a cool icon display above the Interstellar Traveler if you have a quest item to turn in.
+	* Added Sulfur Rocket.

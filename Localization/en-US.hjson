@@ -1522,6 +1522,15 @@ Mods: {
 					'''
 			}
 
+			SulfurRocket: {
+				DisplayName: Sulfur Rocket
+				Tooltip:
+					'''
+					Goes through tiles
+					Inflicts Sulfuric Acid
+					'''
+			}
+
 			BasicDart: {
 				DisplayName: Basic Dart
 				Tooltip: ""
@@ -2470,6 +2479,10 @@ Mods: {
 			ForbiddenWhipProj.DisplayName: Forbidden Whip
 			DebugShimmererProj.DisplayName: Debug Shimmerer Proj
 			LanternLight.DisplayName: Lantern Light
+			SulfurRocket.DisplayName: Sulfur Rocket
+			SulfurGrenade.DisplayName: Sulfur Grenade
+			SulfurMine.DisplayName: Sulfur Mine
+			SulfurSnowmanRocket.DisplayName: Sulfur Snowman Rocket
 		}
 
 		Tiles: {

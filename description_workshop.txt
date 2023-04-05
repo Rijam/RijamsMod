@@ -15,7 +15,7 @@ Includes:
 [b] 220 new items and weapons throughout the game's progression [/b]
 [list]
 [*] 45 weapons: 12 Melee, 8 Ranged, 21 Magic, 21 Summoner.
-[*] 12 ammo types.
+[*] 13 ammo types.
 [*] 42 accessories.
 [*] 23 armor pieces.
 [*] 13 vanity items + 3 dyes.

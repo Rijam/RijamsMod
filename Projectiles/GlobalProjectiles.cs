@@ -9,6 +9,16 @@ namespace RijamsMod.Projectiles
 {
 	public class RijamsModProjectile : GlobalProjectile
 	{
+		public static List<int> RocketsAffectedByRocketBoosterExtraUpdates = new()
+			{ ProjectileID.RocketI, ProjectileID.RocketII, ProjectileID.RocketIII, ProjectileID.RocketIV,
+			ProjectileID.RocketSnowmanI, ProjectileID.RocketSnowmanII, ProjectileID.RocketSnowmanIII, ProjectileID.RocketSnowmanIV,
+			ProjectileID.ClusterRocketI, ProjectileID.ClusterRocketII, ProjectileID.DryRocket, ProjectileID.WetRocket,
+			ProjectileID.LavaRocket, ProjectileID.HoneyRocket, ProjectileID.MiniNukeRocketI, ProjectileID.MiniNukeRocketII };
+		//Not including Grenades, Proximity Mines, or the Celebration Rockets because extraUpdates causes them to:
+		//	Grenades and Proximity Mines fall way faster which makes them have even less range.
+		//	Celebration Rockets explode twice as soon (also they are shared with the placed colored firework Rockets)
+		//  Exctrosphere Missile moves slow enough that it doesn't need extraUpdates.
+
 		public override void PostAI(Projectile projectile)
 		{
 			Player owner = Main.player[projectile.owner];
@@ -119,15 +129,7 @@ namespace RijamsMod.Projectiles
 			{
 				if (owner.active && owner.GetModPlayer<RijamsModPlayer>().rocketBooster)
 				{
-					short[] types = {ProjectileID.RocketI, ProjectileID.RocketII, ProjectileID.RocketIII, ProjectileID.RocketIV,
-					ProjectileID.RocketSnowmanI, ProjectileID.RocketSnowmanII, ProjectileID.RocketSnowmanIII, ProjectileID.RocketSnowmanIV,
-					ProjectileID.ClusterRocketI, ProjectileID.ClusterRocketII, ProjectileID.DryRocket, ProjectileID.WetRocket,
-					ProjectileID.LavaRocket, ProjectileID.HoneyRocket, ProjectileID.MiniNukeRocketI, ProjectileID.MiniNukeRocketII};
-					//Not including Grenades, Proximity Mines, or the Celebration Rockets because extraUpdates causes them to:
-					//	Grenades and Proximity Mines fall way faster which makes them have even less range.
-					//	Celebration Rockets explode twice as soon (also they are shared with the placed colored firework Rockets)
-					//  Exctrosphere Missile moves slow enough that it doesn't need extraUpdates.
-					foreach (short element in types)
+					foreach (int element in RocketsAffectedByRocketBoosterExtraUpdates)
 					{
 						if (owner.HeldItem.useAmmo == AmmoID.Rocket && projectile.type == element)
 						{
