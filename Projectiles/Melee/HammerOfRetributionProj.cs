@@ -20,7 +20,7 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.ignoreWater = true;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.penetrate = -1;
-			AIType = ProjectileID.Bullet;
+			Projectile.aiStyle = -1;
 			Projectile.timeLeft = 300;
 			//projectile.extraUpdates = 1;
 		}
@@ -31,26 +31,48 @@ namespace RijamsMod.Projectiles.Melee
 		}
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-			Projectile.Kill();
-        }
-        public override void AI()
+			Projectile.velocity *= 0f;
+			Projectile.alpha = 255;
+			Projectile.timeLeft = 3;
+		}
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
+			Projectile.velocity *= 0f;
+			Projectile.alpha = 255;
+			Projectile.timeLeft = 3;
+		}
+
+		public override void AI()
+		{
+			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3)
+			{
+				PreKill(Projectile.timeLeft);
+			}
 			Projectile.rotation += 0.4f * Projectile.direction;
 			Projectile.alpha += 25;
 		}
+		public override bool OnTileCollide(Vector2 oldVelocity)
+		{
+			Projectile.velocity *= 0f;
+			Projectile.alpha = 255;
+			Projectile.timeLeft = 3;
+			return false;
+		}
+
 		public override bool PreKill(int timeLeft)
 		{
-			if (Projectile.owner == Main.myPlayer)
-			{
-				Projectile.position = Projectile.Center;
-				Projectile.width = 128;
-				Projectile.height = 128;
-				Projectile.Center = Projectile.position;
-			}
+			Projectile.Resize(96, 96);
 			return true;
 		}
 		public override void Kill(int timeLeft)
 		{
+			Projectile.position.X += Projectile.width / 2;
+			Projectile.position.Y += Projectile.height / 2;
+			Projectile.width = 48;
+			Projectile.height = 48;
+			Projectile.position.X -= Projectile.width / 2;
+			Projectile.position.Y -= Projectile.height / 2;
+
 			for (int i = 0; i < 10; i++)
             {
 				Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1f);
