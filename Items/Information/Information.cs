@@ -30,10 +30,10 @@ namespace RijamsMod.Items.Information
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.Add(new TooltipLine(Mod, "MaxLife", "Maximum life: " + StatCalc.StatLifeMax()));
-			tooltips.Add(new TooltipLine(Mod, "MaxTempLife", "Maximum temporary life: " + StatCalc.StatLifeMax2()));
-			tooltips.Add(new TooltipLine(Mod, "lifeRegen", "Life regeneration: " + StatCalc.LifeRegen()));
-			tooltips.Add(new TooltipLine(Mod, "lifeRegenTime", "Life regeneration time: " + StatCalc.LifeRegenTime()));
+			tooltips.Add(new TooltipLine(Mod, "MaxLife", "[i:LifeCrystal] Maximum life: " + StatCalc.StatLifeMax()));
+			tooltips.Add(new TooltipLine(Mod, "MaxTempLife", "[i:LifeCrystal] Maximum temporary life: " + StatCalc.StatLifeMax2()));
+			tooltips.Add(new TooltipLine(Mod, "lifeRegen", "[i:Heart] Life regeneration: " + StatCalc.LifeRegen()));
+			tooltips.Add(new TooltipLine(Mod, "lifeRegenTime", "[i:Heart] Life regeneration time: " + StatCalc.LifeRegenTime()));
 		}
 	}
 	public class ManaDisplay : LifeDisplay
@@ -47,11 +47,11 @@ namespace RijamsMod.Items.Information
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.Add(new TooltipLine(Mod, "statManaMax", "Maximum mana: " + StatCalc.StatManaMax()));
-			tooltips.Add(new TooltipLine(Mod, "statManaMax2", "Maximum temporary mana: " + StatCalc.StatManaMax2()));
-			tooltips.Add(new TooltipLine(Mod, "manaCost", "Mana cost multiplier: " + StatCalc.ManaCost()));
-			tooltips.Add(new TooltipLine(Mod, "manaRegen", "Mana regeneration: " + StatCalc.ManaRegen()));
-			tooltips.Add(new TooltipLine(Mod, "manaRegenBonus", "Mana regeneration bonus: " + StatCalc.ManaRegenBonus()));
+			tooltips.Add(new TooltipLine(Mod, "statManaMax", "[i:ManaCrystal] Maximum mana: " + StatCalc.StatManaMax()));
+			tooltips.Add(new TooltipLine(Mod, "statManaMax2", "[i:ManaCrystal] Maximum temporary mana: " + StatCalc.StatManaMax2()));
+			tooltips.Add(new TooltipLine(Mod, "manaCost", "[i:Star] Mana cost multiplier: " + StatCalc.ManaCost()));
+			tooltips.Add(new TooltipLine(Mod, "manaRegen", "[i:Star] Mana regeneration: " + StatCalc.ManaRegen()));
+			tooltips.Add(new TooltipLine(Mod, "manaRegenBonus", "[i:Star] Mana regeneration bonus: " + StatCalc.ManaRegenBonus()));
 		}
 	}
 	public class DefenseDisplay : LifeDisplay
@@ -65,14 +65,14 @@ namespace RijamsMod.Items.Information
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.Add(new TooltipLine(Mod, "StatDefense", "Defense: " + StatCalc.StatDefense()));
-			tooltips.Add(new TooltipLine(Mod, "Endurance", "Damage Reduction: " + StatCalc.Endurance() + "%"));
-			tooltips.Add(new TooltipLine(Mod, "MeleeAP", "Bonus Melee armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Melee)));
-			tooltips.Add(new TooltipLine(Mod, "RangedAP", "Bonus Ranged armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Ranged)));
-			tooltips.Add(new TooltipLine(Mod, "MagicAP", "Bonus Magic armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Magic)));
-			tooltips.Add(new TooltipLine(Mod, "SummonAP", "Bonus Summon armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "ThrowingAP", "Bonus Throwing armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Throwing)));
-			tooltips.Add(new TooltipLine(Mod, "AllAP", "Bonus All armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Generic)));
+			tooltips.Add(new TooltipLine(Mod, "StatDefense", "[i:CobaltShield] Defense: " + StatCalc.StatDefense()));
+			tooltips.Add(new TooltipLine(Mod, "Endurance", "[i:CobaltShield] Damage Reduction: " + StatCalc.Endurance() + "%"));
+			tooltips.Add(new TooltipLine(Mod, "MeleeAP", "[i:CopperBroadsword] Bonus Melee armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "RangedAP", "[i:WoodenBow] Bonus Ranged armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "MagicAP", "[i:WandofSparking] Bonus Magic armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "SummonAP", "[i:BabyBirdStaff] Bonus Summon armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "ThrowingAP", "[i:ThrowingKnife] Bonus Throwing armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "AllAP", "[i:AvengerEmblem] Bonus All armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Generic)));
 		}
 	}
 	public class MovementDisplay : LifeDisplay
@@ -86,16 +86,16 @@ namespace RijamsMod.Items.Information
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Movement speed multiplier: " + StatCalc.MoveSpeed()));
-			tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Maximum Running speed: " + StatCalc.MaxRunSpeed()));
-			tooltips.Add(new TooltipLine(Mod, "runAcceleration", "Running acceleration speed: " + StatCalc.RunAcceleration()));
-			tooltips.Add(new TooltipLine(Mod, "runSlowdown", "Running deceleration speed: " + StatCalc.RunSlowdown()));
-			tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "Wing flight time: " + StatCalc.WingTimeMax()));
-			tooltips.Add(new TooltipLine(Mod, "wingTime", "Current wing flight time: " + StatCalc.WingTime()));
-			tooltips.Add(new TooltipLine(Mod, "rocketTimeMax", "Rocket Boots flight time: " + StatCalc.RocketTimeMax()));
-			tooltips.Add(new TooltipLine(Mod, "rocketTime", "Current Rocket Boots flight time: " + StatCalc.RocketTime()));
-			tooltips.Add(new TooltipLine(Mod, "noKnockback", "Knockback immunity: " + StatCalc.NoKnockback()));
-			tooltips.Add(new TooltipLine(Mod, "noFallDmg", "Fall damage immunity: " + StatCalc.NoFallDmg()));
+			tooltips.Add(new TooltipLine(Mod, "moveSpeed", "[i:HermesBoots] Movement speed multiplier: " + StatCalc.MoveSpeed()));
+			tooltips.Add(new TooltipLine(Mod, "moveSpeed", "[i:HermesBoots] Maximum Running speed: " + StatCalc.MaxRunSpeed()));
+			tooltips.Add(new TooltipLine(Mod, "runAcceleration", "[i:HermesBoots] Running acceleration speed: " + StatCalc.RunAcceleration()));
+			tooltips.Add(new TooltipLine(Mod, "runSlowdown", "[i:HermesBoots] Running deceleration speed: " + StatCalc.RunSlowdown()));
+			tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "[i:AngelWings] Wing flight time: " + StatCalc.WingTimeMax()));
+			tooltips.Add(new TooltipLine(Mod, "wingTime", "[i:AngelWings] Current wing flight time: " + StatCalc.WingTime()));
+			tooltips.Add(new TooltipLine(Mod, "rocketTimeMax", "[i:RocketBoots] Rocket Boots flight time: " + StatCalc.RocketTimeMax()));
+			tooltips.Add(new TooltipLine(Mod, "rocketTime", "[i:RocketBoots] Current Rocket Boots flight time: " + StatCalc.RocketTime()));
+			tooltips.Add(new TooltipLine(Mod, "noKnockback", "[i:CobaltShield] Knockback immunity: " + StatCalc.NoKnockback()));
+			tooltips.Add(new TooltipLine(Mod, "noFallDmg", "[i:LuckyHorseshoe] Fall damage immunity: " + StatCalc.NoFallDmg()));
 		}
 	}
 	public class DamageDisplay : LifeDisplay
@@ -109,18 +109,18 @@ namespace RijamsMod.Items.Information
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.Add(new TooltipLine(Mod, "Melee", "Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
-			tooltips.Add(new TooltipLine(Mod, "Ranged", "Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
-			tooltips.Add(new TooltipLine(Mod, "Magic", "Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
-			tooltips.Add(new TooltipLine(Mod, "Summon", "Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "Throwing", "Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
-			tooltips.Add(new TooltipLine(Mod, "All", "All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
-			tooltips.Add(new TooltipLine(Mod, "MeleeSpeed", "Melee speed: " + StatCalc.AttackSpeed(DamageClass.Melee)));
-			tooltips.Add(new TooltipLine(Mod, "RangedSpeed", "Ranged speed: " + StatCalc.AttackSpeed(DamageClass.Ranged)));
-			tooltips.Add(new TooltipLine(Mod, "MagicSpeed", "Magic speed: " + StatCalc.AttackSpeed(DamageClass.Magic)));
-			tooltips.Add(new TooltipLine(Mod, "SummonSpeed", "Summon speed: " + StatCalc.AttackSpeed(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "ThrowingSpeed", "Throwing speed: " + StatCalc.AttackSpeed(DamageClass.Throwing)));
-			tooltips.Add(new TooltipLine(Mod, "AllSpeed", "All speed: " + StatCalc.AttackSpeed(DamageClass.Generic)));
+			tooltips.Add(new TooltipLine(Mod, "Melee", "[i:CopperBroadsword] Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "Ranged", "[i:WoodenBow] Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "Magic", "[i:WandofSparking] Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "Summon", "[i:BabyBirdStaff] Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "Throwing", "[i:ThrowingKnife] Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "All", "[i:AvengerEmblem] All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
+			tooltips.Add(new TooltipLine(Mod, "MeleeSpeed", "[i:CopperBroadsword] Melee speed: " + StatCalc.AttackSpeed(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "RangedSpeed", "[i:WoodenBow] Ranged speed: " + StatCalc.AttackSpeed(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "MagicSpeed", "[i:WandofSparking] Magic speed: " + StatCalc.AttackSpeed(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "SummonSpeed", "[i:BabyBirdStaff] Summon speed: " + StatCalc.AttackSpeed(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "ThrowingSpeed", "[i:ThrowingKnife] Throwing speed: " + StatCalc.AttackSpeed(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "AllSpeed", "[i:AvengerEmblem] All speed: " + StatCalc.AttackSpeed(DamageClass.Generic)));
 		}
 	}
 	public class CritDisplay : LifeDisplay
@@ -134,18 +134,18 @@ namespace RijamsMod.Items.Information
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.Add(new TooltipLine(Mod, "Melee", "Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
-			tooltips.Add(new TooltipLine(Mod, "Ranged", "Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
-			tooltips.Add(new TooltipLine(Mod, "Magic", "Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
-			tooltips.Add(new TooltipLine(Mod, "Summon", "Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "Throwing", "Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
-			tooltips.Add(new TooltipLine(Mod, "All", "Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
-			tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
-			tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
-			tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
-			tooltips.Add(new TooltipLine(Mod, "SummonKB", "Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
-			tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
+			tooltips.Add(new TooltipLine(Mod, "Melee", "[i:CopperBroadsword] Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "Ranged", "[i:WoodenBow] Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "Magic", "[i:WandofSparking] Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "Summon", "[i:BabyBirdStaff] Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "Throwing", "[i:ThrowingKnife] Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "All", "[i:AvengerEmblem] Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "[i:CopperBroadsword] Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "[i:WoodenBow] Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "[i:WandofSparking] Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
+			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "[i:ThrowingKnife] Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
+			tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "[i:AvengerEmblem] All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
 		}
 	}
 	public class SummonsDisplay : LifeDisplay
@@ -160,12 +160,12 @@ namespace RijamsMod.Items.Information
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			tooltips.Add(new TooltipLine(Mod, "MinionCount", "Maximum minions: " + StatCalc.MaxMinions()));
-			tooltips.Add(new TooltipLine(Mod, "SentryCount", "Maximum sentries: " + StatCalc.MaxTurrets()));
-			tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
-			tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
-			tooltips.Add(new TooltipLine(Mod, "SummonKB", "Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "Current minion count: " + StatCalc.NumMinions()));
+			tooltips.Add(new TooltipLine(Mod, "MinionCount", "[i:SlimeStaff] Maximum minions: " + StatCalc.MaxMinions()));
+			tooltips.Add(new TooltipLine(Mod, "SentryCount", "[i:DD2BallistraTowerT1Popper] Maximum sentries: " + StatCalc.MaxTurrets()));
+			tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "[i:ThornWhip] Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
+			tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
+			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.NumMinions()));
 		}
 	}
 	public class InformationInterface : ModItem
@@ -197,123 +197,146 @@ namespace RijamsMod.Items.Information
 			bool isLeftCtrlHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
 			bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 			bool isRightShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightShift);
+			bool isRightControlHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightControl);
 
 			if (isLeftShiftHeld)
 			{
 				//Life
-				tooltips.Add(new TooltipLine(Mod, "MaxLife", "Maximum life: " + StatCalc.StatLifeMax()));
-				tooltips.Add(new TooltipLine(Mod, "MaxTempLife", "Maximum temporary life: " + StatCalc.StatLifeMax2()));
-				tooltips.Add(new TooltipLine(Mod, "lifeRegen", "Life regeneration: " + StatCalc.LifeRegen()));
-				tooltips.Add(new TooltipLine(Mod, "lifeRegenTime", "Life regeneration time: " + StatCalc.LifeRegenTime()));
+				tooltips.Add(new TooltipLine(Mod, "MaxLife", "[i:LifeCrystal] Maximum life: " + StatCalc.StatLifeMax()));
+				tooltips.Add(new TooltipLine(Mod, "MaxTempLife", "[i:LifeCrystal] Maximum temporary life: " + StatCalc.StatLifeMax2()));
+				tooltips.Add(new TooltipLine(Mod, "lifeRegen", "[i:Heart] Life regeneration: " + StatCalc.LifeRegen()));
+				tooltips.Add(new TooltipLine(Mod, "lifeRegenTime", "[i:Heart] Life regeneration time: " + StatCalc.LifeRegenTime()));
 
 				//Mana
-				tooltips.Add(new TooltipLine(Mod, "statManaMax", "Maximum mana: " + StatCalc.StatManaMax()));
-				tooltips.Add(new TooltipLine(Mod, "statManaMax2", "Maximum temporary mana: " + StatCalc.StatManaMax2()));
-				tooltips.Add(new TooltipLine(Mod, "manaCost", "Mana cost multiplier: " + StatCalc.ManaCost()));
-				tooltips.Add(new TooltipLine(Mod, "manaRegen", "Mana regeneration: " + StatCalc.ManaRegen()));
-				tooltips.Add(new TooltipLine(Mod, "manaRegenBonus", "Mana regeneration bonus: " + StatCalc.ManaRegenBonus()));
+				tooltips.Add(new TooltipLine(Mod, "statManaMax", "[i:ManaCrystal] Maximum mana: " + StatCalc.StatManaMax()));
+				tooltips.Add(new TooltipLine(Mod, "statManaMax2", "[i:ManaCrystal] Maximum temporary mana: " + StatCalc.StatManaMax2()));
+				tooltips.Add(new TooltipLine(Mod, "manaCost", "[i:Star] Mana cost multiplier: " + StatCalc.ManaCost()));
+				tooltips.Add(new TooltipLine(Mod, "manaRegen", "[i:Star] Mana regeneration: " + StatCalc.ManaRegen()));
+				tooltips.Add(new TooltipLine(Mod, "manaRegenBonus", "[i:Star] Mana regeneration bonus: " + StatCalc.ManaRegenBonus()));
 
 				//Defense
-				tooltips.Add(new TooltipLine(Mod, "StatDefense", "Defense: " + StatCalc.StatDefense()));
-				tooltips.Add(new TooltipLine(Mod, "Endurance", "Damage Reduction: " + StatCalc.Endurance() + "%"));
+				tooltips.Add(new TooltipLine(Mod, "StatDefense", "[i:CobaltShield] Defense: " + StatCalc.StatDefense()));
+				tooltips.Add(new TooltipLine(Mod, "Endurance", "[i:CobaltShield] Damage Reduction: " + StatCalc.Endurance() + "%"));
 
 				//Movement
-				tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Movement speed multiplier: " + StatCalc.MoveSpeed()));
-				tooltips.Add(new TooltipLine(Mod, "maxRunSpeed", "Maximum Running speed: " + StatCalc.MaxRunSpeed()));
-				tooltips.Add(new TooltipLine(Mod, "runAcceleration", "Running acceleration speed: " + StatCalc.RunAcceleration()));
-				tooltips.Add(new TooltipLine(Mod, "runSlowdown", "Running deceleration speed: " + StatCalc.RunSlowdown()));
-				tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "Wing flight time: " + StatCalc.WingTimeMax()));
-				tooltips.Add(new TooltipLine(Mod, "wingTime", "Current wing flight time: " + StatCalc.WingTime()));
-				tooltips.Add(new TooltipLine(Mod, "rocketTimeMax", "Rocket Boots flight time: " + StatCalc.RocketTimeMax()));
-				tooltips.Add(new TooltipLine(Mod, "rocketTime", "Current Rocket Boots flight time: " + StatCalc.RocketTime()));
-				tooltips.Add(new TooltipLine(Mod, "noKnockback", "Knockback immunity: " + StatCalc.NoKnockback()));
-				tooltips.Add(new TooltipLine(Mod, "noFallDmg", "Fall damage immunity: " + StatCalc.NoFallDmg()));
+				tooltips.Add(new TooltipLine(Mod, "moveSpeed", "[i:HermesBoots] Movement speed multiplier: " + StatCalc.MoveSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "maxRunSpeed", "[i:HermesBoots] Maximum Running speed: " + StatCalc.MaxRunSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "runAcceleration", "[i:HermesBoots] Running acceleration speed: " + StatCalc.RunAcceleration()));
+				tooltips.Add(new TooltipLine(Mod, "runSlowdown", "[i:HermesBoots] Running deceleration speed: " + StatCalc.RunSlowdown()));
+				tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "[i:AngelWings] Wing flight time: " + StatCalc.WingTimeMax()));
+				tooltips.Add(new TooltipLine(Mod, "wingTime", "[i:AngelWings] Current wing flight time: " + StatCalc.WingTime()));
+				tooltips.Add(new TooltipLine(Mod, "rocketTimeMax", "[i:RocketBoots] Rocket Boots flight time: " + StatCalc.RocketTimeMax()));
+				tooltips.Add(new TooltipLine(Mod, "rocketTime", "[i:RocketBoots] Current Rocket Boots flight time: " + StatCalc.RocketTime()));
+				tooltips.Add(new TooltipLine(Mod, "noKnockback", "[i:CobaltShield] Knockback immunity: " + StatCalc.NoKnockback()));
+				tooltips.Add(new TooltipLine(Mod, "noFallDmg", "[i:LuckyHorseshoe] Fall damage immunity: " + StatCalc.NoFallDmg()));
 
 				//Summons
-				tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
-				tooltips.Add(new TooltipLine(Mod, "MinionCount", "Maximum minions: " + StatCalc.MaxMinions()));
-				tooltips.Add(new TooltipLine(Mod, "SentryCount", "Maximum sentries: " + StatCalc.MaxTurrets()));
-				tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "Current minion count: " + StatCalc.NumMinions()));
+				tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
+				tooltips.Add(new TooltipLine(Mod, "MinionCount", "[i:SlimeStaff] Maximum minions: " + StatCalc.MaxMinions()));
+				tooltips.Add(new TooltipLine(Mod, "SentryCount", "[i:DD2BallistraTowerT1Popper] Maximum sentries: " + StatCalc.MaxTurrets()));
+				tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.NumMinions()));
 			}
 
 			if (isLeftCtrlHeld)
 			{
 				//Damage
-				tooltips.Add(new TooltipLine(Mod, "Melee", "Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
-				tooltips.Add(new TooltipLine(Mod, "Ranged", "Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
-				tooltips.Add(new TooltipLine(Mod, "Magic", "Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "Summon", "Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
-				tooltips.Add(new TooltipLine(Mod, "Throwing", "Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
-				tooltips.Add(new TooltipLine(Mod, "All", "All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
-				tooltips.Add(new TooltipLine(Mod, "MeleeSpeed", "Melee speed: " + StatCalc.AttackSpeed(DamageClass.Melee)));
-				tooltips.Add(new TooltipLine(Mod, "RangedSpeed", "Ranged speed: " + StatCalc.AttackSpeed(DamageClass.Ranged)));
-				tooltips.Add(new TooltipLine(Mod, "MagicSpeed", "Magic speed: " + StatCalc.AttackSpeed(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "SummonSpeed", "Summon speed: " + StatCalc.AttackSpeed(DamageClass.Summon)));
-				tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
-				tooltips.Add(new TooltipLine(Mod, "ThrowingSpeed", "Throwing speed: " + StatCalc.AttackSpeed(DamageClass.Throwing)));
-				tooltips.Add(new TooltipLine(Mod, "AllSpeed", "All speed: " + StatCalc.AttackSpeed(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "Melee", "[i:CopperBroadsword] Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "Ranged", "[i:WoodenBow] Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "Magic", "[i:WandofSparking] Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "Summon", "[i:BabyBirdStaff] Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "Throwing", "[i:ThrowingKnife] Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "All", "[i:AvengerEmblem] All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "MeleeSpeed", "[i:CopperBroadsword] Melee speed: " + StatCalc.AttackSpeed(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "RangedSpeed", "[i:WoodenBow] Ranged speed: " + StatCalc.AttackSpeed(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "MagicSpeed", "[i:WandofSparking] Magic speed: " + StatCalc.AttackSpeed(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "SummonSpeed", "[i:BabyBirdStaff] Summon speed: " + StatCalc.AttackSpeed(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "[i:ThornWhip] Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
+				tooltips.Add(new TooltipLine(Mod, "ThrowingSpeed", "[i:ThrowingKnife] Throwing speed: " + StatCalc.AttackSpeed(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "AllSpeed", "[i:AvengerEmblem] All speed: " + StatCalc.AttackSpeed(DamageClass.Generic)));
 
 				//Crit
-				tooltips.Add(new TooltipLine(Mod, "Melee", "Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
-				tooltips.Add(new TooltipLine(Mod, "Ranged", "Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
-				tooltips.Add(new TooltipLine(Mod, "Magic", "Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "Summon", "Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
-				tooltips.Add(new TooltipLine(Mod, "Throwing", "Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
-				tooltips.Add(new TooltipLine(Mod, "All", "Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "Melee", "[i:CopperBroadsword] Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "Ranged", "[i:WoodenBow] Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "Magic", "[i:WandofSparking] Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "Summon", "[i:BabyBirdStaff] Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "Throwing", "[i:ThrowingKnife] Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "All", "[i:AvengerEmblem] Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
 
 				//Armor Penetration
-				tooltips.Add(new TooltipLine(Mod, "MeleeAP", "Bonus Melee armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Melee)));
-				tooltips.Add(new TooltipLine(Mod, "RangedAP", "Bonus Ranged armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Ranged)));
-				tooltips.Add(new TooltipLine(Mod, "MagicAP", "Bonus Magic armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "SummonAP", "Bonus Summon armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Summon)));
-				tooltips.Add(new TooltipLine(Mod, "ThrowingAP", "Bonus Throwing armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Throwing)));
-				tooltips.Add(new TooltipLine(Mod, "AllAP", "Bonus All armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "MeleeAP", "[i:CopperBroadsword] Bonus Melee armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "RangedAP", "[i:WoodenBow] Bonus Ranged armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "MagicAP", "[i:WandofSparking] Bonus Magic armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "SummonAP", "[i:BabyBirdStaff] Bonus Summon armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "ThrowingAP", "[i:ThrowingKnife] Bonus Throwing armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "AllAP", "[i:AvengerEmblem] Bonus All armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Generic)));
 
 				//Knockback
-				tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
-				tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
-				tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "SummonKB", "Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
-				tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
-				tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "[i:CopperBroadsword] Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "[i:WoodenBow] Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "[i:WandofSparking] Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "[i:ThrowingKnife] Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "[i:AvengerEmblem] All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
 			}
 			if (isRightShiftHeld)
 			{
 				//Other
-				tooltips.Add(new TooltipLine(Mod, "taxMoney", "Tax money: " + StatCalc.TaxMoney()));
-				tooltips.Add(new TooltipLine(Mod, "taxTimer", "Tax timer: " + StatCalc.TaxTimer()));
+				tooltips.Add(new TooltipLine(Mod, "taxMoney", "[i:GoldCoin] Tax money: " + StatCalc.TaxMoney()));
+				tooltips.Add(new TooltipLine(Mod, "taxTimer", "[i:CopperCoin] Tax timer: " + StatCalc.TaxTimer()));
 				//tooltips.Add(new TooltipLine(Mod, "taxRate", "Tax rate: " + taxRateString));
-				tooltips.Add(new TooltipLine(Mod, "anglerQuestsFinished", "Angler quests finished: " + StatCalc.AnglerQuestsFinished()));
-				tooltips.Add(new TooltipLine(Mod, "breath", "Current breath: " + StatCalc.Breath()));
-				tooltips.Add(new TooltipLine(Mod, "breathCD", "Drowning damage: " + StatCalc.BreathCD()));
-				tooltips.Add(new TooltipLine(Mod, "breathMax", "Max breath: " + StatCalc.BreathMax()));
-				tooltips.Add(new TooltipLine(Mod, "lavaImmune", "Lava immunity: " + StatCalc.LavaImmune()));
-				tooltips.Add(new TooltipLine(Mod, "pickSpeed", "Mining speed: " + StatCalc.PickSpeed()));
-				tooltips.Add(new TooltipLine(Mod, "aggro", "Aggro range: " + StatCalc.Aggro()));
-				tooltips.Add(new TooltipLine(Mod, "ZoneWaterCandle", "Near Water Candle: " + StatCalc.ZoneWaterCandle()));
-				tooltips.Add(new TooltipLine(Mod, "ZonePeaceCandle", "Near Peace Candle: " + StatCalc.ZonePeaceCandle()));
-				tooltips.Add(new TooltipLine(Mod, "ZoneShadowCandle", "Near Shadow Candle: " + StatCalc.ZoneShadowCandle()));
-				tooltips.Add(new TooltipLine(Mod, "InZonePurity", "In Purity biome: " + StatCalc.PlayerInZonePurity()));
-				tooltips.Add(new TooltipLine(Mod, "InZoneCorrupt", "In Corruption biome: " + StatCalc.PlayerInZoneCorrupt()));
-				tooltips.Add(new TooltipLine(Mod, "InZoneCrimson", "In Crimson biome: " + StatCalc.PlayerInZoneCrimson()));
-				tooltips.Add(new TooltipLine(Mod, "InZoneHallow", "In Hallow biome: " + StatCalc.PlayerInZoneHallow()));
-				tooltips.Add(new TooltipLine(Mod, "GolfScore", "Golf score: " + StatCalc.GolferScoreAccumulated()));
-				tooltips.Add(new TooltipLine(Mod, "Luck", "Luck: " + StatCalc.Luck()));
-				tooltips.Add(new TooltipLine(Mod, "PosX", "Position X Pixels: " + Main.LocalPlayer.position.X));
-				tooltips.Add(new TooltipLine(Mod, "PosY", "Position Y Pixels: " + Main.LocalPlayer.position.Y));
-				tooltips.Add(new TooltipLine(Mod, "PosX", "Position X Tiles: " + Main.LocalPlayer.position.X / 16f));
-				tooltips.Add(new TooltipLine(Mod, "PosY", "Position Y Tiles: " + Main.LocalPlayer.position.Y / 16f));
+				tooltips.Add(new TooltipLine(Mod, "anglerQuestsFinished", "[i:WoodFishingPole] Angler quests finished: " + StatCalc.AnglerQuestsFinished()));
+				tooltips.Add(new TooltipLine(Mod, "breath", "[i:Bubble] Current breath: " + StatCalc.Breath()));
+				tooltips.Add(new TooltipLine(Mod, "breathCD", "[i:Bubble] Drowning damage: " + StatCalc.BreathCD()));
+				tooltips.Add(new TooltipLine(Mod, "breathMax", "[i:Bubble] Max breath: " + StatCalc.BreathMax()));
+				tooltips.Add(new TooltipLine(Mod, "lavaImmune", "[i:ObsidianSkinPotion] Lava immunity: " + StatCalc.LavaImmune()));
+				tooltips.Add(new TooltipLine(Mod, "lavaMax", "[i:LavaCharm] Lava immunity Time: " + StatCalc.LavaTime()));
+				tooltips.Add(new TooltipLine(Mod, "pickSpeed", "[i:IronPickaxe] Mining speed: " + StatCalc.PickSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "aggro", "[i:FleshKnuckles] Aggro range: " + StatCalc.Aggro()));
+				tooltips.Add(new TooltipLine(Mod, "ZoneWaterCandle", "[i:WaterCandle] Near Water Candle: " + StatCalc.ZoneWaterCandle()));
+				tooltips.Add(new TooltipLine(Mod, "ZonePeaceCandle", "[i:PeaceCandle] Near Peace Candle: " + StatCalc.ZonePeaceCandle()));
+				tooltips.Add(new TooltipLine(Mod, "ZoneShadowCandle", "[i:ShadowCandle] Near Shadow Candle: " + StatCalc.ZoneShadowCandle()));
+				tooltips.Add(new TooltipLine(Mod, "InZonePurity", "[i:Sunflower] In Purity biome: " + StatCalc.PlayerInZonePurity()));
+				tooltips.Add(new TooltipLine(Mod, "InZoneCorrupt", "[i:VileMushroom] In Corruption biome: " + StatCalc.PlayerInZoneCorrupt()));
+				tooltips.Add(new TooltipLine(Mod, "InZoneCrimson", "[i:ViciousMushroom] In Crimson biome: " + StatCalc.PlayerInZoneCrimson()));
+				tooltips.Add(new TooltipLine(Mod, "InZoneHallow", "[i:CrystalShard] In Hallow biome: " + StatCalc.PlayerInZoneHallow()));
+				tooltips.Add(new TooltipLine(Mod, "GolfScore", "[i:GolfClubIron] Golf score: " + StatCalc.GolferScoreAccumulated()));
+				tooltips.Add(new TooltipLine(Mod, "Luck", "[i:LuckPotionGreater] Luck: " + StatCalc.Luck()));
+				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Pixels: " + Main.LocalPlayer.position.X));
+				tooltips.Add(new TooltipLine(Mod, "PosY", "[i:WorldGlobe] Position Y Pixels: " + Main.LocalPlayer.position.Y));
+				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Tiles: " + Main.LocalPlayer.position.X / 16f));
+				tooltips.Add(new TooltipLine(Mod, "PosY", "[i:WorldGlobe] Position Y Tiles: " + Main.LocalPlayer.position.Y / 16f));
 			}
-			if (!isLeftShiftHeld && !isLeftCtrlHeld && !isRightShiftHeld)
+			if (isRightControlHeld)
 			{
-				tooltips.Add(new TooltipLine(Mod, "lifeRegen", "Life regeneration: " + StatCalc.LifeRegen()));
-				tooltips.Add(new TooltipLine(Mod, "manaRegen", "Mana regeneration: " + StatCalc.ManaRegen()));
-				tooltips.Add(new TooltipLine(Mod, "Endurance", "Damage Reduction: " + StatCalc.Endurance() + "%"));
-				tooltips.Add(new TooltipLine(Mod, "moveSpeed", "Movement speed multiplier: " + StatCalc.MoveSpeed()));
-				tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "Wing flight time: " + StatCalc.WingTimeMax()));
-				tooltips.Add(new TooltipLine(Mod, "All", "All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
-				tooltips.Add(new TooltipLine(Mod, "MinionCount", "Maximum minions: " + StatCalc.MaxMinions()));
-				tooltips.Add(new TooltipLine(Mod, "SentryCount", "Maximum sentries: " + StatCalc.MaxTurrets()));
+				tooltips.Add(new TooltipLine(Mod, "DemonHeart", "[i:DemonHeart] Used Demon Heart: " + Main.LocalPlayer.extraAccessory));
+				tooltips.Add(new TooltipLine(Mod, "ArtisanLoaf", "[i:ArtisanLoaf] Used Artisan Loaf: " + Main.LocalPlayer.ateArtisanBread));
+				tooltips.Add(new TooltipLine(Mod, "TorchGodsFavor", "[i:TorchGodsFavor] Used Torch God's Favor: " + Main.LocalPlayer.unlockedBiomeTorches));
+				tooltips.Add(new TooltipLine(Mod, "MinecartUpgradeKit", "[i:MinecartPowerup] Used Minecart Upgrade Kit: " + Main.LocalPlayer.unlockedSuperCart));
+				tooltips.Add(new TooltipLine(Mod, "VitalCrystal", "[i:AegisCrystal] Used Vital Crystal: " + Main.LocalPlayer.usedAegisCrystal));
+				tooltips.Add(new TooltipLine(Mod, "ArcaneCrystal", "[i:ArcaneCrystal] Used Arcane Crystal: " + Main.LocalPlayer.usedArcaneCrystal));
+				tooltips.Add(new TooltipLine(Mod, "AegisFruit", "[i:AegisFruit] Used Aegis Fruit: " + Main.LocalPlayer.usedAegisFruit));
+				tooltips.Add(new TooltipLine(Mod, "Ambrosia", "[i:Ambrosia] Used Ambrosia: " + Main.LocalPlayer.usedAmbrosia));
+				tooltips.Add(new TooltipLine(Mod, "GummyWorm", "[i:GummyWorm] Used Gummy Worm: " + Main.LocalPlayer.usedGummyWorm));
+				tooltips.Add(new TooltipLine(Mod, "GalaxyPearl", "[i:GalaxyPearl] Used Galaxy Pearl: " + Main.LocalPlayer.usedGalaxyPearl));
+				tooltips.Add(new TooltipLine(Mod, "CombatBook", "[i:CombatBook] Used Advanced Combat Techniques: " + NPC.combatBookWasUsed));
+				tooltips.Add(new TooltipLine(Mod, "CombatBookVolumeTwo", "[i:CombatBookVolumeTwo] Used Advanced Combat Techniques: Volume Two: " + NPC.combatBookVolumeTwoWasUsed));
+				tooltips.Add(new TooltipLine(Mod, "PeddlersSatchel", "[i:PeddlersSatchel] Used Peddler's Satchel: " + NPC.peddlersSatchelWasUsed));
+				tooltips.Add(new TooltipLine(Mod, "DontHurtCrittersBook", "[i:DontHurtCrittersBook] Guide to Critter Companionship active: " + Main.LocalPlayer.dontHurtCritters));
+				tooltips.Add(new TooltipLine(Mod, "DontHurtNatureBook", "[i:DontHurtNatureBook] Guide to Environmental Preservation active: " + Main.LocalPlayer.dontHurtNature));
+				tooltips.Add(new TooltipLine(Mod, "EncumberingStone", "[i:EncumberingStone] Encumbering Stone active: " + Main.LocalPlayer.preventAllItemPickups));
+				tooltips.Add(new TooltipLine(Mod, "PlayerDifficulty", "[i:TeamBlockWhite] Player Difficulty: " + Main.LocalPlayer.difficulty));
+				tooltips.Add(new TooltipLine(Mod, "WorldDifficulty", "[i:TeamBlockWhite] World Difficulty: " + (Main.expertMode.ToInt() + Main.masterMode.ToInt() + Main.getGoodWorld.ToInt())));
+			}
+			if (!isLeftShiftHeld && !isLeftCtrlHeld && !isRightShiftHeld && !isRightControlHeld)
+			{
+				tooltips.Add(new TooltipLine(Mod, "lifeRegen", "[i:Heart] Life regeneration: " + StatCalc.LifeRegen()));
+				tooltips.Add(new TooltipLine(Mod, "manaRegen", "[i:Star] Mana regeneration: " + StatCalc.ManaRegen()));
+				tooltips.Add(new TooltipLine(Mod, "Endurance", "[i:CobaltShield] Damage Reduction: " + StatCalc.Endurance() + "%"));
+				tooltips.Add(new TooltipLine(Mod, "moveSpeed", "[i:HermesBoots] Movement speed multiplier: " + StatCalc.MoveSpeed()));
+				tooltips.Add(new TooltipLine(Mod, "wingTimeMax", "[i:AngelWings] Wing flight time: " + StatCalc.WingTimeMax()));
+				tooltips.Add(new TooltipLine(Mod, "All", "[i:AvengerEmblem] All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "MinionCount", "[i:SlimeStaff] Maximum minions: " + StatCalc.MaxMinions()));
+				tooltips.Add(new TooltipLine(Mod, "SentryCount", "[i:DD2BallistraTowerT1Popper] Maximum sentries: " + StatCalc.MaxTurrets()));
 			}
 		}
 		public override void AddRecipes()
@@ -429,6 +452,7 @@ namespace RijamsMod.Items.Information
 		public static string BreathCD() => colorOther + player.breathCD.ToString() + colorClose;
 		public static string BreathMax() => colorOther + player.breathMax.ToString() + colorClose;
 		public static string LavaImmune() => colorOther + player.lavaImmune.ToString() + colorClose;
+		public static string LavaTime() => colorOther + player.lavaTime.ToString() + colorClose;
 		public static string PickSpeed() => colorOther + player.pickSpeed.ToString() + colorClose;
 		public static string Aggro() => colorOther + player.aggro.ToString() + colorClose;
 		public static string ZoneWaterCandle() => colorOther + player.ZoneWaterCandle.ToString() + colorClose;

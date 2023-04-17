@@ -9,38 +9,37 @@ using Terraria.DataStructures;
 using RijamsMod.Items.Armor.Vanity.IntTrav;
 using RijamsMod.Projectiles.Ranged;
 using Terraria.Audio;
+using Steamworks;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
-	public class InterstellarCarbine : ModItem
+	public class InterstellarSniper : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Interstellar Carbine");
-			// Tooltip.SetDefault("50% not to consume ammo\nInherits many aspects of the bullets used");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Moon Lord]", null });
-			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarSniper>(); // Shimmer transforms the item.
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Lunatic Cultist]", null });
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarSMG>(); // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults()
 		{
-			Item.damage = 76;
-			Item.crit = 6; // 10 crit
+			Item.damage = 220;
+			Item.crit = 26; // 30 crit
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 94;
-			Item.height = 32;
-			Item.useTime = 5;
-			Item.useAnimation = 5;
+			Item.width = 100;
+			Item.height = 38;
+			Item.useTime = 40;
+			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Shoot; //5
 			Item.noMelee = true; //so the item's animation doesn't do damage
-			Item.knockBack = 5;
-			Item.value = 750000;
-			Item.rare = ItemRarityID.Purple;//11
-			Item.UseSound = new(Mod.Name + "/Sounds/Item/InterstellarRifle");
+			Item.knockBack = 10;
+			Item.value = 600000;
+			Item.rare = ItemRarityID.Cyan;//9
+			Item.UseSound = new SoundStyle(Mod.Name + "/Sounds/Item/InterstellarSniper") with { Volume = 0.75f };
 			//Item.UseSound = SoundID.Item41 with { Pitch = -0.2f, Volume = 0.5f };
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<InterstellarLaser>();
-			Item.shootSpeed = 7f;
+			Item.shootSpeed = 10f;
 			Item.scale = 0.75f;
 			Item.useAmmo = AmmoID.Bullet;
 			if (!Main.dedServ)
@@ -49,23 +48,23 @@ namespace RijamsMod.Items.Weapons.Ranged
 
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
-				flash.posOffsetXLeft = 13;
-				flash.posOffsetXRight = -6;
-				flash.posOffsetY = 6;
+				flash.posOffsetXLeft = 22;
+				flash.posOffsetXRight = -8;
+				flash.posOffsetY = 10;
 				flash.frameCount = 3;
 				flash.frameRate = 4;
-				flash.colorNoAlpha = new(0, 255, 50);
+				flash.colorNoAlpha = new(255, 50, 50);
 				flash.alpha = 0;
-				flash.forceFirstFrame = false; // Since the useTime is so low, we'd never see the full animation before it gets replaced.
-				flash.animationLoop = true; // So we instead keep the animation looping globally.
+				flash.forceFirstFrame = true;
+				flash.animationLoop = false;
 			}
 		}
 
 
-		// What if I wanted this gun to have a 50% chance not to consume ammo?
+		// What if I wanted this gun to have a 25% chance not to consume ammo?
 		public override bool CanConsumeAmmo(Item ammo, Player player)
 		{
-			return Main.rand.NextFloat() >= 0.5f;
+			return Main.rand.NextFloat() >= 0.25f;
 		}
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -93,12 +92,14 @@ namespace RijamsMod.Items.Weapons.Ranged
 			laser.penetrate = penetrate; // Seems to be 1 less than the normal bullet?
 			laser.coldDamage = coldDamage;
 			laser.tileCollide = tileCollide;
+			laser.extraUpdates *= 2; // More reliable hitting
+			laser.velocity *= 0.5f;
 			//laser.idStaticNPCHitCooldown = immunity;
 			if (laser.ModProjectile is InterstellarLaser modProjectile)
 			{
-				modProjectile.drawColor = new(0, 255, 50, 0);
+				modProjectile.drawColor = new(255, 50, 50, 0);
 				modProjectile.homing = homing;
-				modProjectile.homingDetectionRange = 10;
+				modProjectile.homingDetectionRange = 15;
 			}
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
@@ -110,32 +111,15 @@ namespace RijamsMod.Items.Weapons.Ranged
 			return false;
 		}
 
-		// What if I wanted it to work like Uzi, replacing regular bullets with High Velocity Bullets?
-		// Uzi/Molten Fury style: Replace normal Bullets with Highvelocity
-		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		public override void HoldItem(Player player)
 		{
-			if (type == ProjectileID.Bullet) // or ProjectileID.WoodenArrowFriendly
-			{
-				type = ProjectileID.ChlorophyteBullet; // or ProjectileID.FireArrow;
-			}
-		}*/
+			player.scope = true;
+		}
 
 		// Help, my gun isn't being held at the handle! Adjust these 2 numbers until it looks right.
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(-16, 0);
 		}
-
-		// How can I make the shots appear out of the muzzle exactly?
-		// Also, when I do this, how do I prevent shooting through tiles?
-		/*public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-		{
-			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(speedX, speedY)) * 25f;
-			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
-			{
-				position += muzzleOffset;
-			}
-			return true;
-		}*/
 	}
 }

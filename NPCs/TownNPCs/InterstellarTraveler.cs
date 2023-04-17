@@ -1003,6 +1003,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				.Add(ModContent.ItemType<PlasmaRifle>(), Condition.DownedPlantera)
 				.Add(ModContent.ItemType<InterstellarSMG>(), Condition.DownedPlantera)
 				.Add(ModContent.ItemType<AGMMissileLauncher>(), Condition.DownedGolem, Condition.NpcIsPresent(NPCID.Cyborg))
+				.Add(ModContent.ItemType<InterstellarSniper>(), Condition.DownedCultist)
 				.Add(ModContent.ItemType<InterstellarCarbine>(), Condition.DownedMoonLord)
 				.Add(ModContent.ItemType<ControlGlove>(), new Condition("After defeating Deerclops or in Hardmode", () => Condition.DownedDeerclops.IsMet() || Condition.Hardmode.IsMet()));
 

@@ -472,6 +472,7 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add(Type);
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true;
+			ProjectileID.Sets.CultistIsResistantTo[Type] = true;
 		}
 		public override void SetDefaults()
 		{

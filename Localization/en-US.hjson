@@ -1276,6 +1276,28 @@ Mods: {
 					'''
 			}
 
+			NebulaLantern: {
+				DisplayName: Nebula Lantern
+				Tooltip:
+					'''
+					4 Very Fast projectiles
+					55 tile homing radius
+					Bounces off tiles
+					Pierces 2 times
+					'''
+			}
+
+			AetherLantern: {
+				DisplayName: Aether Lantern
+				Tooltip:
+					'''
+					4 Very Fast projectiles
+					60 tile homing radius
+					Travels through tiles
+					Pierces 3 times
+					'''
+			}
+
 			# Items/Weapons/Melee
 
 			BoneHeadJoustingLance: {
@@ -1414,6 +1436,15 @@ Mods: {
 				Tooltip:
 					'''
 					50% not to consume ammo
+					Inherits many aspects of the bullets used
+					'''
+			}
+
+			InterstellarSniper: {
+				DisplayName: Interstellar Sniper
+				Tooltip:
+					'''
+					25% not to consume ammo
 					Inherits many aspects of the bullets used
 					'''
 			}
@@ -2483,6 +2514,7 @@ Mods: {
 			SulfurGrenade.DisplayName: Sulfur Grenade
 			SulfurMine.DisplayName: Sulfur Mine
 			SulfurSnowmanRocket.DisplayName: Sulfur Snowman Rocket
+			AetherLanternProj.DisplayName: Aether Lantern Proj
 		}
 
 		Tiles: {

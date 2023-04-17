@@ -521,7 +521,7 @@ namespace RijamsMod.Items.Armor.Skyware
 		{
 			if (proj.type != ModContent.ProjectileType<SkywareArmorHarpyFeather>() || proj.type != ModContent.ProjectileType<RedSkywareArmorHarpyFeather>())
 			{
-				if (target.CanBeChasedBy(proj))
+				if (target.CanBeChasedBy(proj) && proj.owner == Main.myPlayer)
 				{
 					SpawnAttack(target);
 				}
