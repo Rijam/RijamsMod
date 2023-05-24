@@ -32,7 +32,7 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.rare = ItemRarityID.Orange;
 			Item.UseSound = SoundID.DD2_MonkStaffSwing with { Pitch = -0.3f };
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.TimonsAxeProj>();
+			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.TimonsAxeProj2>();
 			Item.shootSpeed = 16f;
 			if (!Main.dedServ)
 			{
@@ -44,18 +44,25 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			if (player.CheckMana(20, true)) //Checks if the player has 20 mana and then consumes it. Benefits from decreased mana cost.
 			{
-				float numberProjectiles = 20;// 20 shots
-				float rotation = MathHelper.ToRadians(60);
-				position += Vector2.Normalize(velocity);
+				//float numberProjectiles = 20;// 20 shots
+				//float rotation = MathHelper.ToRadians(60);
+				//position += Vector2.Normalize(velocity);
 
-				for (int i = 0; i < numberProjectiles; i++)
+				/*for (int i = 0; i < numberProjectiles; i++)
 				{
 					Vector2 perturbedSpeed = velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
 					Projectile.NewProjectile(source, position, perturbedSpeed, type, damage, knockback, player.whoAmI); //Already gets the double damage from below
-				}
-				player.manaRegenDelay = (int)player.maxRegenDelay;
+				}*/
+
+				float adjustedItemScale = player.GetAdjustedItemScale(Item);
+				Projectile.NewProjectile(source, player.MountedCenter, new(player.direction, 0f), type, damage, knockback, player.whoAmI, player.direction * player.gravDir, player.itemAnimationMax, adjustedItemScale);
+				//Projectile.NewProjectile(source, player.MountedCenter, new Vector2(player.direction, 0f), type, damage, knockback, player.whoAmI, (float)player.direction * player.gravDir, player.itemAnimationMax, adjustedItemScale);
+				//Projectile.NewProjectile(source, player.MountedCenter, velocity, type, damage, knockback, player.whoAmI, (float)player.direction * player.gravDir * 0.1f, 30f, adjustedItemScale);
+				NetMessage.SendData(MessageID.PlayerControls, -1, -1, null, player.whoAmI);
+				player.manaRegenDelay = player.maxRegenDelay * 2f;
 			}
-			return false;
+
+			return true;
 		}
 		public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
 		{

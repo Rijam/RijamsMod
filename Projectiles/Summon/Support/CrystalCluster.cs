@@ -112,12 +112,21 @@ namespace RijamsMod.Projectiles.Summon.Support
 			int radius = (distRadius + player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease) * 16; // 15 tiles
 			if (Main.netMode != NetmodeID.Server)
 			{
-				if (ModContent.GetInstance<RijamsModConfigClient>().DisplayDefenseSupportSummonsAura)
+				RijamsModConfigClient configClient = ModContent.GetInstance<RijamsModConfigClient>();
+				if (configClient.DisplayDefenseSupportSummonsAura != RijamsModConfigClient.SupportSummonsAura.Off)
 				{
 					for (int i = 0; i < 60; i++)
 					{
 						Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
-						Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, 150, Color.Magenta, 0.75f);
+						int alpha = configClient.DisplayDefenseSupportSummonsAura switch
+						{
+							RijamsModConfigClient.SupportSummonsAura.Opaque => 0,
+							RijamsModConfigClient.SupportSummonsAura.Normal => 150,
+							RijamsModConfigClient.SupportSummonsAura.Faded => 240,
+							RijamsModConfigClient.SupportSummonsAura.Off => 255,
+							_ => 150,
+						};
+						Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, alpha, Color.Magenta, 0.75f);
 						d.noGravity = true;
 						d.noLightEmittence = true;
 					}

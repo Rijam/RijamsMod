@@ -24,6 +24,7 @@ using ReLogic.Content;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
 using System;
+using Terraria.GameContent.Drawing;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -709,6 +710,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
+				{
+					PositionInWorld = Main.LocalPlayer.Center,
+					MovementVector = NPC.Center - Main.LocalPlayer.Center,
+					UniqueInfoPiece = ModContent.ItemType<OddDevice>()
+				});
 				Mod.Logger.Debug("RijamsMod: Odd Device quest completed.");
 				PlayCompleteQuestSound(false);
 				return;
@@ -730,6 +738,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
+				{
+					PositionInWorld = Main.LocalPlayer.Center,
+					MovementVector = NPC.Center - Main.LocalPlayer.Center,
+					UniqueInfoPiece = ModContent.ItemType<BlankDisplay>()
+				});
 				Mod.Logger.Debug("RijamsMod: Blank Display quest completed.");
 				PlayCompleteQuestSound(false);
 				return;
@@ -750,6 +765,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
+				{
+					PositionInWorld = Main.LocalPlayer.Center,
+					MovementVector = NPC.Center - Main.LocalPlayer.Center,
+					UniqueInfoPiece = ModContent.ItemType<TeleportationCore>()
+				});
 				Mod.Logger.Debug("RijamsMod: Teleportation Core quest completed.");
 				PlayCompleteQuestSound(false);
 				return;
@@ -771,6 +793,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					//packet.Write((byte)npc.whoAmI);
 					packet.Send();
 				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
+				{
+					PositionInWorld = Main.LocalPlayer.Center,
+					MovementVector = NPC.Center - Main.LocalPlayer.Center,
+					UniqueInfoPiece = ModContent.ItemType<BreadAndJelly>()
+				});
 				Mod.Logger.Debug("RijamsMod: Bread and Jelly quest completed.");
 				PlayCompleteQuestSound(true);
 				return;
@@ -788,6 +817,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Write((byte)RijamsModMessageType.SetQuestMagicOxygenizer);
 					packet.Send();
 				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
+				{
+					PositionInWorld = Main.LocalPlayer.Center,
+					MovementVector = NPC.Center - Main.LocalPlayer.Center,
+					UniqueInfoPiece = ModContent.ItemType<MagicOxygenizer>()
+				});
 				Mod.Logger.Debug("RijamsMod: Magic Oxygenizer quest completed.");
 				PlayCompleteQuestSound(false);
 				return;
@@ -805,6 +841,13 @@ namespace RijamsMod.NPCs.TownNPCs
 					packet.Write((byte)RijamsModMessageType.SetQuestPrimeThruster);
 					packet.Send();
 				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
+				{
+					PositionInWorld = Main.LocalPlayer.Center,
+					MovementVector = NPC.Center - Main.LocalPlayer.Center,
+					UniqueInfoPiece = ModContent.ItemType<PrimeThruster>()
+				});
 				Mod.Logger.Debug("RijamsMod: Prime Thruster quest completed.");
 				PlayCompleteQuestSound(false);
 				return;

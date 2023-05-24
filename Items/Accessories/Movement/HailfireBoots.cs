@@ -39,6 +39,7 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.lavaMax += 420;
 			player.waterWalk = true;
 			player.fireWalk = true;
+			player.lavaRose = true;
 			player.jumpBoost = true;
 			player.autoJump = true;
 			player.jumpSpeedBoost += 1f;

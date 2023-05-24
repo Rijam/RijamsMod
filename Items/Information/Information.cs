@@ -165,7 +165,7 @@ namespace RijamsMod.Items.Information
 			tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "[i:ThornWhip] Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
 			tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
 			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.NumMinions()));
+			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.SlotsMinions()));
 		}
 	}
 	public class InformationInterface : ModItem
@@ -234,7 +234,7 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
 				tooltips.Add(new TooltipLine(Mod, "MinionCount", "[i:SlimeStaff] Maximum minions: " + StatCalc.MaxMinions()));
 				tooltips.Add(new TooltipLine(Mod, "SentryCount", "[i:DD2BallistraTowerT1Popper] Maximum sentries: " + StatCalc.MaxTurrets()));
-				tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.NumMinions()));
+				tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.SlotsMinions()));
 			}
 
 			if (isLeftCtrlHeld)
@@ -442,6 +442,7 @@ namespace RijamsMod.Items.Information
 		public static string MaxMinions() => colorSummon + player.maxMinions.ToString() + colorClose;
 		public static string MaxTurrets() => colorSummon + player.maxTurrets.ToString() + colorClose;
 		public static string NumMinions() => colorSummon + player.numMinions.ToString() + colorClose;
+		public static string SlotsMinions() => colorSummon + player.slotsMinions.ToString() + colorClose;
 		public static string WhipRangeMultiplier() => colorSummon + player.whipRangeMultiplier.ToString() + colorClose;
 
 		//Other

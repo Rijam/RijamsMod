@@ -242,7 +242,8 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (shop.NpcType == NPCID.BestiaryGirl)
 			{
-				shop.Add(ModContent.ItemType<Items.Consumables.SnuggetPetLicense>(),
+				shop.Add(ModContent.ItemType<Items.Pets.StardustDragonCrest>(), Condition.DownedStardustPillar);
+				shop.Add(ModContent.ItemType<SnuggetPetLicense>(),
 					new Condition(Language.GetText("Conditions.BestiaryPercentage").WithFormatArgs(60),
 					() => Main.GetBestiaryProgressReport().CompletionPercent >= 0.6f), 
 					Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
@@ -259,13 +260,19 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
-				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman) && shop.NpcType == fisherman.Type && shop.Name == "Fish")
+				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman) && shop.NpcType == fisherman.Type)
 				{
-					if ((int)fishermanNPC.Call("GetStatusShopCycle") == 2) // Fish shop is open
+					if (shop.Name == "Fish" || (int)fishermanNPC.Call("GetStatusShopCycle") == 2) // Fish shop is open
 					{
 						Item hornetTail = new(ModContent.ItemType<Items.Fishing.HornetTail>());
 						int itemValue = hornetTail.GetStoreValue();
 						shop.Add(new Item(hornetTail.type) { shopCustomPrice = (int)Math.Round(itemValue * (float)fishermanNPC.Call("shopMulti")) });
+					}
+					if (shop.Name == "Bait" || (int)fishermanNPC.Call("GetStatusShopCycle") == 1) // Bait shop is open
+					{
+						Item wildBait = new(ModContent.ItemType<Items.Fishing.WildBait>());
+						int itemValue = wildBait.GetStoreValue();
+						shop.Add(new Item(wildBait.type) { shopCustomPrice = (int)Math.Round(itemValue * (float)fishermanNPC.Call("shopMulti")) }, Condition.AnglerQuestsFinishedOver(3));
 					}
 				}
 			}

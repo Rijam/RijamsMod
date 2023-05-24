@@ -1,20 +1,12 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.Serialization;
 using Terraria;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.Config.UI;
-using Terraria.UI;
+using static RijamsMod.RijamsModConfigClient;
 
 namespace RijamsMod
 {
@@ -31,17 +23,20 @@ namespace RijamsMod
 		
 		[Label("[i:848]   Vanilla Vanity to Armor Changes")]
 		[Tooltip("This option toggles if certain vanilla vanity sets are changed into armor sets.\n" +
-			"  When On: The follow vanity sets will be changed to armor.\n" +
-			"  When Off: The follow vanity sets WILL NOT be changed to armor.\n" +
+			"  When All: The follow vanity sets will be changed to armor.\n" +
+			"  When Vanity Only: Only the vanity sets will be changed to armor.\n" +
+			"  When Stardust Only: Only the Stardust armor set bonus will be changed.\n" +
+			"  When Off: None of the vanilla sets will be changed.\n" +
 			"    Turn Off to keep them as vanity or for cross mod compatibility.\n" +
 			"* Pharaoh's Set\n" +
 			"* Ancient Set\n" +
 			"* Buffs to Stardust set bonus\n" +
-			"Default value: On\n" +
+			"Default value: All\n" +
 			"Reload required")]
-		[DefaultValue(true)]
+		[DefaultValue(ArmorOptions.All)]
+		[DrawTicks]
 		[ReloadRequired]
-		public bool VanillaVanityToArmor { get; set; }
+		public ArmorOptions VanillaVanityToArmor { get; set; }
 
 		[Label("[i:3121]   Town NPCs Cross Mod Support")]
 		[Tooltip("This option toggles if the Town NPCs will sell items from other mods,\n" +
@@ -77,6 +72,18 @@ namespace RijamsMod
 		[ReloadRequired]
 		[DefaultValue(false)]
 		public bool CatchNPCs { get; set; }
+
+		public enum ArmorOptions
+		{
+			[Label("All")]
+			All,
+			[Label("Vanity Only")]
+			VanityOnly,
+			[Label("Stardust Only")]
+			StardustOnly,
+			[Label("Off")]
+			Off
+		}
 
 		/* Not written by Rijam*/
 		public static bool IsPlayerLocalServerOwner(int whoAmI)
@@ -146,31 +153,60 @@ namespace RijamsMod
 		[Slider]
 		public int BurglarsRingSound { get; set; }
 
-		[Label("[i:4672]   Display Whip Multihit Penalty By Default")]
+		[Label("[i:4672]   Display Whip Multihit Penalty")]
 		[Tooltip("This option toggles if whips will display the mutlihit penalty in the tooltip.\n" +
 			"  When On: Multihit Penalty will always be displayed.\n" +
-			"  When Off: Multihit Penalty will only be displayed when holding left shift.\n" +
+			"  When Hold Shift: Multihit Penalty will only be displayed when holding left shift.\n" +
+			"  When Off: Multihit Penalty will not be shown.\n" +
 			"   Turn Off if you don't want to see the tooltip.\n" +
 			"Default value: On")]
-		[DefaultValue(true)]
-		public bool DisplayWhipMultihitPenalty { get; set; }
+		[DefaultValue(WhipMultihitPenalty.On)]
+		[DrawTicks]
+		public WhipMultihitPenalty DisplayWhipMultihitPenalty { get; set; }
 
 		[Label("[i:RijamsMod/CobaltProtectorCudgel]   Display Defense Support Summons Auras")]
 		[Tooltip("This option toggles if defense support summons will show their aura.\n" +
-			"  When On: The dust indicator will be shown.\n" +
+			"  When Opaque: The dust indicator will be shown as completely opaque.\n" +
+			"  When Normal: The dust indicator will be shown as semi-transparent.\n" +
+			"  When Faded: The dust indicator will be shown as almost completely transparent.\n" +
 			"  When Off: The dust indicator will be hidden.\n" +
 			"   Turn Off if you don't want to see the auras.\n" +
-			"Default value: On")]
-		[DefaultValue(true)]
-		public bool DisplayDefenseSupportSummonsAura { get; set; }
+			"Default value: Normal")]
+		[DefaultValue(SupportSummonsAura.Normal)]
+		[DrawTicks]
+		public SupportSummonsAura DisplayDefenseSupportSummonsAura { get; set; }
 
 		[Label("[i:RijamsMod/RadiantLanternCudgel]   Display Healing Support Summons Auras")]
 		[Tooltip("This option toggles if healing support summons will show their aura.\n" +
-			"  When On: The dust indicator will be shown.\n" +
+			"  When Opaque: The dust indicator will be shown as completely opaque.\n" +
+			"  When Normal: The dust indicator will be shown as semi-transparent.\n" +
+			"  When Faded: The dust indicator will be shown as almost completely transparent.\n" +
 			"  When Off: The dust indicator will be hidden.\n" +
 			"   Turn Off if you don't want to see the auras.\n" +
-			"Default value: On")]
-		[DefaultValue(true)]
-		public bool DisplayHealingSupportSummonsAura { get; set; }
+			"Default value: Normal")]
+		[DefaultValue(SupportSummonsAura.Normal)]
+		[DrawTicks]
+		public SupportSummonsAura DisplayHealingSupportSummonsAura { get; set; }
+
+		public enum WhipMultihitPenalty
+		{
+			[Label("On")]
+			On,
+			[Label("Hold Shift")]
+			HoldShift,
+			[Label("Off")]
+			Off
+		}
+		public enum SupportSummonsAura
+		{
+			[Label("Opaque")]
+			Opaque,
+			[Label("Normal")]
+			Normal,
+			[Label("Faded")]
+			Faded,
+			[Label("Off")]
+			Off
+		}
 	}
 }

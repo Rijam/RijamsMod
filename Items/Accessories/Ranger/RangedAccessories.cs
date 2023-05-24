@@ -58,7 +58,7 @@ namespace RijamsMod.Items.Accessories.Ranger
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.rocketDamage += 0.1f;
+			player.specialistDamage += 0.1f;
 			player.GetModPlayer<RijamsModPlayer>().rocketBooster = true;
 		}
 	}

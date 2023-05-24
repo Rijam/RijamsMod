@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 
 namespace RijamsMod.Projectiles.Melee
 {
@@ -86,6 +87,11 @@ namespace RijamsMod.Projectiles.Melee
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(BuffID.Daybreak, 30);
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings
+			{
+				PositionInWorld = Projectile.Center,
+				MovementVector = new Vector2(0f, 0f)
+			});
 		}
 	}
 }

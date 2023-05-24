@@ -23,7 +23,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
-			Item.shoot = ModContent.ProjectileType<LanternLight>();
+			Item.shoot = ModContent.ProjectileType<LanternLightFrostburn>();
 			Item.shootSpeed = 4;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = 5000;
@@ -90,7 +90,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				}
 
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.05f);
-				projectile.tileCollide = true;
+				/*projectile.tileCollide = true;
 				projectile.ignoreWater = false;
 				projectile.penetrate = 1;
 				projectile.timeLeft = 500;
@@ -113,7 +113,7 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.orgTileCollide = true;
 					modProjectile.orgIgnoreWater = false;
 					modProjectile.orgPenetrate = 1;
-				}
+				}*/
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);

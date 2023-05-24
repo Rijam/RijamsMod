@@ -11,6 +11,7 @@ using System.Reflection.Metadata;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Humanizer.In;
@@ -30,7 +31,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.height = 44;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
-			Item.shoot = ModContent.ProjectileType<LanternLight>();
+			Item.shoot = ModContent.ProjectileType<LanternLightAether>();
 			Item.shootSpeed = 8;
 			Item.rare = ItemRarityID.Red;
 			Item.value = 100000;
@@ -42,41 +43,26 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.useAnimation = 30;
 			Item.autoReuse = true;
 			Item.mana = 25;
-			Item.UseSound = SoundID.Item82 with { Pitch = 0.2f };
+			Item.UseSound = SoundID.Item82 with { Pitch = 0.4f };
 			Item.scale = 0.75f;
 			if (!Main.dedServ)
 			{
-				/*var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
-				flash.posOffsetXLeft = 24;
-				flash.posOffsetXRight = -74;
-				flash.posOffsetY = -38;
-				flash.posOffsetYGravity = 60;
-				flash.frameCount = 3;
-				flash.frameRate = 12;
-				flash.alpha = 120;
-				flash.forceFirstFrame = false;
-				flash.animationLoop = true;*/
-
 				var glowMask = Item.GetGlobalItem<ItemUseGlow>();
 				glowMask.glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
 				glowMask.drawOnPlayer =	false;
 				glowMask.drawColor = new(100, 100, 100, 0);
 			}
-			//Item.flame = true; // Doesn't create the flame when it is thrown on the ground.
 			Item.useLimitPerAnimation = 4; // Added by TML.
 			Item.noUseGraphic = true;
 			Item.channel = true;
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			//Main.NewText(player.heldProj);
-
+			//Main.NewText("Pre Shoot " + player.heldProj);
 			// ai[0] = Flash frame
-			// ai[1] = Faeling animation starting frame
-			if (player.heldProj >= 0)
+			if (player.heldProj < 0)
 			{
-				Projectile heldProj = Projectile.NewProjectileDirect(Item.GetSource_ItemUse(this.Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, Main.rand.Next(0, 5), Main.rand.Next(0, 5));
+				Projectile heldProj = Projectile.NewProjectileDirect(Item.GetSource_ItemUse(this.Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, Main.rand.Next(0, 5));
 				player.heldProj = heldProj.whoAmI;
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
@@ -84,6 +70,17 @@ namespace RijamsMod.Items.Weapons.Magic
 				}
 			}
 
+			//Main.NewText("Post Shoot " + player.heldProj);
+
+			Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
+
+			// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
+			Point playerTileCoords = playerHandPos.ToTileCoordinates();
+			Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
+			if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
+			{
+				playerHandPos = player.MountedCenter;
+			}
 
 			for (int i = 0; i < Item.useLimitPerAnimation; i++)
 			{
@@ -103,22 +100,12 @@ namespace RijamsMod.Items.Weapons.Magic
 				 	randomCircular.X *= -1f;
 				}
 
-				Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
-
-				// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
-				Point playerTileCoords = playerHandPos.ToTileCoordinates();
-				Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
-				if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
-				{
-					playerHandPos = player.MountedCenter;
-				}
-
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, Main.rand.NextFloat(0.2f, 0.4f));
-				projectile.tileCollide = false;
+				/*projectile.tileCollide = false;
 				projectile.ignoreWater = false;
 				projectile.penetrate = 4;
 				projectile.timeLeft = 600;
-				if (projectile.ModProjectile is LanternLight modProjectile)
+				if (projectile.ModProjectile is LanternLightAether modProjectile)
 				{
 					modProjectile.timeLeftMax = projectile.timeLeft;
 
@@ -137,15 +124,20 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.trailLength = 20;
 					modProjectile.shineScale = 1.75f;
 					modProjectile.homingRange = 60 * 16; // 60 tiles
-				}
+				}*/
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 
 				Lighting.AddLight(player.Center, TorchID.Shimmer);
-				//player.GetModPlayer<RijamsModPlayer>().holdingAetherLantern = false;
 			}
+
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ShimmerArrow, new ParticleOrchestraSettings
+			{
+				PositionInWorld = playerHandPos + new Vector2(player.width / 4 * player.direction, 0),
+				MovementVector = velocity
+			});
 
 			return false;
 		}
@@ -156,25 +148,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			if (player.pulley || player.isPettingAnimal)
 			{
 				return;
-			}
-			//player.GetModPlayer<RijamsModPlayer>().holdingAetherLantern = true;
-			//Main.NewText(player.GetModPlayer<RijamsModPlayer>().holdingAetherLantern);
-
-			// A little jank
-
-			// ai[0] = Flash frame
-			// ai[1] = Faeling animation starting frame
-			if (player.heldProj < 0)
-			{
-				//player.GetModPlayer<RijamsModPlayer>().holdingAetherLantern = true;
-				Projectile heldProj = Projectile.NewProjectileDirect(Item.GetSource_ItemUse(this.Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, 0, 0, 1f);
-				heldProj.timeLeft = 1;
-				player.heldProj = heldProj.whoAmI;
-				//Main.NewText(heldProj.whoAmI);
-				if (Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, heldProj.whoAmI);
-				}
 			}
 
 			TorchID.TorchColor(TorchID.Shimmer, out float r, out float g, out float b);
@@ -194,6 +167,11 @@ namespace RijamsMod.Items.Weapons.Magic
 				dust.fadeIn = 0.3f;
 				dust.noLightEmittence = true;
 				dust.customData = this;
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ShimmerBlock, new ParticleOrchestraSettings
+				{
+					PositionInWorld = playerPos + randomCirclular,
+					MovementVector = new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(0.1f, 1f))
+				});
 			}
 		}
 		public override void PostUpdate()
@@ -209,6 +187,36 @@ namespace RijamsMod.Items.Weapons.Magic
 				.AddIngredient(ItemID.ShimmerflyinaBottle, 1)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
+		}
+
+		public override void HoldStyle(Player player, Rectangle heldItemFrame)
+		{
+			// Don't add the light or dust if the player is on a rope or is petting a town pet. This is because the item is hidden when doing those actions.
+			if (player.pulley || player.isPettingAnimal)
+			{
+				return;
+			}
+
+			// A little jank. player.heldProj is always -1 in HeldItem()? So this spawn a projectile every frame that lives for 2 frames.
+
+			//Main.NewText("Pre HoldStyle " + player.heldProj);
+			//Main.NewText("Rect " + heldItemFrame);
+
+			// ai[0] = Flash frame
+			if (player.heldProj < 0 && player.whoAmI == Main.myPlayer)
+			{
+				//player.GetModPlayer<RijamsModPlayer>().holdingAetherLantern = true;
+				Projectile heldProj = Projectile.NewProjectileDirect(Item.GetSource_ItemUse(this.Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, 0, 0, 1f);
+				heldProj.timeLeft = 999;
+				player.heldProj = heldProj.whoAmI;
+				//Main.NewText(heldProj.whoAmI);
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, heldProj.whoAmI);
+				}
+			}
+
+			//Main.NewText("Post HoldStyle " + player.heldProj);
 		}
 	}
 }

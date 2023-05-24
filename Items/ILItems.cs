@@ -14,6 +14,12 @@ namespace RijamsMod.Items
 			IL_Player.PlayerFrame += LanternEdit;
 		}
 
+		public override void Unload()
+		{
+			// tModLoader SHOULD automatically unload IL edits, but I'm putting this here just in case.
+			IL_Player.PlayerFrame -= LanternEdit;
+		}
+
 		/// <summary>
 		/// <br>This IL Edit is used to correct the front arm animation when using items with ItemUseStyleID.RaiseLamp.</br>
 		/// <br>See also <seealso cref="GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation"/></br>

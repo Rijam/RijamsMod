@@ -164,4 +164,32 @@ namespace RijamsMod.Items.Pets
 			}
 		}
 	}
+
+	public class StardustDragonCrest : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Zoologist]", "[c/474747:After defeating Stardust Pillar]", null });
+		}
+
+		public override void SetDefaults()
+		{
+			Item.CloneDefaults(ItemID.DD2PetGato);
+			Item.width = 26;
+			Item.height = 24;
+			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.BabyStardustDragon>();
+			Item.buffType = ModContent.BuffType<Buffs.Pets.BabyStardustDragonBuff>();
+			Item.rare = ItemRarityID.Red;
+			Item.value = 80000;
+			Item.UseSound = SoundID.Item46;
+		}
+
+		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		{
+			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
+			{
+				player.AddBuff(Item.buffType, 3600, true);
+			}
+		}
+	}
 }

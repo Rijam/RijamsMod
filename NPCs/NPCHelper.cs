@@ -433,6 +433,8 @@ namespace RijamsMod.NPCs
 		public static Condition TownNPCsCrossModSupport = new("\'Town NPCs Cross Mod Support\' config is enabled", () => ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport);
 
 		public static Condition HellTraderMovedIn = new("When the Hell Trader has moved in", () => RijamsModWorld.hellTraderArrivable);
+		public static Condition RescuedHarpy = new("When the Hell Trader has moved in", () => RijamsModWorld.savedHarpy);
+		public static Condition IntTravMovedIn = new("When the Hell Trader has moved in", () => RijamsModWorld.intTravArrived);
 		public static Condition MoonPhase036 = new("During a full, waning crescent, or first quarter moon", () => Condition.MoonPhaseFull.IsMet() || Condition.MoonPhaseWaningCrescent.IsMet() || Condition.MoonPhaseFirstQuarter.IsMet());
 		public static Condition MoonPhase147 = new("During a waning gibbous, new, or waxing gibbous moon", () => Condition.MoonPhaseWaningGibbous.IsMet() || Condition.MoonPhaseNew.IsMet() || Condition.MoonPhaseWaxingGibbous.IsMet());
 		public static Condition MoonPhase25 = new("During a third quarter or waxing crescent moon", () => Condition.MoonPhaseThirdQuarter.IsMet() || Condition.MoonPhaseWaxingCrescent.IsMet());

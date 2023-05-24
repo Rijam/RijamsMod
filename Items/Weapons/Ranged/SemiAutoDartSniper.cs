@@ -12,6 +12,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("50% chance not to consume ammo\nRight Click to zoom out");
+			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 		}
 
 		public override void SetDefaults()

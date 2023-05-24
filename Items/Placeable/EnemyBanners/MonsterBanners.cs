@@ -81,4 +81,14 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 			Item.placeStyle = 6;
 		}
 	}
+
+	public class AngryGusterBanner : DarkSoldierBanner
+	{
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Item.createTile = ModContent.TileType<MonsterBanners>();
+			Item.placeStyle = 7;
+		}
+	}
 }

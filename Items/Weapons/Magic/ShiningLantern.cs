@@ -22,7 +22,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
-			Item.shoot = ModContent.ProjectileType<LanternLight>();
+			Item.shoot = ModContent.ProjectileType<LanternLightShining>();
 			Item.shootSpeed = 4;
 			Item.rare = ItemRarityID.White;
 			Item.value = 2000;
@@ -76,7 +76,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			// 	randomCircular.X *= -1f;
 			//}
 
-			float itemAnimation = (float)player.itemAnimation / (float)player.itemAnimationMax * 0.66f + player.miscCounterNormalized;
 			Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
 			
 			// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
@@ -87,13 +86,12 @@ namespace RijamsMod.Items.Weapons.Magic
 				playerHandPos = player.MountedCenter;
 			}
 
-			// itemAnimation % 1f
 			Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.6f);
-			projectile.tileCollide = true;
+			/*projectile.tileCollide = true;
 			projectile.ignoreWater = false;
 			projectile.penetrate = 1;
 			projectile.timeLeft = 500;
-			if (projectile.ModProjectile is LanternLight modProjectile)
+			if (projectile.ModProjectile is LanternLightShining modProjectile)
 			{
 				modProjectile.timeLeftMax = projectile.timeLeft;
 				modProjectile.vecolityMultiplier = 5f;
@@ -109,7 +107,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				modProjectile.orgTileCollide = true;
 				modProjectile.orgIgnoreWater = false;
 				modProjectile.orgPenetrate = 1;
-			}
+			}*/
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
 				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);

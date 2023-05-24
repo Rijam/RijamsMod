@@ -6,6 +6,7 @@ using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,7 +25,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
-			Item.shoot = ModContent.ProjectileType<LanternLight>();
+			Item.shoot = ModContent.ProjectileType<LanternLightSpectre>();
 			Item.shootSpeed = 8;
 			Item.rare = ItemRarityID.Yellow;
 			Item.value = 40000;
@@ -91,7 +92,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				}
 
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.05f);
-				projectile.tileCollide = false;
+				/*projectile.tileCollide = false;
 				projectile.ignoreWater = false;
 				projectile.penetrate = 3;
 				projectile.timeLeft = 500;
@@ -111,11 +112,17 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.orgTileCollide = false;
 					modProjectile.orgIgnoreWater = false;
 					modProjectile.orgPenetrate = 3;
-				}
+				}*/
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.SilverBulletSparkle, new ParticleOrchestraSettings
+				{
+					PositionInWorld = playerHandPos + new Vector2(player.width / 4 * player.direction, 0),
+					MovementVector = new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f))
+				});
 			}
 
 			return false;

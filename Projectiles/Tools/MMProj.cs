@@ -1,6 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
+using Steamworks;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipelines;
 using Terraria;
@@ -19,50 +22,17 @@ namespace RijamsMod.Projectiles.Tools
 		readonly private Texture2D texturePickGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMPickaxe_Glow").Value;
 		readonly private Texture2D textureAxeGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMAxe_Glow").Value;
 		readonly private Texture2D textureHammerGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMHammer_Glow").Value;
+		readonly private Texture2D lightning = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Tools/MMLightning").Value;
 		public bool pick;
 		public bool axe;
 		public bool hammer;
 
-		private int[] colorMode = { 0, 0 };
-		private void SetColorMode()
-		{
-			if (pick && axe)
-			{
-				colorMode[0] = 1;
-				colorMode[1] = 2;
-			}
-			else if (axe && hammer)
-			{
-				colorMode[0] = 2;
-				colorMode[1] = 3;
-			}
-			else if (pick && hammer)
-			{
-				colorMode[0] = 1;
-				colorMode[1] = 3;
-			}
-			else if (pick)
-			{
-				colorMode[0] = 1;
-				colorMode[1] = 1;
-			}
-			else if (axe)
-			{
-				colorMode[0] = 2;
-				colorMode[1] = 2;
-			}
-			else if (hammer)
-			{
-				colorMode[0] = 3;
-				colorMode[1] = 3;
-			}
-		}
 		private static Color SetColorType(int mode)
 		{
 			switch (mode)
 			{
 				case 0:
-					return Color.White;
+					return new Color(127, 127, 127, 255);
 				case 1:
 					return Color.CornflowerBlue;
 				case 2:
@@ -104,8 +74,6 @@ namespace RijamsMod.Projectiles.Tools
 
 		public override void AI()
 		{
-			SetColorMode();
-
 			Player player = Main.player[Projectile.owner];
 			float num = (float)Math.PI / 2f;
 			Vector2 playerRotation = player.RotatedRelativePoint(player.MountedCenter);
@@ -125,25 +93,54 @@ namespace RijamsMod.Projectiles.Tools
 			}
 			if (Vector2.Distance(playerRotation, Projectile.Center) >= 5f)
 			{
-				float timer = Projectile.localAI[0] / 60f;
-				if (timer > 0.5f)
+				if (pick)
 				{
-					timer = 1f - timer;
+					Vector3 lightColor1 = SetColorType(1).ToVector3();
+					if (Vector2.Distance(playerRotation, Projectile.Center) >= 30f)
+					{
+						Vector2 projCenterMinusPlayerRot = Projectile.Center - playerRotation;
+						projCenterMinusPlayerRot.Normalize();
+						projCenterMinusPlayerRot *= Vector2.Distance(playerRotation, Projectile.Center) - 30f;
+						DelegateMethods.v3_1 = lightColor1 * 0.3f;
+						Utils.PlotTileLine(Projectile.Center - projCenterMinusPlayerRot, Projectile.Center, 8f, DelegateMethods.CastLightOpen);
+					}
 				}
-
-				Vector3 lightColor1 = SetColorType(colorMode[0]).ToVector3();
-				Vector3 lightColor2 = SetColorType(colorMode[1]).ToVector3();
-
-				Vector3 color = Vector3.Lerp(lightColor1, lightColor2, 1f - timer * 2f) * 0.5f;
-				if (Vector2.Distance(playerRotation, Projectile.Center) >= 30f)
+				if (axe)
 				{
-					Vector2 value25 = Projectile.Center - playerRotation;
-					value25.Normalize();
-					value25 *= Vector2.Distance(playerRotation, Projectile.Center) - 30f;
-					DelegateMethods.v3_1 = color * 0.8f;
-					Utils.PlotTileLine(Projectile.Center - value25, Projectile.Center, 8f, DelegateMethods.CastLightOpen);
+					Vector3 lightColor2 = SetColorType(2).ToVector3();
+					if (Vector2.Distance(playerRotation, Projectile.Center) >= 30f)
+					{
+						Vector2 projCenterMinusPlayerRot = Projectile.Center - playerRotation;
+						projCenterMinusPlayerRot.Normalize();
+						projCenterMinusPlayerRot *= Vector2.Distance(playerRotation, Projectile.Center) - 30f;
+						DelegateMethods.v3_1 = lightColor2 * 0.3f;
+						Utils.PlotTileLine(Projectile.Center - projCenterMinusPlayerRot, Projectile.Center, 8f, DelegateMethods.CastLightOpen);
+					}
 				}
-				Lighting.AddLight((int)Projectile.Center.X / 16, (int)Projectile.Center.Y / 16, color.X, color.Y, color.Z);
+				if (hammer)
+				{
+					Vector3 lightColor3 = SetColorType(3).ToVector3();
+					if (Vector2.Distance(playerRotation, Projectile.Center) >= 30f)
+					{
+						Vector2 projCenterMinusPlayerRot = Projectile.Center - playerRotation;
+						projCenterMinusPlayerRot.Normalize();
+						projCenterMinusPlayerRot *= Vector2.Distance(playerRotation, Projectile.Center) - 30f;
+						DelegateMethods.v3_1 = lightColor3 * 0.3f;
+						Utils.PlotTileLine(Projectile.Center - projCenterMinusPlayerRot, Projectile.Center, 8f, DelegateMethods.CastLightOpen);
+					}
+				}
+				if (!pick && !axe && !hammer)
+				{
+					Vector3 lightColor0 = SetColorType(0).ToVector3();
+					if (Vector2.Distance(playerRotation, Projectile.Center) >= 30f)
+					{
+						Vector2 projCenterMinusPlayerRot = Projectile.Center - playerRotation;
+						projCenterMinusPlayerRot.Normalize();
+						projCenterMinusPlayerRot *= Vector2.Distance(playerRotation, Projectile.Center) - 30f;
+						DelegateMethods.v3_1 = lightColor0 * 0.3f;
+						Utils.PlotTileLine(Projectile.Center - projCenterMinusPlayerRot, Projectile.Center, 8f, DelegateMethods.CastLightOpen);
+					}
+				}
 			}
 			if (Main.myPlayer == Projectile.owner)
 			{
@@ -242,8 +239,6 @@ namespace RijamsMod.Projectiles.Tools
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			SetColorMode();
-
 			Player owner = Main.player[Projectile.owner];
 			SpriteEffects spriteEffects = SpriteEffects.None;
 			if (Projectile.spriteDirection == -1)
@@ -257,25 +252,25 @@ namespace RijamsMod.Projectiles.Tools
 			}
 			Vector2 projPos = Projectile.position + new Vector2(Projectile.width, Projectile.height) / 2f + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition;
 			Texture2D projTexture = TextureAssets.Projectile[Projectile.type].Value;
-			Color projAlpha = Projectile.GetAlpha(lightColor);
+			//Color projAlpha = Projectile.GetAlpha(lightColor);
 			Vector2 playerPos = owner.RotatedRelativePoint(owner.MountedCenter) + Vector2.UnitY;// * owner.gfxOffY;
 			Vector2 worldPos = projPos + Main.screenPosition - playerPos;
 			Vector2 normalWorldPos = Vector2.Normalize(worldPos);
 			float worldPosLength = worldPos.Length();
-			float worldPosRotation = worldPos.ToRotation() + (float)Math.PI / 2f;
+			//float worldPosRotation = worldPos.ToRotation() + (float)Math.PI / 2f;
 			float numIsNeg5f = -5f;
-			float numIs25f = numIsNeg5f + 30f;
+			float tipInset = numIsNeg5f + 30f;
 			// new Vector2(2f, worldPosLength - numIs25f);
-			Vector2 beamPos = Vector2.Lerp(projPos + Main.screenPosition, playerPos + normalWorldPos * numIs25f, 0.5f);
-			Vector2 beamRotate = -Vector2.UnitY.RotatedBy(Projectile.localAI[0] / 60f * (float)Math.PI);
-			Vector2[] beamRotations = new Vector2[4]
+			Vector2 beamPos = Vector2.Lerp(projPos + Main.screenPosition, playerPos + normalWorldPos * tipInset, 0.5f);
+			//Vector2 beamRotate = -Vector2.UnitY.RotatedBy(Projectile.localAI[0] / 60f * (float)Math.PI);
+			/*Vector2[] beamRotations = new Vector2[4]
 			{
 					beamRotate,
 					beamRotate.RotatedBy(Math.PI / 2f),
 					beamRotate.RotatedBy(Math.PI),
 					beamRotate.RotatedBy((3 * Math.PI) / 2f)
-			};
-			if (worldPosLength > numIs25f)
+			};*/
+			/*if (worldPosLength > tipInset)
 			{
 				for (int i = 0; i < 2; i++)
 				{
@@ -293,9 +288,9 @@ namespace RijamsMod.Projectiles.Tools
 						beamColor1 *= 0.5f;
 					}
 					Vector2 value150 = new Vector2(beamRotations[i].X, 0f).RotatedBy(worldPosRotation) * 4f;
-					Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value, beamPos - Main.screenPosition + value150, new Rectangle(0, 0, 1, 1), beamColor1, worldPosRotation, Vector2.One / 2f, new Vector2(2f, worldPosLength - numIs25f), spriteEffects, 0);
+					Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value, beamPos - Main.screenPosition + value150, new Rectangle(0, 0, 1, 1), beamColor1, worldPosRotation, Vector2.One / 2f, new Vector2(2f, worldPosLength - tipInset), spriteEffects, 0);
 				}
-			}
+			}*/
 			// int type2 = Main.player[Projectile.owner].inventory[Main.player[Projectile.owner].selectedItem].type;
 			// Main.instance.LoadItem(type2);
 			// Texture2D value151 = TextureAssets.Item[type2].Value;
@@ -321,7 +316,7 @@ namespace RijamsMod.Projectiles.Tools
 			Color color94 = Lighting.GetColor((int)playerPos.X / 16, (int)playerPos.Y / 16);
 			Main.EntitySpriteDraw(itemTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null, color94, Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f), new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? itemTexture.Width : 0, (float)itemTexture.Height / 2f) + Vector2.UnitY * 1f, Main.player[Projectile.owner].inventory[Main.player[Projectile.owner].selectedItem].scale, spriteEffects, 0);
 			Main.EntitySpriteDraw(glowTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null, new Color(255, 255, 255, 0), Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f), new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? glowTexture.Width : 0, (float)glowTexture.Height / 2f) + Vector2.UnitY * 1f, Main.player[Projectile.owner].inventory[Main.player[Projectile.owner].selectedItem].scale, spriteEffects, 0);
-			if (worldPosLength > numIs25f)
+			/*if (worldPosLength > tipInset)
 			{
 				for (int j = 2; j < 4; j++)
 				{
@@ -339,10 +334,51 @@ namespace RijamsMod.Projectiles.Tools
 						beamColor2 *= 0.5f;
 					}
 					Vector2 value152 = new Vector2(beamRotations[j].X, 0f).RotatedBy(worldPosRotation) * 4f;
-					Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value, beamPos - Main.screenPosition + value152, new Rectangle(0, 0, 1, 1), beamColor2, worldPosRotation, Vector2.One / 2f, new Vector2(2f, worldPosLength - numIs25f), spriteEffects, 0);
+					Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value, beamPos - Main.screenPosition + value152, new Rectangle(0, 0, 1, 1), beamColor2, worldPosRotation, Vector2.One / 2f, new Vector2(2f, worldPosLength - tipInset), spriteEffects, 0);
+				}
+			}*/
+
+			if (worldPosLength > tipInset)
+			{
+				float length = (worldPosLength - tipInset) / 384f;
+				float thinkness = MathHelper.Clamp(length, 0.5f, 3f);
+				float worldPosRotation2 = worldPos.ToRotation();
+				if (pick)
+				{
+					Color drawColor = SetColorType(1);
+					drawColor.A = 0;
+					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
+				}
+				if (axe)
+				{
+					Color drawColor = SetColorType(2);
+					drawColor.A = 0;
+					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
+				}
+				if (hammer)
+				{
+					Color drawColor = SetColorType(3);
+					drawColor.A = 0;
+					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
+				}
+
+				if (!pick && !axe && !hammer)
+				{
+					Color drawColor = SetColorType(0);
+					drawColor.A = 0;
+					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 			}
-			float tipAlpha = Projectile.localAI[0] / 60f;
+
+			/*float tipAlpha = Projectile.localAI[0] / 60f;
 			if (tipAlpha > 0.5f)
 			{
 				tipAlpha = 1f - tipAlpha;
@@ -353,9 +389,10 @@ namespace RijamsMod.Projectiles.Tools
 			Color tipColor2 = SetColorType(colorMode[1]);
 
 			Color tipColorLerp = Color.Lerp(tipColor1, tipColor2, tipAlpha);
+			tipColorLerp.A = 0;
 
-			Main.EntitySpriteDraw(projTexture, projPos, null, tipColorLerp, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, spriteEffects, 0);
-			//Main.EntitySpriteDraw(TextureAssets.GlowMask[40].Value, vector58, null, alpha2 * (0.5f - num369) * 2f, Projectile.rotation, new Vector2(value146.Width, value146.Height) / 2f, Projectile.scale, spriteEffects, 0);
+			//Main.EntitySpriteDraw(projTexture, projPos, null, tipColorLerp, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, spriteEffects, 0);
+			*/
 			return false;
 		}
 		public override void SendExtraAI(BinaryWriter writer)
@@ -363,16 +400,16 @@ namespace RijamsMod.Projectiles.Tools
 			writer.Write(pick);
 			writer.Write(axe);
 			writer.Write(hammer);
-			writer.Write(colorMode[0]);
-			writer.Write(colorMode[1]);
+			//writer.Write(colorMode[0]);
+			//writer.Write(colorMode[1]);
 		}
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			pick = reader.ReadBoolean();
 			axe = reader.ReadBoolean();
 			hammer = reader.ReadBoolean();
-			colorMode[0] = reader.ReadInt32();
-			colorMode[1] = reader.ReadInt32();
+			//colorMode[0] = reader.ReadInt32();
+			//colorMode[1] = reader.ReadInt32();
 		}
 	}
 }

@@ -14,6 +14,7 @@ namespace RijamsMod.Items.Placeable
 			// Tooltip.SetDefault("Can be placed in water");
 			ItemID.Sets.Torches[Type] = true;
 			ItemID.Sets.WaterTorches[Type] = true;
+			ItemID.Sets.SingleUseInGamepad[Type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.ShimmerTorch; // Shimmer transforms the item.
 		}
 		public override void SetDefaults()
@@ -35,17 +36,6 @@ namespace RijamsMod.Items.Placeable
 		public override void PostUpdate()
 		{
 			Lighting.AddLight((int)((Item.position.X + Item.width / 2) / 16f), (int)((Item.position.Y + Item.height / 2) / 16f), 0.5f, 0.5f, 0f);
-		}
-
-		public override void AutoLightSelect(ref bool dryTorch, ref bool wetTorch, ref bool glowstick)
-		{
-			dryTorch = false;
-			wetTorch = true;
-		}
-
-		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
-		{ // Overrides the default sorting method of this Item.
-			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; // Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be.
 		}
 
 		public override void AddRecipes()

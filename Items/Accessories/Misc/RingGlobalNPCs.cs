@@ -1,6 +1,8 @@
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -55,6 +57,11 @@ namespace RijamsMod.Items.Accessories.Misc
 								player.AddBuff(ModContent.BuffType<Buffs.Other.WarriorEnergy>(), 300);
 								ModContent.GetInstance<RijamsMod>().PlayNetworkSound(new($"{nameof(RijamsMod)}/Sounds/Custom/RingPowerup") { Volume = 0.75f }, player.Center, player);
 								Mod.Logger.Debug(" warriorRing Success?");
+								ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.TrueNightsEdge, new ParticleOrchestraSettings
+								{
+									PositionInWorld = player.Center,
+									MovementVector = Vector2.Zero
+								});
 							}
 						}
 
@@ -67,7 +74,7 @@ namespace RijamsMod.Items.Accessories.Misc
 						}
 
 						// If the player has the Life Sapper Ring equipped, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-						if (moddedplayer.manaSapperRing)
+						if (moddedplayer.manaSapperRing && (player.HeldItem.DamageType.CountsAsClass(DamageClass.Magic) || player.HeldItem.ModItem is MagicMeleeGlow))
 						{
 							int manaAmount = 2 + (Math.Max(player.statManaMax, player.statManaMax2) / 100); // Base of 2 + 1 for every 100 max mana. Example: 20 MP = healed 2; 200 MP = healed 4; 
 							player.statMana += manaAmount;

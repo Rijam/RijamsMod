@@ -1,15 +1,10 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Steamworks;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Humanizer.In;
-using static Terraria.ModLoader.PlayerDrawLayer;
-using static Terraria.WorldBuilding.IL_Searches;
 
 namespace RijamsMod.Projectiles.Ranged
 {
@@ -654,6 +649,7 @@ namespace RijamsMod.Projectiles.Ranged
 			Projectile.height = 22;
 			Projectile.position.X -= Projectile.width / 2;
 			Projectile.position.Y -= Projectile.height / 2;
+
 			for (int i = 0; i < 30; i++)
 			{
 				Dust smoke = Dust.NewDustDirect(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1.5f);

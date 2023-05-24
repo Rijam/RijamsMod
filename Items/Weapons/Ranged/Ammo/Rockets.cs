@@ -12,6 +12,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.RocketI"));
+			AmmoID.Sets.IsSpecialist[Type] = true;
 		}
 
 		public override void SetDefaults()
@@ -41,6 +42,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.RocketI"));
+			AmmoID.Sets.IsSpecialist[Type] = true;
 		}
 
 		public override void SetDefaults()

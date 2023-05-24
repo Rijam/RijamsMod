@@ -16,6 +16,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 			// DisplayName.SetDefault("AGM Missile Launcher");
 			// Tooltip.SetDefault("10% chance not to consume ammo");
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]", "[c/474747:and Cyborg is present]" } );
+			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 		}
 
 		public override void SetDefaults()

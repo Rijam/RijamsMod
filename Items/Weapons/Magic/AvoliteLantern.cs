@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,7 +28,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
-			Item.shoot = ModContent.ProjectileType<LanternLight>();
+			Item.shoot = ModContent.ProjectileType<LanternLightAvoliteRed>();
 			Item.shootSpeed = 8;
 			Item.rare = ItemRarityID.Yellow;
 			Item.value = 50000;
@@ -84,6 +85,16 @@ namespace RijamsMod.Items.Weapons.Magic
 					break;
 			}
 
+			Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
+
+			// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
+			Point playerTileCoords = playerHandPos.ToTileCoordinates();
+			Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
+			if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
+			{
+				playerHandPos = player.MountedCenter;
+			}
+
 			for (int i = 0; i < Item.useLimitPerAnimation; i++)
 			{
 				// NextVector2Circular is like how far it can randomly choose to target. It'll spread out more with bigger numbers. Nightglow uses 1f, 1f
@@ -102,18 +113,25 @@ namespace RijamsMod.Items.Weapons.Magic
 				 	randomCircular.X *= -1f;
 				}
 
-				Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
+				int projType = type;
 
-				// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
-				Point playerTileCoords = playerHandPos.ToTileCoordinates();
-				Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
-				if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
+				switch (colorMode)
 				{
-					playerHandPos = player.MountedCenter;
+					case 0: // Red
+						projType = type;
+						break;
+					case 1: // Yellow
+						projType = ModContent.ProjectileType<LanternLightAvoliteYellow>();
+						break;
+					case 2: // Blue
+						projType = ModContent.ProjectileType<LanternLightAvoliteBlue>();
+						break;
+					default:
+						break;
 				}
 
-				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, spawnColor);
-				projectile.tileCollide = true;
+				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, projType, damage, knockback, player.whoAmI, -1f, spawnColor);
+				/*projectile.tileCollide = true;
 				projectile.ignoreWater = false;
 				projectile.penetrate = 3;
 				projectile.timeLeft = 500;
@@ -144,7 +162,7 @@ namespace RijamsMod.Items.Weapons.Magic
 							modProjectile.overrideColor = new Color(1f, 0.99f, 0.47f, 1f) * 0.5f;
 							modProjectile.homingNeedsLineOfSight = false;
 							break;
-						case 2:
+						case 2: // Blue
 							modProjectile.vecolityMultiplier = 45f;
 							modProjectile.timeBeforeItCanStartHoming = 490;
 							modProjectile.timeLeftBeforeItStopsHoming = 10;
@@ -158,7 +176,7 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.trailLength = 18;
 					modProjectile.shineScale = 1.2f;
 					modProjectile.homingRange = 50 * 16; // 50 tiles
-				}
+				}*/
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
@@ -179,6 +197,30 @@ namespace RijamsMod.Items.Weapons.Magic
 						break;
 				}
 			}
+
+			int particleColor = 511;
+
+			switch (colorMode)
+			{
+				case 0: // Red
+					particleColor = 0;
+					break;
+				case 1: // Yellow
+					particleColor = 46; //65
+					break;
+				case 2: // Blue
+					particleColor = 170; //240
+					break;
+				default:
+					break;
+			}
+
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ChlorophyteLeafCrystalShot, new ParticleOrchestraSettings
+			{
+				PositionInWorld = playerHandPos + new Vector2(player.width / 4 * player.direction, 0),
+				MovementVector = velocity,
+				UniqueInfoPiece = particleColor
+			});
 
 			colorMode = 4;
 

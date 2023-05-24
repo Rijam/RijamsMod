@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using static Terraria.ModLoader.PlayerDrawLayer;
 using System;
+using Terraria.GameContent.Drawing;
 
 namespace RijamsMod.Items
 {
@@ -562,6 +563,55 @@ namespace RijamsMod.Items
 				if (num2 != -1)
 					target.DelBuff(num2);
 			}
+		}
+	}
+
+	public class DebugParticleOrchestra : ModItem
+	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
+		public override string Texture => "Terraria/Images/Item_" + ItemID.SandSolution;
+		public override void SetStaticDefaults()
+		{
+			// DisplayName.SetDefault("[c/ff0000:Debug] - Angler Quest Changer");
+			// Tooltip.SetDefault("Changes the number of Angler quests you have completed\nLeft click to add one\nRight click to remove one");
+		}
+
+		public override void SetDefaults()
+		{
+			Item.color = Color.RoyalBlue;
+			Item.width = 14;
+			Item.height = 14;
+			Item.maxStack = 999;
+			Item.rare = ItemRarityID.White;
+			Item.value = 0;
+			Item.useStyle = ItemUseStyleID.HiddenAnimation;
+			Item.useAnimation = 1;
+			Item.useTime = 1;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item9;
+			Item.consumable = true;
+			Item.noUseGraphic = true;
+		}
+		public override bool? UseItem(Player player)
+		{
+			ParticleOrchestraType particleType = ParticleOrchestraType.NightsEdge;
+
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, particleType, new ParticleOrchestraSettings
+			{
+				PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224),
+				MovementVector = Vector2.One,
+				UniqueInfoPiece = 0
+			});
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, particleType, new ParticleOrchestraSettings
+			{
+				PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 224),
+				MovementVector = Vector2.One,
+				UniqueInfoPiece = 0
+			});
+			return true;
 		}
 	}
 }

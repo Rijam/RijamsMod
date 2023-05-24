@@ -88,7 +88,7 @@ namespace RijamsMod.Items.Tools
 				{
 					player.releaseUseTile = false;
 					Main.mouseRightRelease = false;
-					SoundEngine.PlaySound(SoundID.Unlock);
+					SoundEngine.PlaySound(SoundID.Unlock with { Volume = (ModContent.GetInstance<RijamsModConfigClient>().BurglarsRingSound / 100f) });
 					player.inventory[player.selectedItem].ChangeItemType(itemToTransformTo);
 					Recipe.FindRecipes();
 					

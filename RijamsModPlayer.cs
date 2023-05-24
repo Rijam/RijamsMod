@@ -46,7 +46,7 @@ namespace RijamsMod
 		public bool terraStepStool;
 		public bool dwarfStarPet;
 		public bool redSkywareLeggings;
-		//public bool holdingAetherLantern;
+		public bool babyStardustDragonPet;
 
 		public int supportMinionRadiusIncrease = 0;
 
@@ -81,7 +81,7 @@ namespace RijamsMod
 			terraStepStool = false;
 			dwarfStarPet = false;
 			redSkywareLeggings = false;
-			//holdingAetherLantern = false;
+			babyStardustDragonPet = false;
 
 			supportMinionRadiusIncrease = 0;
 		}

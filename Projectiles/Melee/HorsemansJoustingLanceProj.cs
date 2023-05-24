@@ -4,6 +4,7 @@ using RijamsMod.Items.Weapons.Melee;
 using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -168,6 +169,12 @@ namespace RijamsMod.Projectiles.Melee
 						float velocityDistance = 8f / (float)Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
 						velocity *= velocityDistance;
 						Projectile.NewProjectile(Projectile.GetSource_ItemUse(owner.HeldItem), position, velocity, ProjectileID.FlamingJack, Projectile.damage / 2, Projectile.knockBack / 2, owner.whoAmI, target.whoAmI);
+
+						ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.BlackLightningHit, new ParticleOrchestraSettings
+						{
+							PositionInWorld = Projectile.Center,
+							MovementVector = Vector2.Zero
+						});
 					}
 				}
 			}

@@ -80,6 +80,10 @@ namespace RijamsMod.Projectiles.Magic
 			owner.heldProj = Projectile.whoAmI; // Set the owner's held projectile to this projectile.
 
 			Vector2 pos = owner.GetBackHandPosition(Player.CompositeArmStretchAmount.Full, MathHelper.PiOver4);
+			if (owner.gravDir == -1f)
+			{
+				pos.Y -= owner.height / 3.5f;
+			}
 			if (owner.ItemAnimationActive)
 			{
 				pos = owner.GetBackHandPosition(Player.CompositeArmStretchAmount.Quarter, MathHelper.PiOver4 + 0.5f);
@@ -104,24 +108,13 @@ namespace RijamsMod.Projectiles.Magic
 			{
 				Projectile.Kill();
 			}
-
-			/*if (Projectile.ai[2] == 1f)
+			if (Projectile.ai[2] == 1f)
 			{
-				owner.GetModPlayer<RijamsModPlayer>().holdingAetherLantern = true;
-			}*/
+				//Projectile.Kill();
+			}
 
 			// frame is the flash frame
-			// Projectile.ai[1] is the faeling frame
 			Projectile.frame = (int)Projectile.ai[0];
-			if (Projectile.frameCounter % 30 == 0)
-			{
-				Projectile.ai[1]++;
-				if (Projectile.ai[1] >= 5)
-				{
-					Projectile.ai[1] = 0;
-				}
-			}
-			Projectile.frameCounter++;
 			return true;
 		}
 
@@ -182,66 +175,63 @@ namespace RijamsMod.Projectiles.Magic
 			return false;
 		}
 
-		private static void DrawNPCDirect_Faeling(Projectile rCurrentProj, ref Vector2 screenPos, Texture2D texture, SpriteEffects npcSpriteEffect)
+		// Copied from vanilla. Modified for projectiles.
+		private static void DrawNPCDirect_Faeling(Projectile rCurrentProj, ref Vector2 screenPos, Texture2D texture, SpriteEffects projSpriteEffect)
 		{
-			Vector2 vector = rCurrentProj.Center - screenPos;
-			vector.Y += Main.player[rCurrentProj.owner].gfxOffY;
+			Vector2 projCenter = rCurrentProj.Center - screenPos;
+			projCenter.Y += Main.player[rCurrentProj.owner].gfxOffY;
 			int verticalFrames = 5;
 			int horizontalFrames = 4;
 			//int currentFrame = (int)rCurrentProj.ai[1];
 			int currentFrame = (int)Main.GameUpdateCount % 30 / 6;
 			//Main.NewText(Main.GameUpdateCount % 30 / 6);
-			float num2 = ((float)rCurrentProj.whoAmI * 0.11f + (float)Main.timeForVisualEffects / 360f) % 1f;
-			Color color = Main.hslToRgb(num2, 1f, 0.65f);
-			color.A /= 2;
+			float colorPulseWings = (rCurrentProj.whoAmI * 0.11f + (float)Main.timeForVisualEffects / 360f) % 1f;
+			Color colorWings = Main.hslToRgb(colorPulseWings, 1f, 0.65f);
+			colorWings.A /= 2;
 			float rotation = rCurrentProj.rotation;
-			Rectangle rectangle = texture.Frame(horizontalFrames, verticalFrames, 0, currentFrame);
-			Vector2 origin = rectangle.Size() / 2f;
+			Rectangle sourceRectBody = texture.Frame(horizontalFrames, verticalFrames, 0, currentFrame);
+			Vector2 origin = sourceRectBody.Size() / 2f;
 			float scale = rCurrentProj.scale;
-			Rectangle value2 = texture.Frame(horizontalFrames, verticalFrames, 2);
+			Rectangle sourceRectGlow = texture.Frame(horizontalFrames, verticalFrames, 2);
 			Color color2 = new Color(255, 255, 255, 0) * 1f;
-			int num3 = rCurrentProj.oldPos.Length;
-			int num4 = num3 - 1 - 5;
-			int num5 = 5;
-			int num6 = 3;
-			float num7 = 32f;
-			float num8 = 16f;
-			float fromMax = new Vector2(num7, num8).Length();
-			float num9 = Utils.Remap(Vector2.Distance(rCurrentProj.oldPos[num4], rCurrentProj.position), 0f, fromMax, 0f, 100f);
-			num9 = (int)num9 / 5;
-			num9 *= 5f;
-			num9 /= 100f;
-			num8 *= num9;
-			num7 *= num9;
-			float num10 = 9f;
-			float num11 = 0.5f;
-			float num12 = (float)Math.PI;
-			for (int i = num4; i >= num5; i -= num6)
+			int oldPosLength = rCurrentProj.oldPos.Length;
+			int currentOldPos = oldPosLength - 6;
+			float spinningPointY = 32f;
+			float spinningPointX = 16f;
+			float fromMax = new Vector2(spinningPointY, spinningPointX).Length();
+			float lerpValue = Utils.Remap(Vector2.Distance(rCurrentProj.oldPos[currentOldPos], rCurrentProj.position), 0f, fromMax, 0f, 100f);
+			lerpValue = (int)lerpValue / 5;
+			lerpValue *= 5f;
+			lerpValue /= 100f;
+			spinningPointX *= lerpValue;
+			spinningPointY *= lerpValue;
+			float numIs9f = 9f;
+			float numIs05f = 0.5f;
+			for (int i = currentOldPos; i >= 5; i -= 3)
 			{
-				Vector2 vector2 = rCurrentProj.oldPos[i] - rCurrentProj.position;
-				float num14 = Utils.Remap(i, 0f, num3, 1f, 0f);
-				float num15 = 1f - num14;
-				Vector2 spinningpoint = new Vector2((float)Math.Sin((double)((float)rCurrentProj.whoAmI / 17f) + Main.timeForVisualEffects / (double)num10 + (double)(num14 * 2f * ((float)Math.PI * 2f))) * num8, 0f - num7) * num15;
-				vector2 += spinningpoint.RotatedBy(num12);
-				Color color3 = Main.hslToRgb((num2 + num15 * num11) % 1f, 1f, 0.5f);
-				color3.A = 0;
-				Main.EntitySpriteDraw(texture, vector + vector2, value2, color3 * num14 * 0.16f, rotation, origin, scale * Utils.Remap(num14 * num14, 0f, 1f, 0f, 2.5f), npcSpriteEffect, 0f);
+				Vector2 projOldPos = rCurrentProj.oldPos[i] - rCurrentProj.position;
+				float oldPosLerp = Utils.Remap(i, 0f, oldPosLength, 1f, 0f);
+				float oldPosLerpInverse = 1f - oldPosLerp;
+				Vector2 spinningpoint = new Vector2((float)Math.Sin((double)(rCurrentProj.whoAmI / 17f) + Main.timeForVisualEffects / (double)numIs9f + (double)(oldPosLerp * 2f * ((float)Math.PI * 2f))) * spinningPointX, 0f - spinningPointY) * oldPosLerpInverse;
+				projOldPos += spinningpoint.RotatedBy(Math.PI);
+				Color colorGlow = Main.hslToRgb((colorPulseWings + oldPosLerpInverse * numIs05f) % 1f, 1f, 0.5f);
+				colorGlow.A = 0;
+				Main.EntitySpriteDraw(texture, projCenter + projOldPos, sourceRectGlow, colorGlow * oldPosLerp * 0.16f, rotation, origin, scale * Utils.Remap(oldPosLerp * oldPosLerp, 0f, 1f, 0f, 2.5f), projSpriteEffect, 0f);
 			}
 
-			Main.EntitySpriteDraw(texture, vector, value2, color2, rotation, origin, scale, npcSpriteEffect, 0f);
-			Rectangle value3 = texture.Frame(horizontalFrames, verticalFrames, 1, currentFrame);
+			Main.EntitySpriteDraw(texture, projCenter, sourceRectGlow, color2, rotation, origin, scale, projSpriteEffect, 0f);
+			Rectangle sourceRectWings = texture.Frame(horizontalFrames, verticalFrames, 1, currentFrame);
 			Color white = Color.White;
 			white.A /= 2;
-			Main.EntitySpriteDraw(texture, vector, value3, white, rotation, origin, scale, npcSpriteEffect, 0f);
-			Main.EntitySpriteDraw(texture, vector, rectangle, color, rotation, origin, scale, npcSpriteEffect, 0f);
-			float num16 = MathHelper.Clamp((float)Math.Sin(Main.timeForVisualEffects / 60.0) * 0.3f + 0.3f, 0f, 1f);
-			float num17 = 0.8f + (float)Math.Sin(Main.timeForVisualEffects / 15.0 * 6.2831854820251465) * 0.3f;
-			Rectangle value4 = texture.Frame(horizontalFrames, verticalFrames, 3, rCurrentProj.whoAmI % verticalFrames);
-			Color color4 = Color.Lerp(color, new Color(255, 255, 255, 0), 0.5f) * num16;
-			Main.EntitySpriteDraw(texture, vector, value4, color4, rotation, origin, scale * num17, SpriteEffects.None, 0f);
-			Rectangle value5 = texture.Frame(horizontalFrames, verticalFrames, 3, 1);
-			Color color5 = Color.Lerp(color, new Color(255, 255, 255, 0), 0.5f) * num16;
-			Main.EntitySpriteDraw(texture, vector, value5, color5, rotation, origin, scale * num17, SpriteEffects.None, 0f);
+			Main.EntitySpriteDraw(texture, projCenter, sourceRectWings, white, rotation, origin, scale, projSpriteEffect, 0f);
+			Main.EntitySpriteDraw(texture, projCenter, sourceRectBody, colorWings, rotation, origin, scale, projSpriteEffect, 0f);
+			float colorPulse = MathHelper.Clamp((float)Math.Sin(Main.timeForVisualEffects / 60.0) * 0.3f + 0.3f, 0f, 1f);
+			float scaleMulti = 0.8f + (float)Math.Sin(Main.timeForVisualEffects / 15.0 * MathHelper.TwoPi) * 0.3f;
+			Color colorFlash = Color.Lerp(colorWings, new Color(255, 255, 255, 0), 0.5f) * colorPulse;
+			Rectangle sourceRectFlash = texture.Frame(horizontalFrames, verticalFrames, 3, rCurrentProj.whoAmI % verticalFrames);
+			Rectangle sourceRectFlash0 = texture.Frame(horizontalFrames, verticalFrames, 3, 1);
+			Main.EntitySpriteDraw(texture, projCenter, sourceRectFlash, colorFlash, rotation, origin, scale * scaleMulti, SpriteEffects.None, 0f);
+			Main.EntitySpriteDraw(texture, projCenter, sourceRectFlash0, colorFlash, rotation, origin, scale * scaleMulti, SpriteEffects.None, 0f);
 		}
 
 

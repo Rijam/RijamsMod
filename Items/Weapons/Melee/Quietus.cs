@@ -55,7 +55,7 @@ namespace RijamsMod.Items.Weapons.Melee
 					Vector2 perturbedSpeed = velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
 					Projectile.NewProjectile(source, position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockback, player.whoAmI); //Already gets the double damage from below
 				}
-				player.manaRegenDelay = (int)player.maxRegenDelay;
+				player.manaRegenDelay = (int)player.maxRegenDelay * 2f;
 			}
 			return false;
 		}

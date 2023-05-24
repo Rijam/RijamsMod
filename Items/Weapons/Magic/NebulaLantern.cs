@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -26,7 +27,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.height = 44;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
-			Item.shoot = ModContent.ProjectileType<LanternLight>();
+			Item.shoot = ModContent.ProjectileType<LanternLightNebula>();
 			Item.shootSpeed = 8;
 			Item.rare = ItemRarityID.Cyan;
 			Item.value = 80000;
@@ -64,6 +65,16 @@ namespace RijamsMod.Items.Weapons.Magic
 		}
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
+			Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
+
+			// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
+			Point playerTileCoords = playerHandPos.ToTileCoordinates();
+			Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
+			if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
+			{
+				playerHandPos = player.MountedCenter;
+			}
+
 			for (int i = 0; i < Item.useLimitPerAnimation; i++)
 			{
 				// NextVector2Circular is like how far it can randomly choose to target. It'll spread out more with bigger numbers. Nightglow uses 1f, 1f
@@ -82,18 +93,8 @@ namespace RijamsMod.Items.Weapons.Magic
 				 	randomCircular.X *= -1f;
 				}
 
-				Vector2 playerHandPos = player.MountedCenter + new Vector2(player.direction * 15, player.gravDir * 3f);
-
-				// This check sees if the hands are located in a solid block. If so, spawn the projectile at the center of the player instead of inside of the block.
-				Point playerTileCoords = playerHandPos.ToTileCoordinates();
-				Tile tile = Main.tile[playerTileCoords.X, playerTileCoords.Y];
-				if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType] && !TileID.Sets.Platforms[tile.TileType])
-				{
-					playerHandPos = player.MountedCenter;
-				}
-
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.41f);
-				projectile.tileCollide = true;
+				/*projectile.tileCollide = true;
 				projectile.ignoreWater = true;
 				projectile.penetrate = 3;
 				projectile.timeLeft = 500;
@@ -115,14 +116,22 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.trailLength = 19;
 					modProjectile.shineScale = 1.5f;
 					modProjectile.homingRange = 55 * 16; // 55 tiles
-				}
+				}*/
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
 				}
 
 				Lighting.AddLight(player.Center, new Vector3(1f, 0.47f, 0.59f));
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.PrincessWeapon, new ParticleOrchestraSettings
+				{
+					//PositionInWorld = playerHandPos + new Vector2(player.width / 4 * player.direction, 0),
+					PositionInWorld = playerHandPos + new Vector2(player.width / 4 * player.direction, 0),
+					MovementVector = velocity
+				});
 			}
+
 
 			return false;
 		}

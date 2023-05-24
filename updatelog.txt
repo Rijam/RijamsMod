@@ -124,9 +124,18 @@
 	* Added Pianist's Glove which allows the player to play pianos!
 	* Added Hornet Tail, a fish from fishing in honey below the surface layer.
 	* Added Ferocious Potion. Gives +10 armor penetration.
-	* Added 13 new magic weapons: Shining Lantern, Frostburn Lantern, Ultrabright Lantern, Peace Lantern, Water Lantern, Shadow Lantern, Sulfuric Lantern, Vile Lantern, Vicious Lantern, Rainbow Lantern, Spectre Lantern, Jack-o'-Lantern, Avolite Lantern, Nebula Lantern.
+	* Added 15 new magic weapons: Shining Lantern, Frostburn Lantern, Ultrabright Lantern, Peace Lantern, Water Lantern, Shadow Lantern, Sulfuric Lantern, Vile Lantern, Vicious Lantern, Rainbow Lantern, Spectre Lantern, Jack-o'-Lantern, Avolite Lantern, Nebula Lantern, Aether Lantern.
 	* Buffed Sulfuric Acid slightly: now does a minimum of 4 damage per tick instead of 2.
 	* Improved/fixed many things in multiplayer.
 	* Added a cool icon display above the Interstellar Traveler if you have a quest item to turn in.
 	* Added Sulfur Rocket.
 	* Added Interstellar Sniper.
+	* Updated Timon's Axe to be more like the reworked 1.4.4 melee weapons.
+	* Added Sulfur Campfire.
+	* Added Angry Guster and Angry Guster banner.
+	* Frosty Shiv now inflicts Frostbite instead of Frostburn.
+	* Added a hairstyle that matches the Harpy.
+	* Added a Stardust Dragon pet. Summoned with Stardust Dragon Crest.
+	* Changed all of the "Summons a..." text to "Conjures a..." if the item is not related to summoner.
+	* Improved the wording of several config options.
+	* Added Wild Bait.

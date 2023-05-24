@@ -1,34 +1,33 @@
-using RijamsMod.UI;
 using Terraria.ModLoader;
 
 namespace RijamsMod.UI
 {
-	public class MyUICommandOpen : ModCommand
+	public class MMUICommandOpen : ModCommand
 	{
 		public override CommandType Type
 			=> CommandType.Chat;
 
 		public override string Command
-			=> "myui";
+			=> "mmui_open";
 
 		public override string Description
-			=> "Show the custom ui";
+			=> "Opens the Matter Manipulator UI";
 
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{
 			MatterManipulatorUI.Visible = true;
 		}
 	}
-	public class MyUICommandClose : ModCommand
+	public class MMUICommandClose : ModCommand
 	{
 		public override CommandType Type
 			=> CommandType.Chat;
 
 		public override string Command
-			=> "myui_close";
+			=> "mmui_close";
 
 		public override string Description
-			=> "Closes the custom ui";
+			=> "Closes the Matter Manipulator UI";
 
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{

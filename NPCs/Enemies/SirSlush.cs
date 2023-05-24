@@ -9,6 +9,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.Bestiary;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using System.IO;
 
 namespace RijamsMod.NPCs.Enemies
 {
@@ -279,6 +280,17 @@ namespace RijamsMod.NPCs.Enemies
 				}
 			}
 		}
+
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(AIState);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			AIState = reader.ReadInt32();
+		}
+
 		/*
 		public override bool? CanBeHitByProjectile(Projectile projectile)
 		{

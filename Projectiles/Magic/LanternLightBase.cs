@@ -1,11 +1,10 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.Items;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.Chat;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -13,24 +12,12 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Magic
 {
-	public class LanternLight : ModProjectile
+	public class LanternLightBase : ModProjectile
 	{
-		public float vecolityMultiplier = 30f;
-		public int homingRange = 800;
 		public int timeLeftMax = 300;
-		public float timeBeforeItCanStartHoming = 180f;
-		public float timeLeftBeforeItStopsHoming = 60f;
-		public int trailLength = 19;
-		public float shineScale = 1f;
-		public bool bounceOnTiles = true;
-		public bool homingNeedsLineOfSight = true;
-		public Color overrideColor = Color.Black;
-		public int buffType = 0;
-		public int buffTime = 60;
-		public int buffChance = 1;
-		public bool orgTileCollide = true;
-		public bool orgIgnoreWater = false;
-		public int orgPenetrate = 1;
+
+		public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(LanternLightBase);
+		public override string Texture => Projectile.type == ModContent.ProjectileType<LanternLightBase>() ? null : (GetType().Namespace + ".LanternLight").Replace('.', '/');
 
 		// Nightglow projectile clone
 		public override void SetStaticDefaults()
@@ -56,18 +43,54 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 60;
 		}
-		public override void OnSpawn(IEntitySource source)
+
+		/// <summary> Returns true by default </summary>
+		public virtual bool BounceOnTiles()
 		{
-			/*Projectile.timeLeft = timeLeftMax;
-			Projectile.tileCollide = orgTileCollide;
-			Projectile.ignoreWater = orgIgnoreWater;
-			Projectile.maxPenetrate = orgPenetrate;
-			Projectile.penetrate = orgPenetrate;*/
+			return true;
+		}
+
+		/// <summary> Returns false by default
+		/// <br>buffType = 0</br>
+		/// <br>buffChance = 1</br>
+		/// <br>buffTime = 60</br>
+		/// </summary>
+		public virtual bool Buffs(ref int buffType, ref int buffChance, ref int buffTime)
+		{
+			return false;
+		}
+
+		/// <summary> For the speed and homing 
+		/// <br>vecolityMultiplier = 30f</br>
+		/// <br>homingRange = 800</br>
+		/// <br>timeBeforeItCanStartHoming = 180f</br>
+		/// <br>timeLeftBeforeItStopsHoming = 60f</br>
+		/// <br>homingNeedsLineOfSight = true</br>
+		/// </summary>
+		public virtual void Movement(ref float vecolityMultiplier, ref int homingRange, ref float timeBeforeItCanStartHoming, 
+			ref float timeLeftBeforeItStopsHoming, ref bool homingNeedsLineOfSight)
+		{
+
+		}
+
+		/// <summary> Color.Black by default which be changed to the Projectile.GetFairyQueenWeaponsColor() </summary>
+		public virtual Color OverrideColor()
+		{
+			return Color.Black;
+		}
+
+		/// <summary> Trail visuals 
+		/// <br>trailLength = 19</br>
+		/// <br>shineScale = 1f</br>
+		/// </summary>
+		public virtual void Trail(ref int trailLength, ref float shineScale)
+		{
+
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			if (bounceOnTiles)
+			if (BounceOnTiles())
 			{
 				if (Projectile.velocity.X != oldVelocity.X)
 				{
@@ -79,11 +102,16 @@ namespace RijamsMod.Projectiles.Magic
 					Projectile.velocity.Y = oldVelocity.Y * -1f;
 				}
 			}
-			return !bounceOnTiles;
+			return !BounceOnTiles();
 		}
+
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (buffType > 0 && Main.rand.NextBool(buffChance))
+			int buffType = 0;
+			int buffChance = 1;
+			int buffTime = 60;
+			if (Buffs(ref buffType, ref buffChance, ref buffTime) && Main.rand.NextBool(buffChance))
 			{
 				target.AddBuff(buffType, buffTime);
 			}
@@ -93,31 +121,32 @@ namespace RijamsMod.Projectiles.Magic
 		{
 			if (Projectile.ai[2] == 0)
 			{
-				Projectile.timeLeft = timeLeftMax;
-				Projectile.maxPenetrate = orgPenetrate;
-				Projectile.penetrate = orgPenetrate;
+				timeLeftMax = Projectile.timeLeft;
 			}
-			Projectile.tileCollide = orgTileCollide;
-			Projectile.ignoreWater = orgIgnoreWater;
 			return true;
 		}
 
 		public override void AI()
 		{
-			/*
-			if (Projectile.ai[2] == 0 || Projectile.ai[2] == timeBeforeItCanStartHoming || Projectile.ai[2] == timeLeftBeforeItStopsHoming || Projectile.ai[2] == Projectile.timeLeft)
+			float vecolityMultiplier = 30f;
+			int homingRange = 800;
+			float timeBeforeItCanStartHoming = 180f;
+			float timeLeftBeforeItStopsHoming = 60f;
+			bool homingNeedsLineOfSight = true;
+			Movement(ref vecolityMultiplier, ref homingRange, ref timeBeforeItCanStartHoming, ref timeLeftBeforeItStopsHoming, ref homingNeedsLineOfSight);
+
+			
+			/*if (Projectile.ai[2] == 0 || Projectile.ai[2] == timeBeforeItCanStartHoming || Projectile.ai[2] == timeLeftBeforeItStopsHoming || Projectile.ai[2] == Projectile.timeLeft)
 			{
 				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
 					"-> vecolityMultiplier " + vecolityMultiplier + " homingRange " + homingRange + " timeLeftMax " + timeLeftMax
 					+ " timeBeforeItCanStartHoming " + timeBeforeItCanStartHoming + " timeLeftBeforeItStopsHoming " + timeLeftBeforeItStopsHoming
-					+ " trailLength " + trailLength + " shineScale " + shineScale + " bounceOnTiles " + bounceOnTiles + " homingNeedsLineOfSight " + homingNeedsLineOfSight
-					+ " overrideColor " + overrideColor + " buffType " + buffType + " buffTime " + buffTime + " buffChance " + buffChance
-					+ " Projectile.Center " + Projectile.Center), new Color(100, 100, 100));
+					+ " homingNeedsLineOfSight " + homingNeedsLineOfSight + " Projectile.Center " + Projectile.Center), new Color(100, 100, 100));
 				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
 					"-> Projectile.timeLeft " + Projectile.timeLeft + " Projectile.tileCollide " + Projectile.tileCollide + " Projectile.ignoreWater " + Projectile.ignoreWater
 					+ " Projectile.penetrate " + Projectile.penetrate), new Color(150, 150, 150));
-			}
-			*/
+			}*/
+			
 			Projectile.ai[2]++;
 
 			// Projectile.ai[1] controls the color
@@ -128,10 +157,13 @@ namespace RijamsMod.Projectiles.Magic
 			float lerpValue1 = 0.075f;
 			float lerpValue2 = 0.125f;
 
+
 			int savedAlpha = Projectile.alpha;
 			Projectile.alpha = 0;
 			Color fairyQueenWeaponsColor = Projectile.GetFairyQueenWeaponsColor();
 			Projectile.alpha = savedAlpha;
+
+			Color overrideColor = OverrideColor();
 
 			Color colorToUse = overrideColor != Color.Black ? overrideColor : fairyQueenWeaponsColor;
 
@@ -165,7 +197,7 @@ namespace RijamsMod.Projectiles.Magic
 			{
 				float num6 = (float)Math.Cos(Projectile.whoAmI % 6f / 6f + Projectile.position.X / 320f + Projectile.position.Y / 160f);
 				Projectile.velocity *= velSlowDown;
-				Projectile.velocity = Projectile.velocity.RotatedBy(num6 * (Math.PI * 2f) * 0.125f * 1f / 30f);
+				Projectile.velocity = Projectile.velocity.RotatedBy(num6 * (MathHelper.TwoPi * -Projectile.direction) * 0.125f * 1f / 30f);
 			}
 
 			int newTarget;
@@ -205,10 +237,11 @@ namespace RijamsMod.Projectiles.Magic
 		{
 			Color fairyQueenWeaponsColor2 = Projectile.GetFairyQueenWeaponsColor();
 
+			Color overrideColor = OverrideColor();
 			Color colorToUse = overrideColor != Color.Black ? overrideColor : fairyQueenWeaponsColor2;
 
 			Vector2 target2 = Projectile.Center;
-			Main.rand.NextFloat();
+
 			for (int j = 0; j < Projectile.oldPos.Length; j++)
 			{
 				Vector2 projOldPos = Projectile.oldPos[j];
@@ -264,6 +297,10 @@ namespace RijamsMod.Projectiles.Magic
 			float maxScale = 0.7f;
 			float scaleDiv = 20f;
 			float rotationMulti = 0f;
+
+			int trailLength = 19;
+			float shineScale = 1f;
+			Trail(ref trailLength, ref shineScale);
 
 			for (int i = trailLength; (iterationAmount > 0 && i < numIs0) || (iterationAmount < 0 && i > numIs0); i += iterationAmount)
 			{
@@ -337,47 +374,14 @@ namespace RijamsMod.Projectiles.Magic
 			return false;
 		}
 
-		// I hope you have good internet D:
 		public override void SendExtraAI(BinaryWriter writer)
 		{
-			writer.Write(vecolityMultiplier);
-			writer.Write(homingRange);
 			writer.Write(timeLeftMax);
-			writer.Write(timeBeforeItCanStartHoming);
-			writer.Write(timeLeftBeforeItStopsHoming);
-			writer.Write(trailLength);
-			writer.Write(shineScale);
-			writer.Write(bounceOnTiles);
-			writer.Write(homingNeedsLineOfSight);
-			writer.WriteRGB(overrideColor);
-			writer.Write(overrideColor.A);
-			writer.Write(buffType);
-			writer.Write(buffTime);
-			writer.Write(buffChance);
-			writer.Write(orgTileCollide);
-			writer.Write(orgIgnoreWater);
-			writer.Write(orgPenetrate);
 		}
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
-			vecolityMultiplier = reader.ReadSingle();
-			homingRange = reader.ReadInt32();
 			timeLeftMax = reader.ReadInt32();
-			timeBeforeItCanStartHoming = reader.ReadSingle();
-			timeLeftBeforeItStopsHoming = reader.ReadSingle();
-			trailLength = reader.ReadInt32();
-			shineScale = reader.ReadSingle();
-			bounceOnTiles = reader.ReadBoolean();
-			homingNeedsLineOfSight = reader.ReadBoolean();
-			overrideColor = reader.ReadRGB();
-			overrideColor.A = reader.ReadByte();
-			buffType = reader.ReadInt32();
-			buffTime = reader.ReadInt32();
-			buffChance = reader.ReadInt32();
-			orgTileCollide = reader.ReadBoolean();
-			orgIgnoreWater = reader.ReadBoolean();
-			orgPenetrate = reader.ReadInt32();
 		}
 	}
 }

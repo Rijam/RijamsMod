@@ -26,7 +26,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
-			Item.shoot = ModContent.ProjectileType<LanternLight>();
+			Item.shoot = ModContent.ProjectileType<LanternLightSulfuric>();
 			Item.shootSpeed = 1;
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = 20000;
@@ -93,7 +93,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				}
 				// ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("playerHandPos " + playerHandPos + " randomCircular " + randomCircular + " player.whoAmI " + player.whoAmI), new Color(200, 200, 200));
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, 0.575f);
-				projectile.tileCollide = false;
+				/*projectile.tileCollide = false;
 				projectile.ignoreWater = true;
 				projectile.penetrate = 3;
 				projectile.timeLeft = 500;
@@ -116,12 +116,7 @@ namespace RijamsMod.Items.Weapons.Magic
 					modProjectile.orgTileCollide = false;
 					modProjectile.orgIgnoreWater = true;
 					modProjectile.orgPenetrate = 3;
-
-					/*modProjectile.Projectile.tileCollide = false;
-					modProjectile.Projectile.ignoreWater = true;
-					modProjectile.Projectile.penetrate = 3;
-					modProjectile.Projectile.timeLeft = 500;*/
-				}
+				}*/
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);

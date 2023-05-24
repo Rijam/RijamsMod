@@ -147,11 +147,11 @@ namespace RijamsMod.Projectiles.Melee
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			// 60 frames = 1 second
-			target.AddBuff(BuffID.Frostburn, 120);
+			target.AddBuff(BuffID.Frostburn2, 120);
 		}
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
-			target.AddBuff(BuffID.Frostburn, 120);
+			target.AddBuff(BuffID.Frostburn2, 120);
 		}
 		public override Color? GetAlpha(Color lightColor)
 		{

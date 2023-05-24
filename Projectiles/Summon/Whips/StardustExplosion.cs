@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -58,6 +59,11 @@ namespace RijamsMod.Projectiles.Summon.Whips
 				Dust dust = Dust.NewDustDirect(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.BlueTorch);
 				dust.noGravity = true;
 			}
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.StardustPunch, new ParticleOrchestraSettings
+			{
+				PositionInWorld = Projectile.Center,
+				MovementVector = new Vector2(0f, -1f)
+			});
 			SoundEngine.PlaySound(new("Terraria/Sounds/Item_29") { Volume = 0.25f }, Projectile.position);
 		}
 	}

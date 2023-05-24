@@ -6,7 +6,6 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Humanizer.In;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
@@ -205,8 +204,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 			// Get the currently selected frame on the texture.
 			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
-
-			
 
 			Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(1f, Projectile.gfxOffY),
 				sourceRectangle, FadingBrightness(lightColor, out _), Projectile.rotation, sourceRectangle.Size() / 2f, Projectile.scale, spriteEffects, 0);

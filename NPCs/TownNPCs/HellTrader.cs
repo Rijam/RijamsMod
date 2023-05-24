@@ -15,8 +15,6 @@ using Terraria.Audio;
 using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
-using Terraria.UI.Gamepad;
-using Terraria.ModLoader.IO;
 
 namespace RijamsMod.NPCs.TownNPCs
 {

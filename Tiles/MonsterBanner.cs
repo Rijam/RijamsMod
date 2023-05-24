@@ -98,6 +98,9 @@ namespace RijamsMod.Tiles
 					case 6:
 						type = NPCType<FirmamentHarpy>();
 						break;
+					case 7:
+						type = NPCType<AngryGuster>();
+						break;
 					default:
 						return;
 				}

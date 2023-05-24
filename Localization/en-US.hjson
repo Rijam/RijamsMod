@@ -1,4 +1,3 @@
-
 Mods: {
 	RijamsMod: {
 		Common: {
@@ -29,7 +28,7 @@ Mods: {
 
 		Items: {
 			# Items/Accessories/Defense
-
+			
 			Citadel: {
 				DisplayName: Citadel
 				Tooltip:
@@ -101,7 +100,7 @@ Mods: {
 			}
 
 			# Items/Accessories/Magic
-
+			
 			CosmicSorcery: {
 				Tooltip:
 					'''
@@ -133,7 +132,7 @@ Mods: {
 			}
 
 			# Items/Accessories/Melee
-
+			
 			DaybreakGauntlet: {
 				DisplayName: Daybreak Gauntlet
 				Tooltip:
@@ -169,7 +168,7 @@ Mods: {
 			}
 
 			# Items/Accessories/Misc
-
+			
 			BreathingPack: {
 				DisplayName: Breathing Pack
 				Tooltip: Refills the player's air supply two seconds after it reaches zero
@@ -270,7 +269,7 @@ Mods: {
 			}
 
 			# Items/Accessories/Movement
-
+			
 			DifferentBundleOfBalloons: {
 				DisplayName: Different Bundle of Balloons
 				Tooltip:
@@ -356,7 +355,7 @@ Mods: {
 			}
 
 			# Items/Accessories/Ranger
-
+			
 			AmmoPouch: {
 				DisplayName: Ammo Pouch
 				Tooltip:
@@ -391,7 +390,7 @@ Mods: {
 			}
 
 			# Items/Accessories/Summoner
-
+			
 			AssembleAssemble: {
 				DisplayName: Assemble Assemble
 				Tooltip:
@@ -493,14 +492,14 @@ Mods: {
 			}
 
 			# Items/Accessories/Vanity
-
+			
 			CarrotNose: {
 				DisplayName: Carrot Nose
 				Tooltip: "{$Common.VanityAccesssory}"
 			}
 
 			# Items/Armor
-
+			
 			DilapidatedCrimsonGreaves: {
 				DisplayName: Dilapidated Crimson Greaves
 				Tooltip:
@@ -732,7 +731,7 @@ Mods: {
 			}
 
 			# Items/Consumables
-
+			
 			FlaskOfOil: {
 				DisplayName: Flask of Oil
 				Tooltip: Melee attacks inflict enemies with Oiled
@@ -823,7 +822,7 @@ Mods: {
 			}
 
 			# Items/Dyes
-
+			
 			BeamDye: {
 				DisplayName: Beam Dye
 				Tooltip: ""
@@ -840,14 +839,23 @@ Mods: {
 			}
 
 			# Items/Fishing
-
+			
 			HornetTail: {
 				DisplayName: Hornet Tail
 				Tooltip: ""
 			}
 
-			# Items/Information
+			WildBait: {
+				DisplayName: Wild Bait
+				Tooltip:
+					'''
+					Has a chance to catch two fish at once
+					  Increases with Fishing Power and luck
+					'''
+			}
 
+			# Items/Information
+			
 			CritDisplay: {
 				DisplayName: Critical Hit Display
 				Tooltip: Displays your current critical hit bonuses
@@ -898,38 +906,43 @@ Mods: {
 			}
 
 			# Items/Pets
-
+			
 			FluffaloEgg: {
 				DisplayName: Fluffalo Egg
-				Tooltip: Summons a pet Fluffalo
+				Tooltip: Conjures a pet Fluffalo
 			}
 
 			InterestingSphere: {
 				DisplayName: Interesting Sphere
-				Tooltip: Summons a pet Snugget
+				Tooltip: Conjures a pet Snugget
 			}
 
 			LEDLumothBulb: {
 				DisplayName: LED Lumoth Bulb
-				Tooltip: Summons a light pet LED Lumoth
+				Tooltip: Conjures a light pet LED Lumoth
 			}
 
 			LumothBulb: {
 				DisplayName: Lumoth Bulb
-				Tooltip: Summons a light pet Lumoth
+				Tooltip: Conjures a light pet Lumoth
 			}
 
 			StarCallerStaff: {
 				DisplayName: Star Caller Staff
 				Tooltip:
 					'''
-					Summons a light pet Dwarf Star
+					Conjures a light pet Dwarf Star
 					Enemies are lit ablaze upon contact
 					'''
 			}
 
-			# Items/Placeable
+			StardustDragonCrest: {
+				DisplayName: Stardust Dragon Crest
+				Tooltip: Conjures a pet Baby Stardust Dragon
+			}
 
+			# Items/Placeable
+			
 			AvoliteCandle: {
 				DisplayName: Avolite Candle
 				Tooltip: "'The crystal never runs out of light'"
@@ -958,6 +971,15 @@ Mods: {
 					 Deep paints are brighter
 					 Actuators halve the light
 					 Illuminant Coating doubles the light
+					'''
+			}
+
+			SulfurCampfire: {
+				DisplayName: Sulfur Campfire
+				Tooltip:
+					'''
+					{$ItemTooltip.Campfire}
+					Can be placed in water
 					'''
 			}
 
@@ -1011,8 +1033,13 @@ Mods: {
 				Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.FirmamentHarpy.DisplayName}"
 			}
 
-			# Items/Quest
+			AngryGusterBanner: {
+				DisplayName: Angry Guster Banner
+				Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.AngryGuster.DisplayName}"
+			}
 
+			# Items/Quest
+			
 			QuestTrackerComplete: {
 				Tooltip: "[c/403638:UI Item]"
 				DisplayName: You have completed all of the quests!
@@ -1054,7 +1081,7 @@ Mods: {
 			}
 
 			# Items/Tools
-
+			
 			MatterManipulator: {
 				DisplayName: Matter Manipulator
 				Tooltip:
@@ -1085,7 +1112,7 @@ Mods: {
 			}
 
 			# Items/Weapons/Magic
-
+			
 			Cresceptre: {
 				DisplayName: Cresceptre
 				Tooltip: "'Just going through a purple patch, don't mind me.'"
@@ -1110,7 +1137,7 @@ Mods: {
 				DisplayName: Sulfuric Incursion
 				Tooltip:
 					'''
-					Summons balls of sulfur that travel through tiles
+					Conjures balls of sulfur that travel through tiles
 					Inflicts Sulfuric Acid
 					'''
 			}
@@ -1299,7 +1326,7 @@ Mods: {
 			}
 
 			# Items/Weapons/Melee
-
+			
 			BoneHeadJoustingLance: {
 				DisplayName: Bone Head Jousting Lance
 				Tooltip:
@@ -1311,7 +1338,7 @@ Mods: {
 
 			FrostyShiv: {
 				DisplayName: Frosty Shiv
-				Tooltip: Inflicts Frostburn
+				Tooltip: Inflicts Frostbite
 			}
 
 			Granitization: {
@@ -1339,7 +1366,7 @@ Mods: {
 				Tooltip:
 					'''
 					{$ItemTooltip.HallowJoustingLance}
-					Occasionally summons Pumpkin heads to attack your enemies
+					Occasionally conjures Pumpkin heads to attack your enemies
 					'''
 			}
 
@@ -1384,7 +1411,7 @@ Mods: {
 				Tooltip:
 					'''
 					Much more powerful when combined with mana:
-					  Throws short range projectiles
+					  Has a swinging aura
 					  Weapon does double damage
 					  Uses 20 mana
 					'''
@@ -1411,7 +1438,7 @@ Mods: {
 			}
 
 			# Items/Weapons/Ranged
-
+			
 			AGMMissileLauncher: {
 				DisplayName: AGM Missile Launcher
 				Tooltip: 10% chance not to consume ammo
@@ -1474,7 +1501,7 @@ Mods: {
 			}
 
 			# Items/Weapons/Ranged/Ammo
-
+			
 			BloodyArrow: {
 				DisplayName: Bloody Arrow
 				Tooltip: 7% damage penalty per enemy pierced
@@ -1573,7 +1600,7 @@ Mods: {
 			}
 
 			# Items/Weapons/Summon/Cudgels
-
+			
 			CobaltProtectorCudgel: {
 				DisplayName: Cobalt Protector Cudgel
 				Tooltip:
@@ -1658,7 +1685,7 @@ Mods: {
 			}
 
 			# Items/Weapons/Summon/Minions
-
+			
 			AntlionStaff: {
 				DisplayName: Antlion Staff
 				Tooltip: Summons an Antlion Biter to fight for you
@@ -1679,8 +1706,13 @@ Mods: {
 				Tooltip: Summons a Shadowflame Phantom to fight for you
 			}
 
-			# Items/Weapons/Summon/Sentries
+			BabyBloodEelStaff: {
+				DisplayName: Baby Blood Eel Staff
+				Tooltip: ""
+			}
 
+			# Items/Weapons/Summon/Sentries
+			
 			SlimeTrapStaff: {
 				DisplayName: Slime Trap Staff
 				Tooltip:
@@ -1709,7 +1741,7 @@ Mods: {
 			}
 
 			# Items/Weapons/Summon/Whips
-
+			
 			Belt: {
 				DisplayName: Belt
 				Tooltip:
@@ -1781,7 +1813,7 @@ Mods: {
 			}
 
 			# Items/Armor/Vanity
-
+			
 			Harpy_Shirt: {
 				DisplayName: Harpy's Shirt
 				Tooltip: ""
@@ -1843,7 +1875,7 @@ Mods: {
 			}
 
 			# Items/Materials
-
+			
 			CrawlerChelicera: {
 				DisplayName: Crawler Chelicera
 				Tooltip: ""
@@ -1875,7 +1907,7 @@ Mods: {
 			}
 
 			# Items (root)
-
+			
 			CaughtHarpy: {
 				DisplayName: Harpy
 				Tooltip: "'Friends? I am friendly.'"
@@ -2019,6 +2051,11 @@ Mods: {
 					Right click to see stats
 					'''
 			}
+
+			DebugParticleOrchestra: {
+				DisplayName: Debug Particle Orchestra
+				Tooltip: ""
+			}
 		}
 
 		ArmorSetBonus: {
@@ -2055,9 +2092,75 @@ Mods: {
 		}
 
 		NPCs: {
-			Harpy.DisplayName: Harpy
-			InterstellarTraveler.DisplayName: Interstellar Traveler
-			HellTrader.DisplayName: Hell Trader
+			Harpy: {
+				DisplayName: Harpy
+
+				TownNPCMood: {
+					Content: I like it here.
+					NoHome: Can I get a nest of my own?
+					LoveSpace: So much open air to soar!
+					FarFromHome: I'm lost, need to get back to my nest!
+					DislikeCrowded: This nest is starting to get crowded!
+					HateCrowded: So many people around! Makes me scared!
+					LikeBiome: The {BiomeName} is a good place to live.
+					LoveBiome: I love {BiomeName}! So open air!
+					DislikeBiome: There isn't much room to fly in {BiomeName}.
+					HateBiome: I need to leave now! {BiomeName} is very bad!
+					LikeNPC: "{NPCName} is fun to be around."
+					LikeNPC_Princess: "{NPCName} is so nice to me."
+					LoveNPC: "{NPCName} is the best person ever!"
+					DislikeNPC: "{NPCName} makes me uncomfortable."
+					HateNPC: "{NPCName} is so mean to me!"
+					Princess_LovesNPC: Using a Jetpack, I was able to go flying with {NPCName}!
+				}
+			}
+
+			InterstellarTraveler: {
+				DisplayName: Interstellar Traveler
+
+				TownNPCMood: {
+					Content: I've been in worse situations.
+					NoHome: Can I get some lodging? I have no where else to go.
+					LoveSpace: Ah, room to relax and think.
+					FarFromHome: I am far from my home. Both of my homes!
+					DislikeCrowded: I'm used to sharing rooms with others, but I will still like my own area.
+					HateCrowded: What is the maximum capacity in this building because we have surely surpassed it.
+					LikeBiome: A familiar looking biome; I like {BiomeName}.
+					LoveBiome: I love {BiomeName}. So much room for adventure!
+					DislikeBiome: I was never one who enjoyed {BiomeName}. I much prefer space.
+					HateBiome: Wow, {BiomeName} now ranks as one of the worse places I've visited.
+					LikeNPC: "{NPCName} offers me great company!"
+					LikeNPC_Princess: "{NPCName} calls me her 'friendly alien'. Heh, well I guess it's true!"
+					LoveNPC: I love {NPCName}. You can make new best friends wherever you go!
+					DislikeNPC: "{NPCName} is not a person I enjoy being around."
+					HateNPC: "{NPCName} is so prejudice and close minded."
+					Princess_LovesNPC: A friendly alien! {NPCName} is so interesting!
+				}
+			}
+
+			HellTrader: {
+				DisplayName: Hell Trader
+
+				TownNPCMood: {
+					Content: Can't complain.
+					NoHome: I have wanted a permanent place to live.
+					LoveSpace: I like having all of this space to myself.
+					FarFromHome: I'm far away from my home and I didn't bring my supplies!
+					DislikeCrowded: I'm not used to living near so many people!
+					HateCrowded: It is so crowded here! I don't like having so many people around me!
+					LikeBiome: The heat in {BiomeName} reminds me of where I'm from.
+					LoveBiome: I will always love {BiomeName}!
+					DislikeBiome: Brr! It's so cold in {BiomeName}.
+					HateBiome: I hate {BiomeName}! Why would anyone like living here?
+					LikeNPC: "{NPCName} accepts me for who I am."
+					LikeNPC_Princess: Is {NPCName} always so friendly? She is so nice to me!
+					LoveNPC: "{NPCName}'s magic is so amazing! I hope to be that powerful someday."
+					DislikeNPC: "{NPCName} is the kind of person I want to avoid."
+					HateNPC: I don't understand {NPCName}. How and why are they like that?
+					Princess_LovesNPC: Just because {NPCName} is a demon doesn't mean she can't be friendly!
+				}
+			}
+
 			ArmedSkeleton.DisplayName: Armed Skeleton
 			DarkSoldier.DisplayName: Dark Soldier
 			DungeonBat.DisplayName: Dungeon Bat
@@ -2070,62 +2173,7 @@ Mods: {
 			SpikedGreenSlime.DisplayName: Spiked Green Slime
 			UnconsciousHarpy.DisplayName: Unconscious Harpy
 			SnuggetPet.DisplayName: Snugget
-		}
-
-		TownNPCMood: {
-			Harpy: {
-				Content: I like it here.
-				NoHome: Can I get a nest of my own?
-				LoveSpace: So much open air to soar!
-				FarFromHome: I'm lost, need to get back to my nest!
-				DislikeCrowded: This nest is starting to get crowded!
-				HateCrowded: So many people around! Makes me scared!
-				LikeBiome: The {BiomeName} is a good place to live.
-				LoveBiome: I love {BiomeName}! So open air!
-				DislikeBiome: There isn't much room to fly in {BiomeName}.
-				HateBiome: I need to leave now! {BiomeName} is very bad!
-				LikeNPC: "{NPCName} is fun to be around."
-				LikeNPC_Princess: "{NPCName} is so nice to me."
-				LoveNPC: "{NPCName} is the best person ever!"
-				DislikeNPC: "{NPCName} makes me uncomfortable."
-				HateNPC: "{NPCName} is so mean to me!"
-			}
-
-			InterstellarTraveler: {
-				Content: I've been in worse situations.
-				NoHome: Can I get some lodging? I have no where else to go.
-				LoveSpace: Ah, room to relax and think.
-				FarFromHome: I am far from my home. Both of my homes!
-				DislikeCrowded: I'm used to sharing rooms with others, but I will still like my own area.
-				HateCrowded: What is the maximum capacity in this building because we have surely surpassed it.
-				LikeBiome: A familiar looking biome; I like {BiomeName}.
-				LoveBiome: I love {BiomeName}. So much room for adventure!
-				DislikeBiome: I was never one who enjoyed {BiomeName}. I much prefer space.
-				HateBiome: Wow, {BiomeName} now ranks as one of the worse places I've visited.
-				LikeNPC: "{NPCName} offers me great company!"
-				LikeNPC_Princess: "{NPCName} calls me her 'friendly alien'. Heh, well I guess it's true!"
-				LoveNPC: I love {NPCName}. You can make new best friends wherever you go!
-				DislikeNPC: "{NPCName} is not a person I enjoy being around."
-				HateNPC: "{NPCName} is so prejudice and close minded."
-			}
-
-			HellTrader: {
-				Content: Can't complain.
-				NoHome: I have wanted a permanent place to live.
-				LoveSpace: I like having all of this space to myself.
-				FarFromHome: I'm far away from my home and I didn't bring my supplies!
-				DislikeCrowded: I'm not used to living near so many people!
-				HateCrowded: It is so crowded here! I don't like having so many people around me!
-				LikeBiome: The heat in {BiomeName} reminds me of where I'm from.
-				LoveBiome: I will always love {BiomeName}!
-				DislikeBiome: Brr! It's so cold in {BiomeName}.
-				HateBiome: I hate {BiomeName}! Why would anyone like living here?
-				LikeNPC: "{NPCName} accepts me for who I am."
-				LikeNPC_Princess: Is {NPCName} always so friendly? She is so nice to me!
-				LoveNPC: "{NPCName}'s magic is so amazing! I hope to be that powerful someday."
-				DislikeNPC: "{NPCName} is the kind of person I want to avoid."
-				HateNPC: I don't understand {NPCName}. How and why are they like that?
-			}
+			AngryGuster.DisplayName: Angry Guster
 		}
 
 		Bestiary: {
@@ -2143,6 +2191,7 @@ Mods: {
 				SpikedGreenSlime: A green slime with the ability to launch its massive spikes at its opponents.
 				FirmamentHarpy: These harpies come equipped with armor and a different combat technique. Don't let them slice your with their talons!
 				SnuggetPet: Ahh! An alien! Fortunately, this one is super fluffy and just wants to snuggle with you.
+				AngryGuster: These clouds might blow you away!
 			}
 
 			Happiness: {
@@ -2171,7 +2220,7 @@ Mods: {
 		}
 
 		Buffs: {
-			# Buffs/Debuffs	
+			# Buffs/Debuffs
 			
 			AttackFatigue1: {
 				DisplayName: Attack Fatigue I
@@ -2243,7 +2292,7 @@ Mods: {
 			}
 
 			# Buffs/Minions
-
+			
 			AntlionBiterBuff: {
 				DisplayName: Antlion Biter
 				Description: The Antlion Biter will fight for you
@@ -2347,7 +2396,7 @@ Mods: {
 			}
 
 			# Buffs/Other
-
+			
 			LifeFruitSanctuaryBuff: {
 				DisplayName: Life Fruit Sanctuary
 				Description: +20 max life
@@ -2363,7 +2412,7 @@ Mods: {
 			}
 
 			# Buffs/Pets
-
+			
 			FluffaloBuff: {
 				DisplayName: Fluffalo
 				Description: A farm animal and steed
@@ -2390,7 +2439,7 @@ Mods: {
 			}
 
 			# Buffs/Potions
-
+			
 			ExceptionalFeast: {
 				DisplayName: Exceptional Feast
 				Description: Extreme improvements to all stats
@@ -2435,6 +2484,16 @@ Mods: {
 				DisplayName: Ferocious
 				Description: +10 armor penetration
 			}
+
+			BabyStardustDragonBuff: {
+				DisplayName: Baby Stardust Dragon
+				Description: The Baby Stardust Dragon will comfort you
+			}
+
+			BabyBloodEelBuff: {
+				DisplayName: Baby Blood Eel Buff
+				Description: WIP
+			}
 		}
 
 		Projectiles: {
@@ -2460,7 +2519,8 @@ Mods: {
 			SolarJoustingLanceProj.DisplayName: Solar Jousting Lance
 			SolyoProjectile.DisplayName: Solyo
 			StabbyShivProjectile.DisplayName: Stabby Shiv
-			TimonsAxeProj.DisplayName: Timons Axe
+			TimonsAxeProj.DisplayName: Timon's Axe
+			TimonsAxeProj2.DisplayName: Timon's Aura
 			WoodenJoustingLanceProj.DisplayName: Wooden Jousting Lance
 			SkywareArmorHarpyFeather.DisplayName: Harpy Feather
 			Fluffalo.DisplayName: Fluffalo
@@ -2514,7 +2574,27 @@ Mods: {
 			SulfurGrenade.DisplayName: Sulfur Grenade
 			SulfurMine.DisplayName: Sulfur Mine
 			SulfurSnowmanRocket.DisplayName: Sulfur Snowman Rocket
-			AetherLanternProj.DisplayName: Aether Lantern Proj
+			AetherLanternProj.DisplayName: Aether Lantern
+			WindGust.DisplayName: Wind Gust
+			LanternLightShining.DisplayName: Lantern Light Shining
+			LanternLightAether.DisplayName: Lantern Light Aether
+			LanternLightAvoliteBlue.DisplayName: Lantern Light Avolite Blue
+			LanternLightAvoliteRed.DisplayName: Lantern Light Avolite Red
+			LanternLightAvoliteYellow.DisplayName: Lantern Light Avolite Yellow
+			LanternLightFrostburn.DisplayName: Lantern Light Frostburn
+			LanternLightJackO.DisplayName: Lantern Light Jack O
+			LanternLightNebula.DisplayName: Lantern Light Nebula
+			LanternLightPeace.DisplayName: Lantern Light Peace
+			LanternLightRainbow.DisplayName: Lantern Light Rainbow
+			LanternLightShadow.DisplayName: Lantern Light Shadow
+			LanternLightSpectre.DisplayName: Lantern Light Spectre
+			LanternLightSulfuric.DisplayName: Lantern Light Sulfuric
+			LanternLightUltrabright.DisplayName: Lantern Light Ultrabright
+			LanternLightVicious.DisplayName: Lantern Light Vicious
+			LanternLightVile.DisplayName: Lantern Light Vile
+			LanternLightWater.DisplayName: Lantern Light Water
+			BabyStardustDragon.DisplayName: Baby Stardust Dragon
+			BabyBloodEel.DisplayName: Baby Blood Eel
 		}
 
 		Tiles: {
@@ -2523,6 +2603,7 @@ Mods: {
 			MusicBoxOSW.MapEntry: Music Box
 			StripLight.MapEntry: Strip Light
 			SulfurTorch.MapEntry: Torch
+			SulfurCampfire.MapEntry: Sulfur Campfire
 		}
 	}
 }

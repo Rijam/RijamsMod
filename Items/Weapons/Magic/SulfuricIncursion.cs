@@ -3,6 +3,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using Terraria.GameContent.Drawing;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
@@ -42,6 +44,16 @@ namespace RijamsMod.Items.Weapons.Magic
 				.AddIngredient(ModContent.ItemType<Items.Materials.InfernicFabric>(), 3)
 				.AddTile(TileID.Bookcases)
 				.Register();
+		}
+
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.AshTreeShake, new ParticleOrchestraSettings
+			{
+				PositionInWorld = player.HandPosition ?? player.Center,
+				MovementVector = Vector2.Zero
+			});
+			return true;
 		}
 
 		public override Vector2? HoldoutOffset()

@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,6 +33,11 @@ namespace RijamsMod.Projectiles.Melee
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
+			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ChlorophyteLeafCrystalPassive, new ParticleOrchestraSettings
+			{
+				PositionInWorld = Projectile.Center,
+				MovementVector = Vector2.Zero
+			});
 			Projectile.Kill();
         }
         public override void AI()
