@@ -83,14 +83,14 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 			{
 				type = ModContent.ProjectileType<Projectiles.Ranged.SulfurSnowmanRocket>();
 			}
-			else if (weapon.type == ItemID.FireworksLauncher) // Celebration
+			/*else if (weapon.type == ItemID.FireworksLauncher) // Celebration
 			{
 				type = ProjectileID.RocketFireworkRed + Main.rand.Next(0, 4);
 			}
 			else if (weapon.type == ItemID.ElectrosphereLauncher)
 			{
 				type = ProjectileID.ElectrosphereMissile;
-			}
+			}*/
 			else if (weapon.type == ItemID.Celeb2)
 			{
 				type = ProjectileID.Celeb2Rocket;

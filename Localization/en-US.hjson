@@ -730,6 +730,72 @@ Mods: {
 					'''
 			}
 
+			GodsentKingMask: {
+				DisplayName: Godsent King Mask
+				Tooltip:
+					'''
+					+15% Melee Damage
+					+15% Ranged Damage
+					+25% Critical Hit Damage
+					Interchangeable with Godsent Queen armor
+					'''
+			}
+
+			GodsentKingBreastplate: {
+				DisplayName: Godsent King Breastplate
+				Tooltip:
+					'''
+					+10% Melee Speed
+					+10% Ranged Speed
+					+50% Critical Hit Damage
+					Interchangeable with Godsent Queen armor
+					'''
+			}
+
+			GodsentKingPants: {
+				DisplayName: Godsent King Pants
+				Tooltip:
+					'''
+					Greatly increased movement speed
+					+25% Critical Hit Damage
+					Interchangeable with Godsent Queen armor
+					'''
+			}
+
+			GodsentQueenMask: {
+				DisplayName: Godsent Queen Mask
+				Tooltip:
+					'''
+					+15% Magic Damage
+					+15% Summon Damage
+					+1 Minion Capacity
+					+25% Critical Hit Damage
+					Interchangeable with Godsent King armor
+					'''
+			}
+
+			GodsentQueenBreastplate: {
+				DisplayName: Godsent Queen Breastplate
+				Tooltip:
+					'''
+					+10% Magic Speed
+					+10% Summon Speed
+					+1 Minion Capacity
+					+50% Critical Hit Damage
+					Interchangeable with Godsent King armor
+					'''
+			}
+
+			GodsentQueenPants: {
+				DisplayName: Godsent Queen Pants
+				Tooltip:
+					'''
+					Allows the ability to dash
+					+25% Critical Hit Damage
+					Interchangeable with Godsent King armor
+					'''
+			}
+
 			# Items/Consumables
 			
 			FlaskOfOil: {
@@ -1473,6 +1539,7 @@ Mods: {
 					'''
 					25% not to consume ammo
 					Inherits many aspects of the bullets used
+					Right Click to zoom out
 					'''
 			}
 
@@ -2089,6 +2156,15 @@ Mods: {
 				Damage scales with the respective damage type
 				One second cool down between shots
 				'''
+			GodsentKing:
+				'''
+
+				+10% Critical Hit Chance
+				+10% Whip Damage
+				+25% Whip Range
+				+25% velocity when dashing
+				Allows for more rapid dashing
+				'''
 		}
 
 		NPCs: {
@@ -2113,6 +2189,8 @@ Mods: {
 					HateNPC: "{NPCName} is so mean to me!"
 					Princess_LovesNPC: Using a Jetpack, I was able to go flying with {NPCName}!
 				}
+
+				Census_SpawnCondition: Rescue her in space
 			}
 
 			InterstellarTraveler: {
@@ -2136,6 +2214,8 @@ Mods: {
 					HateNPC: "{NPCName} is so prejudice and close minded."
 					Princess_LovesNPC: A friendly alien! {NPCName} is so interesting!
 				}
+
+				Census_SpawnCondition: Defeat EoW or BoW and have [i:RijamsMod/OddDevice] Odd Device in your inventory
 			}
 
 			HellTrader: {
@@ -2159,6 +2239,8 @@ Mods: {
 					HateNPC: I don't understand {NPCName}. How and why are they like that?
 					Princess_LovesNPC: Just because {NPCName} is a demon doesn't mean she can't be friendly!
 				}
+
+				Census_SpawnCondition: Found in Hell. Can move in in Hardmode
 			}
 
 			ArmedSkeleton.DisplayName: Armed Skeleton
@@ -2172,7 +2254,12 @@ Mods: {
 			SnowmanMuscle.DisplayName: Snowman Muscle
 			SpikedGreenSlime.DisplayName: Spiked Green Slime
 			UnconsciousHarpy.DisplayName: Unconscious Harpy
-			SnuggetPet.DisplayName: Snugget
+
+			SnuggetPet: {
+				DisplayName: Snugget
+				Census_SpawnCondition: License sold after 60% Bestiary completion and Interstellar Traveler is present.
+			}
+
 			AngryGuster.DisplayName: Angry Guster
 		}
 
@@ -2604,6 +2691,167 @@ Mods: {
 			StripLight.MapEntry: Strip Light
 			SulfurTorch.MapEntry: Torch
 			SulfurCampfire.MapEntry: Sulfur Campfire
+		}
+
+		Configs: {
+			RijamsModConfigClient: {
+				DisplayName: Client Options
+				Headers.ClientOption: "[c/00FF00:Client Option]"
+
+				Ornithophobia: {
+					Label: "[i:RijamsMod/IntTrav_Helmet]   Ornithophobia"
+					Tooltip:
+						'''
+						This option toggles if the Interstellar Traveler will wear a helmet or not
+						  When On: the Interstellar Traveler will wear a helmet.
+						  When Off: the Interstellar Traveler will not wear a helmet.
+						   Turn On if you don't want to see her head
+						Default value: Off
+						Requires Reload.
+						'''
+				}
+
+				BurglarsRingSound: {
+					Label: "[i:RijamsMod/BurglarsRing]   Burglar's Ring Notification Sound"
+					Tooltip:
+						'''
+						This option controls the volume of the sound the Burglar's Ring will make upon successfully working
+						   Set to 0 if you don't want to hear the sound
+						Default value: 100
+						Reload not required.
+						'''
+				}
+
+				DisplayWhipMultihitPenalty: {
+					Label: "[i:4672]   Display Whip Multihit Penalty"
+					Tooltip:
+						'''
+						This option toggles if whips will display the mutlihit penalty in the tooltip.
+						  When On: Multihit Penalty will always be displayed.
+						  When Hold Shift: Multihit Penalty will only be displayed when holding left shift.
+						  When Off: Multihit Penalty will not be shown.
+						   Turn Off if you don't want to see the tooltip.
+						Default value: On
+						'''
+				}
+
+				DisplayDefenseSupportSummonsAura: {
+					Label: "[i:RijamsMod/CobaltProtectorCudgel]   Display Defense Support Summons Auras"
+					Tooltip:
+						'''
+						This option toggles if defense support summons will show their aura.
+						  When Opaque: The dust indicator will be shown as completely opaque.
+						  When Normal: The dust indicator will be shown as semi-transparent.
+						  When Faded: The dust indicator will be shown as almost completely transparent.
+						  When Off: The dust indicator will be hidden.
+						   Turn Off if you don't want to see the auras.
+						Default value: Normal
+						'''
+				}
+
+				DisplayHealingSupportSummonsAura: {
+					Label: "[i:RijamsMod/RadiantLanternCudgel]   Display Healing Support Summons Auras"
+					Tooltip:
+						'''
+						This option toggles if healing support summons will show their aura.
+						  When Opaque: The dust indicator will be shown as completely opaque.
+						  When Normal: The dust indicator will be shown as semi-transparent.
+						  When Faded: The dust indicator will be shown as almost completely transparent.
+						  When Off: The dust indicator will be hidden.
+						   Turn Off if you don't want to see the auras.
+						Default value: Normal
+						'''
+				}
+			}
+
+			WhipMultihitPenalty: {
+				Tooltip: ""
+				On.Label: On
+				HoldShift.Label: Hold Shift
+				Off.Label: Off
+			}
+
+			SupportSummonsAura: {
+				Tooltip: ""
+				Opaque.Label: Opaque
+				Normal.Label: Normal
+				Faded.Label: Faded
+				Off.Label: Off
+			}
+
+			RijamsModConfigServer: {
+				DisplayName: Server Options
+				Headers.ServerOptions: "[c/00FF00:Server Options]"
+
+				VanillaVanityToArmor: {
+					Label: "[i:848]   Vanilla Vanity to Armor Changes"
+					Tooltip:
+						'''
+						This option toggles if certain vanilla vanity sets are changed into armor sets.
+						  When All: The follow vanity sets will be changed to armor.
+						  When Vanity Only: Only the vanity sets will be changed to armor.
+						  When Armor Only: Only the armor sets will be changed.
+						  When Off: None of the vanilla sets will be changed.
+						    Turn Off to keep them as vanity or for cross mod compatibility.
+						* Pharaoh's Set
+						* Ancient Set
+						* Buffs to Stardust set bonus
+						* Buffs to the Bee Pants
+						Default value: All
+						Reload required
+						'''
+				}
+
+				TownNPCsCrossModSupport: {
+					Label: "[i:3121]   Town NPCs Cross Mod Support"
+					Tooltip:
+						'''
+						This option toggles if the Town NPCs will sell items from other mods,
+						if they will have cross mod dialog, and cross mod happiness.
+						  When On: The Town NPCs will sell cross mod items.
+						  When Off: The Town NPCs WILL NOT sell cross mod items.
+						    Turn Off to remove cross mod items from the shops and dialog.
+						Default value: On
+						Reload not required for dialog and shop items.
+						Reload required for happiness.
+						'''
+				}
+
+				LoadDebugItems: {
+					Label: "[i:784]   Load Debug Items"
+					Tooltip:
+						'''
+						This option toggles if the debug items will be loaded.
+						  When On: The debug items WILL be loaded.
+						  When Off: The debug items WILL NOT be loaded.
+						    Turn On to load the debug items.
+						Default value: Off
+						Requires a Reload.
+						'''
+				}
+
+				CatchNPCs: {
+					Label: "[i:1991]   Catch Town NPCs"
+					Tooltip:
+						'''
+						This option toggles if the Town NPCs added by this mod can be
+						caught with a Bug Net (Fargo's Mutant Mod style)
+						  When On: The Town NPCs CAN be caught.
+						  When Off: The Town NPCs CAN NOT be caught.
+						    Turn On to catch the Town NPCs.
+						Default value: Off
+						Requires a Reload.
+						'''
+				}
+			}
+
+			ArmorOptions: {
+				Tooltip: ""
+				All.Label: All
+				VanityOnly.Label: Vanity Only
+				ArmorOnly.Label: Armor Only
+				Off.Label: Off
+			}
 		}
 	}
 }

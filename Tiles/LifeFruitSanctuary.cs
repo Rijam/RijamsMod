@@ -23,6 +23,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.RandomStyleRange = 3;
+			TileObjectData.newTile.StyleLineSkip = 3;
 			TileObjectData.addTile(Type);
 			DustType = DustID.RichMahogany;
 			LocalizedText name = CreateMapEntryName();

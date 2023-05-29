@@ -30,6 +30,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newTile.LavaPlacement = LiquidPlacement.Allowed;
+			TileObjectData.newTile.StyleLineSkip = 4;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.Style1x1);
@@ -49,7 +50,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newAlternate.WaterPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newAlternate.LavaPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newAlternate.AnchorLeft = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
-			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { (int)TileID.WoodenBeam };
+			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { (int)TileID.WoodenBeam, TileID.MarbleColumn, TileID.BorealBeam, TileID.RichMahoganyBeam, TileID.GraniteColumn, TileID.SandstoneColumn, TileID.MushroomBeam };
 			TileObjectData.newAlternate.AnchorBottom = AnchorData.Empty;
 			TileObjectData.addAlternate(2);
 
@@ -60,7 +61,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newAlternate.WaterPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newAlternate.LavaPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newAlternate.AnchorRight = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.Tree | AnchorType.AlternateTile, TileObjectData.newTile.Height, 0);
-			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { (int)TileID.WoodenBeam };
+			TileObjectData.newAlternate.AnchorAlternateTiles = new[] { (int)TileID.WoodenBeam, TileID.MarbleColumn, TileID.BorealBeam, TileID.RichMahoganyBeam, TileID.GraniteColumn, TileID.SandstoneColumn, TileID.MushroomBeam };
 			TileObjectData.newAlternate.AnchorBottom = AnchorData.Empty;
 			TileObjectData.addAlternate(3);
 

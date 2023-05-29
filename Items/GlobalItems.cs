@@ -247,6 +247,13 @@ namespace RijamsMod.Items
 					tooltips.Insert(index + 3, new TooltipLine(Mod, "AncientSlacks", "+2 life regeneration"));
 				}
 			}
+			if (item.type == ItemID.BeeGreaves && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			{
+				if (FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
+				{
+					tooltips.Insert(index + 1, new TooltipLine(Mod, "BeeGreaves", "+1 Sentry capacity"));
+				}
+			}
 			if (item.type == ItemID.ShadowJoustingLance)
 			{
 				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
@@ -402,7 +409,7 @@ namespace RijamsMod.Items
 			{
 				return "Ancient";
 			}
-			if (head.type == ItemID.StardustHelmet && body.type == ItemID.StardustBreastplate && legs.type == ItemID.StardustLeggings && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.StardustOnly))
+			if (head.type == ItemID.StardustHelmet && body.type == ItemID.StardustBreastplate && legs.type == ItemID.StardustLeggings && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
 			{
 				return "Stardust";
 			}
@@ -432,6 +439,10 @@ namespace RijamsMod.Items
 				player.manaCost *= 0.9f;
 				player.lifeRegen += 2;
 			}
+			if (item.type == ItemID.BeeGreaves && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			{
+				player.maxTurrets++;
+			}
 		}
 		public override void UpdateArmorSet(Player player, string set)
 		{
@@ -458,7 +469,7 @@ namespace RijamsMod.Items
 				player.whipRangeMultiplier += 0.2f;
 				player.wingTimeMax += 30;
 			}
-			if ((player.setStardust || set == "Stardust") && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.StardustOnly))
+			if ((player.setStardust || set == "Stardust") && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
 			{
 				player.setBonus = Language.GetTextValue("ArmorSetBonus.Stardust") + "\n+15% Whip speed";
 				player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.15f;

@@ -4,7 +4,6 @@ version = 1.2.0.0
 buildIgnore = .vs\*, obj\*, bin\*, *.xcf, .git\*, git\*, Effects\fxcompiler
 weakReferences = FishermanNPC, BossesAsNPCs
 homepage = https://github.com/Rijam/RijamsMod/wiki
-includePDB = true
 hideCode = false
 hideResources = false
 includeSource = true

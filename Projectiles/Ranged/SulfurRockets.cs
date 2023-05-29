@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Humanizer.In;
@@ -14,6 +15,7 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add(Type);
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true;
+			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 		}
 		public override void SetDefaults()
 		{
@@ -30,46 +32,75 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3)
 			{
-				PreKill(Projectile.timeLeft);
+				PrepareBombToBlow(Projectile);
 			}
 			else
 			{
 				if (Math.Abs(Projectile.velocity.X) >= 8f || Math.Abs(Projectile.velocity.Y) >= 8f)
 				{
-					for (int n = 0; n < 2; n++)
+					for (int i = 0; i < 2; i++)
 					{
-						float num23 = 0f;
-						float num24 = 0f;
-						if (n == 1)
+						float posOffsetX = 0f;
+						float posOffsetY = 0f;
+						if (i == 1)
 						{
-							num23 = Projectile.velocity.X * 0.5f;
-							num24 = Projectile.velocity.Y * 0.5f;
+							posOffsetX = Projectile.velocity.X * 0.5f;
+							posOffsetY = Projectile.velocity.Y * 0.5f;
 						}
 
-						Dust dust = Dust.NewDustDirect(new Vector2(Projectile.position.X + 3f + num23, Projectile.position.Y + 3f + num24) - Projectile.velocity * 0.5f, Projectile.width - 8, Projectile.height - 8, ModContent.DustType<Dusts.SulfurDust>(), 0f, 0f, 100);
-						dust.scale *= 2f + (float)Main.rand.Next(10) * 0.1f;
-						dust.velocity *= 0.2f;
-						dust.noGravity = true;
+						// Spawn fire dusts at the back of the rocket.
+						Dust fireDust = Dust.NewDustDirect(new Vector2(Projectile.position.X + 3f + posOffsetX, Projectile.position.Y + 3f + posOffsetY) - Projectile.velocity * 0.5f,
+							Projectile.width - 8, Projectile.height - 8, ModContent.DustType<Dusts.SulfurDust>(), 0f, 0f, 100);
+						fireDust.scale *= 2f + Main.rand.Next(10) * 0.1f;
+						fireDust.velocity *= 0.2f;
+						fireDust.noGravity = true;
 						if (Projectile.timeLeft % 8 == 0)
 						{
-							dust.noGravity = false;
-							dust.noLight = true;
-						}
-						if (dust.type == Dust.dustWater())
-						{
-							dust.scale *= 0.65f;
-							dust.velocity += Projectile.velocity * 0.1f;
+							fireDust.noGravity = false;
+							fireDust.noLight = true;
 						}
 
-						dust = Dust.NewDustDirect(new Vector2(Projectile.position.X + 3f + num23, Projectile.position.Y + 3f + num24) - Projectile.velocity * 0.5f, Projectile.width - 8, Projectile.height - 8, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
-						dust.fadeIn = 1f + (float)Main.rand.Next(5) * 0.1f;
-						dust.velocity *= 0.05f;
+						// Spawn smoke dusts at the back of the rocket.
+						Dust smokeDust = Dust.NewDustDirect(new Vector2(Projectile.position.X + 3f + posOffsetX, Projectile.position.Y + 3f + posOffsetY) - Projectile.velocity * 0.5f, Projectile.width - 8, Projectile.height - 8, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
+						smokeDust.fadeIn = 1f + Main.rand.Next(5) * 0.1f;
+						smokeDust.velocity *= 0.05f;
 					}
 				}
 
 				if (Math.Abs(Projectile.velocity.X) <= 16f && Math.Abs(Projectile.velocity.Y) <= 16f)
 				{
 					Projectile.velocity *= 1.1f;
+				}
+
+				// Explosives behave differently when touching Shimmer.
+				if (Projectile.shimmerWet)
+				{
+					int projTileX = (int)(Projectile.Center.X / 16f);
+					int projTileY = (int)(Projectile.position.Y / 16f);
+					// If the projectile is inside of Shimmer:
+					if (WorldGen.InWorld(projTileX, projTileY) && Main.tile[projTileX, projTileY] != null &&
+							Main.tile[projTileX, projTileY].LiquidAmount == byte.MaxValue &&
+							Main.tile[projTileX, projTileY].LiquidType == LiquidID.Shimmer &&
+							WorldGen.InWorld(projTileX, projTileY - 1) && Main.tile[projTileX, projTileY - 1] != null &&
+							Main.tile[projTileX, projTileY - 1].LiquidAmount > 0 &&
+							Main.tile[projTileX, projTileY - 1].LiquidType == LiquidID.Shimmer)
+					{
+						Projectile.Kill(); // Kill the projectile with no blast radius.
+					}
+					// Otherwise, bounce off of the top of the Shimmer if traveling downwards.
+					else if (Projectile.velocity.Y > 0f)
+					{
+						Projectile.velocity.Y *= -1f; // Reverse the Y velocity.
+						Projectile.netUpdate = true; // Sync the change in multiplayer.
+						if (Projectile.timeLeft > 600)
+						{
+							Projectile.timeLeft = 600; // Set the max time to 10 seconds (instead of the default 1 minute).
+						}
+
+						Projectile.timeLeft -= 60; // Subtract 1 second from the time left.
+						Projectile.shimmerWet = false;
+						Projectile.wet = false;
+					}
 				}
 			}
 
@@ -87,35 +118,63 @@ namespace RijamsMod.Projectiles.Ranged
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
+			if (Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		// This is only to make it so the rocket explodes when hitting a player in PVP. Otherwise the rocket will continue through the enemy player.
+		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
+			if (modifiers.PvP && Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
-		public override bool PreKill(int timeLeft)
+		/// <summary> Resizes the projectile for the explosion blast radius. </summary>
+		public static void PrepareBombToBlow(Projectile projectile)
 		{
-			Projectile.Resize(150, 150); // RocketI: 128, Rocket III: 200
-			Projectile.knockBack = 8f; // 10
-			return base.PreKill(timeLeft);
+			projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the rocket explodes on slopes.
+			projectile.alpha = 255; // Make the rocket invisible.
+
+			// Resize the hitbox of the projectile for the blast "radius".
+			// Rocket I: 128, Rocket III: 200, Mini Nuke Rocket: 250
+			// Measurements are in pixels, so 128 / 16 = 8 tiles.
+			projectile.Resize(128, 128);
+			// Set the knockback of the blast.
+			// Rocket I: 8f, Rocket III: 10f, Mini Nuke Rocket: 12f
+			projectile.knockBack = 8f;
 		}
 		public override void Kill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
-			Projectile.position.X += Projectile.width / 2;
-			Projectile.position.Y += Projectile.height / 2;
-			Projectile.width = 22;
-			Projectile.height = 22;
-			Projectile.position.X -= Projectile.width / 2;
-			Projectile.position.Y -= Projectile.height / 2;
+			// Resize the projectile again so the explosion dust and gore spawn from the middle.
+			// Rocket I: 22, Rocket III: 80, Mini Nuke Rocket: 50
+			Projectile.Resize(22, 22);
+
 			for (int i = 0; i < 30; i++)
 			{
 				Dust smoke = Dust.NewDustDirect(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1.5f);
@@ -139,26 +198,30 @@ namespace RijamsMod.Projectiles.Ranged
 					speedMulti = 0.8f;
 				}
 
-				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity += Vector2.One;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X -= 1f;
 				smokeGore.velocity.Y += 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X += 1f;
 				smokeGore.velocity.Y -= 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity.X -= 1f;
-				smokeGore.velocity.Y -= 1f;
+				smokeGore.velocity -= Vector2.One;
 			}
 		}
 	}
 	public class SulfurGrenade : ModProjectile
 	{
+		public override void SetStaticDefaults()
+		{
+			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
+		}
+
 		public override void SetDefaults()
 		{
 			Projectile.width = 14;
@@ -174,14 +237,9 @@ namespace RijamsMod.Projectiles.Ranged
 		}
 		public override void AI()
 		{
-			if (Projectile.owner == Main.myPlayer)
-			{
-				//Projectile.timeLeft = 180;
-			}
-
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3)
 			{
-				PreKill(Projectile.timeLeft);
+				SulfurRocket.PrepareBombToBlow(Projectile);
 			}
 			else
 			{
@@ -202,7 +260,7 @@ namespace RijamsMod.Projectiles.Ranged
 				}
 			}
 
-			Projectile.ai[0] += 1f;
+			Projectile.ai[0]++;
 			if (Projectile.ai[0] > 20f) // 15f
 			{
 				if (Projectile.velocity.Y == 0f)
@@ -213,57 +271,90 @@ namespace RijamsMod.Projectiles.Ranged
 				Projectile.velocity.Y += 0.2f; // 0.2f
 			}
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
+
+			// Explosives behave differently when touching Shimmer.
+			if (Projectile.shimmerWet)
+			{
+				int projX = (int)(Projectile.Center.X / 16f);
+				int projY = (int)(Projectile.position.Y / 16f);
+				// If the projectile is inside of Shimmer:
+				if (WorldGen.InWorld(projX, projY) && Main.tile[projX, projY] != null &&
+						Main.tile[projX, projY].LiquidAmount == byte.MaxValue &&
+						Main.tile[projX, projY].LiquidType == LiquidID.Shimmer &&
+						WorldGen.InWorld(projX, projY - 1) && Main.tile[projX, projY - 1] != null &&
+						Main.tile[projX, projY - 1].LiquidAmount > 0 &&
+						Main.tile[projX, projY - 1].LiquidType == LiquidID.Shimmer)
+				{
+					Projectile.Kill(); // Kill the projectile with no blast radius.
+				}
+				// Otherwise, bounce off of the top of the Shimmer if traveling downwards.
+				else if (Projectile.velocity.Y > 0f)
+				{
+					Projectile.velocity.Y *= -1f; // Reverse the Y velocity.
+					Projectile.netUpdate = true; // Sync the change in multiplayer.
+					if (Projectile.timeLeft > 600)
+					{
+						Projectile.timeLeft = 600; // Set the max time to 10 seconds (instead of the default 1 minute).
+					}
+
+					Projectile.timeLeft -= 60; // Subtract 1 second from the time left.
+					Projectile.shimmerWet = false;
+					Projectile.wet = false;
+				}
+			}
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			/*
-			if (velocity.X != lastVelocity.X)
-			{
-				velocity.X = lastVelocity.X * -0.4f;
-			}
-
-			if Projectile.velocity.Y != lastVelocity.Y && (double)lastVelocity.Y > 0.7 && type != 102)
-			{
-				Projectile.velocity.Y = lastVelocity.Y * -0.4f;
-			}
-			*/
 			return false;
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
+			if (Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		// This is only to make it so the grenade explodes when hitting a player in PVP. Otherwise the grenade will continue through the enemy player.
+		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
-		}
-
-		public override bool PreKill(int timeLeft)
-		{
-			Projectile.Resize(150, 150); // RocketI: 128, Rocket III: 200
-			Projectile.knockBack = 8f; // 10
-			return base.PreKill(timeLeft);
+			if (modifiers.PvP && Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
 		public override void Kill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item62, Projectile.position);
 
-			Projectile.position.X += Projectile.width / 2;
-			Projectile.position.Y += Projectile.height / 2;
-			Projectile.width = 22;
-			Projectile.height = 22;
-			Projectile.position.X -= Projectile.width / 2;
-			Projectile.position.Y -= Projectile.height / 2;
+			// Resize the projectile again so the explosion dust and gore spawn from the middle.
+			// Rocket I: 22, Rocket III: 80, Mini Nuke Rocket: 50
+			Projectile.Resize(22, 22);
+
 			for (int i = 0; i < 30; i++)
 			{
 				Dust smoke = Dust.NewDustDirect(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1.5f);
@@ -287,21 +378,20 @@ namespace RijamsMod.Projectiles.Ranged
 					speedMulti = 0.8f;
 				}
 
-				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity += Vector2.One;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X -= 1f;
 				smokeGore.velocity.Y += 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X += 1f;
 				smokeGore.velocity.Y -= 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity.X -= 1f;
-				smokeGore.velocity.Y -= 1f;
+				smokeGore.velocity -= Vector2.One;
 			}
 		}
 	}
@@ -310,6 +400,7 @@ namespace RijamsMod.Projectiles.Ranged
 		public override void SetStaticDefaults()
 		{
 			ProjectileID.Sets.IsAMineThatDealsTripleDamageWhenStationary[Type] = true;
+			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 		}
 		public override void SetDefaults()
 		{
@@ -326,11 +417,11 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3)
 			{
-				PreKill(Projectile.timeLeft);
+				SulfurRocket.PrepareBombToBlow(Projectile);
 			}
 			else
 			{
-				if (Projectile.velocity.X > -0.2 && Projectile.velocity.X < 0.2 && Projectile.velocity.Y > -0.2 && Projectile.velocity.Y < 0.2)
+				if (Projectile.velocity.X > -0.2f && Projectile.velocity.X < 0.2f && Projectile.velocity.Y > -0.2f && Projectile.velocity.Y < 0.2f)
 				{
 					Projectile.alpha += 2;
 					if (Projectile.alpha > 200)
@@ -371,6 +462,37 @@ namespace RijamsMod.Projectiles.Ranged
 				Projectile.velocity.Y = 0f;
 			}
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
+
+			// Explosives behave differently when touching Shimmer.
+			if (Projectile.shimmerWet)
+			{
+				int projX = (int)(Projectile.Center.X / 16f);
+				int projY = (int)(Projectile.position.Y / 16f);
+				// If the projectile is inside of Shimmer:
+				if (WorldGen.InWorld(projX, projY) && Main.tile[projX, projY] != null &&
+						Main.tile[projX, projY].LiquidAmount == byte.MaxValue &&
+						Main.tile[projX, projY].LiquidType == LiquidID.Shimmer &&
+						WorldGen.InWorld(projX, projY - 1) && Main.tile[projX, projY - 1] != null &&
+						Main.tile[projX, projY - 1].LiquidAmount > 0 &&
+						Main.tile[projX, projY - 1].LiquidType == LiquidID.Shimmer)
+				{
+					Projectile.Kill(); // Kill the projectile with no blast radius.
+				}
+				// Otherwise, bounce off of the top of the Shimmer if traveling downwards.
+				else if (Projectile.velocity.Y > 0f)
+				{
+					Projectile.velocity.Y *= -1f; // Reverse the Y velocity.
+					Projectile.netUpdate = true; // Sync the change in multiplayer.
+					if (Projectile.timeLeft > 600)
+					{
+						Projectile.timeLeft = 600; // Set the max time to 10 seconds (instead of the default 1 minute).
+					}
+
+					Projectile.timeLeft -= 60; // Subtract 1 second from the time left.
+					Projectile.shimmerWet = false;
+					Projectile.wet = false;
+				}
+			}
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
@@ -380,7 +502,7 @@ namespace RijamsMod.Projectiles.Ranged
 				Projectile.velocity.X = oldVelocity.X * -0.6f; // -0.4f
 			}
 
-			if (Projectile.velocity.Y != oldVelocity.Y && (double)oldVelocity.Y > 0.7)
+			if (Projectile.velocity.Y != oldVelocity.Y && oldVelocity.Y > 0.7f)
 			{
 				Projectile.velocity.Y = oldVelocity.Y * -0.6f; // -0.4f
 			}
@@ -390,36 +512,49 @@ namespace RijamsMod.Projectiles.Ranged
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
+			if (Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		// This is only to make it so the mine explodes when hitting a player in PVP. Otherwise the mine will continue through the enemy player.
+		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
-		}
-
-		public override bool PreKill(int timeLeft)
-		{
-			Projectile.Resize(150, 150); // RocketI: 128, Rocket III: 200
-			Projectile.knockBack = 8f; // 10
-			return base.PreKill(timeLeft);
+			if (modifiers.PvP && Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
 		public override void Kill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
-			Projectile.position.X += Projectile.width / 2;
-			Projectile.position.Y += Projectile.height / 2;
-			Projectile.width = 22;
-			Projectile.height = 22;
-			Projectile.position.X -= Projectile.width / 2;
-			Projectile.position.Y -= Projectile.height / 2;
+			// Resize the projectile again so the explosion dust and gore spawn from the middle.
+			// Rocket I: 22, Rocket III: 80, Mini Nuke Rocket: 50
+			Projectile.Resize(22, 22);
+
 			for (int i = 0; i < 30; i++)
 			{
 				Dust smoke = Dust.NewDustDirect(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default, 1.5f);
@@ -443,21 +578,20 @@ namespace RijamsMod.Projectiles.Ranged
 					speedMulti = 0.8f;
 				}
 
-				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity += Vector2.One;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X -= 1f;
 				smokeGore.velocity.Y += 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X += 1f;
 				smokeGore.velocity.Y -= 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity.X -= 1f;
-				smokeGore.velocity.Y -= 1f;
+				smokeGore.velocity -= Vector2.One;
 			}
 		}
 	}
@@ -468,6 +602,7 @@ namespace RijamsMod.Projectiles.Ranged
 			RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add(Type);
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true;
 			ProjectileID.Sets.CultistIsResistantTo[Type] = true;
+			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 		}
 		public override void SetDefaults()
 		{
@@ -485,7 +620,7 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3)
 			{
-				PreKill(Projectile.timeLeft);
+				SulfurRocket.PrepareBombToBlow(Projectile);
 			}
 			else
 			{
@@ -524,11 +659,6 @@ namespace RijamsMod.Projectiles.Ranged
 						sulfurDust.scale *= 1.4f + (float)Main.rand.Next(10) * 0.1f;
 						sulfurDust.velocity *= 0.2f;
 						sulfurDust.noGravity = true;
-						if (sulfurDust.type == Dust.dustWater())
-						{
-							sulfurDust.scale *= 0.65f;
-							sulfurDust.velocity += Projectile.velocity * 0.1f;
-						}
 					}
 
 					if (Main.rand.NextBool(2))
@@ -544,10 +674,10 @@ namespace RijamsMod.Projectiles.Ranged
 				float maxHomingDistance = 600f;
 
 				bool canHome = false;
-				Projectile.ai[0] += 1f;
-				if (Projectile.ai[0] > 30f)
+				Projectile.ai[0]++;
+				if (Projectile.ai[0] > 15f)
 				{
-					Projectile.ai[0] = 30f;
+					Projectile.ai[0] = 15f;
 					for (int m = 0; m < Main.maxNPCs; m++)
 					{
 						if (Main.npc[m].CanBeChasedBy(this))
@@ -587,68 +717,90 @@ namespace RijamsMod.Projectiles.Ranged
 					Projectile.spriteDirection = 1;
 					Projectile.rotation = (float)Math.Atan2(Projectile.velocity.Y, Projectile.velocity.X) + MathHelper.PiOver2;
 				}
+			}
 
-				if (Math.Abs(Projectile.velocity.X) <= 16f && Math.Abs(Projectile.velocity.Y) <= 16f)
+			// Explosives behave differently when touching Shimmer.
+			if (Projectile.shimmerWet)
+			{
+				int projX = (int)(Projectile.Center.X / 16f);
+				int projY = (int)(Projectile.position.Y / 16f);
+				// If the projectile is inside of Shimmer:
+				if (WorldGen.InWorld(projX, projY) && Main.tile[projX, projY] != null &&
+						Main.tile[projX, projY].LiquidAmount == byte.MaxValue &&
+						Main.tile[projX, projY].LiquidType == LiquidID.Shimmer &&
+						WorldGen.InWorld(projX, projY - 1) && Main.tile[projX, projY - 1] != null &&
+						Main.tile[projX, projY - 1].LiquidAmount > 0 &&
+						Main.tile[projX, projY - 1].LiquidType == LiquidID.Shimmer)
 				{
-					Projectile.velocity *= 1.1f;
+					Projectile.Kill(); // Kill the projectile with no blast radius.
+				}
+				// Otherwise, bounce off of the top of the Shimmer if traveling downwards.
+				else if (Projectile.velocity.Y > 0f)
+				{
+					Projectile.velocity.Y *= -1f; // Reverse the Y velocity.
+					Projectile.netUpdate = true; // Sync the change in multiplayer.
+					if (Projectile.timeLeft > 600)
+					{
+						Projectile.timeLeft = 600; // Set the max time to 10 seconds (instead of the default 1 minute).
+					}
+
+					Projectile.timeLeft -= 60; // Subtract 1 second from the time left.
+					Projectile.shimmerWet = false;
+					Projectile.wet = false;
 				}
 			}
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
-			/*if (velocity.X != lastVelocity.X)
-			{
-				velocity.X = lastVelocity.X * -0.4f;
-				if (type == 29)
-					velocity.X *= 0.8f;
-			}
-
-			if (velocity.Y != lastVelocity.Y && (double)lastVelocity.Y > 0.7 && type != 102)
-			{
-				velocity.Y = lastVelocity.Y * -0.4f;
-				if (type == 29)
-					velocity.Y *= 0.8f;
-			}*/
-
-			// Projectile.velocity *= 0f;
-			// Projectile.alpha = 255;
-			// Projectile.timeLeft = 3;
 			return false;
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
+			if (Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		// This is only to make it so the rocket explodes when hitting a player in PVP. Otherwise the rocket will continue through the enemy player.
+		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 		{
 			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 300);
-			Projectile.velocity *= 0f;
-			Projectile.alpha = 255;
-			Projectile.timeLeft = 3;
+			if (modifiers.PvP && Projectile.timeLeft > 3)
+			{
+				Projectile.timeLeft = 3; // Set the timeLeft to 3 so it can get ready to explode.
+			}
+			// Set the direction of the projectile so the knockback is always in the correct direction.
+			if (target.position.X + (target.width / 2) < Projectile.position.X + (Projectile.width / 2))
+			{
+				Projectile.direction = -1;
+			}
+			else
+			{
+				Projectile.direction = 1;
+			}
 		}
 
-		public override bool PreKill(int timeLeft)
-		{
-			Projectile.Resize(150, 150); // RocketI: 128, Rocket III: 200
-			Projectile.knockBack = 8f; // 10
-			return base.PreKill(timeLeft);
-		}
 		public override void Kill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
-			Projectile.position.X += Projectile.width / 2;
-			Projectile.position.Y += Projectile.height / 2;
-			Projectile.width = 22;
-			Projectile.height = 22;
-			Projectile.position.X -= Projectile.width / 2;
-			Projectile.position.Y -= Projectile.height / 2;
+			// Resize the projectile again so the explosion dust and gore spawn from the middle.
+			// Rocket I: 22, Rocket III: 80, Mini Nuke Rocket: 50
+			Projectile.Resize(22, 22);
 
 			for (int i = 0; i < 30; i++)
 			{
@@ -673,21 +825,20 @@ namespace RijamsMod.Projectiles.Ranged
 					speedMulti = 0.8f;
 				}
 
-				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity += Vector2.One;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X -= 1f;
 				smokeGore.velocity.Y += 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
 				smokeGore.velocity.X += 1f;
 				smokeGore.velocity.Y -= 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), Projectile.position, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
 				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity.X -= 1f;
-				smokeGore.velocity.Y -= 1f;
+				smokeGore.velocity -= Vector2.One;
 			}
 		}
 	}

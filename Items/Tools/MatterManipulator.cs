@@ -13,11 +13,6 @@ namespace RijamsMod.Items.Tools
 {
 	public class MatterManipulator : ModItem
 	{
-		public override bool IsLoadingEnabled(Mod mod)
-		{
-			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
-		}
-		public override string Texture => "RijamsMod/Items/Tools/MMPickaxe";
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Right click to bring up the tool UI\n  The UI can be dragged around on the screen\n  Pickaxe takes priority over hammer");
@@ -43,7 +38,7 @@ namespace RijamsMod.Items.Tools
 			Item.rare = ItemRarityID.Purple;
 			Item.UseSound = null;
 			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<MMProj>(); // ProjectileID.LaserDrill;
+			Item.shoot = ModContent.ProjectileType<MMProj>();
 		}
 
 		public override bool AltFunctionUse(Player player) => true;

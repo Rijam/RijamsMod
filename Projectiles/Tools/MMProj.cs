@@ -16,9 +16,11 @@ namespace RijamsMod.Projectiles.Tools
 {
 	public class MMProj : ModProjectile
 	{
+		readonly private Texture2D textureNone = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MatterManipulator").Value;
 		readonly private Texture2D texturePick = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMPickaxe").Value;
 		readonly private Texture2D textureAxe = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMAxe").Value;
 		readonly private Texture2D textureHammer = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMHammer").Value;
+		readonly private Texture2D textureNoneGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MatterManipulator_Glow").Value;
 		readonly private Texture2D texturePickGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMPickaxe_Glow").Value;
 		readonly private Texture2D textureAxeGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMAxe_Glow").Value;
 		readonly private Texture2D textureHammerGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMHammer_Glow").Value;
@@ -311,6 +313,11 @@ namespace RijamsMod.Projectiles.Tools
 			{
 				itemTexture = textureHammer;
 				glowTexture = textureHammerGlow;
+			}
+			else
+			{
+				itemTexture = textureNone;
+				glowTexture = textureNoneGlow;
 			}
 			
 			Color color94 = Lighting.GetColor((int)playerPos.X / 16, (int)playerPos.Y / 16);

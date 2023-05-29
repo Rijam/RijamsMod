@@ -4,35 +4,39 @@ Rijam's Mod is a bunch of random additions created by Rijam. Recipe Browser is h
 
 Includes:
 
-[c/ff8000:3 Town NPCs + 1 Town Pet]
+[c/ff8000:3 Town NPCs & 1 Town Pet]
 - Harpy: sells sky related items and a few extra things.
 - - Find her in the sky.
 - Interstellar Traveler: sells information items and weapons. Has a quest system.
 - - Arrives if the player has an Odd Device in their inventory (Post-Evil Boss).
 - Hell Trader: sells Underworld related items.
 - - Spawns randomly in the Underworld, can move in in Hardmode.
-- Snugget Town Pet: License sold by Zoologist after 60% Bestiary completion.
+- Snugget Town Pet: License sold after 60% Bestiary completion and Interstellar Traveler is present.
 
-[c/ff8000:220 new items and weapons] throughout the game's progression
-- 45 weapons: 12 Melee, 8 Ranged, 21 Magic, 21 Summoner.
+[c/ff8000:235 new items and weapons] throughout the game's progression
+- 65 weapons: 12 Melee, 9 Ranged, 23 Magic, 21 Summoner.
 - 13 ammo types.
 - 42 accessories.
-- 23 armor pieces.
+- 26 armor pieces.
 - 13 vanity items + 3 dyes.
+- 13 potions/food.
 
 [c/ff8000:Some QoL changes]
 - Town NPCs sell more things.
 - Some vanilla enemies drop their rare items more often.
 - Interstellar Traveler sells information items.
 
+[c/ff8000:Miscellaneous additions]
+- 8 new enemies.
+- 10 tiles.
+- Play pianos with the Pianist's Glove.
+- Config to customize the mod.
+
 [c/ff8000:Some cross mod support]
 - Support for Census - Town NPC Checklist.
 - Harpy sells some items from other mods.
 - Town NPC cross mod dialog and happiness.
 - Bosses As NPCs support.
-
-Known Issues:
-- None
 
 The code is open source if you extract the mod!
 

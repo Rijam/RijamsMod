@@ -56,13 +56,14 @@ namespace RijamsMod
 				// Here I am using Chat Tags to make my condition even more interesting.
 				// If you localize your mod, pass in a localized string instead of just English.
 				//censusMod.Call("TownNPCCondition", NPCType("Example Person"), $"Have [i:{ItemType<Items.ExampleItem>()}] or [i:{ItemType<Items.Placeable.ExampleBlock>()}] in inventory and build a house out of [i:{ItemType<Items.Placeable.ExampleBlock>()}] and [i:{ItemType<Items.Placeable.ExampleWall>()}]");
-				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.InterstellarTraveler>(), $"Defeat EoW or BoW and have [i:{Find<ModItem>("OddDevice").Type}] Odd Device in your inventory");
+				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.InterstellarTraveler>(), $"Defeat EoW or BoW and have [i:RijamsMod/OddDevice] Odd Device in your inventory");
 				// Additional lines for additional town npc that your mod adds
 				// Simpler example:
 				// censusMod.Call("TownNPCCondition", NPCType("Simple"), "Defeat Duke Fishron");
 				//censusMod.Call("TownNPCCondition", Find<ModNPC>("Fisherman").Type, "Rescue the Angler and have at least 5 Town NPCs");
 				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.Harpy>(), "Rescue her in space");
 				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.HellTrader>(), "Found in Hell. Can move in in Hardmode");
+				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.SnuggetPet.SnuggetPet>(), "License sold after 60% Bestiary completion and Interstellar Traveler is present");
 			}
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils))
 			{

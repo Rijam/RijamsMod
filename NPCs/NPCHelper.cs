@@ -445,6 +445,7 @@ namespace RijamsMod.NPCs
 		public static Condition IntTravQuestTPCore = new("The Teleportation Core quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestTPCore);
 		public static Condition IntTravQuestPrimeThruster = new("The Prime Thruster quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestPrimeThruster);
 		public static Condition IntTravQuestBreadAndJelly = new("The secret quest for the Interstellar Traveler has been completed", () => RijamsModWorld.intTravQuestBreadAndJelly);
+		public static Condition IntTravQuestAllComplete = new("All quests for the Interstellar Traveler has been completed", () => NPCHelper.AllQuestsCompleted());
 		
 		public static Condition IsNotNpcShimmered = new("When the vendor is not a shimmer variant", () => !Condition.IsNpcShimmered.IsMet());
 

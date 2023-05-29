@@ -49,6 +49,7 @@ namespace RijamsMod
 		public bool babyStardustDragonPet;
 
 		public int supportMinionRadiusIncrease = 0;
+		public float criticalHitAdditionalDamage = 0f;
 
 		public override void ResetEffects()
 		{
@@ -84,6 +85,7 @@ namespace RijamsMod
 			babyStardustDragonPet = false;
 
 			supportMinionRadiusIncrease = 0;
+			criticalHitAdditionalDamage = 0f;
 		}
 
 		public override void UpdateDead()
@@ -261,6 +263,12 @@ namespace RijamsMod
 				Player.runAcceleration += 0.1f;
 				Player.maxRunSpeed += 2;
 			}
+			if (Player.armor[2].type == ModContent.ItemType<Items.Armor.GodsentKing.GodsentKingPants>())
+			{
+				Player.runAcceleration += 0.1f;
+				Player.maxRunSpeed += 2;
+				Player.accRunSpeed += 2;
+			}
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
 		{
@@ -269,6 +277,11 @@ namespace RijamsMod
 			{
 				drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
 			}
+		}
+
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+		{
+			modifiers.CritDamage += criticalHitAdditionalDamage;
 		}
 	}
 }

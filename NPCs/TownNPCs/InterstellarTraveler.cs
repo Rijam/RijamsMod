@@ -25,6 +25,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
 using System;
 using Terraria.GameContent.Drawing;
+using RijamsMod.Items.Tools;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -1116,6 +1117,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(ModContent.ItemType<Items.Consumables.RyeJam>(), ShopConditions.IntTravQuestBreadAndJelly);
 			npcShop.Add(ModContent.ItemType<BreathingPack>(), ShopConditions.IntTravQuestMagicOxygenizer);
 			npcShop.Add(ModContent.ItemType<RocketBooster>(), ShopConditions.IntTravQuestPrimeThruster);
+			npcShop.Add(ModContent.ItemType<MatterManipulator>(), ShopConditions.IntTravQuestAllComplete, Condition.DownedMoonLord);
 			npcShop.Add(ModContent.ItemType<Items.Consumables.ReefCola>(), Condition.DownedDukeFishron);
 			npcShop.Add(ModContent.ItemType<Items.Pets.InterestingSphere>());
 			npcShop.Add(ModContent.ItemType<Items.Pets.FluffaloEgg>(), Condition.Hardmode);

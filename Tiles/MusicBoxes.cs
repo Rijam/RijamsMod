@@ -17,6 +17,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
+			TileObjectData.newTile.StyleLineSkip = 2;
 			TileObjectData.addTile(Type);
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Music Box");

@@ -143,7 +143,7 @@ namespace RijamsMod.Items.Information
 			tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "[i:CopperBroadsword] Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
 			tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "[i:WoodenBow] Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
 			tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "[i:WandofSparking] Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
-			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon Knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
 			tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "[i:ThrowingKnife] Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
 			tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "[i:AvengerEmblem] All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
 		}
@@ -164,7 +164,7 @@ namespace RijamsMod.Items.Information
 			tooltips.Add(new TooltipLine(Mod, "SentryCount", "[i:DD2BallistraTowerT1Popper] Maximum sentries: " + StatCalc.MaxTurrets()));
 			tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "[i:ThornWhip] Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
 			tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
-			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
+			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon Knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
 			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.SlotsMinions()));
 		}
 	}
@@ -274,7 +274,7 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "[i:CopperBroadsword] Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "[i:WoodenBow] Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "[i:WandofSparking] Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon Knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "[i:ThrowingKnife] Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "[i:AvengerEmblem] All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
 			}
@@ -301,6 +301,8 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "InZoneHallow", "[i:CrystalShard] In Hallow biome: " + StatCalc.PlayerInZoneHallow()));
 				tooltips.Add(new TooltipLine(Mod, "GolfScore", "[i:GolfClubIron] Golf score: " + StatCalc.GolferScoreAccumulated()));
 				tooltips.Add(new TooltipLine(Mod, "Luck", "[i:LuckPotionGreater] Luck: " + StatCalc.Luck()));
+				tooltips.Add(new TooltipLine(Mod, "CriticalHitAdditionalDamage", "[i:RijamsMod/CritDisplay] [Rijam's Mod] Additional Critical Hit Damage: " + StatCalc.CriticalHitAdditionalDamage()));
+				tooltips.Add(new TooltipLine(Mod, "SupportMinionRadiusIncrease", "[i:RijamsMod/SummonsDisplay] [Rijam's Mod] Support Minion Radius Increase: " + StatCalc.SupportMinionRadiusIncrease()));
 				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Pixels: " + Main.LocalPlayer.position.X));
 				tooltips.Add(new TooltipLine(Mod, "PosY", "[i:WorldGlobe] Position Y Pixels: " + Main.LocalPlayer.position.Y));
 				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Tiles: " + Main.LocalPlayer.position.X / 16f));
@@ -356,6 +358,7 @@ namespace RijamsMod.Items.Information
 	public class StatCalc
 	{
 		static readonly Player player = Main.LocalPlayer;
+		static readonly RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 
 		private static string colorLife = "[c/ff0000:";
 		private static string colorMana = "[c/0000ff:";
@@ -465,5 +468,7 @@ namespace RijamsMod.Items.Information
 		public static string PlayerInZoneHallow() => colorOther + player.ZoneHallow.ToString() + colorClose;
 		public static string GolferScoreAccumulated() => colorOther + player.golferScoreAccumulated.ToString() + colorClose;
 		public static string Luck() => colorOther + player.luck.ToString() + colorClose;
+		public static string CriticalHitAdditionalDamage() => colorCrit + modPlayer.criticalHitAdditionalDamage + colorClose;
+		public static string SupportMinionRadiusIncrease() => colorSummon + modPlayer.supportMinionRadiusIncrease + colorClose;
 	}
 }
