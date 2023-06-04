@@ -2196,7 +2196,7 @@ Mods: {
 				}
 
 				Census_SpawnCondition: Rescue her in space
-				Census.SpawnCondition: Conditions unknown
+				Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.Harpy.Census_SpawnCondition}"
 			}
 
 			InterstellarTraveler: {
@@ -2222,7 +2222,7 @@ Mods: {
 				}
 
 				Census_SpawnCondition: Defeat EoW or BoW and have [i:RijamsMod/OddDevice] Odd Device in your inventory
-				Census.SpawnCondition: Conditions unknown
+				Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.InterstellarTraveler.Census_SpawnCondition}"
 			}
 
 			HellTrader: {
@@ -2248,7 +2248,7 @@ Mods: {
 				}
 
 				Census_SpawnCondition: Found in Hell. Can move in in Hardmode
-				Census.SpawnCondition: Conditions unknown
+				Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.HellTrader.Census_SpawnCondition}"
 			}
 
 			ArmedSkeleton.DisplayName: Armed Skeleton
@@ -2266,7 +2266,7 @@ Mods: {
 			SnuggetPet: {
 				DisplayName: Snugget
 				Census_SpawnCondition: License sold after 60% Bestiary completion and Interstellar Traveler is present.
-				Census.SpawnCondition: Conditions unknown
+				Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.SnuggetPet.Census_SpawnCondition}"
 			}
 
 			AngryGuster.DisplayName: Angry Guster
