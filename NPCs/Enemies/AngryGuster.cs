@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
@@ -39,7 +40,6 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.DeathSound = SoundID.NPCDeath33;
 			NPC.value = 1000;
 			NPC.knockBackResist = 0.25f;
-			NPC.buffImmune[BuffID.Confused] = false;
 			NPC.noGravity = true;
 			Banner = NPC.type;
 			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.AngryGusterBanner>();

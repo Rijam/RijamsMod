@@ -168,7 +168,7 @@ namespace RijamsMod.Projectiles.Melee
 						Vector2 velocity = new(center.X - posX, center.Y - posY);
 						float velocityDistance = 8f / (float)Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
 						velocity *= velocityDistance;
-						Projectile.NewProjectile(Projectile.GetSource_ItemUse(owner.HeldItem), position, velocity, ProjectileID.FlamingJack, Projectile.damage / 2, Projectile.knockBack / 2, owner.whoAmI, target.whoAmI);
+						Projectile.NewProjectile(owner.GetSource_ItemUse(owner.HeldItem), position, velocity, ProjectileID.FlamingJack, Projectile.damage / 2, Projectile.knockBack / 2, owner.whoAmI, target.whoAmI);
 
 						ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.BlackLightningHit, new ParticleOrchestraSettings
 						{

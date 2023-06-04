@@ -35,7 +35,6 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.damage = 30;
 			NPC.defense = 0;
 			NPC.lifeMax = 250;
-			NPC.buffImmune[BuffID.Confused] = false;
 			NPC.value = 500f;
 			NPC.knockBackResist = 0.5f;
 			NPC.aiStyle = -1;

@@ -172,7 +172,7 @@ namespace RijamsMod.Projectiles.Melee
 						if (Projectile.localAI[1] <= 0f)
 						{
 							//Solar Explosion
-							Projectile.NewProjectile(Projectile.GetSource_ItemUse(Main.player[Projectile.owner].HeldItem), target.Center.X, target.Center.Y, 0, 0, ProjectileID.SolarWhipSwordExplosion, Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner, 0f, 0.5f + Main.rand.NextFloat());
+							Projectile.NewProjectile(Main.player[Projectile.owner].GetSource_ItemUse(Main.player[Projectile.owner].HeldItem), target.Center.X, target.Center.Y, 0, 0, ProjectileID.SolarWhipSwordExplosion, Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner, 0f, 0.5f + Main.rand.NextFloat());
 							Projectile.localAI[1] = 20f;
 							//Projectile.localNPCImmunity[i] = 6;
 							//Main.npc[i].immune[Projectile.owner] = 4;

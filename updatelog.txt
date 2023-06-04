@@ -142,3 +142,8 @@
 	* Added Wild Bait.
 	* Added Godsent King and Godsent Queen armor.
 	* Made the Matter Manipulator obtainable.
+
+1.2.0.1 - (June 4, 2023)
+	* Made the Snugget capturable.
+	* Fixed the NPCs' buff immunities.
+	* Fixed the recent changes to IEntitySoruce

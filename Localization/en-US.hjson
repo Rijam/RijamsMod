@@ -1990,6 +1990,11 @@ Mods: {
 				Tooltip: ""
 			}
 
+			CaughtSnugget: {
+				DisplayName: Snugget
+				Tooltip: "'Squeak!'"
+			}
+
 			DebugAnglerQuestChanger: {
 				Tooltip:
 					'''
@@ -2191,6 +2196,7 @@ Mods: {
 				}
 
 				Census_SpawnCondition: Rescue her in space
+				Census.SpawnCondition: Conditions unknown
 			}
 
 			InterstellarTraveler: {
@@ -2216,6 +2222,7 @@ Mods: {
 				}
 
 				Census_SpawnCondition: Defeat EoW or BoW and have [i:RijamsMod/OddDevice] Odd Device in your inventory
+				Census.SpawnCondition: Conditions unknown
 			}
 
 			HellTrader: {
@@ -2241,6 +2248,7 @@ Mods: {
 				}
 
 				Census_SpawnCondition: Found in Hell. Can move in in Hardmode
+				Census.SpawnCondition: Conditions unknown
 			}
 
 			ArmedSkeleton.DisplayName: Armed Skeleton
@@ -2258,6 +2266,7 @@ Mods: {
 			SnuggetPet: {
 				DisplayName: Snugget
 				Census_SpawnCondition: License sold after 60% Bestiary completion and Interstellar Traveler is present.
+				Census.SpawnCondition: Conditions unknown
 			}
 
 			AngryGuster.DisplayName: Angry Guster

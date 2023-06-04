@@ -93,6 +93,8 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			NPC.knockBackResist = 0.5f;
 			NPC.housingCategory = 1;
 			AnimationType = NPCID.TownBunny;
+			Main.npcCatchable[NPC.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			NPC.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? ModContent.ItemType<Items.CaughtSnugget>() : -1;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

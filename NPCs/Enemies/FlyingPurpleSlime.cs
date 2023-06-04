@@ -22,7 +22,6 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.lifeMax = NPC.downedPlantBoss ? 200 : 100; //Doubled in Expert Mode
 			NPC.value = NPC.downedPlantBoss ? 200 : 100;
 			NPC.knockBackResist = 0.5f;
-			NPC.buffImmune[BuffID.Poisoned] = false;
 			NPC.aiStyle = 14;
 			//AIType = NPCID.Slimer;
 			AnimationType = NPCID.Slimer;

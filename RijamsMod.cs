@@ -271,15 +271,11 @@ namespace RijamsMod
 					Logger.Debug("RijamsMod: Dummy Packet (Multiplayer packet).");
 					break;
 				case RijamsModMessageType.SetQuestOddDevice:
-					//int questOddDevice = reader.ReadInt32();
-					//RijamsModWorld world = ModContent.GetInstance<RijamsModWorld>();
 					RijamsModWorld.intTravQuestOddDevice = true;
 					NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Odd Device quest completed (Multiplayer packet).");
 					break;
 				case RijamsModMessageType.SetQuestBlankDisplay:
-					//int questBlankDisplay = reader.ReadInt32();
-					//RijamsModWorld world = ModContent.GetInstance<RijamsModWorld>();
 					RijamsModWorld.intTravQuestBlankDisplay = true;
 					NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Blank Display quest completed (Multiplayer packet).");

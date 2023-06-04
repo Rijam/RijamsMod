@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using RijamsMod.NPCs.TownNPCs;
 using System.Collections.Generic;
 using Terraria.Chat;
+using RijamsMod.NPCs.TownNPCs.SnuggetPet;
 
 namespace RijamsMod.Items
 {
@@ -176,6 +177,51 @@ namespace RijamsMod.Items
 			if (Main.netMode != NetmodeID.Server)
 			{
 				//Main.NewText(Main.npc[NPC.FindFirstNPC(ModContent.NPCType<HellTrader>())].GivenName + " the " + chatmessage, 50, 125, 255);
+				Main.NewText(chatmessage, 50, 125, 255);
+			}
+			else
+			{
+				NetworkText text = NetworkText.FromLiteral(chatmessage);
+				ChatHelper.BroadcastChatMessage(text, new Color(50, 125, 255));
+			}
+		}
+	}
+
+	public class CaughtSnugget : ModItem
+	{
+		public override string Texture => Mod.Name + "/NPCs/TownNPCs/SnuggetPet/SnuggetPet";
+		public override void SetStaticDefaults()
+		{
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 27));
+		}
+
+		public override void SetDefaults()
+		{
+			Item.width = 20;
+			Item.height = 20;
+			Item.maxStack = 10;
+			Item.value = 0;
+			Item.rare = ItemRarityID.Blue;
+			Item.useAnimation = 15;
+			Item.useTime = 15;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.noUseGraphic = true;
+			Item.consumable = true;
+			Item.UseSound = SoundID.Item44;
+			Item.makeNPC = ModContent.NPCType<SnuggetPet>();
+			Item.tileBoost += 20;
+		}
+
+		public override bool CanUseItem(Player player)
+		{
+			Vector2 mousePos = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+			return (NPC.CountNPCS(ModContent.NPCType<SnuggetPet>()) < 1 && !Collision.SolidCollision(mousePos, player.width, player.height));
+		}
+		public override void OnConsumeItem(Player player)
+		{
+			string chatmessage = "The Snugget has been spawned!";
+			if (Main.netMode != NetmodeID.Server)
+			{
 				Main.NewText(chatmessage, 50, 125, 255);
 			}
 			else

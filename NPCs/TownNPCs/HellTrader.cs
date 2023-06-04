@@ -15,6 +15,7 @@ using Terraria.Audio;
 using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
+using Terraria.DataStructures;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -86,6 +87,17 @@ namespace RijamsMod.NPCs.TownNPCs
 			; // < Mind the semicolon!
 
 			NPCProfile = new HellTraderProfile();
+
+			// Specify the debuffs it is immune to
+			NPCDebuffImmunityData debuffData = new()
+			{
+				SpecificallyImmuneTo = new int[] {
+					BuffID.Confused,
+					BuffID.OnFire,
+					ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(),
+				}
+						};
+			NPCID.Sets.DebuffImmunitySets[Type] = debuffData;
 		}
 
 		public override void SetDefaults()
@@ -103,8 +115,6 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Guide;
 			NPC.lavaImmune = true;
-			NPC.buffImmune[BuffID.OnFire] = true;
-			NPC.buffImmune[ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>()] = true;
 			NPC.homeless = true;
 			Main.npcCatchable[NPC.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
 			NPC.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? ModContent.ItemType<CaughtHellTrader>() : -1;
@@ -551,7 +561,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				ShopConditions.MoonPhase036, Condition.DownedSkeletron, ShopConditions.HellTraderMovedIn);
 			npcShop.Add(ItemID.OrnateShadowKey,
 				ShopConditions.MoonPhase147, Condition.DownedSkeletron, ShopConditions.HellTraderMovedIn);
-			npcShop.Add(ItemID.OrnateShadowKey,
+			npcShop.Add(ItemID.HellCake,
 				ShopConditions.MoonPhase25, Condition.DownedSkeletron, ShopConditions.HellTraderMovedIn);
 			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.HellTrader.HellTrader_Hood>(), ShopConditions.HellTraderMovedIn);
 			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.HellTrader.HellTrader_Robes>(), ShopConditions.HellTraderMovedIn);

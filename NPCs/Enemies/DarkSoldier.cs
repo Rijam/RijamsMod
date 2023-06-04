@@ -6,6 +6,7 @@ using System;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.DataStructures;
 
 namespace RijamsMod.NPCs.Enemies
 {
@@ -26,6 +27,15 @@ namespace RijamsMod.NPCs.Enemies
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			// Specify the debuffs it is immune to
+			NPCDebuffImmunityData debuffData = new()
+			{
+				SpecificallyImmuneTo = new int[] {
+					BuffID.OnFire,
+				}
+			};
+			NPCID.Sets.DebuffImmunitySets[Type] = debuffData;
 		}
 
 		public override void SetDefaults()
@@ -37,8 +47,6 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.defense = 6;
 			NPC.lifeMax = 200;
 			NPC.lavaImmune = true;
-			NPC.buffImmune[BuffID.OnFire] = true;
-			NPC.buffImmune[BuffID.Confused] = false;
 			NPC.HitSound = new(Mod.Name + "/Sounds/NPCHit/DarkSoldierHurt") { Volume = 0.7f, MaxInstances = 5 };
 			NPC.DeathSound = new(Mod.Name + "/Sounds/NPCKilled/DarkSoldierDeath") { Volume = 0.7f, MaxInstances = 5 };
 			NPC.value = 6000f;

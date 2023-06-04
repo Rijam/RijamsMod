@@ -35,7 +35,6 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.damage = 1;
 			NPC.defense = 0;
 			NPC.lifeMax = 600;
-			NPC.buffImmune[BuffID.Confused] = false;
 			NPC.HitSound = SoundID.NPCHit11;
 			NPC.DeathSound = SoundID.NPCDeath15;
 			NPC.value = 10000f;

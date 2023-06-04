@@ -62,7 +62,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			// ai[0] = Flash frame
 			if (player.heldProj < 0)
 			{
-				Projectile heldProj = Projectile.NewProjectileDirect(Item.GetSource_ItemUse(this.Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, Main.rand.Next(0, 5));
+				Projectile heldProj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, Main.rand.Next(0, 5));
 				player.heldProj = heldProj.whoAmI;
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
@@ -101,30 +101,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				}
 
 				Projectile projectile = Projectile.NewProjectileDirect(source, playerHandPos, randomCircular, type, damage, knockback, player.whoAmI, -1f, Main.rand.NextFloat(0.2f, 0.4f));
-				/*projectile.tileCollide = false;
-				projectile.ignoreWater = false;
-				projectile.penetrate = 4;
-				projectile.timeLeft = 600;
-				if (projectile.ModProjectile is LanternLightAether modProjectile)
-				{
-					modProjectile.timeLeftMax = projectile.timeLeft;
 
-					modProjectile.orgTileCollide = false;
-					modProjectile.orgIgnoreWater = false;
-					modProjectile.orgPenetrate = 4;
-
-					modProjectile.vecolityMultiplier = 35f;
-					modProjectile.timeBeforeItCanStartHoming = 540;
-					modProjectile.timeLeftBeforeItStopsHoming = 30;
-					modProjectile.bounceOnTiles = false;
-					TorchID.TorchColor(TorchID.Shimmer, out float r, out float g, out float b);
-					modProjectile.overrideColor = new Color(r, g, b, 1f) * 0.5f;
-					modProjectile.homingNeedsLineOfSight = false;
-
-					modProjectile.trailLength = 20;
-					modProjectile.shineScale = 1.75f;
-					modProjectile.homingRange = 60 * 16; // 60 tiles
-				}*/
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
@@ -203,10 +180,10 @@ namespace RijamsMod.Items.Weapons.Magic
 			//Main.NewText("Rect " + heldItemFrame);
 
 			// ai[0] = Flash frame
-			if (player.heldProj < 0 && player.whoAmI == Main.myPlayer)
+			if (player.heldProj < 0 && player.whoAmI == Main.myPlayer && player.ownedProjectileCounts[ModContent.ProjectileType<AetherLanternProj>()] < 1)
 			{
 				//player.GetModPlayer<RijamsModPlayer>().holdingAetherLantern = true;
-				Projectile heldProj = Projectile.NewProjectileDirect(Item.GetSource_ItemUse(this.Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, 0, 0, 1f);
+				Projectile heldProj = Projectile.NewProjectileDirect(player.GetSource_ItemUse(Item), player.RotatedRelativePoint(player.MountedCenter), Vector2.Zero, ModContent.ProjectileType<AetherLanternProj>(), -1, -1, player.whoAmI, 0, 0, 1f);
 				heldProj.timeLeft = 999;
 				player.heldProj = heldProj.whoAmI;
 				//Main.NewText(heldProj.whoAmI);
