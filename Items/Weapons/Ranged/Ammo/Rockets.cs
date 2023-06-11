@@ -1,5 +1,6 @@
 using System;
 using Terraria;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
@@ -25,7 +26,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 			Item.value = 100000;
 			Item.rare = ItemRarityID.Green;
 			//item.shoot = ProjectileID.RocketI;   //The projectile shoot when your weapon using this ammo
-			//item.ammo = AmmoID.Rocket;			  //The ammo class this ammo belongs to.
+			Item.ammo = AmmoID.Rocket;				//The ammo class this ammo belongs to.
 		}
 
 		public override void AddRecipes()
@@ -34,6 +35,30 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 				.AddIngredient(ItemID.RocketI, 3996)
 				.AddTile(TileID.CrystalBall)
 				.Register();
+		}
+
+		public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
+		{
+			if (weapon.type == ItemID.GrenadeLauncher || type == ProjectileID.GrenadeI)
+			{
+				type = ProjectileID.GrenadeI;
+			}
+			else if (weapon.type == ItemID.ProximityMineLauncher || type == ProjectileID.ProximityMineI)
+			{
+				type = ProjectileID.ProximityMineI;
+			}
+			else if (weapon.type == ItemID.SnowmanCannon || type == ProjectileID.RocketSnowmanI)
+			{
+				type = ProjectileID.RocketSnowmanI;
+			}
+			else if (weapon.type == ItemID.Celeb2)
+			{
+				type = ProjectileID.Celeb2Rocket;
+			}
+			else
+			{
+				type = ProjectileID.RocketI;
+			}
 		}
 	}
 
@@ -79,7 +104,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 			{
 				type = ModContent.ProjectileType<Projectiles.Ranged.SulfurMine>();
 			}
-			else if (weapon.type == ItemID.SnowmanCannon)
+			else if (weapon.type == ItemID.SnowmanCannon || type == ProjectileID.RocketSnowmanI)
 			{
 				type = ModContent.ProjectileType<Projectiles.Ranged.SulfurSnowmanRocket>();
 			}

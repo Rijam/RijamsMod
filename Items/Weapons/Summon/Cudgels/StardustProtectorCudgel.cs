@@ -15,7 +15,6 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Tooltip.SetDefault("Summons a Stardust Protector to defend you\nPlayers within its aura receive:\n+13 defense\n+8% damage reduction\n30 tile radius\nWill occasionally attack targeted enemies");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-			GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add(Item.type);
 		}
 
 		public override void SetDefaults()

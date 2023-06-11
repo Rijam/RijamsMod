@@ -37,17 +37,27 @@ namespace RijamsMod.Items.Accessories
 					ammo.type == ItemID.ExplosiveJackOLantern || weapon.useAmmo == ItemID.ExplosiveJackOLantern || ammo.type == ItemID.Nail ||
 					weapon.useAmmo == ItemID.Nail || ammo.type == ItemID.StyngerBolt || weapon.useAmmo == ItemID.StyngerBolt) && !player.GetModPlayer<RijamsModPlayer>().gamutApparatus)
 			{
+				damage += 0.1f;
 				knockback *= 1.1f;
-				speed *= 1.2f;
+				speed *= 1.5f;
 			}
 			if (player.GetModPlayer<RijamsModPlayer>().gamutApparatus)
 			{
 				knockback *= 1.2f;
-				speed *= 1.2f;
+				if (ammo.type == AmmoID.Rocket || weapon.useAmmo == AmmoID.Rocket ||
+					ammo.type == ItemID.ExplosiveJackOLantern || weapon.useAmmo == ItemID.ExplosiveJackOLantern || ammo.type == ItemID.Nail ||
+					weapon.useAmmo == ItemID.Nail || ammo.type == ItemID.StyngerBolt || weapon.useAmmo == ItemID.StyngerBolt)
+				{
+					speed *= 1.5f;
+				}
+				else
+				{
+					speed *= 1.2f;
+				}
 				if (type == ProjectileID.WoodenArrowFriendly)
 				{
 					type = ProjectileID.FireArrow;
-					damage += 2;
+					damage.Flat += 2;
 				}
 			}
 			if (player.armor[0].type == ModContent.ItemType<RedSkywareHelmet>()) // If the Red Skyware Helmet is equipped in the helmet slot
@@ -64,6 +74,7 @@ namespace RijamsMod.Items.Accessories
 			}
 		}
 	}
+
 	public class SummonersGloveUpdate : GlobalItem
 	{
 		public override bool? CanAutoReuseItem(Item item, Player player)

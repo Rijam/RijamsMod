@@ -16,7 +16,6 @@ namespace RijamsMod.Items.Weapons.Magic
 		public override void SetStaticDefaults()
 		{
 			GlobalItems.isLanternWeapon.Add(Item.type);
-			GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add(Item.type);
 		}
 		public override void SetDefaults()
 		{

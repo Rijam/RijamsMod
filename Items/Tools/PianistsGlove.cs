@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using ReLogic.Utilities;
 using System;
 using Terraria;
@@ -6,6 +7,7 @@ using Terraria.Audio;
 using Terraria.Graphics.Capture;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace RijamsMod.Items.Tools
 {
@@ -26,6 +28,7 @@ namespace RijamsMod.Items.Tools
 			Item.useAnimation = 10;
 			Item.noUseGraphic = true;
 			Item.rare = ItemRarityID.Blue;
+			Item.consumable = false;
 		}
 		public override bool AltFunctionUse(Player player) => true;
 
@@ -37,6 +40,16 @@ namespace RijamsMod.Items.Tools
 		public override void HoldItem(Player player)
 		{
 			HoldItemInner(player, 2);
+		}
+
+		public override bool CanRightClick()
+		{
+			return true;
+		}
+
+		public override void RightClick(Player player)
+		{
+			RickClickInner(player, ModContent.ItemType<PianistsGloveHigh>());
 		}
 
 		public override void Load()
@@ -96,6 +109,20 @@ namespace RijamsMod.Items.Tools
 				}
 			}
 			return null;
+		}
+
+		public void RickClickInner(Player player, int itemToTransformTo)
+		{
+			// Sort of works as long as there aren't any other Pianist's Gloves in their inventory.
+			SoundEngine.PlaySound(SoundID.Unlock with { Volume = (ModContent.GetInstance<RijamsModConfigClient>().BurglarsRingSound / 100f) });
+			int index = player.FindItemInInventoryOrOpenVoidBag(Type, out _);
+			player.inventory[index].ChangeItemType(itemToTransformTo);
+			Recipe.FindRecipes();
+		}
+
+		public override bool ConsumeItem(Player player)
+		{
+			return false;
 		}
 
 		public static int CalcNote(Player player, out float range)
@@ -423,6 +450,10 @@ namespace RijamsMod.Items.Tools
 	}
 	public class PianistsGloveLow : PianistsGlove
 	{
+		public override void RightClick(Player player)
+		{
+			RickClickInner(player, ModContent.ItemType<PianistsGlove>());
+		}
 		public override void HoldItem(Player player)
 		{
 			HoldItemInner(player, 1);
@@ -439,6 +470,10 @@ namespace RijamsMod.Items.Tools
 	}
 	public class PianistsGloveHigh : PianistsGlove
 	{
+		public override void RightClick(Player player)
+		{
+			RickClickInner(player, ModContent.ItemType<PianistsGloveLow>());
+		}
 		public override void HoldItem(Player player)
 		{
 			HoldItemInner(player, 3);

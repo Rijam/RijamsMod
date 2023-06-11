@@ -26,5 +26,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 			Item.value = 500;
 			Item.channel = false;
 		}
+
+		public override bool MeleePrefix() => true;
 	}
 }

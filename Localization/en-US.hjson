@@ -372,7 +372,9 @@ Mods: {
 					+15% Ranged damage
 					+10% Ranged Critical Strike chance
 					20% chance to not consume ammo
-					+20% projectile velocity and knockback
+					+100% rocket velocity
+					+50% other launched ammo velocity
+					+20% all other projectile velocity and knockback
 					Lights wooden arrows ablaze
 					Enemies are slightly less likely to target you
 					Right Click to zoom out (Hide to disable)
@@ -383,8 +385,9 @@ Mods: {
 				DisplayName: Rocket Booster
 				Tooltip:
 					'''
-					+10% rocket damage
-					+20% rocket velocity
+					+10% rocket ammo damage
+					+100% rocket velocity
+					+50% other launched ammo velocity
 					+10% rocket knockback
 					'''
 			}

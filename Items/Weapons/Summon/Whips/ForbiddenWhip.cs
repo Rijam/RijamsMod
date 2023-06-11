@@ -37,5 +37,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}
+
+		public override bool MeleePrefix() => true;
 	}
 }

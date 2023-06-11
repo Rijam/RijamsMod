@@ -47,5 +47,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 				.AddTile(TileID.Anvils)
 				.Register();
 		}
+
+		public override bool MeleePrefix() => true;
 	}
 }

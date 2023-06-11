@@ -1,20 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
-using RijamsMod.Items.Armor;
 using RijamsMod.Items.Weapons.Ranged.Ammo;
 using RijamsMod.Items.Weapons.Summon.Whips;
 using RijamsMod.Buffs.Minions;
 using System.Linq;
-using Terraria.GameContent.Creative;
-using Terraria.Utilities;
 using Terraria.GameContent.ItemDropRules;
-using RijamsMod.Items.Accessories.Misc;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Weapons.Ranged;
 using RijamsMod.Buffs.Potions;
@@ -37,7 +32,7 @@ namespace RijamsMod.Items
 		/// <summary>
 		/// The front arm of the player will not animate correctly when the useStyle is set to RaiseLamp (14). Items in this set will be corrected with an IL Edit.
 		/// </summary>
-		public static List<int> fixItemUseStyleIDRaiseLampFrontArmAnimation = new();
+		// public static List<int> fixItemUseStyleIDRaiseLampFrontArmAnimation = new(); // No longer needed. Fix implemented into tModLoader directly. PR #3530
 
 		public override void SetDefaults(Item item)
 		{
@@ -380,6 +375,14 @@ namespace RijamsMod.Items
 			}
 		}
 
+		/// <summary>
+		/// Finds the index of a certain tooltip line.
+		/// </summary>
+		/// <param name="tooltips">The list of tooltips.</param>
+		/// <param name="name">The name of the tooltip to find. See the docs for all of the names.</param>
+		/// <param name="mod">Which mod the tooltip line is from. "Terraria" for vanilla.</param>
+		/// <param name="index">Out: the index of the tooltip line. 0 if not found.</param>
+		/// <returns>True if found.</returns>
 		public static bool FindTooltipIndex(List<TooltipLine> tooltips, string name, string mod, out int index)
 		{
 			TooltipLine tooltipLine = tooltips.FirstOrDefault(x => x.Name == name && x.Mod == mod);
@@ -389,7 +392,7 @@ namespace RijamsMod.Items
 				return true;
 			}
 			index = 0;
-			ModLoader.GetMod("RijamsMod").Logger.WarnFormat("Tooltip line {0} from mod {1} not found!", name, mod);
+			RijamsMod.Instance.Logger.WarnFormat("Tooltip line {0} from mod {1} not found!", name, mod);
 			return false;
 		}
 
@@ -484,23 +487,6 @@ namespace RijamsMod.Items
 				player.armorEffectDrawShadow = true;
 			}
 		}
-		public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
-		{
-			if (weapon.type == ItemID.SnowmanCannon)
-			{
-				if (ammo.type == ModContent.ItemType<EndlessRocketBox>())
-				{
-					type = ProjectileID.RocketSnowmanI;
-				}
-			}
-			if (weapon.type == ItemID.Celeb2)
-			{
-				if (ammo.type == ModContent.ItemType<EndlessRocketBox>())
-				{
-					type = ProjectileID.Celeb2Rocket;
-				}
-			}
-		}
 		public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
 		{
 			if (item.type == ItemID.EyeOfCthulhuBossBag)
@@ -527,85 +513,6 @@ namespace RijamsMod.Items
 			if (item.type == ItemID.FairyQueenBossBag)
 			{
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.RadiantLanternCudgel>(), 4));
-			}
-		}
-
-		// The player can't use the support minion weapons if they already have one active.
-		private static readonly List<int> SupportMinionsDefenseBuffs = new() { ModContent.BuffType<HarpyIdolBuff>(), 
-			ModContent.BuffType<CobaltProtectorBuff>(), ModContent.BuffType<CrystalClusterBuff>(), ModContent.BuffType<FallenPaladinBuff>(),
-			ModContent.BuffType<StardustProtectorBuff>() };
-		private static readonly List<int> SupportMinionsHealingBuffs = new() { ModContent.BuffType<SanityFlowerBuff>(),
-			ModContent.BuffType<RadiantLanternBuff>() };
-
-		public override bool CanUseItem(Item item, Player player)
-		{
-			if (item.ModItem is CudgelDefenseItem)
-			{
-				for (int i = 0; i < SupportMinionsDefenseBuffs.Count; i++)
-				{
-					if (player.HasBuff(SupportMinionsDefenseBuffs[i]))
-					{
-						return false;
-					}
-				}
-			}
-			if (item.ModItem is CudgelHealingItem)
-			{
-				for (int i = 0; i < SupportMinionsHealingBuffs.Count; i++)
-				{
-					if (player.HasBuff(SupportMinionsHealingBuffs[i]))
-					{
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-	}
-
-	// This is used for the Timon's Axe, Hammer of Retribution, and Quietus for checking if the glow mask should be drawn in ItemUseGlow
-	public class MagicMeleeGlow : ModItem
-	{
-		public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(MagicMeleeGlow);
-		public override string Texture => Item.type == ModContent.ItemType<MagicMeleeGlow>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
-	}
-	// This is used for the Cudgel support minion items.
-	public class CudgelDefenseItem : ModItem
-	{
-		public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(CudgelDefenseItem);
-		public override string Texture => Item.type == ModContent.ItemType<CudgelDefenseItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			if (GlobalItems.FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
-			{
-				tooltips.Insert(index + 1, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Defense Support Minion -]"));
-				tooltips.Insert(index + 2, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one defense support minion per player]"));
-			}
-		}
-	}
-	public class CudgelHealingItem : ModItem
-	{
-		public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(CudgelHealingItem);
-		public override string Texture => Item.type == ModContent.ItemType<CudgelHealingItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			if (GlobalItems.FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
-			{
-				tooltips.Insert(index + 1, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Healing Support Minion -]"));
-				tooltips.Insert(index + 2, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one healing support minion per player]"));
-			}
-		}
-	}
-	public class CudgelBuffItem : ModItem
-	{
-		public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(CudgelBuffItem);
-		public override string Texture => Item.type == ModContent.ItemType<CudgelBuffItem>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			if (GlobalItems.FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
-			{
-				tooltips.Insert(index + 1, new TooltipLine(Mod, "SupportMinionMessage1", "[c/00af00:- Buff Support Minion -]"));
-				tooltips.Insert(index + 2, new TooltipLine(Mod, "SupportMinionMessage2", "[c/00af00:Maximum of one buff support minion per player]"));
 			}
 		}
 	}

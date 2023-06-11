@@ -8,21 +8,20 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace RijamsMod
 {
 	public class RijamsMod : Mod
 	{
 		public static RijamsMod Instance;
-		public static RijamsModConfigClient ConfigClient;
-		public static RijamsModConfigServer ConfigServer;
-		public static RijamsModNPCs RijamsModNPCs;
-		public static ItemUseGlow ItemUseGlow;
-		public static ArmorUseGlowHead ArmorUseGlowHead;
-		public static ArmorUseGlowBody ArmorUseGlowBody;
-		public static ArmorUseGlowLegs ArmorUseGlowLegs;
-		public static WeaponAttackFlash WeaponAttackFlash;
+		internal static RijamsModConfigClient ConfigClient;
+		internal static RijamsModConfigServer ConfigServer;
+		internal static RijamsModNPCs RijamsModNPCs;
+		internal static ItemUseGlow ItemUseGlow;
+		internal static ArmorUseGlowHead ArmorUseGlowHead;
+		internal static ArmorUseGlowBody ArmorUseGlowBody;
+		internal static ArmorUseGlowLegs ArmorUseGlowLegs;
+		internal static WeaponAttackFlash WeaponAttackFlash;
 
 		public override void Load()
 		{
@@ -31,13 +30,14 @@ namespace RijamsMod
 		
 		public override void Unload()
 		{
-			ItemOriginDesc.itemList.Clear();
-			Items.GlobalItems.isWhip.Clear();
-			Items.GlobalItems.isJoustingLance.Clear();
-			Items.GlobalItems.isLanternWeapon.Clear();
-			Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Clear();
-			Tiles.GlobalTiles.isPiano.Clear();
-			Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Clear();
+			ItemOriginDesc.itemList = null;
+			Items.GlobalItems.isWhip = null;
+			Items.GlobalItems.isJoustingLance = null;
+			Items.GlobalItems.isLanternWeapon = null;
+			Items.SupportMinionCanUseCheck.SupportMinionsDefenseBuffs = null;
+			Items.SupportMinionCanUseCheck.SupportMinionsHealingBuffs = null;
+			Tiles.GlobalTiles.isPiano = null;
+			Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates = null;
 			Instance = null;
 			ConfigClient = null;
 			ConfigServer = null;
@@ -51,7 +51,7 @@ namespace RijamsMod
 
 		public override void PostSetupContent()
 		{
-			if (ModLoader.TryGetMod("Census", out Mod censusMod))
+			/*if (ModLoader.TryGetMod("Census", out Mod censusMod))
 			{
 				// Here I am using Chat Tags to make my condition even more interesting.
 				// If you localize your mod, pass in a localized string instead of just English.
@@ -64,7 +64,7 @@ namespace RijamsMod
 				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.Harpy>(), "Rescue her in space");
 				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.HellTrader>(), "Found in Hell. Can move in in Hardmode");
 				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.SnuggetPet.SnuggetPet>(), "License sold after 60% Bestiary completion and Interstellar Traveler is present");
-			}
+			}*/
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils))
 			{
 				//Something must be wrong, I can't get it to work.
@@ -161,10 +161,6 @@ namespace RijamsMod
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
 					Items.GlobalItems.isWhip.Add((int)args[1]);
 					return Items.GlobalItems.isWhip.Contains((int)args[1]);
-				case "AddItemToRaiseLampFix":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add((int)args[1]);
-					return Items.GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Contains((int)args[1]);
 				case "AddTileToPianos":
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
 					Tiles.GlobalTiles.isPiano.Add((int)args[1]);

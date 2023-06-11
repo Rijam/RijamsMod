@@ -64,13 +64,11 @@ namespace RijamsMod.Items.Weapons.Melee
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			Player player = Main.LocalPlayer;
-			int index = 3;
-			if (Item.favorited)
+			if (GlobalItems.FindTooltipIndex(tooltips, "CritChance", "Terraria", out int index))
 			{
-				index += 2;
+				tooltips.Insert(index + 1, new TooltipLine(Mod, "Speed", Math.Round(Item.shootSpeed * 2f * player.GetTotalAttackSpeed(DamageClass.Melee), 3) + " firing speed"));
+				tooltips.Insert(index + 2, new TooltipLine(Mod, "Time", Math.Round(Item.useTime / player.GetTotalAttackSpeed(DamageClass.Melee), 3) + " firing time"));
 			}
-			tooltips.Insert(index, new TooltipLine(Mod, "Speed", Math.Round(Item.shootSpeed * 2f * player.GetTotalAttackSpeed(DamageClass.Melee), 3) + " firing speed"));
-			tooltips.Insert(index + 1, new TooltipLine(Mod, "Time", Math.Round(Item.useTime / player.GetTotalAttackSpeed(DamageClass.Melee), 3) + " firing time"));
 		}
 
 		public override bool MeleePrefix() => true;

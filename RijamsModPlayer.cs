@@ -266,8 +266,8 @@ namespace RijamsMod
 			if (Player.armor[2].type == ModContent.ItemType<Items.Armor.GodsentKing.GodsentKingPants>())
 			{
 				Player.runAcceleration += 0.1f;
-				Player.maxRunSpeed += 2;
-				Player.accRunSpeed += 2;
+				Player.maxRunSpeed += 1;
+				Player.accRunSpeed += 1;
 			}
 		}
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)

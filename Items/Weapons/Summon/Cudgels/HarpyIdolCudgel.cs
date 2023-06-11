@@ -15,7 +15,6 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Tooltip.SetDefault("Summons a Harpy Idol to defend you\nPlayers within its aura receive:\n+3 defense\n+1% damage reduction\n5 tile radius");
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
-			GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation.Add(Item.type);
 		}
 
 		public override void SetDefaults()

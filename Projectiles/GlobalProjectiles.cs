@@ -136,8 +136,8 @@ namespace RijamsMod.Projectiles
 							if (projectile.extraUpdates == 0)
 							{
 								//Main.NewText("rocketBooster GlobalProjectile");
+								projectile.velocity *= 0.5f; // Doesn't really do anything because the velocity is continuously multiplied by 1.1f.
 								projectile.extraUpdates++;
-								projectile.velocity *= 0.5f;
 							}
 						}
 					}

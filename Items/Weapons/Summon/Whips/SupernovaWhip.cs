@@ -37,5 +37,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
+
+		public override bool MeleePrefix() => true;
 	}
 }

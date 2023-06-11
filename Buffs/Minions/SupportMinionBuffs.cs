@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Items;
 using System;
 using Terraria;
 using Terraria.ID;
@@ -14,6 +15,7 @@ namespace RijamsMod.Buffs.Minions
 			// Description.SetDefault("The Harpy Idol will defend you\nPlayers within its aura receive:\n+3 defense\n+1% damage reduction\n5 tile radius");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsDefenseBuffs.Add(Type);
 		}
 
 		public override void Update(Player player, ref int buffIndex)
@@ -37,6 +39,7 @@ namespace RijamsMod.Buffs.Minions
 			// Description.SetDefault("The Cobalt Protector will defend you\nPlayers within its aura receive:\n+5 defense\n+2% damage reduction\n10 tile radius");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsDefenseBuffs.Add(Type);
 		}
 
 		public override void Update(Player player, ref int buffIndex)
@@ -60,6 +63,7 @@ namespace RijamsMod.Buffs.Minions
 			// Description.SetDefault("The Crystal Cluster will defend you\nPlayers within its aura receive:\n+7 defense\n+4% damage reduction\n15 tile radius");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsDefenseBuffs.Add(Type);
 		}
 
 		public override void Update(Player player, ref int buffIndex)
@@ -83,6 +87,7 @@ namespace RijamsMod.Buffs.Minions
 			// Description.SetDefault("The Fallen Paladin will defend you\nPlayers within its aura receive:\n+10 defense\n+5% damage reduction\n20 tile radius");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsDefenseBuffs.Add(Type);
 		}
 
 		public override void Update(Player player, ref int buffIndex)
@@ -106,6 +111,7 @@ namespace RijamsMod.Buffs.Minions
 			// Description.SetDefault("The Stardust Protector will defend you\nPlayers within its aura receive:\n+13 defense\n+8% damage reduction\n30 tile radius");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsDefenseBuffs.Add(Type);
 		}
 
 		public override void Update(Player player, ref int buffIndex)
@@ -129,6 +135,7 @@ namespace RijamsMod.Buffs.Minions
 			// Description.SetDefault("The Sanity Flower will heal you\nPlayers within its aura will be healed\n20 HP every 30 seconds\n20 tile radius");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsHealingBuffs.Add(Type);
 		}
 
 		public override void Update(Player player, ref int buffIndex)
@@ -153,6 +160,7 @@ namespace RijamsMod.Buffs.Minions
 			// Description.SetDefault("The Radiant Lantern will heal you\nPlayers within its aura will be healed\n20 HP every 30 seconds\n30 tile radius");
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsHealingBuffs.Add(Type);
 		}
 
 		public override void Update(Player player, ref int buffIndex)

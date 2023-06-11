@@ -146,4 +146,13 @@
 1.2.0.1 - (June 4, 2023)
 	* Made the Snugget capturable.
 	* Fixed the NPCs' buff immunities.
-	* Fixed the recent changes to IEntitySoruce
+	* Fixed the recent changes to IEntitySource
+
+1.2.0.2 - (June 11, 2023)
+	* Updated Census support.
+	* Fixed Rocket Booster applying extra damage to non rocket weapons such as dart guns. (Thanks Random Internet User!)
+	* Rocket Booster and Gamut Apparatus tooltips updated. Now correctly says rockets get +100% velocity. They now give +50% other launched ammo velocity (mines, grenades, Explosive Jack 'O Lantern, Nail, Stynger). Gamut Apparatus still gives +20% velocity to all other projectiles.
+	* Fixed Gamut Apparatus applying a little too much extra damage to Wooden Arrows that were converted Flaming Arrows.
+	* Fixed the whips in this mod not being able to receive all of the melee modifiers.
+	* Slightly nerfed the movement speed boost on the Godsent King Pants.
+	* Removed IL Edit that fixed the front arm animation because the fix has been added natively in tModLoader!

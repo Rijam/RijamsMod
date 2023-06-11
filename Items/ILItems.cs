@@ -11,21 +11,22 @@ namespace RijamsMod.Items
 		public override void Load()
 		{
 			// Load the IL Patch
-			IL_Player.PlayerFrame += LanternEdit;
+			//IL_Player.PlayerFrame += LanternEdit; // No longer needed. Fix implemented into tModLoader directly. PR #3530
 		}
 
 		public override void Unload()
 		{
 			// tModLoader SHOULD automatically unload IL edits, but I'm putting this here just in case.
-			IL_Player.PlayerFrame -= LanternEdit;
+			//IL_Player.PlayerFrame -= LanternEdit;
 		}
 
+		/*
 		/// <summary>
 		/// <br>This IL Edit is used to correct the front arm animation when using items with ItemUseStyleID.RaiseLamp.</br>
 		/// <br>See also <seealso cref="GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation"/></br>
 		/// </summary>
 		/// <param name="il"></param>
-		private static void LanternEdit(ILContext il)
+		private static void LanternEdit(ILContext il) // No longer needed. Fix implemented into tModLoader directly. PR #3530
 		{
 			ILCursor c = new(il);
 
@@ -63,147 +64,6 @@ namespace RijamsMod.Items
 
 				return returnValue;
 			});
-		}
-
-		/* Not needed because I made the IL edit that does this for all lantern weapons.
-		 * This is the code that is supposed to run to animate the front arm.
-		public override void UseItemFrame(Player player)
-		{
-			if (player.pulley)
-			{
-				if (player.pulleyDir == 2)
-					player.bodyFrame.Y = player.bodyFrame.Height;
-				else
-					player.bodyFrame.Y = player.bodyFrame.Height * 2;
-			}
-			//else if (player.shieldRaised)
-			//{
-			//	player.bodyFrame.Y = player.bodyFrame.Height * 10;
-			//}
-			else if (player.mount.Active)
-			{
-				player.bodyFrameCounter = 0.0;
-				player.bodyFrame.Y = player.bodyFrame.Height * player.mount.BodyFrame;
-			}
-			else if (player.grappling[0] >= 0)
-			{
-				player.sandStorm = false;
-				//player.CancelAllJumpVisualEffects();
-				Vector2 vector = new(player.position.X + (float)player.width * 0.5f, player.position.Y + (float)player.height * 0.5f);
-				float num21 = 0f;
-				float num22 = 0f;
-				for (int m = 0; m < player.grapCount; m++)
-				{
-					num21 += Main.projectile[player.grappling[m]].position.X + (float)(Main.projectile[player.grappling[m]].width / 2);
-					num22 += Main.projectile[player.grappling[m]].position.Y + (float)(Main.projectile[player.grappling[m]].height / 2);
-				}
-
-				num21 /= (float)player.grapCount;
-				num22 /= (float)player.grapCount;
-				num21 -= vector.X;
-				num22 -= vector.Y;
-				if (num22 < 0f && Math.Abs(num22) > Math.Abs(num21))
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 2;
-					if (player.gravDir == -1f)
-						player.bodyFrame.Y = player.bodyFrame.Height * 4;
-				}
-				else if (num22 > 0f && Math.Abs(num22) > Math.Abs(num21))
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 4;
-					if (player.gravDir == -1f)
-						player.bodyFrame.Y = player.bodyFrame.Height * 2;
-				}
-				else
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 3;
-				}
-			}
-			else if (player.wet && player.ShouldFloatInWater)
-			{
-				player.bodyFrame.Y = player.bodyFrame.Height * 10;
-			}
-			else if (player.swimTime > 0)
-			{
-				if (player.swimTime > 20)
-				{
-					player.bodyFrame.Y = 0;
-				}
-				else if (player.swimTime > 10)
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 5;
-				}
-				else
-				{
-					player.bodyFrame.Y = 0;
-				}
-			}
-			else if (player.velocity.Y != 0f)
-			{
-				if (player.sliding)
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 3;
-				}
-				else if (player.sandStorm || player.carpetFrame >= 0)
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 6;
-				}
-				else if (player.eocDash > 0)
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 6;
-				}
-				else if (player.wings > 0)
-				{
-					if (player.wings == 22 || player.wings == 28 || player.wings == 45)
-					{
-						player.bodyFrame.Y = 0;
-					}
-					else if (player.velocity.Y > 0f)
-					{
-						if (player.controlJump)
-							player.bodyFrame.Y = player.bodyFrame.Height * 6;
-						else
-							player.bodyFrame.Y = player.bodyFrame.Height * 5;
-					}
-					else
-					{
-						player.bodyFrame.Y = player.bodyFrame.Height * 6;
-					}
-				}
-				else
-				{
-					player.bodyFrame.Y = player.bodyFrame.Height * 5;
-				}
-
-				player.bodyFrameCounter = 0.0;
-			}
-			else if (player.velocity.X != 0f)
-			{
-				//if (player.legs == 140)
-				//{
-				//	player.bodyFrameCounter += Math.Abs(player.velocity.X) * 0.5f;
-				//	while (player.bodyFrameCounter > 8.0)
-				//	{
-				//		player.bodyFrameCounter -= 8.0;
-				//		player.bodyFrame.Y += player.bodyFrame.Height;
-				//	}
-
-				//	if (player.bodyFrame.Y < player.bodyFrame.Height * 7)
-				//		player.bodyFrame.Y = player.bodyFrame.Height * 19;
-				//	else if (player.bodyFrame.Y > player.bodyFrame.Height * 19)
-				//		player.bodyFrame.Y = player.bodyFrame.Height * 7;
-				//}
-				//else
-				//{
-					player.bodyFrameCounter += (double)Math.Abs(player.velocity.X) * 1.5;
-					player.bodyFrame.Y = player.legFrame.Y;
-				//}
-			}
-			else
-			{
-				player.bodyFrameCounter = 0.0;
-				player.bodyFrame.Y = 0;
-			}
 		}
 		*/
 	}
