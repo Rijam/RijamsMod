@@ -156,3 +156,20 @@
 	* Fixed the whips in this mod not being able to receive all of the melee modifiers.
 	* Slightly nerfed the movement speed boost on the Godsent King Pants.
 	* Removed IL Edit that fixed the front arm animation because the fix has been added natively in tModLoader!
+
+1.2.1.0 - (June 23, 2023)
+	* Fixed Angry Guster spawning below the surface layer.
+	* Fixed Angry Guster being able to attack through walls.
+	* Skeleton Merchant now only sells the Bone Pickaxe after an early game boss has been defeated.
+	* Caught Town NPCs now transform into a Flesh Block when thrown into shimmer instead of creating another version of the Town NPC.
+	* Caught Town NPCs now unload if the Catch Town NPCs config is off.
+	* Stabby Shiv and Frost Shiv now give +25% Critical Hit Damage when using them.
+	* Control Glove and its upgrades now gives +2 Support minion radius.
+	* Added Morpha's Ring. Gives +36% Critical Hit Damage. Dropped by King Slime.
+	* Added Aspis. Gives 50% knockback resistance. Dropped by Hoplites.
+	* Added Granite Elemental Cudgel.
+	* Added Mini Guster. A magic weapon dropped by Angry Gusters.
+	* Improved the Cudgel support minions even more in multiplayer.
+	* Updated support for Dialogue Panel Rework.
+	* Item glow masks now draw in the inventory.
+	* Added Group Hologram "painting".

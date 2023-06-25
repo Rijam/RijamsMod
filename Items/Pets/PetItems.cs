@@ -26,12 +26,13 @@ namespace RijamsMod.Items.Pets
 			Item.UseSound = SoundID.Item25;
 		}
 
-		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		public override bool? UseItem(Player player)
 		{
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
 			{
 				player.AddBuff(Item.buffType, 3600, true);
 			}
+			return true;
 		}
 	}
 	public class LumothBulb : ModItem
@@ -54,12 +55,13 @@ namespace RijamsMod.Items.Pets
 			Item.UseSound = SoundID.Item25;
 		}
 
-		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		public override bool? UseItem(Player player)
 		{
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
 			{
 				player.AddBuff(Item.buffType, 3600, true);
 			}
+			return true;
 		}
 		public override void AddRecipes()
 		{
@@ -91,12 +93,13 @@ namespace RijamsMod.Items.Pets
 			Item.UseSound = SoundID.Item25;
 		}
 
-		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		public override bool? UseItem(Player player)
 		{
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
 			{
 				player.AddBuff(Item.buffType, 3600, true);
 			}
+			return true;
 		}
 		public override void AddRecipes()
 		{
@@ -128,12 +131,13 @@ namespace RijamsMod.Items.Pets
 			Item.UseSound = SoundID.Item46;
 		}
 
-		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		public override bool? UseItem(Player player)
 		{
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
 			{
 				player.AddBuff(Item.buffType, 3600, true);
 			}
+			return true;
 		}
 	}
 	public class FluffaloEgg : ModItem
@@ -156,12 +160,13 @@ namespace RijamsMod.Items.Pets
 			Item.UseSound = SoundID.Item46;
 		}
 
-		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		public override bool? UseItem(Player player)
 		{
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
 			{
 				player.AddBuff(Item.buffType, 3600, true);
 			}
+			return true;
 		}
 	}
 
@@ -184,12 +189,13 @@ namespace RijamsMod.Items.Pets
 			Item.UseSound = SoundID.Item46;
 		}
 
-		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		public override bool? UseItem(Player player)
 		{
 			if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
 			{
 				player.AddBuff(Item.buffType, 3600, true);
 			}
+			return true;
 		}
 	}
 }

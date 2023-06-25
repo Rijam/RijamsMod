@@ -15,6 +15,10 @@ namespace RijamsMod.Items
 	//and code adapted from Alchemist NPC (BrewerHorcrux.cs and similar)
 	public class CaughtHarpy : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+		}
 		public override string Texture => Mod.Name + "/NPCs/TownNPCs/Harpy";
 		public override void SetStaticDefaults()
 		{
@@ -22,6 +26,7 @@ namespace RijamsMod.Items
 			// Tooltip.SetDefault("'Friends? I am friendly.'");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 25));
 			Item.ResearchUnlockCount = 3;
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.FleshBlock;
 		}
 
 		public override void SetDefaults()
@@ -70,12 +75,17 @@ namespace RijamsMod.Items
 	}
 	public class CaughtIntTrav : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+		}
 		public override string Texture => Mod.Name + "/NPCs/TownNPCs/InterstellarTraveler";
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Interstellar Traveler");
 			// Tooltip.SetDefault("'I'm pretty far from home, but this place is pretty cool.'");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 26));
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.FleshBlock;
 		}
 
 		public override void SetDefaults()
@@ -123,12 +133,17 @@ namespace RijamsMod.Items
 	}
 	public class CaughtHellTrader : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+		}
 		public override string Texture => Mod.Name + "/NPCs/TownNPCs/HellTrader";
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Hell Trader");
 			//Tooltip.SetDefault("'Hey, human! Good to see you again.'");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 23));
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.FleshBlock;
 		}
 
 		public override void SetDefaults()
@@ -193,6 +208,7 @@ namespace RijamsMod.Items
 		public override void SetStaticDefaults()
 		{
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 27));
+			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.FleshBlock;
 		}
 
 		public override void SetDefaults()

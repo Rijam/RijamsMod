@@ -87,18 +87,25 @@ namespace RijamsMod
 				.AddTile(TileID.CookingPots)
 				.Register();
 
-			Recipe.Create(ItemID.FleshBlock, 25)
-				.AddIngredient(ModContent.ItemType<CaughtHarpy>())
-				.AddTile(TileID.MeatGrinder)
-				.Register();
-			Recipe.Create(ItemID.FleshBlock, 25)
-				.AddIngredient(ModContent.ItemType<CaughtHellTrader>())
-				.AddTile(TileID.MeatGrinder)
-				.Register();
-			Recipe.Create(ItemID.FleshBlock, 25)
-				.AddIngredient(ModContent.ItemType<CaughtIntTrav>())
-				.AddTile(TileID.MeatGrinder)
-				.Register();
+			if (ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs)
+			{
+				Recipe.Create(ItemID.FleshBlock, 25)
+					.AddIngredient(ModContent.ItemType<CaughtHarpy>())
+					.AddTile(TileID.MeatGrinder)
+					.Register();
+				Recipe.Create(ItemID.FleshBlock, 25)
+					.AddIngredient(ModContent.ItemType<CaughtHellTrader>())
+					.AddTile(TileID.MeatGrinder)
+					.Register();
+				Recipe.Create(ItemID.FleshBlock, 25)
+					.AddIngredient(ModContent.ItemType<CaughtIntTrav>())
+					.AddTile(TileID.MeatGrinder)
+					.Register();
+				Recipe.Create(ItemID.FleshBlock, 1)
+					.AddIngredient(ModContent.ItemType<CaughtIntTrav>())
+					.AddTile(TileID.MeatGrinder)
+					.Register();
+			}
 		}
 
 		public const string DefendersGear = "RijamsMod:DefendersGear";

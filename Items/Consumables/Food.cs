@@ -114,6 +114,10 @@ namespace RijamsMod.Items.Consumables
 		{
 			
 			CreateRecipe()
+				.AddIngredient(ItemID.Mushroom)
+				.AddTile(TileID.Campfire)
+				.Register();
+			CreateRecipe()
 				.AddIngredient(ItemID.GreenMushroom)
 				.AddTile(TileID.Campfire)
 				.Register();
@@ -123,14 +127,14 @@ namespace RijamsMod.Items.Consumables
 				.Register();
 			CreateRecipe()
 				.AddIngredient(ItemID.GlowingMushroom)
-				.AddTile(TileID.Campfire)
-				.Register();
-			CreateRecipe()
-				.AddIngredient(ItemID.Mushroom)
 				.AddTile(TileID.Campfire)
 				.Register();
 			
 			CreateRecipe()
+				.AddIngredient(ItemID.Mushroom)
+				.AddTile(TileID.CookingPots)
+				.Register();
+			CreateRecipe()
 				.AddIngredient(ItemID.GreenMushroom)
 				.AddTile(TileID.CookingPots)
 				.Register();
@@ -140,10 +144,6 @@ namespace RijamsMod.Items.Consumables
 				.Register();
 			CreateRecipe()
 				.AddIngredient(ItemID.GlowingMushroom)
-				.AddTile(TileID.CookingPots)
-				.Register();
-			CreateRecipe()
-				.AddIngredient(ItemID.Mushroom)
 				.AddTile(TileID.CookingPots)
 				.Register();
 		}

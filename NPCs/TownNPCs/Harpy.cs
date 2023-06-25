@@ -428,6 +428,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				npcShop.Add(new Item(NPCHelper.SafelyGetCrossModItem(split, "Split/PosterHarpy")) { shopCustomPrice = 10000 });
 			}
+			npcShop.Add(ModContent.ItemType<GroupHologramItem>(),
+				new Condition(ShopConditions.IntTravQuestsS(3), ShopConditions.IntTravQuestsFb(3)),
+				Condition.NpcIsPresent(ModContent.NPCType<Harpy>()),
+				Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()),
+				Condition.NpcIsPresent(ModContent.NPCType<HellTrader>()),
+				ShopConditions.HellTraderMovedIn);
 			npcShop.Register();
 		}
 

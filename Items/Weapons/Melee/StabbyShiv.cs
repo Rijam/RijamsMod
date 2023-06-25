@@ -36,6 +36,14 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.StabbyShivProjectile>(); // The projectile is what makes a shortsword work
 			Item.shootSpeed = 2.1f; // This value bleeds into the behavior of the projectile as velocity, keep that in mind when tweaking values
 		}
+
+		public override void HoldItem(Player player)
+		{
+			if (player.whoAmI == Main.myPlayer && player.itemTime != 0)
+			{
+				player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
+			}
+		}
 	}
 	
 	public class FrostyShiv : ModItem
@@ -72,7 +80,15 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.FrostyShivProjectile>(); // The projectile is what makes a shortsword work
 			Item.shootSpeed = 2.1f; // This value bleeds into the behavior of the projectile as velocity, keep that in mind when tweaking values
 		}
-		
+
+		public override void HoldItem(Player player)
+		{
+			if (player.whoAmI == Main.myPlayer && player.itemTime != 0)
+			{
+				player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
+			}
+		}
+
 		public override void AddRecipes()
 		{
 			CreateRecipe()

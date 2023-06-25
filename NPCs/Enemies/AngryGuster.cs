@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -123,7 +124,7 @@ namespace RijamsMod.NPCs.Enemies
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
 					NPC.localAI[1]++;
-					if (NPC.localAI[1] == 1f)
+					if (NPC.localAI[1] == 1f && Collision.CanHitLine(NPC.Center, 16, 16, target.Center, 16, 16))
 					{
 						NPC.ai[1] = 1f;
 						Vector2 velocity = targetPos;
@@ -205,12 +206,16 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			base.ModifyNPCLoot(npcLoot);
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Magic.MiniGuster>(), 7));
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (NPC.CountNPCS(Type) > 3)
+			{
+				return 0f;
+			}
+			if (spawnInfo.Player.position.Y > Main.worldSurface * 16) // Below the surface. * 16 because Player.position is in pixels while Main.worldSurface is in tiles.
 			{
 				return 0f;
 			}
@@ -223,11 +228,11 @@ namespace RijamsMod.NPCs.Enemies
 			}
 			if (Main.WindyEnoughForKiteDrops)
 			{
-				spawnChance += 0.15f;
+				spawnChance += 0.1f;
 			}
 			if (Condition.InRain.IsMet())
 			{
-				spawnChance += 0.15f;
+				spawnChance += 0.1f;
 			}
 			return spawnChance;
 		}

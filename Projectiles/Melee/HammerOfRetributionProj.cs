@@ -48,6 +48,7 @@ namespace RijamsMod.Projectiles.Melee
 			{
 				PreKill(Projectile.timeLeft);
 			}
+			Projectile.spriteDirection = Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
 			Projectile.rotation += 0.4f * Projectile.direction;
 			Projectile.alpha += 25;
 		}

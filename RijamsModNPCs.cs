@@ -16,7 +16,6 @@ using RijamsMod.Items.Accessories.Misc;
 using RijamsMod.Items.Accessories.Vanity;
 using RijamsMod.Items.Materials;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Audio;
 using RijamsMod.Items.Pets;
 using RijamsMod.Buffs.Potions;
 
@@ -142,10 +141,16 @@ namespace RijamsMod
 			if (npc.type == NPCID.GreekSkeleton)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LonkheJoustingLance>(), 20));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aspis>(), 10));
 			}
 			if (npc.type == NPCID.GraniteGolem)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Granitization>(), 20));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraniteElementalCudgel>(), 20));
+			}
+			if (npc.type == NPCID.GraniteFlyer)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GraniteElementalCudgel>(), 4));
 			}
 			if (npc.type == NPCID.AngryBones || npc.type == NPCID.AngryBonesBig || npc.type == NPCID.AngryBonesBigHelmet || npc.type == NPCID.AngryBonesBigMuscle)
 			{
@@ -154,6 +159,12 @@ namespace RijamsMod
 			if (npc.type == NPCID.Paladin)
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FallenPaladinCudgel>(), 10));
+			}
+			if (npc.type == NPCID.KingSlime)
+			{
+				LeadingConditionRule notExpertRule = new(new Conditions.NotExpert());
+				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<MorphasRing>(), 7));
+				npcLoot.Add(notExpertRule);
 			}
 			if (npc.type == NPCID.QueenSlimeBoss)
 			{

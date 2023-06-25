@@ -12,6 +12,10 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 {
 	public class InfinityGavel : ModItem
 	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Infinity Gavel");

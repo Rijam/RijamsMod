@@ -3,10 +3,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
@@ -15,6 +18,8 @@ namespace RijamsMod.Projectiles.Summon.Support
 	{
 		public int cooldownTime = 0;
 		public int distRadius = 0;
+		private int targetPlayer = -1;  // If there was no player found, it will be -1.
+		private int targetPlayer2 = -1;  // If there was no player found, it will be -1.
 
 		public override void SetStaticDefaults()
 		{
@@ -135,58 +140,67 @@ namespace RijamsMod.Projectiles.Summon.Support
 			}
 
 			int delay = cooldownTime; // 30 seconds
+			// If the projectile was spawned without using the item, it'll have a cooldownTime of 0.
+			// That makes it spawn the projectile every tick.
+			if (cooldownTime == 0)
+			{
+				delay = int.MaxValue;
+			}
 			Projectile.ai[0]++; // ai[0] is the counter for when to shoot the next projectile.
 
 			if (Projectile.ai[0] >= delay) // Wait until the delay is up
 			{
 				// Search for each player within the radius and add them to the list.
-				List<Player> players = new();
-				for (int i = 0; i < Main.maxPlayers; i++)
+				if (Main.netMode != NetmodeID.Server)
 				{
-					Player searchPlayer = Main.player[i];
-					if (searchPlayer.active || !searchPlayer.dead || !searchPlayer.hostile || (searchPlayer.team == player.team && searchPlayer.team != 0))
+					Dictionary<Player, int> players = new();
+					for (int i = 0; i < Main.maxPlayers; i++)
 					{
-						double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
-						if (distance <= radius)
+						Player searchPlayer = Main.player[i];
+						if (searchPlayer.active && !searchPlayer.dead && !searchPlayer.hostile && searchPlayer.team == player.team && searchPlayer.team != 0)
 						{
-							players.Add(searchPlayer);
-						}
-					}
-				}
-				// Find the players in that list with the lowest HP.
-				int targetPlayer = -1;  // If there was no player found, it will be -1.
-				int targetPlayer2 = -1;  // If there was no player found, it will be -1.
-
-				// First, check that any players were found.
-				if (players.Count > 0)
-				{
-					Player playerWithLowestHP = players[0]; // Assign the player with the lowest HP as the first player.
-					// Go through all of the found players and find which one has the lowest HP.
-					foreach (Player foundPlayer in players)
-					{
-						if (foundPlayer.statLife < playerWithLowestHP.statLife)
-						{
-							playerWithLowestHP = foundPlayer;
-						}
-					}
-					targetPlayer = playerWithLowestHP.whoAmI; // Set the target player as the player with the lowest HP.
-					players.Remove(playerWithLowestHP); // Remove the player from the list
-
-					if (players.Count > 0) // If players only had 1 player and we removed them above, it is now empty. There would be no second player to check.
-					{
-						// Find the player in the list with the second lowest HP.
-						Player playerWithSecondLowestHP = players[0];
-						foreach (Player foundPlayer in players)
-						{
-							if (foundPlayer.statLife < playerWithSecondLowestHP.statLife)
+							double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
+							if (distance <= radius)
 							{
-								playerWithSecondLowestHP = foundPlayer;
+								//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Added player " + searchPlayer.whoAmI + " Name " + searchPlayer.name), Color.Green);
+								players.Add(searchPlayer, searchPlayer.statLife);
 							}
 						}
-						targetPlayer2 = playerWithSecondLowestHP.whoAmI;
 					}
-					// If there was no second player, the target will default to the projectile owner.
+					// Find the players in that list with the lowest HP.
+
+					// First, check that any players were found.
+					if (players.Count > 0)
+					{
+						// Sort the dictionary in descending order by value.
+						// That makes the player with the lowest HP the last pair in the dictionary.
+						Player playerWithLowestHP = players.OrderByDescending(pair => pair.Value).Last().Key;
+
+						//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("playerWithLowestHP is " + playerWithLowestHP.whoAmI + " Name " + playerWithLowestHP.name), Color.Gold);
+						targetPlayer = playerWithLowestHP.whoAmI; // Set the target player as the player with the lowest HP.
+
+						players.Remove(playerWithLowestHP); // Remove the player from the list
+
+						if (players.Count > 0) // If players only had 1 player and we removed them above, it is now empty. There would be no second player to check.
+						{
+							// Find the player in the list with the second lowest HP.
+							// Sort the dictionary in descending order by value.
+							// That makes the player with the lowest HP the last pair in the dictionary.
+							playerWithLowestHP = players.OrderByDescending(pair => pair.Value).Last().Key;
+
+							//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("2 playerWithLowestHP is " + playerWithLowestHP.whoAmI + " Name " + playerWithLowestHP.name), Color.Gold);
+							targetPlayer2 = playerWithLowestHP.whoAmI; // Set the target player as the player with the lowest HP.
+						}
+						// If there was no second player, the target will default to the projectile owner.
+					}
+					players.Clear(); // Clear the list just for good measure.
 				}
+
+				/*if (targetPlayer > 0)
+					ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer is " + targetPlayer + " Name " + Main.player[targetPlayer].name), Color.Red);
+				if (targetPlayer2 > 0)
+					ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer2 is " + targetPlayer2 + " Name " + Main.player[targetPlayer2].name), Color.Red);*/
+
 				// Spawn the Radiance projectile with the player with the lowest HP as its target.
 				Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One, ModContent.ProjectileType<Radiance>(),
 					Projectile.damage, Projectile.knockBack, Projectile.owner,
@@ -203,7 +217,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 				// Set ai[0] back to 0.
 				Projectile.ai[0] = 0;
-				players.Clear(); // Clear the list just for good measure.
 			}
 
 			#endregion
@@ -232,7 +245,11 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		public float LerpValue()
 		{
-			return MathHelper.Lerp(0f, 1f, Projectile.ai[0] / (float)cooldownTime);
+			if (cooldownTime > 0)
+			{
+				return MathHelper.Lerp(0f, 1f, Projectile.ai[0] / (float)cooldownTime);
+			}
+			return 0f;
 		}
 
 		public override Color? GetAlpha(Color lightColor)
@@ -282,11 +299,15 @@ namespace RijamsMod.Projectiles.Summon.Support
 		{
 			writer.Write(cooldownTime);
 			writer.Write(distRadius);
+			writer.Write(targetPlayer);
+			writer.Write(targetPlayer2);
 		}
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
 			cooldownTime = reader.ReadInt32();
 			distRadius = reader.ReadInt32();
+			targetPlayer = reader.ReadInt32();
+			targetPlayer2 = reader.ReadInt32();
 		}
 	}
 }

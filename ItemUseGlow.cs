@@ -33,6 +33,7 @@ namespace RijamsMod
 		public bool blendAlpha = false;
 		public bool drawOnGround = true;
 		public bool drawOnPlayer = true;
+		public bool drawInInventory = true;
 		public Color drawColor = Color.White;
 		public bool flameFlicker = false;
 		public bool discoColor = false;
@@ -79,6 +80,48 @@ namespace RijamsMod
 						drawColor,
 						rotation + angleAdd,
 						texture.Size() * 0.5f,
+						scale,
+						SpriteEffects.None,
+						0f
+					);
+				}
+			}
+		}
+		public override void PostDrawInInventory(Item item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+		{
+			if (glowTexture != null && drawInInventory)
+			{
+				Texture2D texture = glowTexture;
+				Vector2 pos = position;
+				int numTimesToDraw = 1;
+				ulong seed = 0;
+
+				Color color = this.drawColor;
+
+				if (discoColor)
+				{
+					color = new(Main.DiscoR, Main.DiscoG, Main.DiscoB, drawColor.A);
+				}
+
+				if (flameFlicker)
+				{
+					numTimesToDraw = 7;
+					seed = Main.TileFrameSeed ^ (ulong)(((long)position.Y << 32) | (uint)position.X);
+				}
+				for (int i = 0; i < numTimesToDraw; i++)
+				{
+					if (flameFlicker)
+					{
+						pos += new Vector2(Utils.RandomInt(ref seed, -5, 6) * 0.05f, Utils.RandomInt(ref seed, -8, 6) * 0.15f);
+					}
+					spriteBatch.Draw
+					(
+						texture,
+						pos,
+						frame,
+						color,
+						0,
+						origin,
 						scale,
 						SpriteEffects.None,
 						0f

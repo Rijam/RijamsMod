@@ -7,27 +7,32 @@ using Terraria;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
 using ReLogic.Content;
 
 namespace RijamsMod
 {
-	///Adapted from Clicker Class DrawLayers/HeadLayer.cs
-	///Usage: In the item's SetStaticDefaults(), Check for !Main.dedServ first, then add:
-	///```
-	///ArmorUseGlowLegs.RegisterData(Item.legSlot, new string[] { Texture + "_Legs_Glowmask", "R", "G", "B", "Special Effect" });
-	///```
-	///The key value is the slot. Item.legSlot
-	///For the string[]:
-	///		The texture of the glowmask
-	///		R, G, and B must 0 to 255
-	///		"flame" is the only special effect supported (anything else will just draw as normal).
+	///	<summary>
+	/// <br>Adapted from Clicker Class DrawLayers/HeadLayer.cs</br>
+	/// <br>Usage: In the item's SetStaticDefaults(), Check for !Main.dedServ first, then add:</br>
+	/// <br><code>ArmorUseGlowHead.RegisterData(Item.legSlot, new ArmorHeadLegsOptions(Texture + "_Legs_Glowmask", Color.White, GlowMaskEffects.LerpOnOff));</code></br>
+	/// <br>The key value is the slot. Item.legSlot</br>
+	/// <br>ArmorHeadLegsOptions Texture is the texture of the glowmask</br>
+	/// <br>ArmorHeadLegsOptions Color is the draw color. This can be omitted and it will draw White.</br>
+	/// <br>ArmorHeadLegsOptions Effects is the special effect. This can be omitted and defaults to None.</br>
+	/// </summary>
 	public class ArmorUseGlowLegs : PlayerDrawLayer
 	{
-		//slot, string[texture path, r, g, b, special effect]
-		private static Dictionary<int, string[]> GlowListLegs { get; set; }
+		// slot, options
+		private static Dictionary<int, ArmorHeadLegsOptions> GlowListLegs { get; set; }
 
-		public static void RegisterData(int legSlot, string[] values)
+		/// <summary>
+		/// Register the leg piece to have a glow mask.
+		/// </summary>
+		/// <param name="legSlot">The key value is the slot. Item.legSlot</param>
+		/// <param name="values"><br>ArmorHeadLegsOptions Texture is the texture of the glowmask</br>
+		/// <br>ArmorHeadLegsOptions Color is the draw color. This can be omitted and it will draw White.</br>
+		/// <br>ArmorHeadLegsOptions Effects is the special effect. This can be omitted and defaults to None.</br></param>
+		public static void RegisterData(int legSlot, ArmorHeadLegsOptions values)
 		{
 			if (!GlowListLegs.ContainsKey(legSlot))
 			{
@@ -37,12 +42,13 @@ namespace RijamsMod
 
 		public override void Load()
 		{
-			GlowListLegs = new Dictionary<int, string[]>();
+			GlowListLegs = new Dictionary<int, ArmorHeadLegsOptions>();
 		}
 
 		public override void Unload()
 		{
 			GlowListLegs.Clear();
+			GlowListLegs = null;
 		}
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
@@ -61,21 +67,25 @@ namespace RijamsMod
 			return new AfterParent(PlayerDrawLayers.Leggings);
 		}
 
+		private int fadeInOrOut = 0;
+		private int lerpTimer = 0;
+		private Color lerpColor = Color.White;
+
 		protected override void Draw(ref PlayerDrawSet drawInfo)
 		{
 			Player drawPlayer = drawInfo.drawPlayer;
 
-			if (!GlowListLegs.TryGetValue(drawPlayer.legs, out string[] values))
+			if (!GlowListLegs.TryGetValue(drawPlayer.legs, out ArmorHeadLegsOptions values))
 			{
 				return;
 			}
-			Asset<Texture2D> glowmask = ModContent.Request<Texture2D>(values[0]);
+			Asset<Texture2D> glowmask = ModContent.Request<Texture2D>(values.Texture);
 
 			int numTimesToDraw = 1;
 
 			ulong seed = 0;
 
-			if (values[4] == "flame")
+			if (values.Effects == GlowMaskEffects.Flame)
 			{
 				numTimesToDraw = 5;
 				seed = Main.TileFrameSeed ^ (ulong)(((long)drawPlayer.position.Y << 32) | (uint)drawPlayer.position.X);
@@ -86,14 +96,28 @@ namespace RijamsMod
 				Vector2 drawPos = drawInfo.Position - Main.screenPosition + new Vector2(drawPlayer.width / 2 - drawPlayer.legFrame.Width / 2, drawPlayer.height - drawPlayer.legFrame.Height + 4f) + drawPlayer.legPosition;
 				Vector2 legsOffset = drawInfo.legsOffset;
 
-				if (values[4] == "flame")
+				if (values.Effects == GlowMaskEffects.Flame)
 				{
 					float random1 = Utils.RandomInt(ref seed, -5, 6) * 0.05f;
 					float random2 = Utils.RandomInt(ref seed, -5, 1) * 0.15f;
 					drawPos += new Vector2(random1, random2);
 				}
 
-				Color color = drawPlayer.GetImmuneAlphaPure(new Color(int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])), drawInfo.shadow);
+				Color color = drawPlayer.GetImmuneAlphaPure(values.Color, drawInfo.shadow);
+
+				if (values.Effects == GlowMaskEffects.LerpOnOff)
+				{
+					if (fadeInOrOut == 0)
+					{
+						lerpColor = Color.Lerp(new Color(values.Color.R, values.Color.G, values.Color.B, 255), new Color(0, 0, 0, 0), lerpTimer / 600f);
+					}
+					if (fadeInOrOut == 1)
+					{
+						lerpColor = Color.Lerp(new Color(0, 0, 0, 0), new Color(values.Color.R, values.Color.G, values.Color.B, 255), lerpTimer / 600f);
+					}
+					color = drawPlayer.GetImmuneAlphaPure(lerpColor, drawInfo.shadow);
+					lerpTimer++;
+				}
 
 				DrawData drawData = new(
 					glowmask.Value, // The texture to render.
@@ -111,6 +135,19 @@ namespace RijamsMod
 
 				// Queues a drawing of a sprite. Do not use SpriteBatch in drawlayers!
 				drawInfo.DrawDataCache.Add(drawData);
+			}
+
+			if (values.Effects == GlowMaskEffects.LerpOnOff)
+			{
+				if (lerpTimer > 600)
+				{
+					fadeInOrOut++;
+					lerpTimer = 0;
+					if (fadeInOrOut > 1)
+					{
+						fadeInOrOut = 0;
+					}
+				}
 			}
 		}
 	}

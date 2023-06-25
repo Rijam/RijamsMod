@@ -232,7 +232,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.Add(new Item(ItemID.Bone) { shopCustomPrice = 250 }, Condition.DownedSkeletron);
 				shop.Add(new Item(ItemID.BoneWand) { shopCustomPrice = 12500 }, Condition.DownedSkeletron);
 				shop.Add(new Item(ItemID.BoneSword) { shopCustomPrice = 45000 });
-				shop.Add(new Item(ItemID.BonePickaxe) { shopCustomPrice = 75000 });
+				shop.Add(new Item(ItemID.BonePickaxe) { shopCustomPrice = 75000 }, Condition.DownedEarlygameBoss);
 				shop.Add(ModContent.ItemType<CaveCarrot>(), Condition.InBelowSurface, Condition.DownedOldOnesArmyAny, Condition.MoonPhasesEven);
 			}
 			if (shop.NpcType == NPCID.GoblinTinkerer)
@@ -258,24 +258,25 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}
 
+			/*
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
 				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman) && shop.NpcType == fisherman.Type)
 				{
-					if (shop.Name == "Fish" || (int)fishermanNPC.Call("GetStatusShopCycle") == 2) // Fish shop is open
+					if (shop.Name == "Fish") // Fish shop is open
 					{
 						Item hornetTail = new(ModContent.ItemType<Items.Fishing.HornetTail>());
 						int itemValue = hornetTail.GetStoreValue();
 						shop.Add(new Item(hornetTail.type) { shopCustomPrice = (int)Math.Round(itemValue * (float)fishermanNPC.Call("shopMulti")) });
 					}
-					if (shop.Name == "Bait" || (int)fishermanNPC.Call("GetStatusShopCycle") == 1) // Bait shop is open
+					if (shop.Name == "Bait") // Bait shop is open
 					{
 						Item wildBait = new(ModContent.ItemType<Items.Fishing.WildBait>());
 						int itemValue = wildBait.GetStoreValue();
 						shop.Add(new Item(wildBait.type) { shopCustomPrice = (int)Math.Round(itemValue * (float)fishermanNPC.Call("shopMulti")) }, Condition.AnglerQuestsFinishedOver(3));
 					}
 				}
-			}
+			}*/
 
 		}
 		// TODO: Figure out the new way to add items to the Traveling Merchant.

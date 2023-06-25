@@ -2,8 +2,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Ranged
@@ -51,7 +53,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 				flash.frameRate = 5;
 				flash.colorNoAlpha = new(255, 255, 255);
 				flash.alpha = 0;
-				//flash.flashCondition = () => TimeForAltShot() == true;
+				flash.flashCondition = () => numTimesShot % 10 == 0;
 				flash.forceFirstFrame = true;
 				flash.animationLoop = false;
 			}
@@ -72,7 +74,8 @@ namespace RijamsMod.Items.Weapons.Ranged
 			// Main.NewText(numTimesShot);
 			var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 			flash.flashCondition = () => false;
-			if (TimeForAltShot()) // Every 10th shot.
+			//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("numTimesShot % 10 " + numTimesShot % 10), Color.White);
+			if (numTimesShot % 10 == 0) // Every 10th shot.
 			{
 				flash.flashCondition = () => true;
 				Projectile aqua = Projectile.NewProjectileDirect(source, position, velocity * 1.4f, ProjectileID.WaterStream, damage, knockback, Main.myPlayer);
@@ -94,11 +97,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(0, -4);
-		}
-
-		public bool TimeForAltShot()
-		{
-			return numTimesShot % 10 == 0; // Every 10th shot.
 		}
 	}
 }

@@ -1,16 +1,10 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.IO;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Terraria.Audio;
-using RijamsMod.Items.Weapons.Magic;
 using RijamsMod.Items;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace RijamsMod
 {
@@ -50,6 +44,7 @@ namespace RijamsMod
 
 		public int supportMinionRadiusIncrease = 0;
 		public float criticalHitAdditionalDamage = 0f;
+		public float knockbackSusceptibility = 1f;
 
 		public override void ResetEffects()
 		{
@@ -73,7 +68,6 @@ namespace RijamsMod
 			hailfireBootsBoost = false;
 			flaskBuff = 0;
 			skywareArmorSetBonus = 0;
-			//skywareArmorSetBonusTimer = 0;
 			bleedingOut = false;
 			soaringPotion = false;
 			warriorRing = false;
@@ -86,6 +80,7 @@ namespace RijamsMod
 
 			supportMinionRadiusIncrease = 0;
 			criticalHitAdditionalDamage = 0f;
+			knockbackSusceptibility = 1f;
 		}
 
 		public override void UpdateDead()
@@ -282,6 +277,11 @@ namespace RijamsMod
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 		{
 			modifiers.CritDamage += criticalHitAdditionalDamage;
+		}
+		public override void ModifyHurt(ref Player.HurtModifiers modifiers)
+		{
+			MathHelper.Clamp(knockbackSusceptibility, 0, 10);
+			modifiers.Knockback *= knockbackSusceptibility;
 		}
 	}
 }

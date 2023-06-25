@@ -208,7 +208,7 @@ namespace RijamsMod.Items
 					tooltips.Add(new TooltipLine(Mod, "SStats4", "+2.5% Damage"));
 					tooltips.Add(new TooltipLine(Mod, "SStats5", "+0.25 Minion Knockback"));
 					tooltips.Add(new TooltipLine(Mod, "SStats6", "+10% Movement Speed"));
-					tooltips.Add(new TooltipLine(Mod, "SStats7", "Does not provide increase life regeneration in Expert Mode"));
+					tooltips.Add(new TooltipLine(Mod, "SStats7", "Does not provide increased life regeneration in Expert Mode"));
 					tooltips.Add(new TooltipLine(Mod, "SOverride", "Counts as a Well Fed buff"));
 				}
 				else
@@ -489,6 +489,10 @@ namespace RijamsMod.Items
 		}
 		public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
 		{
+			if (item.type == ItemID.KingSlimeBossBag)
+			{
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Accessories.Misc.MorphasRing>(), 7));
+			}
 			if (item.type == ItemID.EyeOfCthulhuBossBag)
 			{
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<BloodyArrow>(), 1, 20, 50));

@@ -99,6 +99,15 @@ Mods: {
 					'''
 			}
 
+			Aspis: {
+				DisplayName: Aspis
+				Tooltip:
+					'''
+					+1 Defense
+					+50% Knockback resistance
+					'''
+			}
+
 			# Items/Accessories/Magic
 			
 			CosmicSorcery: {
@@ -268,6 +277,15 @@ Mods: {
 					'''
 			}
 
+			MorphasRing: {
+				DisplayName: Morpha's Ring
+				Tooltip:
+					'''
+					+36% Critical Hit Damage
+					'From an Aquatic Mass'
+					'''
+			}
+
 			# Items/Accessories/Movement
 			
 			DifferentBundleOfBalloons: {
@@ -412,7 +430,11 @@ Mods: {
 
 			ControlGlove: {
 				DisplayName: Control Glove
-				Tooltip: Enables auto swing for all minion and sentry weapons
+				Tooltip:
+					'''
+					+2 Support minion radius
+					Enables auto swing for all minion and sentry weapons
+					'''
 			}
 
 			HailfirePygmyNecklace: {
@@ -478,6 +500,7 @@ Mods: {
 					+10% Whip size
 					+5% Whip damage
 					+100% Summon knockback
+					+2 Support minion radius
 					+4 Defense
 					Enables auto swing for all summon weapons
 					'''
@@ -490,6 +513,7 @@ Mods: {
 					+12% Whip speed
 					+10% Whip size
 					+100% Summon knockback
+					+2 Support minion radius
 					Enables auto swing for all summon weapons
 					'''
 			}
@@ -634,6 +658,7 @@ Mods: {
 					'''
 					+5% Summon damage
 					+1 summon capacity
+					+2 Support minion radius
 					'''
 			}
 
@@ -946,12 +971,7 @@ Mods: {
 
 			InformationInterface: {
 				DisplayName: Information Interface
-				Tooltip:
-					'''
-					Displays your stats and bonuses
-					Hold Left Shift to see all player stats
-					Hold Left Control to see all damage stats
-					'''
+				Tooltip: Displays your stats and bonuses
 			}
 
 			LifeDisplay: {
@@ -1064,6 +1084,11 @@ Mods: {
 
 			SunplatePillarBlock: {
 				DisplayName: Sunplate Pillar Block
+				Tooltip: ""
+			}
+
+			GroupHologramItem: {
+				DisplayName: Group Hologram
 				Tooltip: ""
 			}
 
@@ -1394,6 +1419,11 @@ Mods: {
 					'''
 			}
 
+			MiniGuster: {
+				DisplayName: Mini Guster
+				Tooltip: "'Live Guster Reaction'"
+			}
+
 			# Items/Weapons/Melee
 			
 			BoneHeadJoustingLance: {
@@ -1407,7 +1437,11 @@ Mods: {
 
 			FrostyShiv: {
 				DisplayName: Frosty Shiv
-				Tooltip: Inflicts Frostbite
+				Tooltip:
+					'''
+					Inflicts Frostbite
+					+25% Critical Hit Damage
+					'''
 			}
 
 			Granitization: {
@@ -1503,7 +1537,7 @@ Mods: {
 
 			StabbyShiv: {
 				DisplayName: Stabby Shiv
-				Tooltip: ""
+				Tooltip: +25% Critical Hit Damage
 			}
 
 			# Items/Weapons/Ranged
@@ -1669,14 +1703,26 @@ Mods: {
 				Tooltip: ""
 			}
 
-			# Items/Weapons/Summon/Cudgels
+			# Items/Weapons/Summon/Support
 			
+			HarpyIdolCudgel: {
+				DisplayName: Harpy Idol Cudgel
+				Tooltip:
+					'''
+					Summons a Harpy Idol to defend you
+					Players on the same team within its aura receive:
+					+3 defense
+					+1% damage reduction
+					5 tile radius
+					'''
+			}
+
 			CobaltProtectorCudgel: {
 				DisplayName: Cobalt Protector Cudgel
 				Tooltip:
 					'''
 					Summons a Cobalt Protector to defend you
-					Players within its aura receive:
+					Players on the same team within its aura receive:
 					+5 defense
 					+2% damage reduction
 					10 tile radius
@@ -1688,7 +1734,7 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a Crystal Cluster to defend you
-					Players within its aura receive:
+					Players on the same team within its aura receive:
 					+7 defense
 					+4% damage reduction
 					15 tile radius
@@ -1700,22 +1746,10 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a Fallen Paladin to defend you
-					Players within its aura receive:
+					Players on the same team within its aura receive:
 					+10 defense
 					+5% damage reduction
 					20 tile radius
-					'''
-			}
-
-			HarpyIdolCudgel: {
-				DisplayName: Harpy Idol Cudgel
-				Tooltip:
-					'''
-					Summons a Harpy Idol to defend you
-					Players within its aura receive:
-					+3 defense
-					+1% damage reduction
-					5 tile radius
 					'''
 			}
 
@@ -1724,11 +1758,23 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a Stardust Protector to defend you
-					Players within its aura receive:
+					Players on the same team within its aura receive:
 					+13 defense
 					+8% damage reduction
 					30 tile radius
 					Will occasionally attack targeted enemies
+					'''
+			}
+
+			GraniteElementalCudgel: {
+				DisplayName: Granite Elemental Cudgel
+				Tooltip:
+					'''
+					Summons a Granite Elemental to heal you
+					The player on the same team with the lowest HP
+					  within its aura will be targeted
+					20 HP every 40 seconds
+					10 tile radius
 					'''
 			}
 
@@ -1737,7 +1783,8 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a Sanity Flower to heal you
-					The player with the lowest HP within its aura will be targeted
+					The player on the same team with the lowest HP
+					  within its aura will be targeted
 					20 HP every 30 seconds
 					15 tile radius
 					'''
@@ -1748,7 +1795,8 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a Radiant Lantern to heal you
-					Two players with the lowest HP within its aura will be targeted
+					Two players on the same team with the lowest HP
+					  within its aura will be targeted
 					20 HP every 30 seconds
 					30 tile radius
 					'''
@@ -2375,6 +2423,11 @@ Mods: {
 				Description: +8 summon tag damage
 			}
 
+			ForbiddenWhipDebuff: {
+				DisplayName: Forbidden Whipped
+				Description: Reduces enemy velocity by 20% when struck by a minion
+			}
+
 			SulfuricAcid: {
 				DisplayName: Sulfuric Acid
 				Description:
@@ -2383,11 +2436,6 @@ Mods: {
 					(-8 HP/Sec)
 					(-10% damage)
 					'''
-			}
-
-			ForbiddenWhipDebuff: {
-				DisplayName: Forbidden Whip Debuff
-				Description: Reduces enemy velocity by 20% when struck by a minion
 			}
 
 			# Buffs/Minions
@@ -2473,7 +2521,7 @@ Mods: {
 			}
 
 			RadiantLanternBuff: {
-				DisplayName: Radiant Lantern Buff
+				DisplayName: Radiant Lantern
 				Description:
 					'''
 					The Radiant Lantern will heal you
@@ -2484,13 +2532,24 @@ Mods: {
 			}
 
 			SanityFlowerBuff: {
-				DisplayName: Sanity Flower Buff
+				DisplayName: Sanity Flower
 				Description:
 					'''
 					The Sanity Flower will heal you
 					Players within its aura will be healed
 					20 HP every 30 seconds
 					15 tile radius
+					'''
+			}
+
+			GraniteElementalBuff: {
+				DisplayName: Granite Elemental Buff
+				Description:
+					'''
+					The Granite Elemental to heal you
+					Players within its aura will be healed
+					20 HP every 40 seconds
+					10 tile radius
 					'''
 			}
 
@@ -2533,7 +2592,7 @@ Mods: {
 			}
 
 			DwarfStarBuff: {
-				DisplayName: Dwarf Star Buff
+				DisplayName: Dwarf Star
 				Description: Enemies are lit ablaze upon contact
 			}
 
@@ -2590,7 +2649,7 @@ Mods: {
 			}
 
 			BabyBloodEelBuff: {
-				DisplayName: Baby Blood Eel Buff
+				DisplayName: Baby Blood Eel
 				Description: WIP
 			}
 		}
@@ -2675,25 +2734,29 @@ Mods: {
 			SulfurSnowmanRocket.DisplayName: Sulfur Snowman Rocket
 			AetherLanternProj.DisplayName: Aether Lantern
 			WindGust.DisplayName: Wind Gust
-			LanternLightShining.DisplayName: Lantern Light Shining
-			LanternLightAether.DisplayName: Lantern Light Aether
-			LanternLightAvoliteBlue.DisplayName: Lantern Light Avolite Blue
-			LanternLightAvoliteRed.DisplayName: Lantern Light Avolite Red
-			LanternLightAvoliteYellow.DisplayName: Lantern Light Avolite Yellow
-			LanternLightFrostburn.DisplayName: Lantern Light Frostburn
-			LanternLightJackO.DisplayName: Lantern Light Jack O
-			LanternLightNebula.DisplayName: Lantern Light Nebula
-			LanternLightPeace.DisplayName: Lantern Light Peace
-			LanternLightRainbow.DisplayName: Lantern Light Rainbow
-			LanternLightShadow.DisplayName: Lantern Light Shadow
-			LanternLightSpectre.DisplayName: Lantern Light Spectre
-			LanternLightSulfuric.DisplayName: Lantern Light Sulfuric
-			LanternLightUltrabright.DisplayName: Lantern Light Ultrabright
-			LanternLightVicious.DisplayName: Lantern Light Vicious
-			LanternLightVile.DisplayName: Lantern Light Vile
-			LanternLightWater.DisplayName: Lantern Light Water
+			LanternLightShining.DisplayName: Shining Lantern Light
+			LanternLightAether.DisplayName: Aether Lantern Light
+			LanternLightAvoliteBlue.DisplayName: Blue Avolite Lantern Light
+			LanternLightAvoliteRed.DisplayName: Red Avolite Lantern Light
+			LanternLightAvoliteYellow.DisplayName: Yellow Avolite Lantern Light
+			LanternLightFrostburn.DisplayName: Frostburn Lantern Light
+			LanternLightJackO.DisplayName: Jack O Lantern Light
+			LanternLightNebula.DisplayName: Nebula Lantern Light
+			LanternLightPeace.DisplayName: Peace Lantern Light
+			LanternLightRainbow.DisplayName: Rainbow Lantern Light
+			LanternLightShadow.DisplayName: Shadow Lantern Light
+			LanternLightSpectre.DisplayName: Spectre Lantern Light
+			LanternLightSulfuric.DisplayName: Sulfuric Lantern Light
+			LanternLightUltrabright.DisplayName: Ultrabright Lantern Light
+			LanternLightVicious.DisplayName: Vicious Lantern Light
+			LanternLightVile.DisplayName: Vile Lantern Light
+			LanternLightWater.DisplayName: Water Lantern Light
 			BabyStardustDragon.DisplayName: Baby Stardust Dragon
 			BabyBloodEel.DisplayName: Baby Blood Eel
+			GraniteElemental.DisplayName: Granite Elemental
+			GraniteEnergy.DisplayName: Granite Energy
+			MiniGusterProj.DisplayName: Mini Guster
+			MiniWindGust.DisplayName: Mini Wind Gust
 		}
 
 		Tiles: {

@@ -16,7 +16,7 @@ namespace RijamsMod.Items.Armor.Infernic
 			// Tooltip.SetDefault("+60 Max mana\n+1 Minion count");
 			if (!Main.dedServ)
 			{
-				ArmorUseGlowHead.RegisterData(Item.headSlot, new string[] { Texture + "_Head_Glowmask", "255", "255", "255", "none" });
+				ArmorUseGlowHead.RegisterData(Item.headSlot, new ArmorHeadLegsOptions(Texture + "_Head_Glowmask"));
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace RijamsMod.Items.Armor.Infernic
 			// Tooltip.SetDefault("+5% Movement speed\n10% reduced mana usage\n+1 mana regeneration bonus");
 			if (!Main.dedServ)
 			{
-				ArmorUseGlowLegs.RegisterData(Item.legSlot, new string[] { Texture + "_Legs_Glowmask", "255", "255", "255", "none" });
+				ArmorUseGlowLegs.RegisterData(Item.legSlot, new ArmorHeadLegsOptions(Texture + "_Legs_Glowmask"));
 			}
 		}
 

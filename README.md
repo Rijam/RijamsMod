@@ -14,10 +14,10 @@ Rijam's Mod is a bunch of random additions created by Rijam. This mod is mostly 
   - Spawns randomly in the Underworld, can move in in Hardmode.
 - Snugget Town Pet: License sold after 60% Bestiary completion and Interstellar Traveler is present.
 
-## 235 new items and weapons throughout the game's progression
-- 65 weapons: 12 Melee, 9 Ranged, 23 Magic, 21 Summoner.
+## 240 new items and weapons throughout the game's progression
+- 67 weapons: 12 Melee, 9 Ranged, 24 Magic, 22 Summoner.
 - 13 ammo types.
-- 42 accessories.
+- 44 accessories.
 - 26 armor pieces.
 - 13 vanity items + 3 dyes.
 - 13 potions/food.
@@ -29,7 +29,7 @@ Rijam's Mod is a bunch of random additions created by Rijam. This mod is mostly 
 
 ## Miscellaneous additions
 - 8 new enemies.
-- 10 tiles.
+- 11 tiles.
 - Play pianos with the Pianist's Glove.
 - Config to customize the mod.
 

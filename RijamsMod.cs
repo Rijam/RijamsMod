@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using RijamsMod.Items.Weapons;
 using RijamsMod.NPCs;
+using RijamsMod.NPCs.TownNPCs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,12 +89,47 @@ namespace RijamsMod
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CorruptionOrHardmode") }, 40);
+				bossesAsNPCs.Call("AddToShop", "WithDiv", "KingSlime", ModContent.ItemType<Items.Accessories.Misc.MorphasRing>(), new List<Condition>() { }, 0.17f);
 			}
+			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
+			{
+				fishermanNPC.Call("AddToShop", "DefaultPrice", "Fish", ModContent.ItemType<Items.Fishing.HornetTail>(), new List<Condition>() { });
+				fishermanNPC.Call("AddToShop", "CustomPrice", "Bait", ModContent.ItemType<Items.Fishing.WildBait>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(3) }, 5000);
+			}
+
 			if (ModLoader.TryGetMod("DialogueTweak", out Mod dialogueTweak))
 			{
+				Func<Rectangle> frame = () => new(0, 0, 44, 44);
+
 				dialogueTweak.Call("ReplaceExtraButtonIcon", 
-					ModContent.NPCType<NPCs.TownNPCs.InterstellarTraveler>(), 
-					"RijamsMod/Items/Quest/OddDevice");
+					ModContent.NPCType<InterstellarTraveler>(),
+					"RijamsMod/Items/Quest/Icon_QuestAvailable",
+					() => NPCHelper.NumberOfQuestsCompleted() < NPCHelper.NUMBEROFQUESTS && !InterstellarTraveler.showingQuestChecklistButton,
+					frame);
+
+				dialogueTweak.Call("ReplaceExtraButtonIcon",
+					ModContent.NPCType<InterstellarTraveler>(),
+					"RijamsMod/Items/Quest/Icon_QuestComplete",
+					() => NPCHelper.NumberOfQuestsCompleted() >= NPCHelper.NUMBEROFQUESTS && !InterstellarTraveler.showingQuestChecklistButton,
+					frame);
+
+				dialogueTweak.Call("ReplaceExtraButtonIcon",
+					ModContent.NPCType<InterstellarTraveler>(),
+					"RijamsMod/Items/Quest/Icon_QuestChecklistNone",
+					() => NPCHelper.NumberOfQuestsCompleted() == 0 && InterstellarTraveler.showingQuestChecklistButton,
+					frame);
+
+				dialogueTweak.Call("ReplaceExtraButtonIcon",
+					ModContent.NPCType<InterstellarTraveler>(),
+					"RijamsMod/Items/Quest/Icon_QuestChecklistPartial",
+					() => NPCHelper.NumberOfQuestsCompleted() > 0 && NPCHelper.NumberOfQuestsCompleted() < NPCHelper.NUMBEROFQUESTS && InterstellarTraveler.showingQuestChecklistButton,
+					frame);
+
+				dialogueTweak.Call("ReplaceExtraButtonIcon",
+					ModContent.NPCType<InterstellarTraveler>(),
+					"RijamsMod/Items/Quest/Icon_QuestChecklistAll",
+					() => NPCHelper.NumberOfQuestsCompleted() >= NPCHelper.NUMBEROFQUESTS && InterstellarTraveler.showingQuestChecklistButton,
+					frame);
 			}
 		}
 

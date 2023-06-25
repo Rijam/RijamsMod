@@ -4,8 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
@@ -126,7 +128,17 @@ namespace RijamsMod.Projectiles.Summon.Support
 				Player player = Main.player[newTarget];
 				if (Projectile.Hitbox.Intersects(player.Hitbox))
 				{
-					player.Heal(20);
+					//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Healing " + player.whoAmI + " Name " + player.name), Color.Lime);
+					if (Main.netMode == NetmodeID.SinglePlayer)
+					{
+						player.Heal(20);
+					}
+					else if (Main.netMode != NetmodeID.Server)
+					{
+						NetMessage.SendData(MessageID.SpiritHeal, number: player.whoAmI, number2: 20);
+					}
+					//player.Heal(20);
+					//player.HealEffect(20, true);
 					SoundEngine.PlaySound(SoundID.Item4 with { Pitch = 0.5f }, Projectile.Center);
 					Projectile.Kill();
 				}

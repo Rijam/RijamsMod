@@ -21,7 +21,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.damage = 60;
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Magic;
-			Item.channel = true; //Channel so that you can hold the weapon [Important]
 			Item.mana = 5;
 			Item.rare = ItemRarityID.Yellow; //8
 			Item.width = 60;

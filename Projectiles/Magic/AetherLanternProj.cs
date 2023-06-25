@@ -1,20 +1,12 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.Enums;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System;
-using Terraria.Audio;
-using Terraria.GameContent.UI.States;
-using System.IO;
 using Terraria.DataStructures;
-using ReLogic.Peripherals.RGB;
 using Terraria.Graphics.Shaders;
-using Terraria.GameContent.RGB;
-using FullSerializer.Internal;
-using static Humanizer.In;
 
 namespace RijamsMod.Projectiles.Magic
 {

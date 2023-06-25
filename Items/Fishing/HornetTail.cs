@@ -19,7 +19,7 @@ namespace RijamsMod.Items.Fishing
 			Item.width = 38;
 			Item.height = 38;
 			Item.rare = ItemRarityID.White;
-			Item.value = 1000;
+			Item.value = 2000;
 			Item.maxStack = Item.CommonMaxStack;
 		}
 	}

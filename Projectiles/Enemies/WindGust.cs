@@ -24,6 +24,7 @@ namespace RijamsMod.Projectiles.Enemies
 			Projectile.timeLeft = 20;
 			Projectile.knockBack = 16f;
 			Projectile.scale = 1.2f;
+			Projectile.ownerHitCheck = true;
 		}
 
 		public override void AI()

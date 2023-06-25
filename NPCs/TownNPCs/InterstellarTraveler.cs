@@ -660,13 +660,18 @@ namespace RijamsMod.NPCs.TownNPCs
 		#endregion
 
 		#region Buttons
+
+		public static bool showingQuestChecklistButton = false;
+
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
 			button = Language.GetTextValue("LegacyInterface.28"); //Shop
 			button2 = Language.GetTextValue("LegacyInterface.64"); //Quest
+			showingQuestChecklistButton = false;
 			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
 			{
 				button2 = "Quest Checklist";
+				showingQuestChecklistButton = true;
 			}
 		}
 

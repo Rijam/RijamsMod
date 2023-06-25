@@ -16,6 +16,7 @@ namespace RijamsMod.Items.Information
 			// DisplayName.SetDefault("Life Display");
 			// Tooltip.SetDefault("Displays your current life bonuses");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ManaDisplay>(); // Shimmer transforms the item.
 		}
 
@@ -43,6 +44,7 @@ namespace RijamsMod.Items.Information
 			// DisplayName.SetDefault("Mana Display");
 			// Tooltip.SetDefault("Displays your current mana bonuses");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<DefenseDisplay>(); // Shimmer transforms the item.
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -61,6 +63,7 @@ namespace RijamsMod.Items.Information
 			// DisplayName.SetDefault("Defense Display");
 			// Tooltip.SetDefault("Displays your current defense and knockback bonuses");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<MovementDisplay>(); // Shimmer transforms the item.
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -82,6 +85,7 @@ namespace RijamsMod.Items.Information
 			// DisplayName.SetDefault("Movement Display");
 			// Tooltip.SetDefault("Displays your current movement bonuses");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<DamageDisplay>(); // Shimmer transforms the item.
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -105,6 +109,7 @@ namespace RijamsMod.Items.Information
 			// DisplayName.SetDefault("Damage Display");
 			// Tooltip.SetDefault("Displays your current damage bonuses\nValues greater than 1 means increased damage");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<CritDisplay>(); // Shimmer transforms the item.
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -130,6 +135,7 @@ namespace RijamsMod.Items.Information
 			// DisplayName.SetDefault("Critical Hit Display");
 			// Tooltip.SetDefault("Displays your current critical hit bonuses");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<SummonsDisplay>(); // Shimmer transforms the item.
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -156,6 +162,7 @@ namespace RijamsMod.Items.Information
 			// DisplayName.SetDefault("Summons Display");
 			// Tooltip.SetDefault("Displays your current summons capacity and bonus");
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(60, 2));
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<LifeDisplay>(); // Shimmer transforms the item.
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -303,6 +310,7 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "Luck", "[i:LuckPotionGreater] Luck: " + StatCalc.Luck()));
 				tooltips.Add(new TooltipLine(Mod, "CriticalHitAdditionalDamage", "[i:RijamsMod/CritDisplay] [Rijam's Mod] Additional Critical Hit Damage: " + StatCalc.CriticalHitAdditionalDamage()));
 				tooltips.Add(new TooltipLine(Mod, "SupportMinionRadiusIncrease", "[i:RijamsMod/SummonsDisplay] [Rijam's Mod] Support Minion Radius Increase: " + StatCalc.SupportMinionRadiusIncrease()));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackSusceptibility", "[i:RijamsMod/CritDisplay] [Rijam's Mod] Knockback Susceptibility: " + StatCalc.KnockbackSusceptibility()));
 				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Pixels: " + Main.LocalPlayer.position.X));
 				tooltips.Add(new TooltipLine(Mod, "PosY", "[i:WorldGlobe] Position Y Pixels: " + Main.LocalPlayer.position.Y));
 				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Tiles: " + Main.LocalPlayer.position.X / 16f));
@@ -331,6 +339,10 @@ namespace RijamsMod.Items.Information
 			}
 			if (!isLeftShiftHeld && !isLeftCtrlHeld && !isRightShiftHeld && !isRightControlHeld)
 			{
+				tooltips.Add(new TooltipLine(Mod, "HoldLeftShift", "Hold Left Shift to see all player stats"));
+				tooltips.Add(new TooltipLine(Mod, "HoldLeftContro", "Hold Left Control to see all damage stats"));
+				tooltips.Add(new TooltipLine(Mod, "HoldRightShift", "Hold Right Shift to see all miscellaneous stats"));
+				tooltips.Add(new TooltipLine(Mod, "HoldRightControl", "Hold Right Control to see all permanent stats"));
 				tooltips.Add(new TooltipLine(Mod, "lifeRegen", "[i:Heart] Life regeneration: " + StatCalc.LifeRegen()));
 				tooltips.Add(new TooltipLine(Mod, "manaRegen", "[i:Star] Mana regeneration: " + StatCalc.ManaRegen()));
 				tooltips.Add(new TooltipLine(Mod, "Endurance", "[i:CobaltShield] Damage Reduction: " + StatCalc.Endurance() + "%"));
@@ -360,18 +372,18 @@ namespace RijamsMod.Items.Information
 		static readonly Player player = Main.LocalPlayer;
 		static readonly RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 
-		private static string colorLife = "[c/ff0000:";
-		private static string colorMana = "[c/0000ff:";
-		private static string colorDefense = "[c/999999:";
-		private static string colorKnockback = "[c/ff0077:";
-		private static string colorMovement = "[c/00ff00:";
-		private static string colorDamage = "[c/ff00ff:";
-		private static string colorSpeed = "[c/00ffff:";
-		private static string colorCrit = "[c/ffff00:";
-		private static string colorAP = "[c/00ff77:";
-		private static string colorSummon = "[c/ff7700:";
-		private static string colorOther = "[c/ff7777:";
-		private static string colorClose = "]";
+		private static readonly string colorLife = "[c/ff0000:";
+		private static readonly string colorMana = "[c/0000ff:";
+		private static readonly string colorDefense = "[c/999999:";
+		private static readonly string colorKnockback = "[c/ff0077:";
+		private static readonly string colorMovement = "[c/00ff00:";
+		private static readonly string colorDamage = "[c/ff00ff:";
+		private static readonly string colorSpeed = "[c/00ffff:";
+		private static readonly string colorCrit = "[c/ffff00:";
+		private static readonly string colorAP = "[c/00ff77:";
+		private static readonly string colorSummon = "[c/ff7700:";
+		private static readonly string colorOther = "[c/ff7777:";
+		private static readonly string colorClose = "]";
 
 		//Life
 		public static string StatLifeMax() => colorLife + player.statLifeMax.ToString() + colorClose;
@@ -470,5 +482,6 @@ namespace RijamsMod.Items.Information
 		public static string Luck() => colorOther + player.luck.ToString() + colorClose;
 		public static string CriticalHitAdditionalDamage() => colorCrit + modPlayer.criticalHitAdditionalDamage + colorClose;
 		public static string SupportMinionRadiusIncrease() => colorSummon + modPlayer.supportMinionRadiusIncrease + colorClose;
+		public static string KnockbackSusceptibility() => colorKnockback + modPlayer.knockbackSusceptibility + colorClose;
 	}
 }

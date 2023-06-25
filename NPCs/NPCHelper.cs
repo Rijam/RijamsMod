@@ -126,14 +126,22 @@ namespace RijamsMod.NPCs
 			return shop2;
 		}
 
+		public const int NUMBEROFQUESTS = 5;
+
+		public static int NumberOfQuestsCompleted()
+		{
+			return RijamsModWorld.intTravQuestOddDevice.ToInt() + RijamsModWorld.intTravQuestBlankDisplay.ToInt() + RijamsModWorld.intTravQuestTPCore.ToInt() +
+				RijamsModWorld.intTravQuestMagicOxygenizer.ToInt() + RijamsModWorld.intTravQuestPrimeThruster.ToInt();
+			//Rye Jam quest is not needed
+		}
+
 		/// <summary>
 		/// Returns true if the world has completed all of the Interstellar Traveler's quests.
 		/// </summary>
 		/// <returns>bool</returns>
 		public static bool AllQuestsCompleted()
 		{
-			if (RijamsModWorld.intTravQuestOddDevice == true && RijamsModWorld.intTravQuestBlankDisplay == true && RijamsModWorld.intTravQuestTPCore == true
-				&& RijamsModWorld.intTravQuestMagicOxygenizer == true && RijamsModWorld.intTravQuestPrimeThruster == true) //Rye Jam quest is not needed
+			if (NumberOfQuestsCompleted() == 5) 
 			{
 				return true;
 			}
@@ -451,7 +459,9 @@ namespace RijamsMod.NPCs
 
 		public static string TownNPCRangeS(string range) => $"Where there are {range} or more Town NPCs in the world";
 		public static string CountTownNPCsS(int number) => $"When there are {number} or more Town NPCs in the world";
+		public static string IntTravQuestsS(int number) => $"After completing {number} or more quests for the Interstellar Traveler";
 		public static Func<bool> CountTownNPCsFb(int number) => () => NPCHelper.CountTownNPCs() >= number;
+		public static Func<bool> IntTravQuestsFb(int number) => () => NPCHelper.NumberOfQuestsCompleted() >= number;
 
 #pragma warning restore CA2211 // Non-constant fields should not be visible
 	}
