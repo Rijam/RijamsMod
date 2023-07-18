@@ -48,7 +48,7 @@ namespace RijamsMod.Items.Weapons.Melee
 			{
 				position += Vector2.Normalize(velocity);
 
-				Projectile.NewProjectile(source, position, velocity, type, damage * 2, knockback * 2, player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
 				player.manaRegenDelay = (int)player.maxRegenDelay * 2f;
 			}
 			return false;

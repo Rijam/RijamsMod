@@ -124,7 +124,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			{
 				float targetAngle = Projectile.AngleTo(center);
 				float f = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5f));
-				//Math.Clamp(f, 0f, MathHelper.ToRadians(5f));
+				//f = Math.Clamp(f, 0f, MathHelper.ToRadians(5f));
 				Projectile.velocity = f.ToRotationVector2() * minVelocity;
 			}
 			if (Projectile.velocity.Length() > minVelocity)

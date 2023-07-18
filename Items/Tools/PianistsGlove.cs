@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Utilities;
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Capture;
@@ -131,7 +132,9 @@ namespace RijamsMod.Items.Tools
 			float OneSixth = 1f / 6f;
 			int playerPosX = (int)player.Center.X / 16;
 			int playerPosY = (int)player.Center.Y / 16;
-			if (WorldGen.InWorld(playerPosX, playerPosY) && Main.tile[playerPosX, playerPosY] != null && Tiles.GlobalTiles.isPiano.Contains(Main.tile[playerPosX, playerPosY].TileType))
+			Tile tile = Main.tile[playerPosX, playerPosY];
+			ModTile modTile = TileLoader.GetTile(tile.TileType);
+			if (WorldGen.InWorld(playerPosX, playerPosY) && tile != null && (Tiles.GlobalTiles.isPiano.Contains(tile.TileType) || (modTile != null && modTile.AdjTiles.Contains(TileID.Pianos))))
 			{
 				Vector2 vector6 = new(player.position.X + (float)player.width * 0.5f, player.position.Y + (float)player.height * 0.5f);
 				float mousePosX = (float)Main.mouseX + Main.screenPosition.X - vector6.X;
@@ -145,7 +148,7 @@ namespace RijamsMod.Items.Tools
 				}
 
 				pitch = pitch * 4f - 2f;
-				Math.Clamp(pitch, -2f, 2f);
+				pitch = Math.Clamp(pitch, -2f, 2f);
 
 				range = pitch;
 

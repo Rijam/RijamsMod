@@ -51,6 +51,7 @@ namespace RijamsMod.Items.Accessories.Misc
 			player.buffImmune[BuffID.Ichor] = true;
 			player.buffImmune[BuffID.CursedInferno] = true;
 			player.buffImmune[BuffID.Frostburn] = true;
+			player.buffImmune[BuffID.ShadowFlame] = true;
 		}
 		public override void AddRecipes()
 		{
@@ -61,6 +62,7 @@ namespace RijamsMod.Items.Accessories.Misc
 				.AddIngredient(ItemID.LivingIchorBlock, 20)
 				.AddIngredient(ItemID.LivingCursedFireBlock, 20)
 				.AddIngredient(ItemID.LivingFrostFireBlock, 20)
+				.AddIngredient(ItemID.LivingDemonFireBlock, 20)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();
 		}

@@ -70,14 +70,14 @@ namespace RijamsMod.Items.Weapons.Ranged
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Projectile bullet = Projectile.NewProjectileDirect(source, Vector2.Zero, Vector2.Zero, type, 0, 0, -1);
+			Projectile bullet = new();
+			bullet.SetDefaults(type);
 			int ammoExtraUpdates = bullet.extraUpdates;
 			int penetrate = bullet.penetrate;
 			bool coldDamage = bullet.coldDamage;
 			bool tileCollide = bullet.tileCollide;
 			bool homing = ProjectileID.Sets.CultistIsResistantTo[bullet.type];
 			//int immunity = bullet.localNPCHitCooldown;
-			bullet.Kill();
 
 			// Increase the velocity if the bullet has extraUpdates
 			float velocityMultiplier = (1 - (2f / ammoExtraUpdates)) + 2;

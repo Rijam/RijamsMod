@@ -16,6 +16,10 @@ namespace RijamsMod.Projectiles.Melee
 	{
 		public override void SetStaticDefaults()
 		{
+			// If a Jellyfish is zapping and we attack it with this projectile, it will deal damage to us.
+			// This set has the projectiles for the Night's Edge, Excalibur, Terra Blade (close range), and The Horseman's Blade (close range).
+			// This set does not have the True Night's Edge, True Excalibur, or the long range Terra Beam projectiles.
+			ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
 			Main.projFrames[Type] = 4;
 		}
 
@@ -39,6 +43,8 @@ namespace RijamsMod.Projectiles.Melee
 
 			//Projectile.aiStyle = 190;
 			//AIType = ProjectileID.NightsEdge;
+
+			Projectile.noEnchantmentVisuals = true;
 		}
 
 		public override void AI()
@@ -95,6 +101,13 @@ namespace RijamsMod.Projectiles.Melee
 			{
 				Projectile.Kill();
 			}
+
+			// This for loop spawns the visuals when using Flasks (weapon imbues)
+			for (float i = -MathHelper.PiOver4; i <= MathHelper.PiOver4; i += MathHelper.PiOver2)
+			{
+				Rectangle rectangle = Utils.CenteredRectangle(Projectile.Center + (Projectile.rotation + i).ToRotationVector2() * 70f * Projectile.scale, new Vector2(60f * Projectile.scale, 60f * Projectile.scale));
+				Projectile.EmitEnchantmentVisualsAt(rectangle.TopLeft(), rectangle.Width, rectangle.Height);
+			}
 		}
 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -135,6 +148,9 @@ namespace RijamsMod.Projectiles.Melee
 				PositionInWorld = target.Center,
 				MovementVector = new Vector2(hit.HitDirection * 10, target.Center.Y - Projectile.Center.Y).SafeNormalize(Vector2.Zero)
 			});
+
+			// Set the target's hit direction to away from the player so the knockback is in the correct direction.
+			hit.HitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
 		}
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -144,6 +160,8 @@ namespace RijamsMod.Projectiles.Melee
 				PositionInWorld = target.Center,
 				MovementVector = new Vector2(info.HitDirection * 10, target.Center.Y - Projectile.Center.Y).SafeNormalize(Vector2.Zero)
 			});
+
+			info.HitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
 		}
 
 		public override bool PreDraw(ref Color lightColor)

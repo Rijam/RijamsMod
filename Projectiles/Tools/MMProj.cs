@@ -321,8 +321,12 @@ namespace RijamsMod.Projectiles.Tools
 			}
 			
 			Color color94 = Lighting.GetColor((int)playerPos.X / 16, (int)playerPos.Y / 16);
-			Main.EntitySpriteDraw(itemTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null, color94, Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f), new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? itemTexture.Width : 0, (float)itemTexture.Height / 2f) + Vector2.UnitY * 1f, Main.player[Projectile.owner].inventory[Main.player[Projectile.owner].selectedItem].scale, spriteEffects, 0);
-			Main.EntitySpriteDraw(glowTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null, new Color(255, 255, 255, 0), Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f), new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? glowTexture.Width : 0, (float)glowTexture.Height / 2f) + Vector2.UnitY * 1f, Main.player[Projectile.owner].inventory[Main.player[Projectile.owner].selectedItem].scale, spriteEffects, 0);
+			Main.EntitySpriteDraw(itemTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null,
+				color94, Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f),
+				new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? itemTexture.Width : 0, (float)itemTexture.Height / 2f) + Vector2.UnitY * 1f, owner.inventory[owner.selectedItem].scale, spriteEffects, 0);
+			Main.EntitySpriteDraw(glowTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null,
+				new Color(255, 255, 255, 0), Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f),
+				new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? glowTexture.Width : 0, (float)glowTexture.Height / 2f) + Vector2.UnitY * 1f, owner.inventory[owner.selectedItem].scale, spriteEffects, 0);
 			/*if (worldPosLength > tipInset)
 			{
 				for (int j = 2; j < 4; j++)
@@ -350,12 +354,23 @@ namespace RijamsMod.Projectiles.Tools
 				float length = (worldPosLength - tipInset) / 384f;
 				float thinkness = MathHelper.Clamp(length, 0.5f, 3f);
 				float worldPosRotation2 = worldPos.ToRotation();
+
+				SpriteEffects laserSpriteEffects = SpriteEffects.None;
+				if (Main.rand.NextBool())
+				{
+					laserSpriteEffects |= SpriteEffects.FlipHorizontally;
+				}
+				if (Main.rand.NextBool())
+				{
+					laserSpriteEffects |= SpriteEffects.FlipVertically;
+				}
+
 				if (pick)
 				{
 					Color drawColor = SetColorType(1);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 				if (axe)
@@ -363,7 +378,7 @@ namespace RijamsMod.Projectiles.Tools
 					Color drawColor = SetColorType(2);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 				if (hammer)
@@ -371,7 +386,7 @@ namespace RijamsMod.Projectiles.Tools
 					Color drawColor = SetColorType(3);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 
@@ -380,7 +395,7 @@ namespace RijamsMod.Projectiles.Tools
 					Color drawColor = SetColorType(0);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), spriteEffects, 0);
+					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 			}

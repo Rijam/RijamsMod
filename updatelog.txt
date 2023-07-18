@@ -173,3 +173,19 @@
 	* Updated support for Dialogue Panel Rework.
 	* Item glow masks now draw in the inventory.
 	* Added Group Hologram "painting".
+
+1.2.2.0 - (July 18, 2023)
+	* The Pianist's Glove should now better recognize modded pianos.
+	* Added Interstellar Crossbow
+	* The Rocket Booster should now better recognize modded rockets.
+	* Pets now look better in the player select screen.
+	* Fixed the Cudgel support minions not working in single player. (Last update make it so you had to be on the same team as the owner, but you can't join any teams in single player.)
+	* Fixed Interstellar Traveler selling the Rod of Discord after the Odd Device quest was completed instead of the Teleportation Core quest was completed.
+	* Gave all of the Cudgel support minion items a token amount of damage so that they could be reforged and so they show up in summon item filters.
+	* Gave the Slime Trap Staff a token amount of damage so that it could be reforged and so it show up in summon item filters.
+	* Added some prefix modifiers to the Cudgel support minions.
+	* Horseman's Jousting Lance no longer spawns Flaming Jacks on statue spawned enemies (to match the 1.4.4 change to the Horseman's Blade)
+	* Flaming Jacks spawns from the Horseman's Jousting Lance now do 100% damage and knockback instead of 50%.
+	* Angry Gusters are much less likely to spawn when it is windy enough to have kites drop but not windy enough to count as a windy day. Chances during a real windy day are the same.
+	* Fixed a bug where the Hammer of Retribution's projectiles were doing double double damage. (Dealing 200 damage instead of 100.)
+	* Fire Breathing Pack now requires Living Demon Fire Blocks and now grants immunity to Shadowflame.

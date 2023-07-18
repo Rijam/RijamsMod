@@ -16,6 +16,10 @@ namespace RijamsMod.Projectiles.Pets
 			Main.projPet[Projectile.type] = true;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 51;
+
+			ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(0, 1)
+				.WithOffset(2f, -8f)
+				.WithCode(DelegateMethods.CharacterPreview.WormPet);
 		}
 
         public override void SetDefaults()

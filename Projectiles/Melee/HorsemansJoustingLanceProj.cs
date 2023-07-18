@@ -153,22 +153,11 @@ namespace RijamsMod.Projectiles.Melee
 			if (target.active)
 			{
 				Player owner = Main.player[Projectile.owner];
-				if (owner.inventory[owner.selectedItem].type == itemType && (target.value > 0f || (target.damage > 0 && !target.friendly)))
+				if (owner.inventory[owner.selectedItem].type == itemType && !target.immortal && !target.SpawnedFromStatue && !NPCID.Sets.CountsAsCritter[target.type])
 				{
 					if (Main.rand.NextBool(5)) // Better than the normal The Horseman's Blade without this
 					{
-						Vector2 center = target.Center;
-						int logicCheckScreenHeight = Main.LogicCheckScreenHeight;
-						int logicCheckScreenWidth = Main.LogicCheckScreenWidth;
-						int posX = Main.rand.Next(100, 300);
-						int posY = Main.rand.Next(100, 300);
-						posX = ((!Main.rand.NextBool(2)) ? (posX + (logicCheckScreenWidth / 2 - posX)) : (posX - (logicCheckScreenWidth / 2 + posX)));
-						posY = ((!Main.rand.NextBool(2)) ? (posY + (logicCheckScreenHeight / 2 - posY)) : (posY - (logicCheckScreenHeight / 2 + posY)));
-						Vector2 position = new(posX + (int)Projectile.position.X, posY + (int)Projectile.position.Y);
-						Vector2 velocity = new(center.X - posX, center.Y - posY);
-						float velocityDistance = 8f / (float)Math.Sqrt(velocity.X * velocity.X + velocity.Y * velocity.Y);
-						velocity *= velocityDistance;
-						Projectile.NewProjectile(owner.GetSource_ItemUse(owner.HeldItem), position, velocity, ProjectileID.FlamingJack, Projectile.damage / 2, Projectile.knockBack / 2, owner.whoAmI, target.whoAmI);
+						Main.player[Projectile.owner].HorsemansBlade_SpawnPumpkin(target.whoAmI, Projectile.damage, Projectile.knockBack);
 
 						ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.BlackLightningHit, new ParticleOrchestraSettings
 						{

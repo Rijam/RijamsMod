@@ -1,0 +1,2169 @@
+//Items: {
+# Items/Accessories/Defense
+
+Citadel: {
+	DisplayName: Citadel
+	Tooltip:
+		'''
+		+4 Defense
+		Grants immunity to knockback
+		Grants immunity to fire blocks
+		Grants immunity to most debuffs
+		Reduce damage from touching lava
+		Causes stars to fall after taking damage
+		Increases length of invincibility after taking damage
+		Releases bees and douses the user in honey after taking damage
+		Increases movement after taking damage
+		(Hide to disable Star Cloak and Honey Comb)
+		'I've never see it lit up like this!'
+		'''
+}
+
+FrostyRose: {
+	DisplayName: Frosty Rose
+	Tooltip: Grants immunity to Frostburn, Frozen, and Chilled
+}
+
+GelidSkullRose: {
+	DisplayName: Gelid Skull Rose
+	Tooltip:
+		'''
+		+1 Defense
+		Melee attacks inflict Frostburn
+		Grants immunity to fire blocks
+		Grants immunity to Frostburn, Frozen, and Chilled
+		'''
+}
+
+ObsidianFrostySkullRose: {
+	DisplayName: Obsidian Frosty Skull Rose
+	Tooltip:
+		'''
+		+1 Defense
+		Grants immunity to fire blocks
+		Grants immunity to Frostburn, Frozen, and Chilled
+		'''
+}
+
+RoseOfFireAndIce: {
+	DisplayName: Rose of Fire and Ice
+	Tooltip:
+		'''
+		Reduces damage from touching lava
+		Grants immunity to Frostburn, Frozen, and Chilled
+		'''
+}
+
+StellarShield: {
+	DisplayName: Stellar Shield
+	Tooltip:
+		'''
+		+2 Defense
+		Grants immunity to knockback
+		Grants immunity to fire blocks
+		Grants immunity to Frostburn, Frozen, and Chilled
+		Reduce damage from touching lava
+		Causes stars to fall after taking damage
+		Increases length of invincibility after taking damage
+		Releases bees and douses the user in honey after taking damage
+		Increases movement after taking damage
+		(Hide to disable Star Cloak and Honey Comb)
+		'''
+}
+
+Aspis: {
+	DisplayName: Aspis
+	Tooltip:
+		'''
+		+1 Defense
+		+50% Knockback resistance
+		'''
+}
+
+# Items/Accessories/Magic
+
+CosmicSorcery: {
+	Tooltip:
+		'''
+		+15% Magic damage
+		+10% Magic Critical Strike chance
+		+20 Max Mana
+		Increased mana regeneration rate
+		Increases pickup range for mana stars
+		Restores mana when damage
+		Automatically use mana potions when needed
+		Causes stars to fall when injured
+		Gain a little bit of mana after slaying an enemy
+		  Scales with max mana
+		Enemies are a little less likely to target you
+		'''
+	DisplayName: Cosmic Sorcery
+}
+
+DestroyerCuffs: {
+	Tooltip:
+		'''
+		+10% Magic damage
+		+8% Magic Critical Strike chance
+		+20 Max Mana
+		Increases pickup range for mana stars
+		Restores mana when damage
+		'''
+	DisplayName: Destroyer Cuffs
+}
+
+# Items/Accessories/Melee
+
+DaybreakGauntlet: {
+	DisplayName: Daybreak Gauntlet
+	Tooltip:
+		'''
+		+12% Melee damage
+		+12% Melee attack speed
+		+100% Knockback
+		+8 Defense
+		Enables auto swing for melee weapons
+		Increases the size of melee weapons
+		Melee attacks inflict Daybroken
+		Gives the user master yoyo skills
+		Yoyos have infinite duration
+		Counterweights are 1.5x bigger
+		Enemies are more likely to target you
+		'''
+}
+
+DaybreakStone: {
+	DisplayName: Daybreak Stone
+	Tooltip: Melee attacks inflict Daybroken
+}
+
+YoyoBackpack: {
+	DisplayName: Yoyo Backpack
+	Tooltip:
+		'''
+		Gives the user master yoyo skills
+		Yoyos have infinite duration
+		Counterweights are 1.5x bigger
+		Rainbow colored string!
+		'''
+}
+
+# Items/Accessories/Misc
+
+BreathingPack: {
+	DisplayName: Breathing Pack
+	Tooltip: Refills the player's air supply two seconds after it reaches zero
+}
+
+BurglarsRing: {
+	DisplayName: Burglar's Ring
+	Tooltip:
+		'''
+		Enemies drop double loot
+		'Purple burglar alarm'
+		'''
+}
+
+CharmOfLife: {
+	DisplayName: Charm of Life
+	Tooltip:
+		'''
+
+		+25 Max Life
+		Provides life regeneration
+		Reduces the cooldown of healing potions by 25%
+		Gain a little bit of life after slaying an enemy
+		  Scales with max health
+		'''
+}
+
+FireBreathingPack: {
+	DisplayName: Fire Breathing Pack
+	Tooltip:
+		'''
+		Grants immunity to On Fire!, Sulfuric Acid, Ichor, Cursed Inferno, Frostburn, and Shadowflame
+		Refills the player's air supply two seconds after it reaches zero
+		'''
+}
+
+LargeGlowRing: {
+	DisplayName: Large Glow Ring
+	Tooltip: Emits a large amount of light
+}
+
+LegionScarf: {
+	DisplayName: Legion Scarf
+	Tooltip:
+		'''
+		+5% increased damage
+		While in the Snow biome or Space:
+		  +9% increased damage
+		'''
+}
+
+LifeSapperRing: {
+	DisplayName: Life Sapper Ring
+	Tooltip:
+		'''
+		Gain a little bit of life after slaying an enemy
+		Scales with max health
+		'''
+}
+
+ManaSapperRing: {
+	DisplayName: Mana Sapper Ring
+	Tooltip:
+		'''
+		Gain a little bit of mana after slaying an enemy
+		Scales with max mana
+		'''
+}
+
+MasterBuilderPack: {
+	DisplayName: Master Builder Pack
+	Tooltip:
+		'''
+		+5 block placement & tool range
+		+25% increased mining speed
+		Increases block & wall placement speed
+		Automatically paints placed objects
+		Creates measurement lines on screen for block placement
+		Enables Echo Sight, showing hidden blocks (Hide to disable)
+		'''
+}
+
+SmallGlowRing: {
+	DisplayName: Small Glow Ring
+	Tooltip: Emits a small amount of light
+}
+
+WarriorRing: {
+	DisplayName: Warrior Ring
+	Tooltip:
+		'''
+		Occasionally infuses the wearer with
+		"Warrior Energy" after slaying an enemy
+		Warrior Energy gives:
+		  +10% damage
+		  +5% attack speed
+		'''
+}
+
+MorphasRing: {
+	DisplayName: Morpha's Ring
+	Tooltip:
+		'''
+		+36% Critical Hit Damage
+		'From an Aquatic Mass'
+		'''
+}
+
+# Items/Accessories/Movement
+
+DifferentBundleOfBalloons: {
+	DisplayName: Different Bundle of Balloons
+	Tooltip:
+		'''
+		Allows the holder to triple jump
+		Increases jump height
+		Releases bees and douses the user in honey when damaged
+		'''
+}
+
+DifferentBundleOfHorseshoeBalloons: {
+	DisplayName: Different Bundle of Horseshoe Balloons
+	Tooltip:
+		'''
+		Allows the holder to triple jump
+		Increases jump height
+		Releases bees and douses the user in honey when damaged
+		Negates fall damage
+		'''
+}
+
+GuideToProperFlightTechniques: {
+	DisplayName: Guide to Proper Flight Techniques
+	Tooltip:
+		'''
+		Only works while Wings are equipped
+		+1 Second Flight Time
+		Increased vertical and horizontal flight speed
+		Increased jump height
+		Increased movement speed
+		'''
+}
+
+HailfireBoots: {
+	DisplayName: Hailfire Boots
+	Tooltip:
+		'''
+		Allows flight, super fast running, and extra mobility on ice
+		+10% increased movement speed and +0.5 seconds of flight time
+		Provides the ability to walk on water, honey, & lava
+		Grants immunity to fire blocks and 7 seconds of immunity to lava
+		Grants immunity to On Fire!, Frostburn, Frozen, and Chilled
+		Reduces damage from touching lava
+		Increases jump speed and allows auto-jump
+		Increases fall resistance
+		'''
+}
+
+RedHarpyWings: {
+	DisplayName: Red Harpy Wings
+	Tooltip:
+		'''
+		{$CommonItemTooltip.FlightAndSlowfall}
+		Better than average horizontal acceleration
+		'''
+}
+
+TooManyBalloons: {
+	DisplayName: Too Many Balloons
+	Tooltip:
+		'''
+		Allows the holder to sextuple jump
+		Greatly increases jump height
+		Releases bees and douses the user in honey when damaged
+		'''
+}
+
+TooManyHorseshoeBalloons: {
+	DisplayName: Too Many Horseshoe Balloons
+	Tooltip:
+		'''
+		Allows the holder to sextuple jump
+		Greatly increases jump height
+		Releases bees and douses the user in honey when damaged
+		Negates fall damage
+		Immunity to fire blocks
+		'''
+}
+
+TerraStepStool: {
+	DisplayName: Terra Step Stool
+	Tooltip: "{$ItemTooltip.PortableStool}"
+}
+
+# Items/Accessories/Ranger
+
+AmmoPouch: {
+	DisplayName: Ammo Pouch
+	Tooltip:
+		'''
+		+5% bullet damage
+		+5% ranged attack speed
+		'''
+}
+
+GamutApparatus: {
+	DisplayName: Gamut Apparatus
+	Tooltip:
+		'''
+		+15% Ranged damage
+		+10% Ranged Critical Strike chance
+		20% chance to not consume ammo
+		+100% rocket velocity
+		+50% other launched ammo velocity
+		+20% all other projectile velocity and knockback
+		Lights wooden arrows ablaze
+		Enemies are slightly less likely to target you
+		Right Click to zoom out (Hide to disable)
+		'''
+}
+
+RocketBooster: {
+	DisplayName: Rocket Booster
+	Tooltip:
+		'''
+		+10% rocket ammo damage
+		+100% rocket velocity
+		+50% other launched ammo velocity
+		+10% rocket knockback
+		'''
+}
+
+# Items/Accessories/Summoner
+
+AssembleAssemble: {
+	DisplayName: Assemble Assemble
+	Tooltip:
+		'''
+		+3 Minion capacity
+		+2 Sentry capacity
+		+30% Minion damage
+		+200% Summon knockback
+		+1 Defense
+		Grants immunity to fire blocks
+		Grants immunity to Frostburn, Frozen, and Chilled
+		Enemies are less likely to target you
+		'FlavorText BYTE "It all comes together", 0'
+		'''
+}
+
+ControlGlove: {
+	DisplayName: Control Glove
+	Tooltip:
+		'''
+		+2 Support minion radius
+		Enables auto swing for all minion and sentry weapons
+		'''
+}
+
+HailfirePygmyNecklace: {
+	DisplayName: Hailfire Pygmy Necklace
+	Tooltip:
+		'''
+		+1 Minion capacity
+		+1 Defense
+		Grants immunity to fire blocks
+		Grants immunity to Frostburn, Frozen, and Chilled
+		'''
+}
+
+HailfirePygmyScarf: {
+	DisplayName: Hailfire Pygmy Scarf
+	Tooltip:
+		'''
+		+1 Minion capacity
+		+1 Sentry capacity
+		+15% Minion damage
+		+1 Defense
+		Grants immunity to fire blocks
+		Grants immunity to Frostburn, Frozen, and Chilled
+		'Don't question it.'
+		'''
+}
+
+NaughtyList: {
+	DisplayName: Naughty List
+	Tooltip:
+		'''
+		+1 Minion capacity
+		+1 Sentry capacity
+		'''
+}
+
+NaughtyScarab: {
+	DisplayName: Naughty Scarab
+	Tooltip:
+		'''
+		+2 Minion capacity
+		+1 Sentry capacity
+		+15% Minion damage
+		+2 Minion knockback
+		'''
+}
+
+ObsidianPygmyNecklace: {
+	DisplayName: Obsidian Pygmy Necklace
+	Tooltip:
+		'''
+		+1 Minion capacity
+		+1 Defense
+		Grants immunity to fire blocks
+		'''
+}
+
+ReinforcedSummonersGlove: {
+	DisplayName: Reinforced Summoner's Glove
+	Tooltip:
+		'''
+		+12% All Summon speed
+		+10% Whip size
+		+5% Whip damage
+		+100% Summon knockback
+		+2 Support minion radius
+		+4 Defense
+		Enables auto swing for all summon weapons
+		'''
+}
+
+SummonersGlove: {
+	DisplayName: Summoner's Glove
+	Tooltip:
+		'''
+		+12% Whip speed
+		+10% Whip size
+		+100% Summon knockback
+		+2 Support minion radius
+		Enables auto swing for all summon weapons
+		'''
+}
+
+# Items/Accessories/Vanity
+
+CarrotNose: {
+	DisplayName: Carrot Nose
+	Tooltip: "{$Common.VanityAccesssory}"
+}
+
+# Items/Armor
+
+DilapidatedCrimsonGreaves: {
+	DisplayName: Dilapidated Crimson Greaves
+	Tooltip:
+		'''
+		2% increased damage
+		Interchangeable with Crimson Armor
+		'''
+}
+
+DilapidatedCrimsonHelmet: {
+	DisplayName: Dilapidated Crimson Helmet
+	Tooltip:
+		'''
+		2% increased damage
+		Interchangeable with Crimson Armor
+		'''
+}
+
+DilapidatedCrimsonScalemail: {
+	DisplayName: Dilapidated Crimson Scalemail
+	Tooltip:
+		'''
+		2% increased damage
+		Interchangeable with Crimson Armor
+		'''
+}
+
+FestiveChestplate: {
+	DisplayName: Festive Chestplate
+	Tooltip:
+		'''
+		+1 Minion capacity
+		+15% Summon damage
+		'''
+}
+
+FestiveLeggings: {
+	DisplayName: Festive Leggings
+	Tooltip:
+		'''
+		+1 Minion capacity
+		+20% Movement speed
+		'''
+}
+
+FestiveMask: {
+	DisplayName: Festive Mask
+	Tooltip:
+		'''
+		+1 Minion capacity
+		+15% Summon damage
+		'''
+}
+
+InfernicHood: {
+	DisplayName: Infernic Hood
+	Tooltip:
+		'''
+		+60 Max mana
+		+1 Minion count
+		'''
+}
+
+InfernicRobes: {
+	DisplayName: Infernic Robes
+	Tooltip:
+		'''
+		+10% Magic critical strike chance
+		+12% Magic and summon damage
+		'''
+}
+
+InfernicTrousers: {
+	DisplayName: Infernic Trousers
+	Tooltip:
+		'''
+		+5% Movement speed
+		10% reduced mana usage
+		+1 mana regeneration bonus
+		'''
+}
+
+MechaArmor_Chestplate: {
+	DisplayName: Mecha Chestplate
+	Tooltip:
+		'''
+		This is a modded body armor.
+		Immunity to 'On Fire!'
+		+20 max mana and +1 max minions
+		'''
+}
+
+MechaArmor_Helmet: {
+	DisplayName: Mecha Helmet
+	Tooltip: This is a modded helmet.
+}
+
+MechaArmor_Leggings: {
+	DisplayName: Mecha Leggings
+	Tooltip:
+		'''
+		This is a modded leg armor.
+		5% increased movement speed
+		'''
+}
+
+PumpkinHat: {
+	DisplayName: Pumpkin Hat
+	Tooltip: +1 Minion Capacity
+}
+
+ShroomiteVisor: {
+	DisplayName: Shroomite Visor
+	Tooltip:
+		'''
+		10% increased all ranged damage
+		5% increased ranged critical strike chance
+		'''
+}
+
+SkywareChestplate: {
+	DisplayName: Skyware Chestplate
+	Tooltip: +10% all attack speed
+}
+
+SkywareHeadgear: {
+	DisplayName: Skyware Headgear
+	Tooltip:
+		'''
+		+5% Summon damage
+		+1 summon capacity
+		+2 Support minion radius
+		'''
+}
+
+SkywareHelmet: {
+	DisplayName: Skyware Helmet
+	Tooltip:
+		'''
+		+5% Ranged damage
+		+5% Ranged critical strike chance
+		'''
+}
+
+SkywareHood: {
+	DisplayName: Skyware Hood
+	Tooltip:
+		'''
+		+5% Magic damage
+		+5% Magic critical strike chance
+		'''
+}
+
+SkywareLeggings: {
+	DisplayName: Skyware Leggings
+	Tooltip: Increased fall resistance
+}
+
+SkywareMask: {
+	DisplayName: Skyware Mask
+	Tooltip:
+		'''
+		+5% Melee damage
+		+5% Melee critical strike chance
+		'''
+}
+
+RedSkywareChestplate: {
+	DisplayName: Red Skyware Chestplate
+	Tooltip:
+		'''
+		+15% all attack speed
+		+10% all knockback
+		+20 max life
+		'''
+}
+
+RedSkywareHeadgear: {
+	DisplayName: Red Skyware Headgear
+	Tooltip:
+		'''
+		+10% Summon damage
+		+3 minion capacity
+		+1 sentry capacity
+		+7 Support minion radius
+		'''
+}
+
+RedSkywareHelmet: {
+	DisplayName: Red Skyware Helmet
+	Tooltip:
+		'''
+		+10% Ranged damage
+		+10% Ranged critical strike chance
+		+5 Ranged armor penetration
+		+10% projectile speed and knockback
+		'''
+}
+
+RedSkywareHood: {
+	DisplayName: Red Skyware Hood
+	Tooltip:
+		'''
+		+10% Magic damage
+		+10% Magic critical strike chance
+		+40 Mana capacity
+		-20% Mana cost
+		'''
+}
+
+RedSkywareLeggings: {
+	DisplayName: Red Skyware Leggings
+	Tooltip:
+		'''
+		+1 Second Flight Time
+		+20% movement speed
+		Negates fall damage
+		'''
+}
+
+RedSkywareMask: {
+	DisplayName: Red Skyware Mask
+	Tooltip:
+		'''
+		+10% Melee damage
+		+10% Melee critical strike chance
+		+5 Melee armor penetration
+		+10% Melee weapon scale
+		'''
+}
+
+GodsentKingMask: {
+	DisplayName: Godsent King Mask
+	Tooltip:
+		'''
+		+15% Melee Damage
+		+15% Ranged Damage
+		+25% Critical Hit Damage
+		Interchangeable with Godsent Queen armor
+		'''
+}
+
+GodsentKingBreastplate: {
+	DisplayName: Godsent King Breastplate
+	Tooltip:
+		'''
+		+10% Melee Speed
+		+10% Ranged Speed
+		+50% Critical Hit Damage
+		Interchangeable with Godsent Queen armor
+		'''
+}
+
+GodsentKingPants: {
+	DisplayName: Godsent King Pants
+	Tooltip:
+		'''
+		Greatly increased movement speed
+		+25% Critical Hit Damage
+		Interchangeable with Godsent Queen armor
+		'''
+}
+
+GodsentQueenMask: {
+	DisplayName: Godsent Queen Mask
+	Tooltip:
+		'''
+		+15% Magic Damage
+		+15% Summon Damage
+		+1 Minion Capacity
+		+25% Critical Hit Damage
+		Interchangeable with Godsent King armor
+		'''
+}
+
+GodsentQueenBreastplate: {
+	DisplayName: Godsent Queen Breastplate
+	Tooltip:
+		'''
+		+10% Magic Speed
+		+10% Summon Speed
+		+1 Minion Capacity
+		+50% Critical Hit Damage
+		Interchangeable with Godsent King armor
+		'''
+}
+
+GodsentQueenPants: {
+	DisplayName: Godsent Queen Pants
+	Tooltip:
+		'''
+		Allows the ability to dash
+		+25% Critical Hit Damage
+		Interchangeable with Godsent King armor
+		'''
+}
+
+# Items/Consumables
+
+FlaskOfOil: {
+	DisplayName: Flask of Oil
+	Tooltip: Melee attacks inflict enemies with Oiled
+}
+
+FlaskOfSulfuricAcid: {
+	DisplayName: Flask of Sulfuric Acid
+	Tooltip: Melee attacks inflict enemies with Sulfuric Acid
+}
+
+FreshBlueberry: {
+	DisplayName: Fresh Blueberry
+	Tooltip: "{$Common.MinusculeStats}"
+}
+
+FuryPotion: {
+	DisplayName: Fury Potion
+	Tooltip: +10% attack speed
+}
+
+ReefCola: {
+	DisplayName: Reef-Cola
+	Tooltip:
+		'''
+		Move freely in liquids
+		'Taste the ocean, with Reef-Cola.'
+		'''
+}
+
+RoastedMushroom: {
+	DisplayName: Roasted Mushroom
+	Tooltip: "{$Common.MinusculeStats}"
+}
+
+RyeJam: {
+	DisplayName: Rye Jam
+	Tooltip:
+		'''
+		{$Common.ExtremeStats}
+		'Wait, how do you pronounce it?'
+		'''
+}
+
+SoaringPotion: {
+	DisplayName: Soaring Potion
+	Tooltip: +0.5 seconds wing flight
+}
+
+StrangeRoll: {
+	DisplayName: Strange Roll
+	Tooltip:
+		'''
+		{$CommonItemTooltip.MediumStats}
+		'A strange food from an unknown place'
+		'What's inside?'
+		'''
+}
+
+SupportPotion: {
+	DisplayName: Support Potion
+	Tooltip: +1 sentry capacity
+}
+
+CaveCarrot: {
+	DisplayName: Cave Carrot
+	Tooltip: "{$Common.MinusculeStats}"
+}
+
+HardyStew: {
+	DisplayName: Hardy Stew
+	Tooltip: "{$CommonItemTooltip.MajorStats}"
+}
+
+SnuggetPetLicense: {
+	DisplayName: Snugget Pet License
+	Tooltip:
+		'''
+		Use to adopt a Snugget for your town
+		Already have a Snugget?
+		Use additional licenses to activate the Pet Exchange Program!
+		Find the perfect fit for you and your Snugget!
+		'''
+}
+
+FerociousPotion: {
+	DisplayName: Ferocious Potion
+	Tooltip: +10 armor penetration
+}
+
+# Items/Dyes
+
+BeamDye: {
+	DisplayName: Beam Dye
+	Tooltip: ""
+}
+
+OrangeBeamDye: {
+	DisplayName: Orange Beam Dye
+	Tooltip: ""
+}
+
+YellaDye: {
+	Tooltip: "'It may or may not be a color'"
+	DisplayName: Yella Dye
+}
+
+# Items/Fishing
+
+HornetTail: {
+	DisplayName: Hornet Tail
+	Tooltip: ""
+}
+
+WildBait: {
+	DisplayName: Wild Bait
+	Tooltip:
+		'''
+		Has a chance to catch two fish at once
+		  Increases with Fishing Power and luck
+		'''
+}
+
+# Items/Information
+
+CritDisplay: {
+	DisplayName: Critical Hit Display
+	Tooltip: Displays your current critical hit bonuses
+}
+
+DamageDisplay: {
+	DisplayName: Damage Display
+	Tooltip:
+		'''
+		Displays your current damage bonuses
+		Values greater than 1 means increased damage
+		'''
+}
+
+DefenseDisplay: {
+	DisplayName: Defense Display
+	Tooltip: Displays your current defense and knockback bonuses
+}
+
+InformationInterface: {
+	DisplayName: Information Interface
+	Tooltip: Displays your stats and bonuses
+}
+
+LifeDisplay: {
+	DisplayName: Life Display
+	Tooltip: Displays your current life bonuses
+}
+
+ManaDisplay: {
+	DisplayName: Mana Display
+	Tooltip: Displays your current mana bonuses
+}
+
+MovementDisplay: {
+	DisplayName: Movement Display
+	Tooltip: Displays your current movement bonuses
+}
+
+SummonsDisplay: {
+	DisplayName: Summons Display
+	Tooltip: Displays your current summons capacity and bonus
+}
+
+# Items/Pets
+
+FluffaloEgg: {
+	DisplayName: Fluffalo Egg
+	Tooltip: Conjures a pet Fluffalo
+}
+
+InterestingSphere: {
+	DisplayName: Interesting Sphere
+	Tooltip: Conjures a pet Snugget
+}
+
+LEDLumothBulb: {
+	DisplayName: LED Lumoth Bulb
+	Tooltip: Conjures a light pet LED Lumoth
+}
+
+LumothBulb: {
+	DisplayName: Lumoth Bulb
+	Tooltip: Conjures a light pet Lumoth
+}
+
+StarCallerStaff: {
+	DisplayName: Star Caller Staff
+	Tooltip:
+		'''
+		Conjures a light pet Dwarf Star
+		Enemies are lit ablaze upon contact
+		'''
+}
+
+StardustDragonCrest: {
+	DisplayName: Stardust Dragon Crest
+	Tooltip: Conjures a pet Baby Stardust Dragon
+}
+
+# Items/Placeable
+
+AvoliteCandle: {
+	DisplayName: Avolite Candle
+	Tooltip: "'The crystal never runs out of light'"
+}
+
+InformationInterfaceTile: {
+	DisplayName: Interface Anchor
+	Tooltip: Purely for decoration
+}
+
+LifeFruitSanctuary: {
+	DisplayName: Life Fruit Sanctuary
+	Tooltip: Increases life by 20 when placed nearby
+}
+
+MusicBoxOSW: {
+	DisplayName: Music Box (Outer Storage Warehouse)
+	Tooltip: Freedoom Phase 2 - MAP07 - Outer Storage Warehouse
+}
+
+StripLight: {
+	DisplayName: Strip Light
+	Tooltip:
+		'''
+		Paints will affect the color of the light
+		  Deep paints are brighter
+		  Actuators halve the light
+		  Illuminant Coating doubles the light
+		'''
+}
+
+SulfurCampfire: {
+	DisplayName: Sulfur Campfire
+	Tooltip:
+		'''
+		{$ItemTooltip.Campfire}
+		Can be placed in water
+		'''
+}
+
+SulfurTorch: {
+	DisplayName: Sulfur Torch
+	Tooltip: Can be placed in water
+}
+
+LivingSulfurFireBlock: {
+	DisplayName: Living Sulfur Fire Block
+	Tooltip: ""
+}
+
+SunplatePillarBlock: {
+	DisplayName: Sunplate Pillar Block
+	Tooltip: ""
+}
+
+GroupHologramItem: {
+	DisplayName: Group Hologram
+	Tooltip: ""
+}
+
+DarkSoldierBanner: {
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.DarkSoldier.DisplayName}"
+	DisplayName: Dark Soldier Banner
+}
+
+SkeletonCrossbowerBanner: {
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.SkeletonCrossbower.DisplayName}"
+	DisplayName: Skeleton Crossbower Banner
+}
+
+SkeletonGunnerBanner: {
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.SkeletonGunner.DisplayName}"
+	DisplayName: Skeleton Gunner Banner
+}
+
+DungeonBatBanner: {
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.DungeonBat.DisplayName}"
+	DisplayName: Dungeon Bat Banner
+}
+
+SnowmanMuscleBanner: {
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.SnowmanMuscle.DisplayName}"
+	DisplayName: Snowman Muscle Banner
+}
+
+SirSlushBanner: {
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.SirSlush.DisplayName}"
+	DisplayName: Sir Slush Banner
+}
+
+FirmamentHarpyBanner: {
+	DisplayName: Firmament Harpy Banner
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.FirmamentHarpy.DisplayName}"
+}
+
+AngryGusterBanner: {
+	DisplayName: Angry Guster Banner
+	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.AngryGuster.DisplayName}"
+}
+
+# Items/Quest
+
+QuestTrackerComplete: {
+	Tooltip: "[c/403638:UI Item]"
+	DisplayName: You have completed all of the quests!
+}
+
+QuestTrackerIncomplete: {
+	Tooltip: "[c/403638:UI Item]"
+	DisplayName: Keep searching!
+}
+
+BlankDisplay: {
+	DisplayName: Blank Display
+	Tooltip: ""
+}
+
+BreadAndJelly: {
+	DisplayName: Bread And Jelly
+	Tooltip: ""
+}
+
+MagicOxygenizer: {
+	DisplayName: Magic Oxygenizer
+	Tooltip: ""
+}
+
+OddDevice: {
+	DisplayName: Odd Device
+	Tooltip: ""
+}
+
+PrimeThruster: {
+	DisplayName: Prime Thruster
+	Tooltip: ""
+}
+
+TeleportationCore: {
+	DisplayName: Teleportation Core
+	Tooltip: ""
+}
+
+# Items/Tools
+
+MatterManipulator: {
+	DisplayName: Matter Manipulator
+	Tooltip:
+		'''
+		Right click to bring up the tool UI
+		  The UI can be dragged around on the screen
+		  Pickaxe takes priority over hammer
+		'''
+}
+
+PianistsGlove: {
+	DisplayName: Pianist's Glove (Middle)
+	Tooltip:
+		'''
+		Playable next to Piano
+		<right> to switch octaves
+		'''
+}
+
+PianistsGloveLow: {
+	DisplayName: Pianist's Glove (Low)
+	Tooltip: "{$PianistsGlove.Tooltip}"
+}
+
+PianistsGloveHigh: {
+	DisplayName: Pianist's Glove (High)
+	Tooltip: "{$PianistsGlove.Tooltip}"
+}
+
+# Items/Weapons/Magic
+
+Cresceptre: {
+	DisplayName: Cresceptre
+	Tooltip: "'Just going through a purple patch, don't mind me.'"
+}
+
+FlowerOfHailfire: {
+	DisplayName: Flower of Hailfire
+	Tooltip: Throws balls of fire and frost
+}
+
+Plumage: {
+	DisplayName: Plumage
+	Tooltip: Shoot a bunch of feathers
+}
+
+PlumageStorm: {
+	DisplayName: Plumage Storm
+	Tooltip: Shoots even more feathers
+}
+
+SulfuricIncursion: {
+	DisplayName: Sulfuric Incursion
+	Tooltip:
+		'''
+		Conjures balls of sulfur that travel through tiles
+		Inflicts Sulfuric Acid
+		'''
+}
+
+TheShredder: {
+	DisplayName: The Shredder
+	Tooltip: Shreds your foes
+}
+
+HotStick: {
+	DisplayName: Hot Stick
+	Tooltip: ""
+}
+
+PlasmaRifle: {
+	DisplayName: Plasma Rifle
+	Tooltip: ""
+}
+
+ShiningLantern: {
+	DisplayName: Shining Lantern
+	Tooltip:
+		'''
+		1 Slow projectile
+		20 tile homing radius
+		'''
+}
+
+FrostburnLantern: {
+	DisplayName: Frostburn Lantern
+	Tooltip:
+		'''
+		1 Slow projectile
+		25 tile homing radius
+		Inflicts Frostburn
+		'''
+}
+
+UltrabrightLantern: {
+	DisplayName: Ultrabright Lantern
+	Tooltip:
+		'''
+		1 Average speed projectile
+		25 tile homing radius
+		Bounces off tiles
+		Pierces 1 time
+		'''
+}
+
+PeaceLantern: {
+	DisplayName: Peace Lantern
+	Tooltip:
+		'''
+		2 Average speed projectiles
+		30 tile homing radius
+		Bounces off tiles
+		Pierces 1 time
+		{$ItemTooltip.PeaceCandle}
+		'''
+}
+
+ShadowLantern: {
+	DisplayName: Shadow Lantern
+	Tooltip:
+		'''
+		2 Slow projectiles
+		35 tile homing radius
+		Bounces off tiles
+		Pierces 1 time
+		{$ItemTooltip.ShadowCandle}
+		'''
+}
+
+WaterLantern: {
+	DisplayName: Water Lantern
+	Tooltip:
+		'''
+		2 Average speed projectiles
+		25 tile homing radius
+		Bounces off tiles
+		Pierces 1 time
+		{$ItemTooltip.WaterCandle}
+		'''
+}
+
+SulfuricLantern: {
+	DisplayName: Sulfuric Lantern
+	Tooltip:
+		'''
+		2 Fast projectiles
+		40 tile homing radius
+		Travels through tiles
+		Pierces 2 times
+		Inflicts Sulfuric Acid
+		'''
+}
+
+VileLantern: {
+	DisplayName: Vile Lantern
+	Tooltip:
+		'''
+		3 Fast projectiles
+		30 tile homing radius
+		Bounces off tiles
+		Pierces 1 time
+		Inflicts Cursed Inferno
+		'''
+}
+
+ViciousLantern: {
+	DisplayName: Vicious Lantern
+	Tooltip:
+		'''
+		3 Fast projectiles
+		30 tile homing radius
+		Bounces off tiles
+		Pierces 1 time
+		Inflicts Ichor
+		'''
+}
+
+RainbowLantern: {
+	DisplayName: Rainbow Lantern
+	Tooltip:
+		'''
+		3 Fast projectiles
+		35 tile homing radius
+		Bounces off tiles
+		Pierces 2 times
+		'''
+}
+
+SpectreLantern: {
+	DisplayName: Spectre Lantern
+	Tooltip:
+		'''
+		3 Extremely Fast projectiles
+		40 tile homing radius
+		Travels through tiles
+		Pierces 2 times
+		'''
+}
+
+JackOLantern: {
+	DisplayName: Jack-o'-Lantern
+	Tooltip:
+		'''
+		3 Very Fast projectiles
+		45 tile homing radius
+		Bounces off tiles
+		Pierces 2 times
+		'''
+}
+
+AvoliteLantern: {
+	DisplayName: Avolite Lantern
+	Tooltip:
+		'''
+		4 projectiles
+		50 tile homing radius
+		Each of the 3 colors acts differently
+		Pierces 2 times
+		'''
+}
+
+NebulaLantern: {
+	DisplayName: Nebula Lantern
+	Tooltip:
+		'''
+		4 Very Fast projectiles
+		55 tile homing radius
+		Bounces off tiles
+		Pierces 2 times
+		'''
+}
+
+AetherLantern: {
+	DisplayName: Aether Lantern
+	Tooltip:
+		'''
+		4 Very Fast projectiles
+		60 tile homing radius
+		Travels through tiles
+		Pierces 3 times
+		'''
+}
+
+MiniGuster: {
+	DisplayName: Mini Guster
+	Tooltip: "'Live Guster Reaction'"
+}
+
+# Items/Weapons/Melee
+
+BoneHeadJoustingLance: {
+	DisplayName: Bone Head Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		'You bone head!'
+		'''
+}
+
+FrostyShiv: {
+	DisplayName: Frosty Shiv
+	Tooltip:
+		'''
+		Inflicts Frostbite
+		+25% Critical Hit Damage
+		'''
+}
+
+Granitization: {
+	DisplayName: Granitization
+	Tooltip:
+		'''
+		Cannot hit enemies through tiles
+		Only the blade can hit enemies
+		'''
+}
+
+HammerOfRetribution: {
+	DisplayName: Hammer of Retribution
+	Tooltip:
+		'''
+		Much more powerful when combined with mana:
+		  Throws a long range projectile
+		  Weapon does double damage
+		  Uses 20 mana
+		'''
+}
+
+HorsemansJoustingLance: {
+	DisplayName: Horseman's Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		Occasionally conjures Pumpkin heads to attack your enemies
+		'''
+}
+
+LonkheJoustingLance: {
+	DisplayName: Lonkhe Jousting Lance
+	Tooltip: "{$ItemTooltip.HallowJoustingLance}"
+}
+
+Quietus: {
+	DisplayName: Quietus
+	Tooltip:
+		'''
+		Much more powerful when combined with mana:
+		  Throws multiple long range projectiles
+		  Weapon does double damage
+		  Uses 20 mana
+		'Not to be confused with the Whisper's Edge'
+		'''
+}
+
+SolarJoustingLance: {
+	DisplayName: Solar Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		Inflicts Daybroken
+		Causes Solar Explosion on hit
+		'''
+}
+
+Solyo: {
+	DisplayName: Solyo
+	Tooltip:
+		'''
+		Inflicts Daybroken
+		Causes Solar Flares to fall from the sky
+		'''
+}
+
+TimonsAxe: {
+	DisplayName: Timon's Axe
+	Tooltip:
+		'''
+		Much more powerful when combined with mana:
+		  Has a swinging aura
+		  Weapon does double damage
+		  Uses 20 mana
+		'''
+}
+
+WoodenJoustingLance: {
+	DisplayName: Wooden Jousting Lance
+	Tooltip: "{$ItemTooltip.HallowJoustingLance}"
+}
+
+InfinityGavel: {
+	DisplayName: Infinity Gavel
+	Tooltip: ""
+}
+
+TestClub: {
+	DisplayName: Test Club
+	Tooltip: ""
+}
+
+StabbyShiv: {
+	DisplayName: Stabby Shiv
+	Tooltip: +25% Critical Hit Damage
+}
+
+# Items/Weapons/Ranged
+
+AGMMissileLauncher: {
+	DisplayName: AGM Missile Launcher
+	Tooltip: 10% chance not to consume ammo
+}
+
+DartMachineGun: {
+	DisplayName: Dart Machine Gun
+	Tooltip: 40% chance not to consume ammo
+}
+
+InterstellarCarbine: {
+	DisplayName: Interstellar Carbine
+	Tooltip:
+		'''
+		50% chance not to consume ammo
+		Inherits many aspects of the bullets used
+		'''
+}
+
+InterstellarSMG: {
+	DisplayName: Interstellar SMG
+	Tooltip:
+		'''
+		50% chance not to consume ammo
+		Inherits many aspects of the bullets used
+		'''
+}
+
+InterstellarSniper: {
+	DisplayName: Interstellar Sniper
+	Tooltip:
+		'''
+		25% chance not to consume ammo
+		Inherits many aspects of the bullets used
+		Right Click to zoom out
+		'''
+}
+
+SemiAutoDartSniper: {
+	DisplayName: Semi Auto Dart Sniper
+	Tooltip:
+		'''
+		50% chance not to consume ammo
+		Right Click to zoom out
+		'''
+}
+
+InterstellarPistol: {
+	DisplayName: Interstellar Pistol
+	Tooltip: Inherits many aspects of the bullets used
+}
+
+InterstellarCrossbow: {
+	DisplayName: Interstellar Crossbow
+	Tooltip:
+		'''
+		20% chance not to consume ammo
+		Inherits many aspects of the arrows used
+		'''
+}
+
+StockadeCrossbow: {
+	DisplayName: Stockade Crossbow
+	Tooltip: Shoots a Water Stream every 10 shots
+}
+
+Thompson: {
+	DisplayName: Thompson
+	Tooltip: ""
+}
+
+# Items/Weapons/Ranged/Ammo
+
+BloodyArrow: {
+	DisplayName: Bloody Arrow
+	Tooltip: 7% damage penalty per enemy pierced
+}
+
+ChlorophyteDart: {
+	DisplayName: Chlorophyte Dart
+	Tooltip:
+		'''
+		Grants Dryad's Blessing if consumed
+		10% damage penalty per enemy pierced
+		'''
+}
+
+EndlessRocketBox: {
+	DisplayName: Endless Rocket Box
+	Tooltip: Small blast radius. Will not destroy tiles
+}
+
+EvilArrows: {
+	DisplayName: Evil Arrows
+	Tooltip: Both an Unholy Arrow and Bloody Arrow
+}
+
+LuminiteDart: {
+	DisplayName: Luminite Dart
+	Tooltip:
+		'''
+		Homing
+		25% damage penalty per enemy pierced
+		'''
+}
+
+ShroomiteDart: {
+	DisplayName: Shroomite Dart
+	Tooltip:
+		'''
+		Moves extremely fast
+		10% damage penalty per enemy pierced
+		'''
+}
+
+SpectreDart: {
+	DisplayName: Spectre Dart
+	Tooltip:
+		'''
+		Splits into five darts
+		30% damage penalty per enemy pierced
+		'''
+}
+
+SulfurArrow: {
+	DisplayName: Sulfur Arrow
+	Tooltip:
+		'''
+		Goes through tiles
+		Inflicts Sulfuric Acid
+		'''
+}
+
+SulfurBullet: {
+	DisplayName: Sulfur Bullet
+	Tooltip:
+		'''
+		Goes through tiles
+		Inflicts Sulfuric Acid
+		'''
+}
+
+SulfurDart: {
+	DisplayName: Sulfur Dart
+	Tooltip:
+		'''
+		Goes through tiles
+		Inflicts Sulfuric Acid
+		'''
+}
+
+SulfurRocket: {
+	DisplayName: Sulfur Rocket
+	Tooltip:
+		'''
+		Goes through tiles
+		Inflicts Sulfuric Acid
+		'''
+}
+
+BasicDart: {
+	DisplayName: Basic Dart
+	Tooltip: ""
+}
+
+EndlessDartCase: {
+	DisplayName: Endless Dart Case
+	Tooltip: ""
+}
+
+# Items/Weapons/Summon/Support
+
+SupportCommonTooltips: {
+	Defense: +{0} defense
+	DamageReduction: +{0}% damage reduction
+	Radius: "{0} tile radius"
+	Heal: "{0} HP every {1} seconds"
+}
+
+HarpyIdolCudgel: {
+	DisplayName: Harpy Idol Cudgel
+	Tooltip:
+		'''
+		Summons a Harpy Idol to defend you
+		Players on the same team within its aura receive:
+		{$SupportCommonTooltips.Defense}
+		{$SupportCommonTooltips.DamageReduction@1}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
+CobaltProtectorCudgel: {
+	DisplayName: Cobalt Protector Cudgel
+	Tooltip:
+		'''
+		Summons a Cobalt Protector to defend you
+		Players on the same team within its aura receive:
+		{$SupportCommonTooltips.Defense}
+		{$SupportCommonTooltips.DamageReduction@1}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
+CrystalClusterCudgel: {
+	DisplayName: Crystal Cluster Cudgel
+	Tooltip:
+		'''
+		Summons a Crystal Cluster to defend you
+		Players on the same team within its aura receive:
+		{$SupportCommonTooltips.Defense}
+		{$SupportCommonTooltips.DamageReduction@1}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
+FallenPaladinCudgel: {
+	DisplayName: Fallen Paladin Cudgel
+	Tooltip:
+		'''
+		Summons a Fallen Paladin to defend you
+		Players on the same team within its aura receive:
+		{$SupportCommonTooltips.Defense}
+		{$SupportCommonTooltips.DamageReduction@1}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
+StardustProtectorCudgel: {
+	DisplayName: Stardust Protector Cudgel
+	Tooltip:
+		'''
+		Summons a Stardust Protector to defend you
+		Players on the same team within its aura receive:
+		{$SupportCommonTooltips.Defense}
+		{$SupportCommonTooltips.DamageReduction@1}
+		{$SupportCommonTooltips.Radius@2}
+		Will occasionally attack targeted enemies
+		'''
+}
+
+GraniteElementalCudgel: {
+	DisplayName: Granite Elemental Cudgel
+	Tooltip:
+		'''
+		Summons a Granite Elemental to heal you
+		The player on the same team with the lowest HP
+		  within its aura will be targeted
+		{$SupportCommonTooltips.Heal}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
+SanityFlowerCudgel: {
+	DisplayName: Sanity Flower Cudgel
+	Tooltip:
+		'''
+		Summons a Sanity Flower to heal you
+		The player on the same team with the lowest HP
+		  within its aura will be targeted
+		{$SupportCommonTooltips.Heal}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
+RadiantLanternCudgel: {
+	DisplayName: Radiant Lantern Cudgel
+	Tooltip:
+		'''
+		Summons a Radiant Lantern to heal you
+		Two players on the same team with the lowest HP
+		  within its aura will be targeted
+		{$SupportCommonTooltips.Heal}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
+# Items/Weapons/Summon/Minions
+
+AntlionStaff: {
+	DisplayName: Antlion Staff
+	Tooltip: Summons an Antlion Biter to fight for you
+}
+
+HissyStaff: {
+	DisplayName: Hissy Staff
+	Tooltip: Summons a Hissy Demon to fight for you
+}
+
+MeatballStaff: {
+	DisplayName: Meatball Staff
+	Tooltip: Summons a Meatball Demon to fight for you
+}
+
+ShadowflameStaff: {
+	DisplayName: Shadowflame Staff
+	Tooltip: Summons a Shadowflame Phantom to fight for you
+}
+
+BabyBloodEelStaff: {
+	DisplayName: Baby Blood Eel Staff
+	Tooltip: ""
+}
+
+# Items/Weapons/Summon/Sentries
+
+SlimeTrapStaff: {
+	DisplayName: Slime Trap Staff
+	Tooltip:
+		'''
+		Summons a sentry Slime Trap
+		Reduces enemy movement speed by 25%
+		'''
+}
+
+SpikeTrapStaff: {
+	DisplayName: Spike Trap Staff
+	Tooltip:
+		'''
+		Summons a sentry Spike Trap
+		Deals damage every 0.5 seconds
+		'''
+}
+
+SuperSpikeTrapStaff: {
+	DisplayName: Super Spike Trap Staff
+	Tooltip:
+		'''
+		Summons a sentry Super Spike Trap
+		Deals damage every 0.25 seconds
+		'''
+}
+
+# Items/Weapons/Summon/Whips
+
+Belt: {
+	DisplayName: Belt
+	Tooltip:
+		'''
+		{$CommonItemTooltip.Whips}
+		'Not responsible for triggering traumatic memories'
+		'''
+}
+
+FestiveWhip: {
+	DisplayName: Festive Whip
+	Tooltip:
+		'''
+		8 summon tag damage
+		Causes Ornaments to fall from the sky when
+		striking an enemy at the end of the whip
+		{$CommonItemTooltip.Whips}
+		'''
+}
+
+SulfuricWhip: {
+	DisplayName: Sulfuric Whip
+	Tooltip:
+		'''
+		10 summon tag damage
+		Inflicts Sulfuric Acid
+		{$CommonItemTooltip.Whips}
+		'''
+}
+
+SupernovaWhip: {
+	DisplayName: Supernova Whip
+	Tooltip:
+		'''
+		20 summon tag damage
+		10% summon tag critical strike chance
+		Causes Stardust Explosions on enemies
+		Can hit enemies through tiles
+		{$CommonItemTooltip.Whips}
+		'''
+}
+
+ViciousWhip: {
+	DisplayName: Vicious Whip
+	Tooltip:
+		'''
+		8 summon tag damage
+		{$CommonItemTooltip.Whips}
+		'''
+}
+
+VileWhip: {
+	DisplayName: Vile Whip
+	Tooltip:
+		'''
+		8 summon tag damage
+		{$CommonItemTooltip.Whips}
+		'''
+}
+
+ForbiddenWhip: {
+	DisplayName: Forbidden Whip
+	Tooltip:
+		'''
+		Reduces enemy velocity by 20% when struck by a minion
+		  Scales with Summon Knockback
+		{$CommonItemTooltip.Whips}
+		'''
+}
+
+# Items/Armor/Vanity
+
+Harpy_Shirt: {
+	DisplayName: Harpy's Shirt
+	Tooltip: ""
+}
+
+Harpy_Shorts: {
+	DisplayName: Harpy's Shorts
+	Tooltip: ""
+}
+
+HellTrader_Hood: {
+	DisplayName: Hell Trader's Hood
+	Tooltip: ""
+}
+
+HellTrader_Robes: {
+	DisplayName: Hell Trader's Robes
+	Tooltip: ""
+}
+
+HellTrader_Trousers: {
+	DisplayName: Hell Trader's Trousers
+	Tooltip: ""
+}
+
+IntTrav_Chestplate: {
+	DisplayName: Interstellar Chestplate
+	Tooltip: ""
+}
+
+IntTrav_Helmet: {
+	DisplayName: Interstellar Helmet
+	Tooltip: ""
+}
+
+IntTrav_Leggings: {
+	DisplayName: Interstellar Leggings
+	Tooltip: ""
+}
+
+SirSlushsTopHat: {
+	DisplayName: Sir Slush's Top Hat
+	Tooltip: ""
+}
+
+PeacekeeperHat: {
+	DisplayName: Peacekeeper Hat
+	Tooltip: ""
+}
+
+PeacekeeperShirt: {
+	DisplayName: Peacekeeper Shirt
+	Tooltip: ""
+}
+
+PeacekeeperTrousers: {
+	DisplayName: Peacekeeper Trousers
+	Tooltip: ""
+}
+
+# Items/Materials
+
+CrawlerChelicera: {
+	DisplayName: Crawler Chelicera
+	Tooltip: ""
+}
+
+FestivePlating: {
+	DisplayName: Festive Plating
+	Tooltip: ""
+}
+
+GiantRedHarpyFeather: {
+	DisplayName: Giant Red Harpy Feather
+	Tooltip: ""
+}
+
+InfernicFabric: {
+	DisplayName: Infernic Fabric
+	Tooltip: ""
+}
+
+Sulfur: {
+	DisplayName: Sulfur
+	Tooltip: ""
+}
+
+SunEssence: {
+	DisplayName: Sun Essence
+	Tooltip: ""
+}
+
+# Items (root)
+
+CaughtHarpy: {
+	DisplayName: Harpy
+	Tooltip: "'Friends? I am friendly.'"
+}
+
+CaughtIntTrav: {
+	DisplayName: Interstellar Traveler
+	Tooltip: "'I'm pretty far from home, but this place is pretty cool.'"
+}
+
+CaughtHellTrader: {
+	DisplayName: Hell Trader
+	Tooltip: ""
+}
+
+CaughtSnugget: {
+	DisplayName: Snugget
+	Tooltip: "'Squeak!'"
+}
+
+DebugAnglerQuestChanger: {
+	Tooltip:
+		'''
+		Changes the number of Angler quests you have completed
+		Left click to add one
+		Right click to remove one
+		'''
+	DisplayName: "[c/ff0000:Debug] - Angler Quest Changer"
+}
+
+DebugDisplayStates: {
+	Tooltip: Left click to show all current states
+	DisplayName: "[c/ff0000:Debug] - Display States"
+}
+
+DebugHellTraderArrivable: {
+	Tooltip:
+		'''
+		Changes the flag that the Hell Trader can arrive
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Hell Trader Arrivable Flag"
+}
+
+DebugIntTravArived: {
+	Tooltip:
+		'''
+		Changes the flag that the Interstellar Traveler has arrived
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Interstellar Traveler Arrived Flag"
+}
+
+DebugIntTravQuestBlankDisplay: {
+	Tooltip:
+		'''
+		Changes the states of the Blank Display quest from the Interstellar Traveler
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Blank Display Quest"
+}
+
+DebugIntTravQuestMagicOxygenizer: {
+	Tooltip:
+		'''
+		Changes the states of the Magic Oxygenizer quest from the Interstellar Traveler
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Magic Oxygenizer"
+}
+
+DebugIntTravQuestOddDevice: {
+	Tooltip:
+		'''
+		Changes the states of the Odd Device quest from the Interstellar Traveler
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Odd Device Quest"
+}
+
+DebugIntTravQuestPrimeThruster: {
+	Tooltip:
+		'''
+		Changes the states of the Prime Thruster quest from the Interstellar Traveler
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Prime Thruster"
+}
+
+DebugIntTravQuestRyeJam: {
+	Tooltip:
+		'''
+		Changes the states of the Rye Jam quest from the Interstellar Traveler
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Rye Jam"
+}
+
+DebugIntTravQuestTPCore: {
+	Tooltip:
+		'''
+		Changes the states of the Teleportation Core quest from the Interstellar Traveler
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Teleportation Core Quest"
+}
+
+DebugMethodTester: {
+	Tooltip: Left click to show all current states
+	DisplayName: "[c/ff0000:Debug] - Method Tester"
+}
+
+DebugSavedHarpy: {
+	Tooltip:
+		'''
+		Changes the flag that says the Harpy has been saved
+		Left click to set false
+		Right click to set true
+		'''
+	DisplayName: "[c/ff0000:Debug] - Saved Harpy Flag"
+}
+
+DebugBoughtTestPet: {
+	DisplayName: "[c/ff0000:Debug] - Bought Snugget Pet Flag"
+	Tooltip:
+		'''
+		Changes the flag that the Snugget Pet can arrive
+		Left click to set false
+		Right click to set true
+		'''
+}
+
+DebugShimmerer: {
+	DisplayName: "[c/ff0000:Debug] - Shimmerer"
+	Tooltip:
+		'''
+		Attack anything to shimmer it
+		Right click to see stats
+		'''
+}
+
+DebugParticleOrchestra: {
+	DisplayName: Debug Particle Orchestra
+	Tooltip: ""
+}

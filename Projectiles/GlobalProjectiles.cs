@@ -18,6 +18,7 @@ namespace RijamsMod.Projectiles
 		//	Grenades and Proximity Mines fall way faster which makes them have even less range.
 		//	Celebration Rockets explode twice as soon (also they are shared with the placed colored firework Rockets)
 		//  Exctrosphere Missile moves slow enough that it doesn't need extraUpdates.
+		public static List<int> RocketBoosterExtraUpdatesBlackList = new() {  };
 
 		public override void PostAI(Projectile projectile)
 		{
@@ -129,16 +130,15 @@ namespace RijamsMod.Projectiles
 			{
 				if (owner.active && owner.GetModPlayer<RijamsModPlayer>().rocketBooster)
 				{
-					foreach (int element in RocketsAffectedByRocketBoosterExtraUpdates)
+					if (owner.HeldItem.useAmmo == AmmoID.Rocket &&
+						(RocketsAffectedByRocketBoosterExtraUpdates.Contains(projectile.type) || ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[projectile.type])
+						&& !RocketBoosterExtraUpdatesBlackList.Contains(projectile.type) && !ProjectileID.Sets.IsAMineThatDealsTripleDamageWhenStationary[projectile.type])
 					{
-						if (owner.HeldItem.useAmmo == AmmoID.Rocket && projectile.type == element)
+						if (projectile.extraUpdates == 0)
 						{
-							if (projectile.extraUpdates == 0)
-							{
-								//Main.NewText("rocketBooster GlobalProjectile");
-								projectile.velocity *= 0.5f; // Doesn't really do anything because the velocity is continuously multiplied by 1.1f.
-								projectile.extraUpdates++;
-							}
+							//Main.NewText("rocketBooster GlobalProjectile");
+							projectile.velocity *= 0.5f; // Doesn't really do anything because the velocity is continuously multiplied by 1.1f.
+							projectile.extraUpdates++;
 						}
 					}
 				}

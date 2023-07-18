@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.Localization;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -11,14 +12,13 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 	{
 		public override void SetStaticDefaults()
 		{
+			base.SetStaticDefaults();
 			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Granite Elementals]", null, null });
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			Item.damage = 0;
+			Item.damage = 1; // Token amount of damage so it can be reforged and so it shows up in summon weapon filters.
 			Item.knockBack = 0f;
 			Item.mana = 20;
 			Item.width = 18;
@@ -41,6 +41,12 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			Item.shoot = ModContent.ProjectileType<GraniteElemental>();
 		}
 
+		public override int HealingAmount => base.HealingAmount + 20; // 20 hp
+		public override int HealingTime => base.HealingTime + (40 * 60); // 40 seconds
+		public override int Radius => base.Radius + 10; // 10 tile radius
+
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(HealingAmount, HealingTime / 60, Radius);
+
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
@@ -51,8 +57,9 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			projectile.originalDamage = Item.damage;
 			if (projectile.ModProjectile is GraniteElemental modProjectile)
 			{
-				modProjectile.cooldownTime = 40 * 60; // 40 seconds
-				modProjectile.distRadius = 10; // 10 tile radius
+				modProjectile.healAmount = HealingAmount;
+				modProjectile.cooldownTime = HealingTime;
+				modProjectile.distRadius = Radius;
 			}
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{

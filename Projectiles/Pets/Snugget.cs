@@ -13,6 +13,11 @@ namespace RijamsMod.Projectiles.Pets
 			// DisplayName.SetDefault("Snugget");
 			Main.projFrames[Projectile.type] = 11;
 			Main.projPet[Projectile.type] = true;
+
+			ProjectileID.Sets.CharacterPreviewAnimations[Projectile.type] = ProjectileID.Sets.SimpleLoop(2, 4, 6)
+				.WhenNotSelected(0, 0)
+				.WithOffset(-14f, 0f)
+				.WithSpriteDirection(-1);
 		}
 
 		public override void SetDefaults()

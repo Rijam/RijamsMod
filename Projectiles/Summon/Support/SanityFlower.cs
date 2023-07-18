@@ -16,6 +16,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 {
 	public class SanityFlower : ModProjectile
 	{
+		public int healAmount = 0;
 		public int cooldownTime = 0;
 		public int distRadius = 0;
 		private int targetPlayer = -1;  // If there was no player found, it will be -1.
@@ -156,7 +157,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 					for (int i = 0; i < Main.maxPlayers; i++)
 					{
 						Player searchPlayer = Main.player[i];
-						if (searchPlayer.active && !searchPlayer.dead && !searchPlayer.hostile && searchPlayer.team == player.team && searchPlayer.team != 0)
+						if (HarpyIdol.SearchPlayers(player, searchPlayer))
 						{
 							double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 							if (distance <= radius)
@@ -189,7 +190,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 					// Spawn the Curative Butterfly projectile with the player with the lowest HP as its target.
 					Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, new(0, -1), ModContent.ProjectileType<CurativeButterfly>(),
 						Projectile.damage, Projectile.knockBack, Projectile.owner,
-						targetPlayer);
+						targetPlayer, healAmount);
 				}
 
 				SoundEngine.PlaySound(SoundID.Item8 with { Pitch = 0.5f }, Projectile.Center);

@@ -1,0 +1,179 @@
+//NPCs: {
+Harpy: {
+	DisplayName: Harpy
+
+	TownNPCMood: {
+		Content: I like it here.
+		NoHome: Can I get a nest of my own?
+		LoveSpace: So much open air to soar!
+		FarFromHome: I'm lost, need to get back to my nest!
+		DislikeCrowded: This nest is starting to get crowded!
+		HateCrowded: So many people around! Makes me scared!
+		LikeBiome: The {BiomeName} is a good place to live.
+		LoveBiome: I love {BiomeName}! So open air!
+		DislikeBiome: There isn't much room to fly in {BiomeName}.
+		HateBiome: I need to leave now! {BiomeName} is very bad!
+		LikeNPC: "{NPCName} is fun to be around."
+		LikeNPC_Princess: "{NPCName} is so nice to me."
+		LoveNPC: "{NPCName} is the best person ever!"
+		DislikeNPC: "{NPCName} makes me uncomfortable."
+		HateNPC: "{NPCName} is so mean to me!"
+		Princess_LovesNPC: Using a Jetpack, I was able to go flying with {NPCName}!
+	}
+
+	Census_SpawnCondition: Rescue her in space
+	Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.Harpy.Census_SpawnCondition}"
+
+	Bestiary: {
+		Description: A head injury resulted in this Harpy forgetting to be hostile. She will sell items from the sky.
+
+		Happiness: {
+			# These are automatically translated from other localization. Leave as is.
+			Love: "{$Mods.RijamsMod.NPCs.InterstellarTraveler.DisplayName}"
+			Like: "{$Mods.RijamsMod.Common.Forest}, {$Mods.RijamsMod.NPCs.HellTrader.DisplayName}, {$NPCName.Guide}, {$NPCName.Dryad}, {$NPCName.Pirate}, {$NPCName.Stylist}, {$NPCName.Steampunker}, {$NPCName.Golfer}, {$NPCName.Painter}, {$NPCName.WitchDoctor}, {$NPCName.PartyGirl}, {$NPCName.Mechanic}"
+			Dislike: "{$Mods.RijamsMod.Common.Caverns}, {$NPCName.TaxCollector}"
+			Hate: "{$NPCName.Angler}"
+		}
+	}
+}
+
+InterstellarTraveler: {
+	DisplayName: Interstellar Traveler
+
+	TownNPCMood: {
+		Content: I've been in worse situations.
+		NoHome: Can I get some lodging? I have no where else to go.
+		LoveSpace: Ah, room to relax and think.
+		FarFromHome: I am far from my home. Both of my homes!
+		DislikeCrowded: I'm used to sharing rooms with others, but I will still like my own area.
+		HateCrowded: What is the maximum capacity in this building because we have surely surpassed it.
+		LikeBiome: A familiar looking biome; I like {BiomeName}.
+		LoveBiome: I love {BiomeName}. So much room for adventure!
+		DislikeBiome: I was never one who enjoyed {BiomeName}. I much prefer space.
+		HateBiome: Wow, {BiomeName} now ranks as one of the worse places I've visited.
+		LikeNPC: "{NPCName} offers me great company!"
+		LikeNPC_Princess: "{NPCName} calls me her 'friendly alien'. Heh, well I guess it's true!"
+		LoveNPC: I love {NPCName}. You can make new best friends wherever you go!
+		DislikeNPC: "{NPCName} is not a person I enjoy being around."
+		HateNPC: "{NPCName} is so prejudice and close minded."
+		Princess_LovesNPC: A friendly alien! {NPCName} is so interesting!
+	}
+
+	Census_SpawnCondition: Defeat EoW or BoW and have [i:RijamsMod/OddDevice] Odd Device in your inventory
+	Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.InterstellarTraveler.Census_SpawnCondition}"
+
+	Bestiary: {
+		Description: A special forces alien from a distant galaxy who became stranded on this planet. She needs help repairing her space ship.
+
+		Happiness: {
+			Love: "{$Mods.RijamsMod.NPCs.Harpy.DisplayName}"
+			Like: "{$Mods.RijamsMod.Common.Forest}, {$NPCName.Guide}, {$NPCName.Dryad}, {$NPCName.BestiaryGirl}, {$NPCName.Mechanic}, {$NPCName.Cyborg}, {$NPCName.Steampunker}, {$NPCName.PartyGirl}"
+			Dislike: "{$Mods.RijamsMod.Common.Caverns}, {$NPCName.Demolitionist}, {$NPCName.Wizard}, {$NPCName.TaxCollector}, {$NPCName.Painter}"
+			Hate: "{$NPCName.Merchant}"
+		}
+	}
+}
+
+HellTrader: {
+	DisplayName: Hell Trader
+
+	TownNPCMood: {
+		Content: Can't complain.
+		NoHome: I have wanted a permanent place to live.
+		LoveSpace: I like having all of this space to myself.
+		FarFromHome: I'm far away from my home and I didn't bring my supplies!
+		DislikeCrowded: I'm not used to living near so many people!
+		HateCrowded: It is so crowded here! I don't like having so many people around me!
+		LikeBiome: The heat in {BiomeName} reminds me of where I'm from.
+		LoveBiome: I will always love {BiomeName}!
+		DislikeBiome: Brr! It's so cold in {BiomeName}.
+		HateBiome: I hate {BiomeName}! Why would anyone like living here?
+		LikeNPC: "{NPCName} accepts me for who I am."
+		LikeNPC_Princess: Is {NPCName} always so friendly? She is so nice to me!
+		LoveNPC: "{NPCName}'s magic is so amazing! I hope to be that powerful someday."
+		DislikeNPC: "{NPCName} is the kind of person I want to avoid."
+		HateNPC: I don't understand {NPCName}. How and why are they like that?
+		Princess_LovesNPC: Just because {NPCName} is a demon doesn't mean she can't be friendly!
+	}
+
+	Census_SpawnCondition: Found in Hell. Can move in in Hardmode
+	Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.HellTrader.Census_SpawnCondition}"
+
+	Bestiary: {
+		Description: A fire imp who spent their life studying the remains of the cities in the Underworld. She has acquired many goods to trade.
+
+		Happiness: {
+			Love: "{$Mods.RijamsMod.Common.Caverns}, {$NPCName.Wizard}"
+			Like: "{$Mods.RijamsMod.Common.Desert}, {$Mods.RijamsMod.NPCs.Harpy.DisplayName}, {$NPCName.DD2Bartender}, {$NPCName.WitchDoctor}, {$NPCName.GoblinTinkerer}, {$NPCName.Clothier}, {$NPCName.Truffle}, {$NPCName.Demolitionist}"
+			Dislike: "{$Mods.RijamsMod.Common.Snow}, {$NPCName.ArmsDealer}, {$NPCName.Stylist}, {$NPCName.DyeTrader}"
+			Hate: "{$NPCName.Cyborg}"
+		}
+	}
+}
+
+ArmedSkeleton: {
+	DisplayName: Armed Skeleton
+	Bestiary.Description: Doesn't exist, it can't hurt you.
+}
+
+DarkSoldier: {
+	DisplayName: Dark Soldier
+	Bestiary.Description: Invaders from an unwelcoming dimension, these soldiers can shoot fire from their mouths.
+}
+
+DungeonBat: {
+	DisplayName: Dungeon Bat
+	Bestiary.Description: Originally an ordinary cave bat, living in the dungeon has caused all of its flesh to rot off. How does it even fly?
+}
+
+FirmamentHarpy: {
+	DisplayName: Firmament Harpy
+	Bestiary.Description: These harpies come equipped with armor and a different combat technique. Don't let them slice you with their talons!
+}
+
+FlyingPurpleSlime: {
+	DisplayName: Flying Purple Slime
+	Bestiary.Description: This slime has acquired some wings which enhances its mobility.
+}
+
+SirSlush: {
+	DisplayName: Sir Slush
+	Bestiary.Description: Sir Slush's signature laugh will send chills down your spine, or rather snow balls!
+}
+
+SkeletonCrossbower: {
+	DisplayName: Skeleton Crossbower
+	Bestiary.Description: A past adventurer who met a predictable fate in the Dungeon. Their ranged attack makes them stand out.
+}
+
+SkeletonGunner: {
+	DisplayName: Skeleton Gunner
+	Bestiary.Description: Evil skeletons are already bad enough, but this one has found a gun!
+}
+
+SnowmanMuscle: {
+	DisplayName: Snowman Muscle
+	Bestiary.Description: This heartless snowman will use his shotgun to take out anyone who stands in the snowmen's way.
+}
+
+SpikedGreenSlime: {
+	DisplayName: Spiked Green Slime
+	Bestiary.Description: A green slime with the ability to launch its massive spikes at its opponents.
+}
+
+UnconsciousHarpy: {
+	DisplayName: Unconscious Harpy
+	Bestiary.Description: Should you wake her up? Yes you should.
+}
+
+SnuggetPet: {
+	DisplayName: Snugget
+	Census_SpawnCondition: License sold after 60% Bestiary completion and Interstellar Traveler is present.
+	Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.SnuggetPet.Census_SpawnCondition}"
+	Bestiary.Description: Ahh! An alien! Fortunately, this one is super fluffy and just wants to snuggle with you.
+}
+
+AngryGuster: {
+	DisplayName: Angry Guster
+	Bestiary.Description: These clouds might blow you away!
+}

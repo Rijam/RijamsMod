@@ -130,7 +130,7 @@ namespace RijamsMod.Projectiles.Ranged
 
 		public override void SetDefaults()
 		{
-			Projectile.CloneDefaults(ProjectileID.WoodenArrowFriendly);
+			Projectile.CloneDefaults(ProjectileID.UnholyArrow);
 			Projectile.timeLeft = 2;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)

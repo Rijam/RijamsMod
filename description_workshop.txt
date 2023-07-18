@@ -12,9 +12,9 @@ Includes:
 [*] Snugget Town Pet: License sold after 60% Bestiary completion and Interstellar Traveler is present.
 [/list]
 
-[b] 240 new items and weapons throughout the game's progression [/b]
+[b] 241 new items and weapons throughout the game's progression [/b]
 [list]
-[*] 67 weapons: 12 Melee, 9 Ranged, 24 Magic, 22 Summoner.
+[*] 67 weapons: 12 Melee, 10 Ranged, 24 Magic, 22 Summoner.
 [*] 13 ammo types.
 [*] 44 accessories.
 [*] 26 armor pieces.

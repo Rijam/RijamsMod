@@ -88,7 +88,7 @@ namespace RijamsMod
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), new List<Condition>() { });
-				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CorruptionOrHardmode") }, 40);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CrimsonOrHardmode") }, 40);
 				bossesAsNPCs.Call("AddToShop", "WithDiv", "KingSlime", ModContent.ItemType<Items.Accessories.Misc.MorphasRing>(), new List<Condition>() { }, 0.17f);
 			}
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
@@ -205,6 +205,10 @@ namespace RijamsMod
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
 					Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add((int)args[1]);
 					return Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Contains((int)args[1]);
+				case "AddProjectileToRocketBoosterExtraUpdatesBlackList":
+					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					Projectiles.RijamsModProjectile.RocketBoosterExtraUpdatesBlackList.Add((int)args[1]);
+					return Projectiles.RijamsModProjectile.RocketBoosterExtraUpdatesBlackList.Contains((int)args[1]);
 				default:
 					throw new ArgumentException($"Function \"{function}\" is not defined by Rijam's Mod");
 			}

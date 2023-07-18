@@ -111,7 +111,7 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.damage = 0;
+			Item.damage = 1; // Token amount of damage so it can be reforged and so it shows up in summon weapon filters.
 			Item.width = 28;
 			Item.height = 30;
 			Item.value = Item.sellPrice(silver: 50);
@@ -133,6 +133,11 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 				.AddIngredient(ItemID.FallenStar, 1)
 				.AddTile(TileID.WorkBenches)
 				.Register();
+		}
+
+		public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+		{
+			damage -= 1;
 		}
 	}
 }

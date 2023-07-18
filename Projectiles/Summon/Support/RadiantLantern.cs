@@ -16,6 +16,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 {
 	public class RadiantLantern : ModProjectile
 	{
+		public int healAmount = 0;
 		public int cooldownTime = 0;
 		public int distRadius = 0;
 		private int targetPlayer = -1;  // If there was no player found, it will be -1.
@@ -157,7 +158,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 					for (int i = 0; i < Main.maxPlayers; i++)
 					{
 						Player searchPlayer = Main.player[i];
-						if (searchPlayer.active && !searchPlayer.dead && !searchPlayer.hostile && searchPlayer.team == player.team && searchPlayer.team != 0)
+						if (HarpyIdol.SearchPlayers(player, searchPlayer))
 						{
 							double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 							if (distance <= radius)
@@ -205,13 +206,13 @@ namespace RijamsMod.Projectiles.Summon.Support
 				Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One, ModContent.ProjectileType<Radiance>(),
 					Projectile.damage, Projectile.knockBack, Projectile.owner,
 					targetPlayer,
-					Main.rand.NextFloat(0.8f, 0.9f));
+					Main.rand.NextFloat(0.8f, 0.9f), healAmount);
 
 				// Spawn a second projectile with the owner as the target.
 				Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One * -1, ModContent.ProjectileType<Radiance>(),
 					Projectile.damage, Projectile.knockBack, Projectile.owner,
 					targetPlayer2,
-					Main.rand.NextFloat(0.8f, 0.9f));
+					Main.rand.NextFloat(0.8f, 0.9f), healAmount);
 
 				SoundEngine.PlaySound(SoundID.Item82 with { Pitch = 0.5f }, Projectile.Center);
 

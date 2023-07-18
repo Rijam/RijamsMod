@@ -3,12 +3,14 @@ using RijamsMod.Items;
 using System;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Buffs.Minions
 {
 	public class HarpyIdolBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(3, 1, 5);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Harpy Idol");
@@ -33,6 +35,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class CobaltProtectorBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(5, 2, 10);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Cobalt Protector");
@@ -57,6 +60,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class CrystalClusterBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(7, 4, 15);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Crystal Cluster");
@@ -81,6 +85,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class FallenPaladinBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(10, 5, 20);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Fallen Paladin");
@@ -105,6 +110,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class StardustProtectorBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(13, 8, 30);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Stardust Protector");
@@ -129,6 +135,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class GraniteElementalBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(20, 40, 10);
 		public override void SetStaticDefaults()
 		{
 			Main.buffNoSave[Type] = true;
@@ -151,6 +158,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class SanityFlowerBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(20, 30, 15);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Sanity Flower");
@@ -176,6 +184,7 @@ namespace RijamsMod.Buffs.Minions
 
 	public class RadiantLanternBuff : ModBuff
 	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(20, 30, 30);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Radiant Lantern");

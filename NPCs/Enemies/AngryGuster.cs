@@ -226,9 +226,13 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				spawnChance += 0.25f;
 			}
+			if (Main.IsItAHappyWindyDay)
+			{
+				spawnChance += 0.08f;
+			}
 			if (Main.WindyEnoughForKiteDrops)
 			{
-				spawnChance += 0.1f;
+				spawnChance += 0.02f;
 			}
 			if (Condition.InRain.IsMet())
 			{

@@ -1049,6 +1049,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			var npcShop = new NPCShop(Type, ShopName)
 				.Add(ModContent.ItemType<InterstellarPistol>(), Condition.DownedSkeletron, Condition.NpcIsPresent(NPCID.ArmsDealer))
+				.Add(ModContent.ItemType<InterstellarCrossbow>(), Condition.DownedMechBossAny)
 				.Add(ModContent.ItemType<PlasmaRifle>(), Condition.DownedPlantera)
 				.Add(ModContent.ItemType<InterstellarSMG>(), Condition.DownedPlantera)
 				.Add(ModContent.ItemType<AGMMissileLauncher>(), Condition.DownedGolem, Condition.NpcIsPresent(NPCID.Cyborg))
@@ -1118,7 +1119,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(new Item(ModContent.ItemType<Items.Placeable.InformationInterfaceTile>()) { shopCustomPrice = 5000 },
 				Condition.PlayerCarriesItem(ModContent.ItemType<InformationInterface>()));
 
-			npcShop.Add(ItemID.RodofDiscord, ShopConditions.IntTravQuestOddDevice);
+			npcShop.Add(ItemID.RodofDiscord, ShopConditions.IntTravQuestTPCore, Condition.Hardmode);
 			npcShop.Add(ModContent.ItemType<Items.Consumables.RyeJam>(), ShopConditions.IntTravQuestBreadAndJelly);
 			npcShop.Add(ModContent.ItemType<BreathingPack>(), ShopConditions.IntTravQuestMagicOxygenizer);
 			npcShop.Add(ModContent.ItemType<RocketBooster>(), ShopConditions.IntTravQuestPrimeThruster);

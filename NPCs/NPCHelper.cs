@@ -27,7 +27,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string LoveText(string npc)
 		{
-			return "[c/b3f2b3:" + Language.GetTextValue("RandomWorldName_Noun.Love") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Love") + "\n";
+			return "[c/b3f2b3:" + Language.GetTextValue("RandomWorldName_Noun.Love") + "]: " + Language.GetTextValue("Mods." + mod + ".NPCs." + npc + ".Bestiary.Happiness.Love") + "\n";
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string LikeText(string npc)
 		{
-			return "[c/ddf2b3:" + Language.GetTextValue("Mods." + mod + ".UI.Like") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Like") + "\n";
+			return "[c/ddf2b3:" + Language.GetTextValue("Mods." + mod + ".UI.Like") + "]: " + Language.GetTextValue("Mods." + mod + ".NPCs." + npc + ".Bestiary.Happiness.Like") + "\n";
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string DislikeText(string npc)
 		{
-			return "[c/f2e0b3:" + Language.GetTextValue("Mods." + mod + ".UI.Dislike") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Dislike") + "\n";
+			return "[c/f2e0b3:" + Language.GetTextValue("Mods." + mod + ".UI.Dislike") + "]: " + Language.GetTextValue("Mods." + mod + ".NPCs." + npc + ".Bestiary.Happiness.Dislike") + "\n";
 		}
 
 		/// <summary>
@@ -57,7 +57,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string HateText(string npc)
 		{
-			return "[c/f2b5b3:" + Language.GetTextValue("RandomWorldName_Noun.Hate") + "]: " + Language.GetTextValue("Mods." + mod + ".Bestiary.Happiness." + npc + ".Hate");
+			return "[c/f2b5b3:" + Language.GetTextValue("RandomWorldName_Noun.Hate") + "]: " + Language.GetTextValue("Mods." + mod + ".NPCs." + npc + ".Bestiary.Happiness.Hate");
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string BestiaryPath(string npc)
 		{
-			return "Mods." + mod + ".Bestiary.Description." + npc;
+			return "Mods." + mod + ".NPCs." + npc + ".Bestiary.Description";
 		}
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace RijamsMod.NPCs
 		/// <returns>string</returns>
 		public static string DialogPath(string npc)
 		{
-			return "Mods." + mod + ".NPCDialog." + npc + ".";
+			return "Mods." + mod + ".NPCs." + npc + ".NPCDialog.";
 		}
 
 		/// <summary>

@@ -137,7 +137,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 			for (int i = 0; i < Main.maxPlayers; i++)
 			{
 				Player searchPlayer = Main.player[i];
-				if (searchPlayer.active && !searchPlayer.dead && !searchPlayer.hostile && searchPlayer.team == player.team && searchPlayer.team != 0)
+				if (SearchPlayers(player, searchPlayer))
 				{
 					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 					if (distance <= radius)
@@ -182,6 +182,15 @@ namespace RijamsMod.Projectiles.Summon.Support
 			additionalDefense = reader.ReadInt32();
 			additionalDR = reader.ReadSingle();
 			distRadius = reader.ReadInt32();
+		}
+
+		public static bool SearchPlayers(Player player1, Player searchPlayer2)
+		{
+			if (searchPlayer2.active && !searchPlayer2.dead && !searchPlayer2.hostile && ((searchPlayer2.team == player1.team && searchPlayer2.team != 0 && Main.netMode != NetmodeID.SinglePlayer) || Main.netMode == NetmodeID.SinglePlayer))
+			{
+				return true;
+			}
+			return false;
 		}
 	}
 }
