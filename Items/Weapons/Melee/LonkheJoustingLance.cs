@@ -1,12 +1,8 @@
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.Enums;
-using Terraria.Localization;
-using Terraria.Utilities;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Melee
 {
@@ -18,7 +14,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
 			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance"));
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Hoplites]", "[c/474747:Or crafted]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Hoplites]", "[c/474747:Or crafted]" });
 			GlobalItems.isJoustingLance.Add(Type);
 			//CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The number of sacrifices that is required to research the item in Journey Mode.
 		}

@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -15,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			base.SetStaticDefaults();
 			// DisplayName.SetDefault("Radiant Lantern Cudgel");
 			// Tooltip.SetDefault("Summons a Radiant Lantern to heal you\nTwo players with the lowest HP within its aura will be targeted\n20 HP every 30 seconds\n30 tile radius");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Empress of Light]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Empress of Light]" });
 		}
 
 		public override void SetDefaults()

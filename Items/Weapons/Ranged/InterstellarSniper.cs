@@ -17,7 +17,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Lunatic Cultist]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Lunatic Cultist]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarSMG>(); // Shimmer transforms the item.
 		}
 

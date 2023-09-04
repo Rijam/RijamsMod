@@ -1,5 +1,5 @@
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,7 +11,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Stabby Shiv");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Mister Stabby]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Mister Stabby]" });
 		}
 
 		public override void SetDefaults()

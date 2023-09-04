@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,7 +12,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		{
 			// DisplayName.SetDefault("Control Glove");
 			// Tooltip.SetDefault("Enables auto swing for all minion and sentry weapons");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Deerclops]", "[c/474747:Or in Hardmode]" });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Deerclops]" });
 		}
 
 		public override void SetDefaults()

@@ -14,7 +14,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Granitization");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Granite Golems]", "[c/474747:Or crafted]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Granite Golems]", "[c/474747:Or crafted]" });
 			// Tooltip.SetDefault("Cannot hit enemies through tiles\nOnly the blade can hit enemies");
 		}
 		public override void SetDefaults()

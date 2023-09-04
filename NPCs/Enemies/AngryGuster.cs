@@ -238,7 +238,12 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				spawnChance += 0.1f;
 			}
-			return spawnChance;
+			if (spawnInfo.PlayerInTown)
+			{
+				spawnChance -= 0.1f;
+			}
+
+			return Math.Clamp(spawnChance, 0f, 1f);
 		}
 	}
 }

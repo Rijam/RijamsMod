@@ -182,6 +182,30 @@ namespace RijamsMod.Buffs.Minions
 		}
 	}
 
+	public class GleamingFungusBuff : ModBuff
+	{
+		public override LocalizedText Description => base.Description.WithFormatArgs(20, 20, 22);
+		public override void SetStaticDefaults()
+		{
+			Main.buffNoSave[Type] = true;
+			Main.buffNoTimeDisplay[Type] = true;
+			SupportMinionCanUseCheck.SupportMinionsHealingBuffs.Add(Type);
+		}
+
+		public override void Update(Player player, ref int buffIndex)
+		{
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Summon.Support.GleamingFungus>()] > 0)
+			{
+				player.buffTime[buffIndex] = 18000;
+			}
+			else
+			{
+				player.DelBuff(buffIndex);
+				buffIndex--;
+			}
+		}
+	}
+
 	public class RadiantLanternBuff : ModBuff
 	{
 		public override LocalizedText Description => base.Description.WithFormatArgs(20, 30, 30);

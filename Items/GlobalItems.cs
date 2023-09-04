@@ -29,10 +29,10 @@ namespace RijamsMod.Items
 		/// Items in this set will automatically be drawn behind the player's back hand.
 		/// </summary>
 		public static List<int> isLanternWeapon = new(); // Nightglow not included.
-		/// <summary>
+		/*/// <summary>
 		/// The front arm of the player will not animate correctly when the useStyle is set to RaiseLamp (14). Items in this set will be corrected with an IL Edit.
 		/// </summary>
-		// public static List<int> fixItemUseStyleIDRaiseLampFrontArmAnimation = new(); // No longer needed. Fix implemented into tModLoader directly. PR #3530
+		// public static List<int> fixItemUseStyleIDRaiseLampFrontArmAnimation = new(); // No longer needed. Fix implemented into tModLoader directly. PR #3530*/
 
 		public override void SetDefaults(Item item)
 		{
@@ -45,6 +45,14 @@ namespace RijamsMod.Items
 			if (item.type == ItemID.Handgun)
 			{
 				ItemID.Sets.ShimmerTransformToItem[item.type] = ModContent.ItemType<StockadeCrossbow>(); // Shimmer transforms the item.
+			}
+			if (item.type == ItemID.FleshKnuckles)
+			{
+				ItemID.Sets.ShimmerTransformToItem[item.type] = ItemID.PutridScent; // Shimmer transforms the item.
+			}
+			if (item.type == ItemID.PutridScent)
+			{
+				ItemID.Sets.ShimmerTransformToItem[item.type] = ItemID.FleshKnuckles; // Shimmer transforms the item.
 			}
 
 			if (item.type == ItemID.Coal)

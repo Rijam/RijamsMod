@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,7 +11,7 @@ namespace RijamsMod.Items.Pets
 		{
 			// DisplayName.SetDefault("Star Caller Staff");
 			// Tooltip.SetDefault("Summons a light pet Dwarf Star\nEnemies are lit ablaze upon contact");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Deerclops]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Deerclops]" });
 		}
 
 		public override void SetDefaults()
@@ -174,7 +174,7 @@ namespace RijamsMod.Items.Pets
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Zoologist]", "[c/474747:After defeating Stardust Pillar]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Zoologist]", "[c/474747:After defeating Stardust Pillar]" });
 		}
 
 		public override void SetDefaults()

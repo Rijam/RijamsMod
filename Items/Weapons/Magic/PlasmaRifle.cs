@@ -1,10 +1,10 @@
-using RijamsMod.Projectiles.Magic;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.Projectiles.Magic;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
@@ -13,7 +13,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Plasma Rifle");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]" });
 		}
 
 		public override void SetDefaults()

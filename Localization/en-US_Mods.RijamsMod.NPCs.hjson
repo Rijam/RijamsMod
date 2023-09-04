@@ -177,3 +177,5 @@ AngryGuster: {
 	DisplayName: Angry Guster
 	Bestiary.Description: These clouds might blow you away!
 }
+
+DebugSuperDummyNPC.DisplayName: Debug Super Dummy NPC

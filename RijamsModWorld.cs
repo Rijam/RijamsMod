@@ -29,7 +29,7 @@ namespace RijamsMod
 		public static bool hellTraderArrivable = false;
 		public static bool boughtSnuggetPet = false;
 
-		public static bool harpyJustRescued = false; // Not important for saving.
+		public static int harpyJustRescued = 0; // Not important for saving.
 
 		public override void OnWorldLoad()
 		{
@@ -44,7 +44,7 @@ namespace RijamsMod
 			hellTraderArrivable = false;
 			boughtSnuggetPet = false;
 
-			harpyJustRescued = false;
+			harpyJustRescued = 0;
 		}
 
 		public override void OnWorldUnload()
@@ -60,7 +60,7 @@ namespace RijamsMod
 			hellTraderArrivable = false;
 			boughtSnuggetPet = false;
 
-			harpyJustRescued = false;
+			harpyJustRescued = 0;
 		}
 
 		public override void SaveWorldData(TagCompound tag)

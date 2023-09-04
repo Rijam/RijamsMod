@@ -16,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			// DisplayName.SetDefault("Hammer of Retribution");
 			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws a long range projectile\n  Weapon does double damage\n  Uses 20 mana");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating any Mechanical Boss]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating any Mechanical Boss]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<TimonsAxe>(); // Shimmer transforms the item.
 		}
 
@@ -57,7 +57,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			if (player.CheckMana(20, false))
 			{
-				damage *= 2;
+				damage *= 2 + (player.GetTotalDamage(DamageClass.Magic).Additive - 1);
 			}
 		}
 	}

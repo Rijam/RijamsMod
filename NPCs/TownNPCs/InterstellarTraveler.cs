@@ -26,6 +26,7 @@ using Terraria.GameContent.UI;
 using System;
 using Terraria.GameContent.Drawing;
 using RijamsMod.Items.Tools;
+using System.Reflection;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -655,6 +656,22 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Thanks for removing happiness. Now, I am eternally unhappy.", 2.0);
 			}
+			if (ModLoader.TryGetMod("StarlightRiver", out Mod starlightRiver) && townNPCsCrossModSupport) // Starlight River
+			{
+				// Only add this chat message if the player has unlocked Starlight, which is unlocked after the Crow (Alican) cut scene happens.
+				if (starlightRiver.TryFind<ModPlayer>("AbilityHandler", out ModPlayer abilityHandler))
+				{
+					// Try to get the value of the AnyUnlocked which is true if the player has unlocked the abilities.
+					// https://github.com/ProjectStarlight/StarlightRiver/blob/master/Content/Abilities/AbilityHandler.cs#L63
+					// I suck at reflection.
+					PropertyInfo anyUnlocked = abilityHandler.GetType().GetProperty("AnyUnlocked", BindingFlags.Public | BindingFlags.Instance);
+					object anyUnlocks = anyUnlocked?.GetValue(Main.LocalPlayer.GetModPlayer(abilityHandler));
+					if (anyUnlocks?.ToString() == "True")
+					{
+						chat.Add("Did you see that Starlight person who came through that portal? You mentioned their name was Alican? I'm very interested in who they are; if only I were able to meet them before they went back through that portal.");
+					}
+				}
+			}
 			return chat;
 		}
 		#endregion
@@ -859,19 +876,57 @@ namespace RijamsMod.NPCs.TownNPCs
 				return;
 			}
 			else
-			{			
+			{
+				List<string> lines = new();
+				if (!RijamsModWorld.intTravQuestBreadAndJelly)
+				{
+					lines.Add("I'd be happy to take a look at other items, too; if you think I could use them for something.");
+				}
 				if (NPCHelper.AllQuestsCompleted())
 				{
 					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
-					string[] lines = { "It looks like you've found everything I needed, thanks!", "Nice job! You have collected and turned in everything I needed.", "With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!" };
-					Main.npcChatText = lines[Main.rand.Next(lines.Length)];
+					lines.Add("It looks like you've found everything I needed, thanks!");
+					lines.Add("Nice job! You have collected and turned in everything I needed.");
+					lines.Add("With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!");
 				}
 				else
 				{
 					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
-					string[] lines = { "I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.", "I need some items to repair my space ship. Do you think you could help me out?", "I'd be happy to take a look at other items, too; if you think I could use them for something.", "Hold LEFT SHIFT to check which quests you have completed and what I still need." };
-					Main.npcChatText = lines[Main.rand.Next(lines.Length)];
+					lines.Add("I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.");
+					lines.Add("I need some items to repair my space ship. Do you think you could help me out?");
+					lines.Add("Hold [c/FFFF00:LEFT SHIFT] to check which quests you have completed and what I still need.");
+
+					if (!RijamsModWorld.intTravQuestOddDevice)
+					{
+						lines.Add("I was tracking that [c/FFFF00:device] that you have. Could I take a look at it?");
+						lines.Add("Would you let me take a look at the [c/FFFF00:device] that you were carrying around?");
+					}
+					if (!RijamsModWorld.intTravQuestBlankDisplay)
+					{
+						lines.Add("I could use some sort of electronic screen. Something to [c/FFFF00:display] information on. It shouldn't be too hard for you to craft.");
+						lines.Add("Just some glass, a lens, and some metal would be all that is required to craft something to [c/FFFF00:display] information on.");
+					}
+					if (!RijamsModWorld.intTravQuestTPCore && Main.hardMode)
+					{
+						lines.Add("My hyper-drive needs to be repaired. There seems to be new creatures in this world who have the ability to [c/FFFF00:teleport].");
+						lines.Add("Several creatures have the ability to [c/FFFF00:teleport]. Harnessing that ability would be perfect for repairing my hyper-drive.");
+					}
+					if (!RijamsModWorld.intTravQuestMagicOxygenizer && NPC.downedMechBossAny)
+					{
+						lines.Add("My ship's oxygen supplier isn't working anymore, which makes it inconvenient to repair my ship. If you were able to create a device that can [c/FFFF00:create oxygen], that would be very helpful.");
+						lines.Add("The magic in this world is fascinating! If you were able to create a device that can [c/FFFF00:create oxygen], I could use that to repair the oxygen supplier on my ship.");
+					}
+					if (!RijamsModWorld.intTravQuestPrimeThruster && NPC.downedPlantBoss)
+					{
+						lines.Add("Without thrusters, my ship isn't going to move anywhere! A new [c/FFFF00:thruster] should solve that, of course!");
+						int cyborg = NPC.FindFirstNPC(NPCID.Cyborg);
+						if (cyborg > 0)
+						{
+							lines.Add($"{Main.npc[cyborg].FullName} has several rockets available. I bet you could use those to craft a new [c/FFFF00:thruster] for my ship.");
+						}
+					}
 				}
+				Main.npcChatText = lines[Main.rand.Next(lines.Count)];
 			}
 		}
 
@@ -1067,34 +1122,55 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(ItemID.TallyCounter, Condition.DownedSkeletron);
 
 			// Sell more of the Traveling Merchant's info items the more Town NPCs there are.
-			Item lifeformAnalyzer = new(ItemID.LifeformAnalyzer) { shopCustomPrice = 55000 };
-			Item dPSMeter = new(ItemID.DPSMeter) { shopCustomPrice = 55000 };
-			Item stopwatch = new(ItemID.Stopwatch) { shopCustomPrice = 55000 };
+			Item lifeformAnalyzer = new(ItemID.LifeformAnalyzer) { shopCustomPrice = 75000 };
+			Item dPSMeter = new(ItemID.DPSMeter) { shopCustomPrice = 75000 };
+			Item stopwatch = new(ItemID.Stopwatch) { shopCustomPrice = 75000 };
 
-			Condition TownNPCRange57 = new(ShopConditions.TownNPCRangeS("5-7"), () => NPCHelper.CountTownNPCs() >= 5 && NPCHelper.CountTownNPCs() <= 7);
-			Condition TownNPCRange811 = new(ShopConditions.TownNPCRangeS("8-11"), () => NPCHelper.CountTownNPCs() >= 8 && NPCHelper.CountTownNPCs() <= 11);
-			Condition TownNPCOver12 = new(ShopConditions.CountTownNPCsS(12), ShopConditions.CountTownNPCsFb(12));
+			Condition TownNPCRange1013 = new(ShopConditions.TownNPCRangeS("10-13"), () => NPCHelper.CountTownNPCs() >= 10 && NPCHelper.CountTownNPCs() <= 13);
+			Condition TownNPCRange1419 = new(ShopConditions.TownNPCRangeS("14-19"), () => NPCHelper.CountTownNPCs() >= 14 && NPCHelper.CountTownNPCs() <= 19);
+			Condition TownNPCOver20 = new(ShopConditions.CountTownNPCsS(20), ShopConditions.CountTownNPCsFb(20));
 
-			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase036, TownNPCRange57);
-			npcShop.Add(dPSMeter, ShopConditions.MoonPhase147, TownNPCRange57);
-			npcShop.Add(stopwatch, ShopConditions.MoonPhase25, TownNPCRange57);
+			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase036, TownNPCRange1013);
+			npcShop.Add(dPSMeter, ShopConditions.MoonPhase147, TownNPCRange1013);
+			npcShop.Add(stopwatch, ShopConditions.MoonPhase25, TownNPCRange1013);
 
-			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase036, TownNPCRange811);
-			npcShop.Add(dPSMeter, ShopConditions.MoonPhase036, TownNPCRange811);
+			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase036, TownNPCRange1419);
+			npcShop.Add(dPSMeter, ShopConditions.MoonPhase036, TownNPCRange1419);
 
-			npcShop.Add(dPSMeter, ShopConditions.MoonPhase147, TownNPCRange811);
-			npcShop.Add(stopwatch, ShopConditions.MoonPhase147, TownNPCRange811);
+			npcShop.Add(dPSMeter, ShopConditions.MoonPhase147, TownNPCRange1419);
+			npcShop.Add(stopwatch, ShopConditions.MoonPhase147, TownNPCRange1419);
 
-			npcShop.Add(stopwatch, ShopConditions.MoonPhase25, TownNPCRange811);
-			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase25, TownNPCRange811);
+			npcShop.Add(stopwatch, ShopConditions.MoonPhase25, TownNPCRange1419);
+			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase25, TownNPCRange1419);
 
-			npcShop.Add(lifeformAnalyzer, TownNPCOver12);
-			npcShop.Add(dPSMeter, TownNPCOver12);
-			npcShop.Add(stopwatch, TownNPCOver12);
+			npcShop.Add(lifeformAnalyzer, TownNPCOver20);
+			npcShop.Add(dPSMeter, TownNPCOver20);
+			npcShop.Add(stopwatch, TownNPCOver20);
 
-			npcShop.Add(ItemID.FishermansGuide, Condition.AnglerQuestsFinishedOver(1), Condition.NpcIsPresent(NPCID.Angler));
-			npcShop.Add(ItemID.Sextant, Condition.AnglerQuestsFinishedOver(1), Condition.NpcIsPresent(NPCID.Angler));
-			npcShop.Add(ItemID.WeatherRadio, Condition.AnglerQuestsFinishedOver(1), Condition.NpcIsPresent(NPCID.Angler));
+			// Sell more of the Angler info items the more quests have been completed.
+			Item fishermansGuide = new(ItemID.FishermansGuide) { shopCustomPrice = 75000 };
+			Item sextant = new(ItemID.Sextant) { shopCustomPrice = 75000 };
+			Item weatherRadio = new(ItemID.WeatherRadio) { shopCustomPrice = 75000 };
+
+			Condition AnglerQuestsFinishedRange13 = new(ShopConditions.AnglerQuestsFinishedRangeS("1-3"), ShopConditions.AnglerQuestsFinishedRangeFb(1, 3));
+			Condition AnglerQuestsFinishedRange45 = new(ShopConditions.AnglerQuestsFinishedRangeS("4-5"), ShopConditions.AnglerQuestsFinishedRangeFb(4, 5));
+
+			npcShop.Add(fishermansGuide, ShopConditions.MoonPhase036, AnglerQuestsFinishedRange13, Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(sextant, ShopConditions.MoonPhase147, AnglerQuestsFinishedRange13, Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(weatherRadio, ShopConditions.MoonPhase25, AnglerQuestsFinishedRange13, Condition.NpcIsPresent(NPCID.Angler));
+
+			npcShop.Add(fishermansGuide, ShopConditions.MoonPhase036, AnglerQuestsFinishedRange45, Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(sextant, ShopConditions.MoonPhase036, AnglerQuestsFinishedRange45, Condition.NpcIsPresent(NPCID.Angler));
+
+			npcShop.Add(sextant, ShopConditions.MoonPhase147, AnglerQuestsFinishedRange45, Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(weatherRadio, ShopConditions.MoonPhase147, AnglerQuestsFinishedRange45, Condition.NpcIsPresent(NPCID.Angler));
+
+			npcShop.Add(stopwatch, ShopConditions.MoonPhase25, AnglerQuestsFinishedRange45, Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(fishermansGuide, ShopConditions.MoonPhase25, AnglerQuestsFinishedRange45, Condition.NpcIsPresent(NPCID.Angler));
+
+			npcShop.Add(fishermansGuide, Condition.AnglerQuestsFinishedOver(6), Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(sextant, Condition.AnglerQuestsFinishedOver(6), Condition.NpcIsPresent(NPCID.Angler));
+			npcShop.Add(weatherRadio, Condition.AnglerQuestsFinishedOver(6), Condition.NpcIsPresent(NPCID.Angler));
 
 			string displayRandom = "Swaps between the displays at random";
 			Condition displayRandom4(int numberToCheck) => new(displayRandom, () => Main.GameUpdateCount % 4 == numberToCheck);
@@ -1188,7 +1264,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		//Allows you to customize how this town NPC's weapon is drawn when this NPC is shooting (this NPC must have an attack type of 1).
 		//Scale is a multiplier for the item's drawing size, item is the ID of the item to be drawn, and closeness is how close the item should be drawn to the NPC.
 		{
-			Main.NewText("NPC.ai[0] " + NPC.ai[0] + " NPC.frame.Y " + NPC.frame.Y + " NPC.frame.Height " + NPC.frame.Height);
+			//Main.NewText("NPC.ai[0] " + NPC.ai[0] + " NPC.frame.Y " + NPC.frame.Y + " NPC.frame.Height " + NPC.frame.Height);
 
 			//multiplier = 12f;
 			//randomOffset = 2f;

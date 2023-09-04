@@ -16,7 +16,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		{
 			// DisplayName.SetDefault("Life Sapper Ring");
 			// Tooltip.SetDefault("Gain a little bit of life after slaying an enemy\nScales with max health");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ManaSapperRing>(); // Shimmer transforms the item.
 		}
 
@@ -41,7 +41,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		{
 			// DisplayName.SetDefault("Mana Sapper Ring");
 			// Tooltip.SetDefault("Gain a little bit of mana after slaying an enemy\nScales with max mana");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<LifeSapperRing>(); // Shimmer transforms the item.
 		}
 

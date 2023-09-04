@@ -1,11 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Ranged
@@ -17,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Shoots a Water Stream every 10 shots");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Skeleton Crossbower]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Skeleton Crossbower]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.Handgun; // Shimmer transforms the item.
 		}
 

@@ -15,6 +15,8 @@ using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader.IO;
 using RijamsMod.Items.Placeable;
+using Terraria.GameContent.Drawing;
+using Microsoft.Xna.Framework;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -143,13 +145,26 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void PostAI()
 		{
-			if (RijamsModWorld.harpyJustRescued && !NPC.homeless && !NPCHelper.IsFarFromHome(Main.npc[NPC.FindFirstNPC(Type)]))
+			if (RijamsModWorld.harpyJustRescued > 0 && !NPC.homeless && !NPCHelper.IsFarFromHome(Main.npc[NPC.FindFirstNPC(Type)]))
 			{
-				RijamsModWorld.harpyJustRescued = false;
+				RijamsModWorld.harpyJustRescued = 0;
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ShimmerTownNPCSend, new ParticleOrchestraSettings
+				{
+					PositionInWorld = NPC.Center,
+					MovementVector = Vector2.Zero
+				});
 			}
-			if (justRescuedTime > 0)
+			if (RijamsModWorld.harpyJustRescued > 0)
 			{
-				justRescuedTime--;
+				RijamsModWorld.harpyJustRescued--;
+				if (RijamsModWorld.harpyJustRescued == 0)
+				{
+					ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ShimmerTownNPCSend, new ParticleOrchestraSettings
+					{
+						PositionInWorld = NPC.Center,
+						MovementVector = Vector2.Zero
+					});
+				}
 			}
 			/*if (isShimmered && !NPC.IsShimmerVariant)
 			{
@@ -170,15 +185,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			return false;
 		}
 
-		private int justRescuedTime = 30;
-
 		public override bool CheckConditions(int left, int right, int top, int bottom)
 		{
-			if (justRescuedTime > 0)
+			if (RijamsModWorld.harpyJustRescued > 0)
 			{
-				justRescuedTime--;
+				RijamsModWorld.harpyJustRescued--;
 			}
-			if (RijamsModWorld.harpyJustRescued && NPC.homeless && justRescuedTime > 0)
+			if (RijamsModWorld.harpyJustRescued > 0 && NPC.homeless)
 			{
 				return false;
 			}
@@ -341,7 +354,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("Valdaris? Sorry, I don't know what you are talking about.", 0.5);
 			}
-			if (ModLoader.TryGetMod("LivingWorldMod", out Mod livingWorldMod) && townNPCsCrossModSupport) //
+			if (ModLoader.TryGetMod("LivingWorldMod", out Mod livingWorldMod) && townNPCsCrossModSupport) // Living World Mod
 			{
 				if (livingWorldMod.TryFind<ModNPC>("HarpyVillager", out ModNPC harpyVillagerModNPC))
 				{
@@ -353,6 +366,11 @@ namespace RijamsMod.NPCs.TownNPCs
 						chat.Add("Other harpies? I hope they welcome me. I would love to be with them!");
 					}
 				}
+			}
+			if (NPC.killCount[Item.NPCtoBanner(NPCID.Pinky)] > 0)
+			{
+				// Harpy Raiders reference.
+				chat.Add("Slimes don't really like Harpies. I don't know why.", 0.1f);
 			}
 			return chat;
 		}
@@ -373,10 +391,9 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override void AddShops()
 		{
 			var npcShop = new NPCShop(Type, ShopName)
-				.Add(ItemID.Feather);
+				.Add(new Item(ItemID.Feather) { shopCustomPrice = 10 * 5 * 2});
 			if (ModLoader.TryGetMod("CalamityMod", out Mod calamityMod) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItem(calamityMod, "CalamityMod/DesertFeather"));
 				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(calamityMod, "CalamityMod/EffulgentFeather", 1f, 5f),
 					new Condition("After defeating Dragonfolly", () => (bool)calamityMod.Call("GetBossDowned", "dragonfolly")));
 			}
@@ -395,29 +412,29 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Thorium
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(thorium, "ThoriumMod/BirdTalon", 1f, 10f)); //Talon
+				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(thorium, "ThoriumMod/BirdTalon", 1f, 50f)); //Talon
 			}
-			npcShop.Add(new Item(ItemID.SkyMill) { shopCustomPrice = 17500 });
-			npcShop.Add(ItemID.LuckyHorseshoe);
+			npcShop.Add(ItemID.SkyMill);
+			npcShop.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = 5400 * 5 * 2});
 			npcShop.Add(ItemID.CelestialMagnet);
-			npcShop.Add(ItemID.Starfury);
-			npcShop.Add(ItemID.ShinyRedBalloon);
-			npcShop.Add(new Item(ItemID.CreativeWings) { shopCustomPrice = 160000 }); //Fledgling Wings
+			npcShop.Add(new Item(ItemID.Starfury) { shopCustomPrice = 10000 * 5 * 2 });
+			npcShop.Add(new Item(ItemID.ShinyRedBalloon) { shopCustomPrice = 15000 * 5 * 2 });
+			npcShop.Add(new Item(ItemID.CreativeWings) { shopCustomPrice = 160000 }, Condition.DownedEarlygameBoss); //Fledgling Wings
 			npcShop.Add(new Item(ItemID.SunplateBlock) { shopCustomPrice = 20 });
 			npcShop.Add(new Item(ModContent.ItemType<SunplatePillarBlock>()) { shopCustomPrice = 20 });
 			npcShop.Add(new Item(ItemID.Cloud) { shopCustomPrice = 90 });
 			npcShop.Add(new Item(ItemID.RainCloud) { shopCustomPrice = 90 });
 			npcShop.Add(new Item(ItemID.SnowCloudBlock) { shopCustomPrice = 90 });
-			npcShop.Add(ItemID.GiantHarpyFeather);
-			npcShop.Add(ItemID.IceFeather, Condition.Hardmode);
+			npcShop.Add(new Item(ItemID.GiantHarpyFeather) { shopCustomPrice = 25000 * 5 * 2 });
+			npcShop.Add(new Item(ItemID.IceFeather) { shopCustomPrice = 25000 * 5 * 2 }, Condition.Hardmode);
 			if (ModLoader.TryGetMod("QwertysRandomContent", out Mod qwertysBossAndItems) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Qwertys Boss And Items
 			{
 				npcShop.Add(NPCHelper.SafelyGetCrossModItem(qwertysBossAndItems, "QwertysRandomContent/FortressHarpyFeather"));
 			}
-			npcShop.Add(ItemID.FireFeather, Condition.Hardmode, Condition.DownedMechBossAny);
-			npcShop.Add(ItemID.BoneFeather, Condition.Hardmode, Condition.DownedPlantera);
-			npcShop.Add(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>(), Condition.Hardmode, Condition.DownedGolem);
-			npcShop.Add(ItemID.SoulofFlight, Condition.Hardmode, Condition.DownedMechBossAll);
+			npcShop.Add(new Item(ItemID.FireFeather) { shopCustomPrice = 25000 * 5 * 2}, Condition.Hardmode, Condition.DownedMechBossAny);
+			npcShop.Add(new Item(ItemID.BoneFeather) { shopCustomPrice = 25000 * 5 * 2 }, Condition.Hardmode, Condition.DownedPlantera);
+			npcShop.Add(new Item(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>()) { shopCustomPrice = 25000 * 5 * 2 }, Condition.Hardmode, Condition.DownedGolem);
+			npcShop.Add(new Item(ItemID.SoulofFlight) { shopCustomPrice = 200 * 5 * 2}, Condition.Hardmode, Condition.DownedMechBossAll);
 			npcShop.Add(ItemID.HarpyWings, Condition.Hardmode, Condition.DownedPlantera);
 			npcShop.Add(ModContent.ItemType<GuideToProperFlightTechniques>(), Condition.Hardmode, Condition.DownedMechBossAll);
 			npcShop.Add(ModContent.ItemType<Items.Materials.SunEssence>(), Condition.Hardmode, Condition.DownedGolem);
@@ -496,7 +513,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
-			if (RijamsModWorld.harpyJustRescued)
+			if (RijamsModWorld.harpyJustRescued > 0)
 			{
 				if (npc.IsShimmerVariant)
 				{

@@ -26,7 +26,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 		{
 			// DisplayName.SetDefault("Dilapidated Crimson Helmet");
 			// Tooltip.SetDefault("2% increased damage\nInterchangeable with Crimson Armor");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Crimeras]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Crimeras]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.CrimsonHelmet; // Shimmer transforms the item.
 		}
 
@@ -92,7 +92,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 			//base.SetStaticDefaults();
 			// DisplayName.SetDefault("Dilapidated Crimson Scalemail");
 			// Tooltip.SetDefault("2% increased damage\nInterchangeable with Crimson Armor");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Crimeras]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Crimeras]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.CrimsonScalemail; // Shimmer transforms the item.
 		}
 
@@ -131,7 +131,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 		{
 			// DisplayName.SetDefault("Dilapidated Crimson Greaves");
 			// Tooltip.SetDefault("2% increased damage\nInterchangeable with Crimson Armor");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Crimeras]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Crimeras]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.CrimsonGreaves; // Shimmer transforms the item.
 		}
 

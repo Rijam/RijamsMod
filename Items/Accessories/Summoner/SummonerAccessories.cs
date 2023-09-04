@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -85,7 +85,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		{
 			// DisplayName.SetDefault("Naughty List");
 			// Tooltip.SetDefault("+1 Minion capacity\n+1 Sentry capacity");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Santa-NK1]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Santa-NK1]" });
 		}
 
 		public override void SetDefaults()

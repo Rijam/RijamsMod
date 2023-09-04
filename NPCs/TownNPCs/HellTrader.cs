@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.DataStructures;
+using System.Reflection.Metadata;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -30,7 +31,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
-		private const string ShopName = "Shop";
+		public const string ShopName = "Shop";
 		internal static int ShimmerHeadIndex;
 		private static ITownNPCProfile NPCProfile;
 
@@ -96,7 +97,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					BuffID.OnFire,
 					ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(),
 				}
-						};
+			};
 			NPCID.Sets.DebuffImmunitySets[Type] = debuffData;
 		}
 
@@ -200,6 +201,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			return NPCProfile;
 		}
+
 		public override List<string> SetNPCNameList()
 		{
 			return new List<string>()
@@ -208,6 +210,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			};
 			
 		}
+
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
 			if (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(NPC.type) && spawnInfo.Player.ZoneUnderworldHeight)
@@ -227,10 +230,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			return 0f;
 		}
+
 		public override bool UsesPartyHat()
 		{
 			return RijamsModWorld.hellTraderArrivable;
 		}
+
 		public override void AI()
 		{
 			if (!RijamsModWorld.hellTraderArrivable)
@@ -315,6 +320,9 @@ namespace RijamsMod.NPCs.TownNPCs
 				chat.Add("Are you here to trade? Good, I have something that might interest you.");
 				chat.Add("The Underworld is a dangerous place. You are brave to venture down here.");
 				chat.Add("The most dangerous demons are not the ones who fight, but who speak.");
+				chat.Add("I can only carry a limited amount of items to sell to you right now. Seek me out another time and I will have other items for offer.");
+				chat.Add("Being constantly on the move means I can't bring everything I have own with me all of the time. If we are to meet again, I may have other things for sale.");
+				chat.Add("I was just moving to one of my other item stashes, but you can browse what items I have on me at this moment.");
 				chat.Add("Who is this \"Slayer\" that you speak of?", 0.1);
 				if (!Main.hardMode)
 				{
@@ -517,6 +525,11 @@ namespace RijamsMod.NPCs.TownNPCs
 				NPC.rarity = 0;
 				NPC.netUpdate = true;
 				Mod.Logger.Debug("RijamsMod: Hell Trader Arrivable.");
+
+				for (int i = 0; i < 10; i++)
+				{ 
+					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Confetti + Main.rand.Next(5), 0, -5);
+				}
 				return;
 			}
 		}
@@ -526,7 +539,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			var npcShop = new NPCShop(Type, ShopName)
 				.Add(new Item(ItemID.ObsidianRose) { shopCustomPrice = 50000 })
 				.Add(ItemID.MagmaStone)
-				.Add(new Item(ItemID.DemonScythe) { shopCustomPrice = 250000 }, Condition.DownedEyeOfCthulhu)
+				.Add(new Item(ItemID.DemonScythe) { shopCustomPrice = 250000 }, Condition.DownedSkeletron)
 				.Add(ItemID.ShadowKey, Condition.DownedSkeletron)
 				.Add(ItemID.Cascade, Condition.DownedSkeletron)
 				.Add(ModContent.ItemType<Items.Weapons.Melee.TimonsAxe>(), Condition.DownedSkeletron)
@@ -538,8 +551,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				.Add(ModContent.ItemType<Items.Weapons.Melee.Quietus>(), Condition.Hardmode, Condition.DownedGolem)
 				.Add(new Item(ItemID.AshBlock) { shopCustomPrice = 70 })
 				.Add(new Item(ItemID.ObsidianBrick) { shopCustomPrice = 100 })
-				.Add(new Item(ItemID.Hellstone) { shopCustomPrice = 150 }, Condition.Hardmode)
-				.Add(new Item(ItemID.HellstoneBrick) { shopCustomPrice = 200 }, Condition.Hardmode)
+				.Add(ItemID.Hellstone, Condition.Hardmode)
+				.Add(new Item(ItemID.HellstoneBrick) { shopCustomPrice = 1000 }, Condition.Hardmode)
 				.Add(new Item(ItemID.LivingFireBlock) { shopCustomPrice = 50 }, Condition.Hardmode)
 				.Add(new Item(ItemID.DemonTorch) { shopCustomPrice = 10 })
 				.Add(new Item(ItemID.Fireblossom) { shopCustomPrice = 10000 })
@@ -567,6 +580,67 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.HellTrader.HellTrader_Robes>(), ShopConditions.HellTraderMovedIn);
 			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.HellTrader.HellTrader_Trousers>(), ShopConditions.HellTraderMovedIn);
 			npcShop.Register();
+
+			// Get each entry of the shop and add it to the ItemsEnabled List.
+			foreach (AbstractNPCShop.Entry entry in npcShop.Entries)
+			{
+				int disableChance = 3;
+				if (entry.Item.type == ModContent.ItemType<Items.Weapons.Melee.TimonsAxe>() ||
+					entry.Item.type == ModContent.ItemType<Items.Weapons.Melee.HammerOfRetribution>() ||
+					entry.Item.type == ModContent.ItemType<Items.Weapons.Melee.Quietus>())
+				{
+					disableChance = 10;
+				}
+				if (entry.Item.type == ModContent.ItemType<Items.Accessories.Misc.LifeSapperRing>() ||
+					entry.Item.type == ModContent.ItemType<Items.Accessories.Misc.ManaSapperRing>())
+				{
+					disableChance = 5;
+				}
+				if (entry.Item.type == ModContent.ItemType<Items.Materials.InfernicFabric>() ||
+					entry.Item.type == ModContent.ItemType<Items.Materials.Sulfur>())
+				{
+					disableChance = 20;
+				}
+				ItemsEnabled.Add(new Tuple<int, int, bool> (entry.Item.type, disableChance, true));
+			}
+		}
+
+		/// <summary>
+		/// <br>Contains a list of the items in the shop, what their chance of being disable is, and if they are enabled.</br>
+		/// <br>int: item type</br>
+		/// <br>int: chance of being disabled</br>
+		/// <br>bool: enabled/disabled</br>
+		/// </summary>
+		private static List<Tuple<int, int, bool>> ItemsEnabled = new();
+
+		public override void OnSpawn(IEntitySource source)
+		{
+			for (int i = 0; i < ItemsEnabled.Count; i++)
+			{
+				// Probably a better way of doing this than remaking the Tuple every time.
+				// Assigning ItemsEnabled[i].Item3 directly won't work because it is read only.
+				ItemsEnabled[i] = new (ItemsEnabled[i].Item1, ItemsEnabled[i].Item2, !Main.rand.NextBool(ItemsEnabled[i].Item2));
+			}
+		}
+
+		private static readonly List<int> IsPylon = new() { ItemID.TeleportationPylonPurity, ItemID.TeleportationPylonSnow, ItemID.TeleportationPylonDesert,
+			ItemID.TeleportationPylonUnderground, ItemID.TeleportationPylonOcean, ItemID.TeleportationPylonJungle, ItemID.TeleportationPylonHallow,
+			ItemID.TeleportationPylonMushroom };
+
+		public override void ModifyActiveShop(string shopName, Item[] items)
+		{
+			// Disable certain shop items
+			// Will refine this in the future because it is still a little iffy.
+			if (!ShopConditions.HellTraderMovedIn.IsMet())
+			{
+				for (int i = 0; i < ItemsEnabled.Count; i++)
+				{
+					if (!ItemsEnabled[i].Item3)
+					{
+						items[i]?.TurnToAir();
+					}
+				}
+			}
 		}
 
 		public override bool CanGoToStatue(bool toKingStatue)
@@ -635,7 +709,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				return ModContent.Request<Texture2D>(Path);
 			}
 
-			if (npc.altTexture == 1)
+			if (RijamsModWorld.hellTraderArrivable && npc.altTexture == 1)
 			{
 				if (npc.IsShimmerVariant)
 				{

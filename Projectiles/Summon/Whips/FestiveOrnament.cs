@@ -36,8 +36,8 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			Projectile.alpha = 255;
 		}
 
-        public override void AI()
-        {
+		public override void AI()
+		{
 			if (Projectile.alpha > 0)
 			{
 				Projectile.alpha -= 10;

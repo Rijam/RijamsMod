@@ -1,10 +1,12 @@
 using RijamsMod.Items.Consumables;
+using RijamsMod.Projectiles.Pets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Personalities;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -221,6 +223,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (shop.NpcType == NPCID.Truffle)
 			{
 				shop.Add(new Item(ItemID.MushroomGrassSeeds) { shopCustomPrice = 1500 });
+				shop.Add(ModContent.ItemType<Items.Weapons.Summon.Cudgels.GleamingFungusCudgel>());
 			}
 			if (shop.NpcType == NPCID.Pirate)
 			{
@@ -484,6 +487,97 @@ namespace RijamsMod.NPCs.TownNPCs
 						harpyHappiness.SetNPCAffection(harpyVillagerModNPC.Type, AffectionLevel.Love);
 					}
 				}
+
+				if (ModLoader.TryGetMod("MagicStorage", out Mod magicStorage) && townNPCsCrossModSupport)
+				{
+					if (magicStorage.TryFind<ModNPC>("Golem", out ModNPC automaton))
+					{
+						var automatonHappiness = NPCHappiness.Get(automaton.Type);
+
+						intTravHappiness.SetNPCAffection(automaton.Type, AffectionLevel.Like);
+						automatonHappiness.SetNPCAffection(intTrav, AffectionLevel.Like);
+					}
+				}
+			}
+		}
+
+		public override void Load()
+		{
+			Terraria.GameContent.UI.On_EmoteBubble.ProbeExceptions += EmoteBubble_Hook_ProbeEmotions;
+		}
+
+		private delegate void orig_EmoteBubble_ProbeExceptions(EmoteBubble self);
+
+		private static void EmoteBubble_Hook_ProbeEmotions(Terraria.GameContent.UI.On_EmoteBubble.orig_ProbeExceptions orig, EmoteBubble self, List<int> list, Player plr, WorldUIAnchor other)
+		{
+			orig(self, list, plr, other);
+
+			NPC nPC = (NPC)self.anchor.entity;
+
+			if (nPC.type == ModContent.NPCType<Harpy>())
+			{
+				list.Add(EmoteID.BiomeSky); // Sky or Space
+				list.Add(EmoteID.TownBestiaryGirl);
+				
+				if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman))
+				{
+					if (other != null && ((NPC)other.entity).type == fisherman.Type)
+					{
+						list.Add(EmoteID.EmotionLove);
+					}
+				}
+				if (!Main.dayTime)
+				{
+					list.Add(EmoteID.EmoteSleep);
+				}
+				else if (!Main.raining)
+				{
+					list.Add(EmoteID.WeatherSunny);
+				}
+				else
+				{
+					list.Add(EmoteID.EmoteSadness);
+				}
+			}
+			if (nPC.type == ModContent.NPCType<InterstellarTraveler>())
+			{
+				list.Add(EmoteID.BiomeSky);
+				list.Add(EmoteID.BossMartianship);
+				list.Add(EmoteID.CritterBird);
+
+				if (!RijamsModWorld.intTravQuestBreadAndJelly)
+				{
+					list.Add(EmoteID.Hungry);
+				}
+				if (other != null && ((NPC)other.entity).type == ModContent.NPCType<Harpy>())
+				{
+					list.Add(EmoteID.EmoteHappiness);
+					list.Add(EmoteID.EmoteLaugh);
+				}
+				if (other != null && ((NPC)other.entity).type == NPCID.Merchant)
+				{
+					list.Add(EmoteID.EmoteAnger); // The face emote
+					list.Add(EmoteID.EmotionAnger); // The 4 red corner angry emote
+				}
+			}
+			if (nPC.type == ModContent.NPCType<HellTrader>())
+			{
+				list.Add(EmoteID.BiomeLavalayer); // Underworld
+				list.Add(EmoteID.MiscFire);
+				list.Add(EmoteID.DebuffBurn);
+				list.Add(EmoteID.BossWoF);
+				list.Add(EmoteID.ItemManaPotion);
+			}
+
+			if (nPC.type == ModContent.NPCType<SnuggetPet.SnuggetPet>())
+			{
+				list.Clear();
+				list.Add(EmoteID.EmoteSilly);
+				list.Add(EmoteID.EmoteHappiness);
+				list.Add(EmoteID.EmoteSleep);
+				list.Add(EmoteID.EmotionLove);
+				list.Add(EmoteID.EmoteNote);
+				list.Add(EmoteID.EmoteEating);
 			}
 		}
 	}

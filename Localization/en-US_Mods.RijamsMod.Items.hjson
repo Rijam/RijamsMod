@@ -29,7 +29,7 @@ GelidSkullRose: {
 	Tooltip:
 		'''
 		+1 Defense
-		Melee attacks inflict Frostburn
+		Melee attacks inflict Frostbite
 		Grants immunity to fire blocks
 		Grants immunity to Frostburn, Frozen, and Chilled
 		'''
@@ -966,6 +966,20 @@ SummonsDisplay: {
 	Tooltip: Displays your current summons capacity and bonus
 }
 
+# Items/Mounts
+
+DistortionSphereItem: {
+	DisplayName: Distortion Sphere
+	Tooltip:
+		'''
+		Transforms the user into a sphere than can fit into smaller places.
+		Equip Ice Skates to stop sliding.
+		Equip Water Walking Boots to walk on water.
+		Equip Balloons to increase jump height.
+		Cannot use any items when transformed.
+		'''
+}
+
 # Items/Pets
 
 FluffaloEgg: {
@@ -1396,6 +1410,11 @@ MiniGuster: {
 	Tooltip: "'Live Guster Reaction'"
 }
 
+FrostyGuster: {
+	DisplayName: Frosty Guster
+	Tooltip: Inflicts Frostbite
+}
+
 # Items/Weapons/Melee
 
 BoneHeadJoustingLance: {
@@ -1778,6 +1797,18 @@ SanityFlowerCudgel: {
 		'''
 }
 
+GleamingFungusCudgel: {
+	DisplayName: Gleaming Fungus Cudgel
+	Tooltip:
+		'''
+		Summons a Gleaming Fungus to heal you
+		The player on the same team with the lowest HP
+		  within its aura will be targeted
+		{$SupportCommonTooltips.Heal}
+		{$SupportCommonTooltips.Radius@2}
+		'''
+}
+
 RadiantLanternCudgel: {
 	DisplayName: Radiant Lantern Cudgel
 	Tooltip:
@@ -1874,6 +1905,7 @@ SulfuricWhip: {
 		'''
 		10 summon tag damage
 		Inflicts Sulfuric Acid
+		Can hit enemies through tiles
 		{$CommonItemTooltip.Whips}
 		'''
 }
@@ -2164,6 +2196,21 @@ DebugShimmerer: {
 }
 
 DebugParticleOrchestra: {
-	DisplayName: Debug Particle Orchestra
+	DisplayName: "[c/ff0000:Debug] - Particle Orchestra"
+	Tooltip: ""
+}
+
+DebugSuperDummy: {
+	DisplayName: "[c/ff0000:Debug] - Super Dummy"
+	Tooltip:
+		'''
+		Left click to spawn dummies at your cursor.
+		Right click the item in the inventory to kill all of the dummies.
+		Probably doesn't work in multiplayer.
+		'''
+}
+
+SwiftSphereItem: {
+	DisplayName: Swift Sphere Item
 	Tooltip: ""
 }

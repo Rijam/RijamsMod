@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,7 +11,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Snowman Gansta]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Snowman Gansta]" });
 		}
 
 		public override void SetDefaults()

@@ -443,6 +443,7 @@ namespace RijamsMod.NPCs
 		public static Condition HellTraderMovedIn = new("When the Hell Trader has moved in", () => RijamsModWorld.hellTraderArrivable);
 		public static Condition RescuedHarpy = new("When the Hell Trader has moved in", () => RijamsModWorld.savedHarpy);
 		public static Condition IntTravMovedIn = new("When the Hell Trader has moved in", () => RijamsModWorld.intTravArrived);
+		public static Condition NotIntTravMovedIn = new("When the Hell Trader has not moved in", () => !RijamsModWorld.intTravArrived);
 		public static Condition MoonPhase036 = new("During a full, waning crescent, or first quarter moon", () => Condition.MoonPhaseFull.IsMet() || Condition.MoonPhaseWaningCrescent.IsMet() || Condition.MoonPhaseFirstQuarter.IsMet());
 		public static Condition MoonPhase147 = new("During a waning gibbous, new, or waxing gibbous moon", () => Condition.MoonPhaseWaningGibbous.IsMet() || Condition.MoonPhaseNew.IsMet() || Condition.MoonPhaseWaxingGibbous.IsMet());
 		public static Condition MoonPhase25 = new("During a third quarter or waxing crescent moon", () => Condition.MoonPhaseThirdQuarter.IsMet() || Condition.MoonPhaseWaxingCrescent.IsMet());
@@ -460,8 +461,10 @@ namespace RijamsMod.NPCs
 		public static string TownNPCRangeS(string range) => $"Where there are {range} or more Town NPCs in the world";
 		public static string CountTownNPCsS(int number) => $"When there are {number} or more Town NPCs in the world";
 		public static string IntTravQuestsS(int number) => $"After completing {number} or more quests for the Interstellar Traveler";
+		public static string AnglerQuestsFinishedRangeS(string range) => $"When the player has finished {range} Angler Quests";
 		public static Func<bool> CountTownNPCsFb(int number) => () => NPCHelper.CountTownNPCs() >= number;
 		public static Func<bool> IntTravQuestsFb(int number) => () => NPCHelper.NumberOfQuestsCompleted() >= number;
+		public static Func<bool> AnglerQuestsFinishedRangeFb(int min, int max) => () => Main.LocalPlayer.anglerQuestsFinished >= min && Main.LocalPlayer.anglerQuestsFinished <= max;
 
 #pragma warning restore CA2211 // Non-constant fields should not be visible
 	}

@@ -202,6 +202,11 @@ Mods: {
 				Description: "{$Items.GraniteElementalCudgel.Tooltip}"
 			}
 
+			GleamingFungusBuff: {
+				DisplayName: Gleaming Fungus Buff
+				Description: "{$Items.GleamingFungusCudgel.Tooltip}"
+			}
+
 			# Buffs/Other
 			
 			LifeFruitSanctuaryBuff: {
@@ -300,6 +305,16 @@ Mods: {
 			BabyBloodEelBuff: {
 				DisplayName: Baby Blood Eel
 				Description: WIP
+			}
+
+			DistortionSphereBuff: {
+				DisplayName: Distortion Sphere Buff
+				Description: Let's roll
+			}
+
+			SwiftSphereBuff: {
+				DisplayName: Swift Sphere Buff
+				Description: Mods.RijamsMod.Buffs.SwiftSphereBuff.Description
 			}
 		}
 
@@ -406,6 +421,10 @@ Mods: {
 			GraniteEnergy.DisplayName: Granite Energy
 			MiniGusterProj.DisplayName: Mini Guster
 			MiniWindGust.DisplayName: Mini Wind Gust
+			FrostyGusterProj.DisplayName: Frosty Guster
+			FrostyWindGust.DisplayName: Frosty Wind Gust
+			GleamingFungus.DisplayName: Gleaming Fungus
+			WhirlingFungus.DisplayName: Whirling Fungus
 		}
 
 		Tiles: {

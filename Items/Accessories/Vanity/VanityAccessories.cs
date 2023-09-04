@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,7 +12,7 @@ namespace RijamsMod.Items.Accessories.Vanity
 		{
 			// DisplayName.SetDefault("Carrot Nose");
 			// Tooltip.SetDefault("Vanity Accessory");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by The Frost Legion]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by The Frost Legion]" });
 			ItemID.Sets.CanGetPrefixes[Type] = false;
 		}
 

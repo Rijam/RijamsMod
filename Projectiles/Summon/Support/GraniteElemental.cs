@@ -191,7 +191,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 					// Spawn the Curative Butterfly projectile with the player with the lowest HP as its target.
 					Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, new(0, -1), ModContent.ProjectileType<GraniteEnergy>(),
-						Projectile.damage, Projectile.knockBack, Projectile.owner,
+						0, 0, Projectile.owner,
 						targetPlayer, healAmount);
 				}
 

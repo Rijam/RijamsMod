@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.Items.Placeable;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -23,13 +24,16 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.RandomStyleRange = 3;
-			TileObjectData.newTile.StyleLineSkip = 3;
+			//TileObjectData.newTile.StyleLineSkip = 3;
 			TileObjectData.addTile(Type);
 			DustType = DustID.RichMahogany;
 			LocalizedText name = CreateMapEntryName();
 			// name.SetDefault("Life Fruit Sanctuary");
 			AddMapEntry(new Color(219, 157, 64), name);
+
+			RegisterItemDrop(ModContent.ItemType<Items.Placeable.LifeFruitSanctuary>());
 		}
+
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
 		{
 			r = 0.8f;

@@ -81,6 +81,10 @@ namespace RijamsMod
 			supportMinionRadiusIncrease = 0;
 			criticalHitAdditionalDamage = 0f;
 			knockbackSusceptibility = 1f;
+			if (!hailfireBootsBoost)
+			{
+				Player.rocketTimeMax = 7;
+			}
 		}
 
 		public override void UpdateDead()
@@ -112,7 +116,7 @@ namespace RijamsMod
 				{
 					Player.wingTimeMax += 60;
 					Player.jumpSpeedBoost += 2f;
-					Player.moveSpeed += 2;
+					Player.moveSpeed += 1f;
 				}
 			}
 			if (soaringPotion)

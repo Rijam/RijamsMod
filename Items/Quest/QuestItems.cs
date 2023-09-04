@@ -142,7 +142,7 @@ namespace RijamsMod.Items.Quest
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Chaos Elementals and Enchanted Swords]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Chaos Elementals and Enchanted Swords]" });
 		}
 
 		public override void SetDefaults()

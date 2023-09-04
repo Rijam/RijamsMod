@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -12,7 +12,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		{
 			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(15, 4));
 			ItemID.Sets.AnimatesAsSoul[Type] = true;
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Angry Gusters]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Angry Gusters]" });
 		}
 		public override void SetDefaults()
 		{

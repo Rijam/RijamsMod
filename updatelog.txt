@@ -189,3 +189,31 @@
 	* Angry Gusters are much less likely to spawn when it is windy enough to have kites drop but not windy enough to count as a windy day. Chances during a real windy day are the same.
 	* Fixed a bug where the Hammer of Retribution's projectiles were doing double double damage. (Dealing 200 damage instead of 100.)
 	* Fire Breathing Pack now requires Living Demon Fire Blocks and now grants immunity to Shadowflame.
+
+1.2.3.0 - (September 4, 2023)
+	* Added Frosty Guster, a Mini Guster Hardmode upgrade.
+	* Redid how the Harpy has a different texture when you first rescue her to make it less annoying and to fix her not being able to move into a house.
+	* Festive Ornaments spawned by the Festive Whip should do slightly more damage on average now.
+	* Timon's Axe, Hammer of Retribution, and Quietus' extra damage is now affected by magic damage bonuses.
+	* Nerfed Guide to Proper Flight Techniques' movement speed boost from +2 to +1.
+	* Possibly fixed Hailfire Boots permanently increasing the rocket boot flight time even after unequipping them.
+	* Gelid Skull Rose now inflicts Frostbite instead of Frostburn.
+	* Added Gleaming Fungus Cudgel.
+	* Fixed Stardust Protector's attack damage from infinitely scaling if wearing Stardust armor and the damage scaling off of the player's damage incorrectly.
+	* Made the Antlion Staff auto swing.
+	* Fixed Life Fruit Sanctuary only sometimes dropping the item when mined.
+	* Removed recipes added by the mod for Flesh Knuckles, Putrid Scent, Band of Starpower, and Panic Necklace. Flesh Knuckles and Putrid Scent can now transmute into each other via Shimmer.
+	* Increased the cost of the Wand of Sparking recipe. 2 Torches -> 99 Torches. 1 Fallen Star -> 2 Fallen Stars.
+	* Doubled the prices of the Shiny Red Balloon, Lucky Horseshoe, Starfury, Feather, Giant Harpy Feather, Ice Feather, Fire Feather, Bone Feather, Soul of Flight.
+	* Sun Essence value increased from 75s to 1g.
+	* Increased the price of Hellstone and Hellstone Bricks to 10s from 1.5s and 2s.
+	* Added several hints to the quests for the Interstellar Traveler.
+	* Increased price of the Interstellar Traveler's Traveling Merchant and Angler information accessories and increase their requirements.
+	* Hell Trader's shop is now randomized before they Hell Trader has moved it. Most items have a 2/3 chance of appearing and a few have a greater chance of appearing.
+	* Added some dialog to the Hell Trader before they have moved in talking about the new randomized shop.
+	* The Snugget Town Pet can now say a few emotes when other Town NPCs talk to it.
+	* Harpy, Interstellar Traveler, and Hell Trader now have a few emotes that they will display more often.
+	* Fixed whip swapping not working like in vanilla on the whips in this mod.
+	* Angry Guster is less likely to spawn while the player is in a town.
+	* Dark Soldier is less likely to spawn while the player is in a town and less likely to spawn in Pre-Hardmode in Don't Dig Up/Get Fixed Boi worlds.
+	* Fixed Healing Cudgel's healing projectile damaging enemies.

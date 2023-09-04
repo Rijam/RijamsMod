@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -14,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 		{
 			// DisplayName.SetDefault("Crystal Cluster Cudgel");
 			// Tooltip.SetDefault("Summons a Crystal Cluster to defend you\nPlayers within its aura receive:\n+7 defense\n+4% damage reduction\n15 tile radius");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Queen Slime]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Queen Slime]" });
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}

@@ -16,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			// DisplayName.SetDefault("Quietus");
 			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws multiple long range projectiles\n  Weapon does double damage\n  Uses 20 mana\n'Not to be confused with the Whisper's Edge'");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Golem]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Golem]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<HammerOfRetribution>(); // Shimmer transforms the item.
 			ItemID.Sets.UsesBetterMeleeItemLocation[Type] = true;
 		}
@@ -63,7 +63,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			if (player.CheckMana(20, false))
 			{
-				damage *= 2;
+				damage *= 2 + (player.GetTotalDamage(DamageClass.Magic).Additive - 1);
 			}
 		}
 	}

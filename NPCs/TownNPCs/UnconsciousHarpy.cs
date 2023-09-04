@@ -61,7 +61,7 @@ namespace RijamsMod.NPCs.TownNPCs
 						Main.BestiaryTracker.Chats.RegisterChatStartWith(NPC); // Unlock the Town NPC in the Bestiary.																  
 						Main.player[i].SetTalkNPC(NPC.whoAmI);  // Change who the player is talking to to the new Town NPC. 
 						RijamsModWorld.savedHarpy = true; // Set our rescue bool to true.
-						RijamsModWorld.harpyJustRescued = true;
+						RijamsModWorld.harpyJustRescued = 120;
 						Mod.Logger.Debug("RijamsMod: Harpy NPC rescued.");
 
 						// We need to sync these changes in multiplayer.

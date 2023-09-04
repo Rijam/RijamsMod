@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Minions
 {
@@ -16,7 +17,7 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:t]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:t]" });
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}

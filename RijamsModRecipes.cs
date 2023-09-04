@@ -19,30 +19,6 @@ namespace RijamsMod
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
 
-			Recipe.Create(ItemID.BandofStarpower)
-				.AddIngredient(ItemID.PanicNecklace, 1)
-				.AddIngredient(ItemID.VilePowder, 5)
-				.AddTile(TileID.DemonAltar)
-				.Register();
-
-			Recipe.Create(ItemID.PanicNecklace)
-				.AddIngredient(ItemID.BandofStarpower, 1)
-				.AddIngredient(ItemID.ViciousPowder, 5)
-				.AddTile(TileID.DemonAltar)
-				.Register();
-
-			Recipe.Create(ItemID.PutridScent)
-				.AddIngredient(ItemID.FleshKnuckles, 1)
-				.AddIngredient(ItemID.VilePowder, 5)
-				.AddTile(TileID.DemonAltar)
-				.Register();
-
-			Recipe.Create(ItemID.FleshKnuckles)
-				.AddIngredient(ItemID.PutridScent, 1)
-				.AddIngredient(ItemID.ViciousPowder, 5)
-				.AddTile(TileID.DemonAltar)
-				.Register();
-
 			Recipe.Create(ItemID.Leather)
 				.AddIngredient(ItemID.Vertebrae, 5)
 				.AddTile(TileID.WorkBenches)
@@ -73,8 +49,8 @@ namespace RijamsMod
 
 			Recipe.Create(ItemID.WandofSparking)
 				.AddIngredient(ModContent.ItemType<Items.Weapons.Magic.HotStick>(), 1)
-				.AddIngredient(ItemID.Torch, 2)
-				.AddIngredient(ItemID.FallenStar, 1)
+				.AddIngredient(ItemID.Torch, 99)
+				.AddIngredient(ItemID.FallenStar, 2)
 				.AddTile(TileID.Anvils)
 				.Register();
 

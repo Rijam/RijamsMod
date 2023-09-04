@@ -204,13 +204,13 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 				// Spawn the Radiance projectile with the player with the lowest HP as its target.
 				Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One, ModContent.ProjectileType<Radiance>(),
-					Projectile.damage, Projectile.knockBack, Projectile.owner,
+					0, 0, Projectile.owner,
 					targetPlayer,
 					Main.rand.NextFloat(0.8f, 0.9f), healAmount);
 
 				// Spawn a second projectile with the owner as the target.
 				Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One * -1, ModContent.ProjectileType<Radiance>(),
-					Projectile.damage, Projectile.knockBack, Projectile.owner,
+					0, 0, Projectile.owner,
 					targetPlayer2,
 					Main.rand.NextFloat(0.8f, 0.9f), healAmount);
 

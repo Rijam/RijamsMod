@@ -12,6 +12,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader.IO;
 using System.Xml;
 using System;
+using Terraria.GameContent.UI;
 
 namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 {
@@ -70,7 +71,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
 			{
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
-				//Direction = -1
+							   //Direction = -1
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -104,6 +105,76 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
 				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name))
 			});
+		}
+
+		public override void PostAI()
+		{
+			// Make it so the Snugget can show emotes!
+
+			// Talking to another Town NPC
+			if (NPC.ai[0] == 3f || NPC.ai[0] == 4f)
+			{
+				NPC.localAI[0]++;
+
+				bool flag12 = NPC.ai[0] == 3f;
+				int time1 = -1;
+				int time2 = -1;
+
+				if (NPC.localAI[0] == 216f && Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					time1 = 70;
+				}
+				else if (NPC.localAI[0] == 320f)
+				{
+					time1 = 100;
+				}
+
+				if (NPC.localAI[0] == 70f)
+				{
+					time2 = 90;
+				}
+
+				if (flag12)
+				{
+					NPC nPC = Main.npc[(int)NPC.ai[2]];
+					if (time1 != -1)
+					{
+						EmoteBubble.NewBubbleNPC(new WorldUIAnchor(NPC), time1, new WorldUIAnchor(nPC));
+					}
+
+					if (time2 != -1)
+					{
+						EmoteBubble.NewBubbleNPC(new WorldUIAnchor(nPC), time2, new WorldUIAnchor(NPC));
+					}
+				}
+
+				if (NPC.localAI[0] >= 420f)
+				{
+					NPC.localAI[0] = 0f;
+					NPC.ai[0] = 3f; // Added
+				}
+
+			}
+
+			// Talking to the player
+			if (NPC.ai[0] == 7f || NPC.ai[0] == 19f)
+			{
+				NPC.localAI[0]++;
+
+				if (NPC.localAI[0] == 16f)
+				{
+					EmoteBubble.NewBubbleNPC(new WorldUIAnchor(NPC), 112);
+				}
+				else if (NPC.localAI[0] == 160f)
+				{
+					EmoteBubble.NewBubbleNPC(new WorldUIAnchor(NPC), 60);
+				}
+
+				if (NPC.localAI[0] >= 220f)
+				{
+					NPC.frameCounter = 0f;
+				}
+			}
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs)

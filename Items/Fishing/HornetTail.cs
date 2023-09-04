@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,7 +12,7 @@ namespace RijamsMod.Items.Fishing
 		public override void SetStaticDefaults()
 		{
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true;
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Fished in Honey underground]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Fished in Honey underground]" });
 			Item.ResearchUnlockCount = 3;
 		}
 		public override void SetDefaults()

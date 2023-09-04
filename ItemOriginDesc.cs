@@ -9,15 +9,14 @@ namespace RijamsMod
 
 	/// <summary>
 	/// Adds an additional line to the tooltip if the item is not in the player's inventory.
-	/// Supports up to three additional lines.
+	/// Supports up to several additional lines.
 	/// Usage: In the item's SetStaticDefaults, add:
-	/// ```
-	///	ItemOriginDesc.itemList.Add(Item.type, new string[] { "Your string", "Your string 2", null } );
-	///	```
+	///	<code>ItemOriginDesc.itemList.Add(Item.type, new List&lt;string&gt; { "Your string", "Your string 2" } );</code>
 	/// </summary>
 	public class ItemOriginDesc : GlobalItem
 	{
-		public static Dictionary<int, string[]> itemList = new();
+		///	<summary><code>ItemOriginDesc.itemList.Add(Item.type, new List&lt;string&gt; { "Your string", "Your string 2" } );</code></summary>
+		public static Dictionary<int, List<string>> itemList = new();
 
 		public static void ClearList() => itemList.Clear();
 
@@ -28,16 +27,11 @@ namespace RijamsMod
 				!CheckIfEquippedMisc(item.type) && !CheckIfEquippedDye(item.type) && !CheckIfEquippedDyeMisc(item.type) &&
 				!CheckIfInChest(item.type) && !CheckIfInShop(item.type) && !CheckIfInPortableStorage(item.type))
 			{
-				if (itemList.TryGetValue(item.type, out string[] description))
+				if (itemList.TryGetValue(item.type, out List<string> description))
 				{
-					tooltips.Add(new TooltipLine(Mod, "ItemOriginDesc", description[0]));
-					if (description[1] != null)
+					foreach (string line in description)
 					{
-						tooltips.Add(new TooltipLine(Mod, "ItemOriginDesc2", description[1]));
-					}
-					if (description[2] != null)
-					{
-						tooltips.Add(new TooltipLine(Mod, "ItemOriginDesc3", description[2]));
+						tooltips.Add(new TooltipLine(Mod, "ItemOriginDesc", line));
 					}
 				}
 			}

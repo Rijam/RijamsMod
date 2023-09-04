@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -15,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			base.SetStaticDefaults();
 			// DisplayName.SetDefault("Sanity Flower Cudgel");
 			// Tooltip.SetDefault("Summons a Sanity Flower to heal you\nThe player with the lowest HP within its aura will be targeted\n20 HP every 30 seconds\n15 tile radius");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Deerclops]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Deerclops]" });
 		}
 
 		public override void SetDefaults()

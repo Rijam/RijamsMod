@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		{
 			// DisplayName.SetDefault("Festive Whip");
 			// Tooltip.SetDefault("8 summon tag damage\nCauses Ornaments to fall from the sky when\nstriking an enemy at the end of the whip\n{$CommonItemTooltip.Whips}");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Ice Queen]", null, null } );
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Ice Queen]" } );
 			GlobalItems.isWhip.Add(Item.type);
 		}
 		public override void SetDefaults()

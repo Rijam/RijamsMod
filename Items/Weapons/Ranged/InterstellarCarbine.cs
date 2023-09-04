@@ -18,7 +18,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			// DisplayName.SetDefault("Interstellar Carbine");
 			// Tooltip.SetDefault("50% not to consume ammo\nInherits many aspects of the bullets used");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Moon Lord]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Moon Lord]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarSniper>(); // Shimmer transforms the item.
 		}
 

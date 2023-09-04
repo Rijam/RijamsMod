@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,7 +12,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		{
 			// DisplayName.SetDefault("Legion Scarf");
 			// Tooltip.SetDefault("+5% increased damage\nWhile in the Snow biome or Space:\n +9% increased damage");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Mister Stabby & Snow Balla]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Mister Stabby & Snow Balla]" });
 		}
 
 		public override void SetDefaults()

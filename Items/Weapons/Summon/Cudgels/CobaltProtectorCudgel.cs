@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -15,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			base.SetStaticDefaults();
 			// DisplayName.SetDefault("Cobalt Protector Cudgel");
 			// Tooltip.SetDefault("Summons a Cobalt Protector to defend you\nPlayers within its aura receive:\n+5 defense\n+2% damage reduction\n10 tile radius");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Found in Dungeon chests or Golden Lock Boxes]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Found in Dungeon chests or Golden Lock Boxes]" });
 		}
 
 		public override void SetDefaults()

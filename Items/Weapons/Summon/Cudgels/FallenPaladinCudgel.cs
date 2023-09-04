@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -14,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 		{
 			// DisplayName.SetDefault("Fallen Paladin Cudgel");
 			// Tooltip.SetDefault("Summons a Fallen Paladin to defend you\nPlayers within its aura receive:\n+10 defense\n+5% damage reduction\n20 tile radius");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Paladin]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Paladin]" });
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}

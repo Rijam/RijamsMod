@@ -578,11 +578,11 @@ namespace RijamsMod.NPCs.Enemies
 			}
 			if (spawnInfo.PlayerInTown) // Decrease the chance dramatically if in a town
 			{
-				spawnChance -= 0.1f;
+				spawnChance -= 0.2f;
 			}
 			if (Main.remixWorld && !Main.hardMode) // Don't Dig Up or Get Fixed Boi worlds and Pre-Hardmode.
 			{
-				spawnChance -= 0.1f;
+				spawnChance -= 0.2f;
 			}
 			return (float)Math.Clamp(spawnChance, 0.0, 1.0);
 		}

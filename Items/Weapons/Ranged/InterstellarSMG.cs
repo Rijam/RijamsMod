@@ -19,7 +19,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			// DisplayName.SetDefault("Interstellar SMG");
 			// Tooltip.SetDefault("50% not to consume ammo\nInherits many aspects of the bullets used");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarPistol>(); // Shimmer transforms the item.
 		}
 

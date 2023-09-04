@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			// DisplayName.SetDefault("Timon's Axe");
 			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws short range projectiles\n  Weapon does double damage\n  Uses 20 mana");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating Skeletron]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating Skeletron]" });
 		}
 
 		public override void SetDefaults() 
@@ -68,7 +68,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			if (player.CheckMana(20, false))
 			{
-				damage *= 2;
+				damage *= 2 + (player.GetTotalDamage(DamageClass.Magic).Additive - 1);
 			}
 		}
 	}

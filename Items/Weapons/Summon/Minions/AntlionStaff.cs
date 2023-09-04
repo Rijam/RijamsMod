@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 			Item.value = Item.sellPrice(silver: 50);
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item44;
-			Item.autoReuse = false;
+			Item.autoReuse = true;
 			
 			// These below are needed for a minion weapon
 			Item.noMelee = true;

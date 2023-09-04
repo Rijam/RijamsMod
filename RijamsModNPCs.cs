@@ -18,6 +18,8 @@ using RijamsMod.Items.Materials;
 using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Pets;
 using RijamsMod.Buffs.Potions;
+using RijamsMod.NPCs;
+using RijamsMod.Items.Quest;
 
 namespace RijamsMod
 {
@@ -185,6 +187,17 @@ namespace RijamsMod
 				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<RadiantLanternCudgel>(), 4));
 				npcLoot.Add(notExpertRule);
 			}
+			// EoW and BoC will drop the Odd Device is the Interstellar Traveling has not moved in ever. But, don't show it in the Bestiary.
+			if (Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1)
+			{
+				LeadingConditionRule leadingConditionRule = new(new Conditions.LegacyHack_IsABoss());
+				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(ShopConditions.NotIntTravMovedIn.ToDropCondition(ShowItemDropInUI.Never), ModContent.ItemType<OddDevice>()));
+				npcLoot.Add(leadingConditionRule);
+			}
+			if (npc.type == NPCID.BrainofCthulhu)
+			{
+				npcLoot.Add(ItemDropRule.ByCondition(ShopConditions.NotIntTravMovedIn.ToDropCondition(ShowItemDropInUI.Never), ModContent.ItemType<OddDevice>()));
+			}
 		}
 
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
@@ -213,15 +226,15 @@ namespace RijamsMod
 					//Same chances as Magma Stone, but half duration
 					if (Main.rand.Next(8) <= 2)
 					{
-						npc.AddBuff(BuffID.Frostburn, 360);
+						npc.AddBuff(BuffID.Frostburn2, 360);
 					}
 					else if (Main.rand.Next(8) <= 3)
 					{
-						npc.AddBuff(BuffID.Frostburn, 240);
+						npc.AddBuff(BuffID.Frostburn2, 240);
 					}
 					else if (Main.rand.Next(8) <= 3)
 					{
-						npc.AddBuff(BuffID.Frostburn, 120);
+						npc.AddBuff(BuffID.Frostburn2, 120);
 					}
 				}
 				if (projectile.owner == Main.LocalPlayer.whoAmI && (projectile.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[projectile.type]))
@@ -263,15 +276,15 @@ namespace RijamsMod
 				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
 				if (dayBreakStoneRand <= 1)//0 or 1
 				{
-					npc.AddBuff(BuffID.Frostburn, 360);
+					npc.AddBuff(BuffID.Frostburn2, 360);
 				}
 				else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
 				{
-					npc.AddBuff(BuffID.Frostburn, 240);
+					npc.AddBuff(BuffID.Frostburn2, 240);
 				}
 				else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
 				{
-					npc.AddBuff(BuffID.Frostburn, 120);
+					npc.AddBuff(BuffID.Frostburn2, 120);
 				}
 			}
 			if (item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && (item.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[item.shoot]))

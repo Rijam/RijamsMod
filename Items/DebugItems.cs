@@ -271,13 +271,13 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.savedHarpy = false;
-			RijamsModWorld.harpyJustRescued = false;
+			RijamsModWorld.harpyJustRescued = 120;
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.savedHarpy = true;
-			RijamsModWorld.harpyJustRescued = true;
+			RijamsModWorld.harpyJustRescued = 0;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -612,6 +612,146 @@ namespace RijamsMod.Items
 				UniqueInfoPiece = 0
 			});
 			return true;
+		}
+	}
+
+	public class DebugSuperDummy : ModItem
+	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
+		public override string Texture => "Terraria/Images/Item_" + ItemID.TargetDummy;
+		public override void SetStaticDefaults()
+		{
+
+		}
+
+		public override void SetDefaults()
+		{
+			Item.color = Color.MediumVioletRed;
+			Item.width = 14;
+			Item.height = 14;
+			Item.maxStack = Item.CommonMaxStack;
+			Item.rare = ItemRarityID.White;
+			Item.value = 0;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useAnimation = 30;
+			Item.useTime = 30;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item9;
+			Item.consumable = false;
+		}
+		public override bool? UseItem(Player player)
+		{
+			NPC.NewNPC(Item.GetSource_ReleaseEntity(), (int)Main.MouseWorld.X, (int)Main.MouseWorld.Y, ModContent.NPCType<DebugSuperDummyNPC>());
+			return true;
+		}
+		public override bool CanRightClick()
+		{
+			return true;
+		}
+		public override void RightClick(Player player)
+		{
+			for (int i = 0; i < Main.maxNPCs; i++)
+			{
+				if (Main.npc[i].type == ModContent.NPCType<DebugSuperDummyNPC>() && Main.npc[i].active)
+				{
+					Main.npc[i].StrikeInstantKill();
+				}
+			}
+		}
+	}
+
+	public class DebugSuperDummyNPC : ModNPC
+	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
+		}
+		public override string Texture => "Terraria/Images/NPC_" + NPCID.TargetDummy;
+
+		public override void SetStaticDefaults()
+		{
+			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.TargetDummy];
+		}
+
+		public override void SetDefaults()
+		{
+			NPC.width = 20;
+			NPC.height = 42;
+			NPC.lifeMax = int.MaxValue;
+			NPC.lifeRegen = 1000;
+			NPC.immortal = false;
+			NPC.friendly = false;
+			NPC.knockBackResist = 0f;
+			NPC.noGravity = true;
+			NPC.noTileCollide = true;
+			NPC.aiStyle = -1;
+			AnimationType = NPCID.TargetDummy;
+		}
+
+		public override void AI()
+		{
+			NPC.lifeRegenCount++;
+		}
+
+		private bool JustHit = false;
+		private sbyte HitDirection = 0;
+		private int Frame = 0;
+
+		public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
+		{
+			HitDirection = (sbyte)hit.HitDirection;
+			if (HitDirection == 1)
+			{
+				Frame = 5;
+			}
+			if (HitDirection == -1)
+			{
+				Frame = 1;
+			}
+			JustHit = true;
+		}
+
+		public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+		{
+			HitDirection = (sbyte)hit.HitDirection;
+			if (HitDirection == 1)
+			{
+				Frame = 5;
+			}
+			if (HitDirection == -1)
+			{
+				Frame = 1;
+			}
+			JustHit = true;
+		}
+
+		public override void FindFrame(int frameHeight)
+		{
+			NPC.frame.Y = Frame * frameHeight;
+			if (JustHit)
+			{
+				NPC.frameCounter++;
+				if (NPC.frameCounter == 5)
+				{
+					Frame++;
+					NPC.frameCounter = 0;
+				}
+				if (HitDirection == -1 && Frame >= 6)
+				{
+					Frame = 0;
+					HitDirection = 0;
+					JustHit = false;
+				}
+				if (Frame >= Main.npcFrameCount[Type])
+				{
+					Frame = 0;
+					HitDirection = 0;
+					JustHit = false;
+				}
+			}
 		}
 	}
 }

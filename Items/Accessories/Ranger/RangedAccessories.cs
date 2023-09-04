@@ -1,5 +1,4 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -43,7 +42,7 @@ namespace RijamsMod.Items.Accessories.Ranger
 		{
 			// DisplayName.SetDefault("Rocket Booster");
 			// Tooltip.SetDefault("+10% rocket damage\n+20% rocket velocity\n+10% rocket knockback");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]", null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]" });
 		}
 
 		public override void SetDefaults()

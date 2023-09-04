@@ -11,11 +11,11 @@ namespace RijamsMod.Projectiles.Summon.Whips
 {
 	public class StardustExplosion : ModProjectile
 	{
-        public override void SetStaticDefaults()
-        {
+		public override void SetStaticDefaults()
+		{
 			Main.projFrames[Projectile.type] = 4;
 		}
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Projectile.width = 48;
 			Projectile.height = 48;

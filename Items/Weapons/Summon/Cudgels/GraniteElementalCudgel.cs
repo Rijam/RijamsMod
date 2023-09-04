@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
+using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -13,7 +14,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Dropped by Granite Elementals]", null, null });
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Granite Elementals]" });
 		}
 
 		public override void SetDefaults()

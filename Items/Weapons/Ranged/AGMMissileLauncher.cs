@@ -1,11 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -15,7 +13,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			// DisplayName.SetDefault("AGM Missile Launcher");
 			// Tooltip.SetDefault("10% chance not to consume ammo");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]", "[c/474747:and Cyborg is present]" } );
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]" } );
 			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 		}
 

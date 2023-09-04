@@ -23,7 +23,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Inherits many aspects of the bullets used");
-			ItemOriginDesc.itemList.Add(Item.type, new string[] { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Skeletron]", "[c/474747:and Arms Dealer is present]" } );
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Skeletron]" } );
 		}
 
 		public override void SetDefaults()

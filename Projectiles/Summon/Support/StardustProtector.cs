@@ -180,20 +180,21 @@ namespace RijamsMod.Projectiles.Summon.Support
 				{
 					Projectile.frame = 4;
 					attacking = true;
+					int attackDamage = baseDamage;
 					if (player.setBonus == "Stardust" || player.setStardust) // Bonus damage if the player is wearing Stardust armor
 					{
-						baseDamage += 20;
+						attackDamage += 20;
 					}
 					Projectile.ai[0] = (int)(baseAttackSpeed * (1f / player.GetAttackSpeed(DamageClass.Summon)));
 					if (Main.netMode == NetmodeID.SinglePlayer)
 					{
-						npc.SimpleStrikeNPC((int)(baseDamage * Math.Round(player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative)), npc.direction,
+						npc.SimpleStrikeNPC((int)(attackDamage * (player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative)), npc.direction,
 							noPlayerInteraction: true);
 					}
 					else
 					{
 						NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI,
-							number2: (int)(baseDamage * Math.Round(player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative, 2)),
+							number2: (int)(attackDamage * (player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative)),
 							number3: 0f, number4: npc.direction, number5: 0);
 						npc.netUpdate = true;
 					}
