@@ -217,3 +217,6 @@
 	* Angry Guster is less likely to spawn while the player is in a town.
 	* Dark Soldier is less likely to spawn while the player is in a town and less likely to spawn in Pre-Hardmode in Don't Dig Up/Get Fixed Boi worlds.
 	* Fixed Healing Cudgel's healing projectile damaging enemies.
+
+1.2.3.1 - (September 6, 2023)
+	* Fixed cross mod content.

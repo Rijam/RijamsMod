@@ -394,25 +394,25 @@ namespace RijamsMod.NPCs.TownNPCs
 				.Add(new Item(ItemID.Feather) { shopCustomPrice = 10 * 5 * 2});
 			if (ModLoader.TryGetMod("CalamityMod", out Mod calamityMod) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(calamityMod, "CalamityMod/EffulgentFeather", 1f, 5f),
+				NPCHelper.SafelySetCrossModItem(calamityMod, "EffulgentFeather", npcShop, 1f, 5f,
 					new Condition("After defeating Dragonfolly", () => (bool)calamityMod.Call("GetBossDowned", "dragonfolly")));
 			}
 			if (ModLoader.TryGetMod("SacredTools", out Mod shadowsOfAbaddon) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Shadows of Abaddon
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItem(shadowsOfAbaddon, "SacredTools/BirdFeather")); //White Feather
+				NPCHelper.SafelySetCrossModItem(shadowsOfAbaddon, "BirdFeather", npcShop); //White Feather
 			}
 			if (ModLoader.TryGetMod("AAMod", out Mod ancientsAwakened) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Ancients Awakened
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(ancientsAwakened, "AAMod/vulture_feather", 1f, 2f));
-				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(ancientsAwakened, "AAMod/SeraphFeather", 1f, 2f), Condition.DownedPlantera);
+				NPCHelper.SafelySetCrossModItem(ancientsAwakened, "vulture_feather", npcShop, 1f, 2f);
+				NPCHelper.SafelySetCrossModItem(ancientsAwakened, "SeraphFeather", npcShop, 1f, 2f, Condition.DownedPlantera);
 			}
 			if (ModLoader.TryGetMod("OrchidMod", out Mod orchidMod) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Orchid Mod
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(orchidMod, "OrchidMod/HarpyTalon", 1f, 2f), Condition.DownedEyeOfCthulhu);
+				NPCHelper.SafelySetCrossModItem(orchidMod, "HarpyTalon", npcShop, 1f, 2f, Condition.DownedEyeOfCthulhu);
 			}
 			if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Thorium
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItemWithPrice(thorium, "ThoriumMod/BirdTalon", 1f, 50f)); //Talon
+				NPCHelper.SafelySetCrossModItem(thorium, "Talon", npcShop, 1f, 50f); //Talon
 			}
 			npcShop.Add(ItemID.SkyMill);
 			npcShop.Add(new Item(ItemID.LuckyHorseshoe) { shopCustomPrice = 5400 * 5 * 2});
@@ -429,7 +429,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(new Item(ItemID.IceFeather) { shopCustomPrice = 25000 * 5 * 2 }, Condition.Hardmode);
 			if (ModLoader.TryGetMod("QwertysRandomContent", out Mod qwertysBossAndItems) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Qwertys Boss And Items
 			{
-				npcShop.Add(NPCHelper.SafelyGetCrossModItem(qwertysBossAndItems, "QwertysRandomContent/FortressHarpyFeather"));
+				NPCHelper.SafelySetCrossModItem(qwertysBossAndItems, "QwertysRandomContent/FortressHarpyFeather", npcShop);
 			}
 			npcShop.Add(new Item(ItemID.FireFeather) { shopCustomPrice = 25000 * 5 * 2}, Condition.Hardmode, Condition.DownedMechBossAny);
 			npcShop.Add(new Item(ItemID.BoneFeather) { shopCustomPrice = 25000 * 5 * 2 }, Condition.Hardmode, Condition.DownedPlantera);
@@ -443,7 +443,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.Harpy.Harpy_Shorts>());
 			if (ModLoader.TryGetMod("Split", out Mod split) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Split Mod
 			{
-				npcShop.Add(new Item(NPCHelper.SafelyGetCrossModItem(split, "Split/PosterHarpy")) { shopCustomPrice = 10000 });
+				NPCHelper.SafelySetCrossModItem(split, "Split/PosterHarpy", npcShop, 10000);
 			}
 			npcShop.Add(ModContent.ItemType<GroupHologramItem>(),
 				new Condition(ShopConditions.IntTravQuestsS(3), ShopConditions.IntTravQuestsFb(3)),

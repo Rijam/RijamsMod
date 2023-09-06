@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using RijamsMod.NPCs.TownNPCs;
 using Terraria.Localization;
+using System.Linq;
 
 namespace RijamsMod.NPCs
 {
@@ -323,6 +324,26 @@ namespace RijamsMod.NPCs
 		/// <summary>
 		/// Safely sets the shop item of the ModItem from the given slot in the given slot.
 		/// Will not set the shop item if the ModItem is not found.
+		/// The price of the item will be the value.
+		/// </summary>
+		/// <param name="mod">The mod that the item is from.</param>
+		/// <param name="itemString">The class name of the item.</param>
+		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
+		public static void SafelySetCrossModItem(Mod mod, string itemString, NPCShop shop, params Condition[] condition)
+		{
+			mod.TryFind<ModItem>(itemString, out ModItem outItem);
+			if (outItem != null)
+			{
+				shop.Add(outItem.Type, condition.Append(ShopConditions.TownNPCsCrossModSupport).ToArray());
+			}
+			else
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelySetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
+			}
+		}
+		/// <summary>
+		/// Safely sets the shop item of the ModItem from the given slot in the given slot.
+		/// Will not set the shop item if the ModItem is not found.
 		/// The price of the item will be the customPrice.
 		/// </summary>
 		/// <param name="mod">The mod that the item is from.</param>
@@ -330,14 +351,12 @@ namespace RijamsMod.NPCs
 		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
 		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
 		/// <param name="customPrice">The custom price of the item.</param>
-		public static void SafelySetCrossModItem(Mod mod, string itemString, Chest shop, ref int nextSlot, int customPrice)
+		public static void SafelySetCrossModItem(Mod mod, string itemString, NPCShop shop, int customPrice, params Condition[] condition)
 		{
 			mod.TryFind<ModItem>(itemString, out ModItem outItem);
 			if (outItem != null)
 			{
-				shop.item[nextSlot].SetDefaults(outItem.Type);
-				shop.item[nextSlot].shopCustomPrice = customPrice;
-				nextSlot++;
+				shop.Add(new Item(outItem.Type) { shopCustomPrice = customPrice }, condition.Append(ShopConditions.TownNPCsCrossModSupport).ToArray());
 			}
 			else
 			{
@@ -348,21 +367,19 @@ namespace RijamsMod.NPCs
 		/// <summary>
 		/// Safely sets the shop item of the ModItem from the given slot in the given slot.
 		/// Will not set the shop item if the ModItem is not found.
-		/// The price of the item will be the item's value / 5 / priceDiv.
+		/// The price of the item will be the item's value / priceDiv.
 		/// </summary>
 		/// <param name="mod">The mod that the item is from.</param>
 		/// <param name="itemString">The class name of the item.</param>
 		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
 		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
 		/// <param name="priceDiv">The price will be divided by this amount.</param>
-		public static void SafelySetCrossModItem(Mod mod, string itemString, Chest shop, ref int nextSlot, float priceDiv)
+		public static void SafelySetCrossModItem(Mod mod, string itemString, NPCShop shop, float priceDiv, params Condition[] condition)
 		{
 			mod.TryFind<ModItem>(itemString, out ModItem outItem);
 			if (outItem != null)
 			{
-				shop.item[nextSlot].SetDefaults(outItem.Type);
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value / 5 / priceDiv);
-				nextSlot++;
+				shop.Add(new Item(outItem.Type) { shopCustomPrice = (int)Math.Round(outItem.Item.value / priceDiv) }, condition.Append(ShopConditions.TownNPCsCrossModSupport).ToArray());
 			}
 			else
 			{
@@ -381,37 +398,17 @@ namespace RijamsMod.NPCs
 		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
 		/// <param name="priceDiv">The price will be divided by this amount.</param>
 		/// <param name="priceMulti">The price will be multiplied by this amount after the priceDiv.</param>
-		public static void SafelySetCrossModItem(Mod mod, string itemString, Chest shop, ref int nextSlot, float priceDiv = 1f, float priceMulti = 1f)
+		public static void SafelySetCrossModItem(Mod mod, string itemString, NPCShop shop, float priceDiv, float priceMulti, params Condition[] condition)
 		{
 			mod.TryFind<ModItem>(itemString, out ModItem outItem);
 			if (outItem != null)
 			{
-				shop.item[nextSlot].SetDefaults(outItem.Type);
-				shop.item[nextSlot].shopCustomPrice = (int)Math.Round(shop.item[nextSlot].value / priceDiv * priceMulti);
-				nextSlot++;
+				shop.Add(new Item(outItem.Type) { shopCustomPrice = (int)Math.Round(outItem.Item.value / priceDiv * priceMulti) }, condition.Append(ShopConditions.TownNPCsCrossModSupport).ToArray());
 			}
 			else
 			{
 				ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelySetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
 			}
-		}
-
-		/// <summary>
-		/// Safely returns the Item of the ModItem from the given mod.
-		/// </summary>
-		/// <param name="mod">The mod that the item is from.</param>
-		/// <param name="itemString">The class name of the item.</param>
-		/// <returns>Item if found, null if not found.</returns>
-		public static Item SafelyGetCrossModItemWithPrice(Mod mod, string itemString, float priceDiv = 1f, float priceMulti = 1f)
-		{
-			mod.TryFind<ModItem>(itemString, out ModItem outItem);
-			if (outItem != null)
-			{
-				outItem.Item.shopCustomPrice = (int)Math.Round(outItem.Item.value / priceDiv * priceMulti);
-				return outItem.Item;
-			}
-			ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("SafelyGetCrossModItem(): ModItem type \"{0}\" from \"{1}\" was not found.", itemString, mod);
-			return null;
 		}
 
 		/// <summary>

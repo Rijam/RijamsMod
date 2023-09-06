@@ -187,7 +187,7 @@ namespace RijamsMod
 				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<RadiantLanternCudgel>(), 4));
 				npcLoot.Add(notExpertRule);
 			}
-			// EoW and BoC will drop the Odd Device is the Interstellar Traveling has not moved in ever. But, don't show it in the Bestiary.
+			// EoW and BoC will drop the Odd Device if the Interstellar Traveling has not moved in ever. But, don't show it in the Bestiary.
 			if (Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1)
 			{
 				LeadingConditionRule leadingConditionRule = new(new Conditions.LegacyHack_IsABoss());
