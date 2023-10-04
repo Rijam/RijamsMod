@@ -29,6 +29,10 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			Projectile.penetrate = 3;
 			AIType = -1;
 			Projectile.timeLeft = 600;
+
+			// Using local NPC immunity allows each to strike independently from one another.
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = 10;
 		}
 
 		public override void AI()
@@ -45,7 +49,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 					Projectile.netUpdate = true;
 					if (!Main.dedServ)
 					{
-						SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/MeatballDemonShoot") { Volume = 0.5f, MaxInstances = 10 }, Projectile.position);
+						SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/MeatballDemonShoot") { Volume = 0.25f, MaxInstances = 5 }, Projectile.position);
 					}
 				}
 				Projectile.ai[0] = 0;
@@ -112,7 +116,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			}
 			return false;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 30; i++)
 			{

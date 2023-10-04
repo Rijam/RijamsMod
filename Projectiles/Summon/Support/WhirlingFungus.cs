@@ -151,7 +151,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 				Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
 			}
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 10; i++)
 			{

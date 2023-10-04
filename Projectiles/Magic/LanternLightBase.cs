@@ -233,7 +233,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.Opacity = Utils.GetLerpValue(timeLeftMax, timeLeftMax - 20f, Projectile.timeLeft, clamped: true);
 			Projectile.rotation = Projectile.velocity.ToRotation() + (float)Math.PI / 2f;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Color fairyQueenWeaponsColor2 = Projectile.GetFairyQueenWeaponsColor();
 

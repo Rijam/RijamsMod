@@ -1,3 +1,4 @@
+using RijamsMod.Items.Accessories.Melee;
 using RijamsMod.Items.Consumables;
 using RijamsMod.Projectiles.Pets;
 using System;
@@ -294,7 +295,12 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			if (NPC.downedBoss1 && Main.rand.NextBool(5)) //EoC
 			{
-				shop[nextSlot] = ModContent.ItemType<Items.Consumables.StrangeRoll>();
+				shop[nextSlot] = ModContent.ItemType<StrangeRoll>();
+				nextSlot++;
+			}
+			if (Condition.DownedEarlygameBoss.IsMet() && Main.rand.NextBool(5))
+			{
+				shop[nextSlot] = ModContent.ItemType<LoopingOil>();
 				nextSlot++;
 			}
 			// If in Hardmode, increase the chance for these items to be sold.
@@ -329,6 +335,15 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					shop[nextSlot] = ItemID.BouncingShield;
 					nextSlot++;
+				}
+				// If the Black or Yellow Counterweight are being sold and the Looping Oil isn't, add the Looping Oil.
+				if (NPCHelper.FindItemInShop(shop, ItemID.BlackCounterweight, out int? _) || NPCHelper.FindItemInShop(shop, ItemID.YellowCounterweight, out int? _))
+				{
+					if (!NPCHelper.FindItemInShop(shop, ModContent.ItemType<LoopingOil>(), out int? _))
+					{
+						shop[nextSlot] = ModContent.ItemType<LoopingOil>();
+						nextSlot++;
+					}
 				}
 			}
 		}

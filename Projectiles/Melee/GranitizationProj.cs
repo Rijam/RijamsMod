@@ -29,6 +29,7 @@ namespace RijamsMod.Projectiles.Melee
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 10;
             Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
             Projectile.noEnchantmentVisuals = true;
         }

@@ -52,7 +52,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			}
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity) => false;
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 10; i++)
 			{

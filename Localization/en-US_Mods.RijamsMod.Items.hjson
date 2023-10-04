@@ -127,6 +127,7 @@ DaybreakGauntlet: {
 		Melee attacks inflict Daybroken
 		Gives the user master yoyo skills
 		Yoyos have infinite duration
+		+2 Additional Counterweight
 		Counterweights are 1.5x bigger
 		Enemies are more likely to target you
 		'''
@@ -143,8 +144,23 @@ YoyoBackpack: {
 		'''
 		Gives the user master yoyo skills
 		Yoyos have infinite duration
+		+2 Additional Counterweight
 		Counterweights are 1.5x bigger
 		Rainbow colored string!
+		'''
+}
+
+LoopingOil: {
+	DisplayName: Looping Oil
+	Tooltip: Yoyos have infinite duration
+}
+
+SideEffects: {
+	DisplayName: Side Effects
+	Tooltip:
+		'''
+		Yoyos are twice as fast
+		-
 		'''
 }
 

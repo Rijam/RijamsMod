@@ -77,7 +77,7 @@ namespace RijamsMod.Projectiles.Ranged
 			return true;
 		}
 
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 1, 1, ModContent.DustType<Dusts.SulfurDust>());
 			SoundEngine.PlaySound(SoundID.NPCDeath3, Projectile.position);

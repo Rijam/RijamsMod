@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.ObjectModel;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -74,12 +76,103 @@ namespace RijamsMod.Items.Accessories.Melee
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.YoyoBag, 1)
-				.AddIngredient(ItemID.RainbowString, 1)
+				.AddIngredient(ItemID.YoyoBag)
+				.AddIngredient(ItemID.RainbowString)
+				.AddRecipeGroup(RijamsModRecipes.Counterweights)
+				.AddIngredient(ModContent.ItemType<LoopingOil>())
 				.AddIngredient(ModContent.ItemType<Materials.InfernicFabric>(), 10)
 				.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 10)
 				.AddTile(TileID.TinkerersWorkbench)
 				.Register();
+		}
+	}
+
+	public class LoopingOil : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemOriginDesc.itemList.Add(Type, new System.Collections.Generic.List<string> { "[c/474747:Sold by Traveling Merchant]", "[c/474747:after defeating any early game boss]" });
+		}
+		public override void SetDefaults()
+		{
+			Item.width = 14;
+			Item.height = 32;
+			Item.rare = ItemRarityID.Green; // 2
+			Item.value = Item.sellPrice(0, 1, 0, 0);
+			Item.accessory = true;
+		}
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.GetModPlayer<RijamsModPlayer>().loopingOil = true;
+		}
+	}
+
+	public class SideEffects : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+
+		}
+		public override void SetDefaults()
+		{
+			Item.width = 14;
+			Item.height = 32;
+			Item.rare = ItemRarityID.Yellow;
+			Item.value = Item.sellPrice(0, 1, 0, 0);
+			Item.accessory = true;
+		}
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.GetModPlayer<RijamsModPlayer>().sideEffects = true;
+		}
+
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.ShroomiteBar, 5)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
+		}
+
+		// Credits to stormytuna for the One Drop drawing code.
+		public override void PostDrawTooltip(ReadOnlyCollection<DrawableTooltipLine> lines)
+		{
+			int verticalOffset = 0;
+			for (int i = 0; i < lines.Count; i++)
+			{
+				if (lines[i].Name == "Tooltip1")
+				{
+					int flickerAmount = (int)((float)(int)Main.mouseTextColor);
+					Color drawColor = Color.Black;
+					for (int l = 0; l < 5; l++)
+					{
+						int xCoord = lines[i].X;
+						int yCoord = lines[i].Y;// + verticalOffset; IDK WHY THIS CHANGED BUT IT DID
+						if (l == 4)
+						{
+							drawColor = new Color(flickerAmount, flickerAmount, flickerAmount, flickerAmount);
+						}
+						switch (l)
+						{
+							case 0:
+								xCoord--;
+								break;
+							case 1:
+								xCoord++;
+								break;
+							case 2:
+								yCoord--;
+								break;
+							case 3:
+								yCoord++;
+								break;
+						}
+						Texture2D oneDropLogo = ((Texture2D)TextureAssets.OneDropLogo);
+						Main.spriteBatch.Draw(oneDropLogo, new Vector2(xCoord, yCoord), null, drawColor, 0f, default, 1f, SpriteEffects.None, 0f);
+					}
+				}
+				verticalOffset += (int)FontAssets.MouseText.Value.MeasureString(lines[i].Text).Y;
+			}
 		}
 	}
 }

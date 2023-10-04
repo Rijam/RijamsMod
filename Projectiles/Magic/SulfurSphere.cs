@@ -81,7 +81,7 @@ namespace RijamsMod.Projectiles.Magic
 			return true;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity) => false;
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 1, 1, ModContent.DustType<Dusts.SulfurDust>());
 			SoundEngine.PlaySound(SoundID.NPCDeath3, Projectile.position);

@@ -142,15 +142,22 @@ namespace RijamsMod.Projectiles
 						}
 					}
 				}
-				if (owner.active && owner.GetModPlayer<RijamsModPlayer>().yoyoBackpack && projectile.aiStyle == 99)
+				// Yoyo related things
+				if (owner.active && projectile.aiStyle == 99)
 				{
-					//Main.NewText("yoyoBackpack GlobalProjectile");
-					projectile.localAI[0] = -1;
-					if (projectile.type == ProjectileID.BlackCounterweight + Main.rand.Next(6))
+					if (owner.GetModPlayer<RijamsModPlayer>().yoyoBackpack && projectile.counterweight)
 					{
 						projectile.scale = 1.5f;
-						projectile.width = 15;
-						projectile.height = 15;
+						projectile.Resize(15, 15);
+					}
+					if (owner.GetModPlayer<RijamsModPlayer>().loopingOil)
+					{
+						projectile.localAI[0] = -1;
+					}
+					if (owner.GetModPlayer<RijamsModPlayer>().sideEffects && projectile.extraUpdates == 0 && !projectile.counterweight)
+					{
+						projectile.velocity *= 0.5f; // Doesn't really do anything because the Yoyo follows the mouse and this is only applied once.
+						projectile.extraUpdates++;
 					}
 				}
 			}

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -69,6 +70,7 @@ namespace RijamsMod
 
 			if (!IsPlayerLocalServerOwner(whoAmI))
 			{
+				//message = NetworkText.FromLiteral("You are not the server owner so you can not change this config!");
 				message = "You are not the server owner so you can not change this config!";
 				return false;
 			}

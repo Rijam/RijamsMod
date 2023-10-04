@@ -29,13 +29,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
 			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new()
-			{
-				SpecificallyImmuneTo = new int[] {
-					BuffID.OnFire,
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets[Type] = debuffData;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 		}
 
 		public override void SetDefaults()

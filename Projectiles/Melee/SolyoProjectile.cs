@@ -34,6 +34,8 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.penetrate = -1;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.scale = 1f;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 		}
 		// notes for aiStyle 99: 
 		// localAI[0] is used for timing up to YoyosLifeTimeMultiplier

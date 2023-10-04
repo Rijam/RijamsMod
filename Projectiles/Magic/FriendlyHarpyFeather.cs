@@ -31,6 +31,8 @@ namespace RijamsMod.Projectiles.Magic
 			{
 				Projectile.penetrate = 2;
 			}
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 			Projectile.timeLeft = 600;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
@@ -58,6 +60,8 @@ namespace RijamsMod.Projectiles.Magic
 			AIType = ProjectileID.Bullet;
 			Projectile.penetrate = 5;
 			Projectile.timeLeft = 180;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -136,6 +140,8 @@ namespace RijamsMod.Projectiles.Magic
 			AIType = ProjectileID.Bullet;
 			Projectile.penetrate = 5;
 			Projectile.timeLeft = 600;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)

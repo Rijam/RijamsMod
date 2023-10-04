@@ -95,6 +95,7 @@ namespace RijamsMod
 		public const string HoneyBalloons = "RijamsMod:HoneyBalloons";
 		public const string FartBalloons = "RijamsMod:FartBalloons";
 		public const string SharkronBalloons = "RijamsMod:SharkronBalloons";
+		public const string Counterweights = "RijamsMod:Counterweights";
 
 		public override void AddRecipeGroups()
 		{
@@ -167,6 +168,17 @@ namespace RijamsMod
 				ItemID.BalloonHorseshoeSharkron
 			});
 			RecipeGroup.RegisterGroup(SharkronBalloons, group);
+
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Counterweight", new int[]
+			{
+				ItemID.BlackCounterweight,
+				ItemID.BlueCounterweight,
+				ItemID.GreenCounterweight,
+				ItemID.PurpleCounterweight,
+				ItemID.RedCounterweight,
+				ItemID.YellowCounterweight
+			});
+			RecipeGroup.RegisterGroup(Counterweights, group);
 
 			if (RecipeGroup.recipeGroupIDs.ContainsKey("Fruit"))
 			{

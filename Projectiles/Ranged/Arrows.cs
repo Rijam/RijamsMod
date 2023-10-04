@@ -37,7 +37,7 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 		}
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
 			for (int i = 0; i < 10; i++)
@@ -113,7 +113,7 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 			return true;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 1, 1, ModContent.DustType<Dusts.SulfurDust>());
 			SoundEngine.PlaySound(SoundID.NPCDeath3, Projectile.position);
@@ -137,7 +137,7 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			return false;
 		}
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 			if (Main.myPlayer == Projectile.owner)
 			{

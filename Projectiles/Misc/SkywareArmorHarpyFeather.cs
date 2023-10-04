@@ -25,8 +25,10 @@ namespace RijamsMod.Projectiles.Misc
 			AIType = ProjectileID.Bullet;
 			Projectile.penetrate = 1;
 			Projectile.timeLeft = 120;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 5; i++)
 			{
@@ -52,6 +54,8 @@ namespace RijamsMod.Projectiles.Misc
 			Projectile.penetrate = 1;
 			Projectile.timeLeft = 180;
 			Projectile.extraUpdates = 1;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 		}
 
 		public override void AI()
@@ -83,7 +87,7 @@ namespace RijamsMod.Projectiles.Misc
 			}
 		}
 
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 5; i++)
 			{

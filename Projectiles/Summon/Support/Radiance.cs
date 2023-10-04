@@ -145,7 +145,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 			}
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Color fairyQueenWeaponsColor2 = Projectile.GetFairyQueenWeaponsColor();
 			//SoundEngine.PlaySound(SoundID.Item10, Projectile.Center);

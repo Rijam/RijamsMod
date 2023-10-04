@@ -23,6 +23,8 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.aiStyle = -1;
 			Projectile.timeLeft = 300;
 			//projectile.extraUpdates = 1;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 		}
 
 		public override Color? GetAlpha(Color lightColor)
@@ -65,7 +67,7 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.Resize(96, 96);
 			return true;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Projectile.position.X += Projectile.width / 2;
 			Projectile.position.Y += Projectile.height / 2;

@@ -1,7 +1,11 @@
 using Microsoft.Xna.Framework;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using RijamsMod.Items.Armor.RedSkyware;
+using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -119,6 +123,84 @@ namespace RijamsMod.Items.Accessories
 					maxAscentMultiplier *= 1.1f;
 				}
 			}
+		}
+	}
+
+	public class YoyoBackpackILEdit : GlobalItem
+	{
+		public override void Load()
+		{
+			Terraria.IL_Player.Counterweight += Player_Counterweight_YoyoBackpackEdit;
+		}
+
+		private static void Player_Counterweight_YoyoBackpackEdit(ILContext il)
+		{
+			ILCursor c = new(il);
+
+			// Try to find where 2 is placed onto the stack
+			// This 2 is the start of the crowding 
+			if (!c.TryGotoNext(MoveType.After, i => i.MatchLdcI4(2)))
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.Debug("Patch 1 of Player_Counterweight_YoyoBackpackEdit unable to be applied! ");
+				return; // Patch unable to be applied
+			}
+
+			// Push the Player instance onto the stack
+			c.Emit(OpCodes.Ldarg_0);
+			// Call a delegate using the int and Player from the stack.
+			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) =>
+			{
+				// Regular c# code
+				// Original code:
+
+				// num is the Main.projectile index
+				// num2 is the number of aiStyle 99 projectiles the player has (both yoyos and counterweights).
+				// num3 is the number of counterweights the player has.
+
+				// if (yoyoGlove && num2 < 2) {		<---- Editing this 2
+				//	if (num >= 0)
+				//	{
+				//		Vector2 vector = hitPos - base.Center;
+				//		vector.Normalize();
+				//		vector *= 16f;
+				//		Projectile.NewProjectile(Projectile.InheritSource(Main.projectile[num]), base.Center.X, base.Center.Y, vector.X, vector.Y, Main.projectile[num].type, Main.projectile[num].damage, Main.projectile[num].knockBack, whoAmI, 1f);
+				//	}
+				// With num2 being the number of counterweights that are alive.
+
+				// Change the 2 to a 3 if the player has the Yoyo Backpack.
+				// This will give the player an extra yoyo and extra counterweight.
+				return returnValue + player.GetModPlayer<RijamsModPlayer>().bonusYoyosAndCounterweights;
+			});
+
+			if (!c.TryGotoNext(MoveType.After, i => i.MatchLdloc1()))
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.Debug("Patch 2 of Player_Counterweight_YoyoBackpackEdit unable to be applied! ");
+				return; // Patch unable to be applied
+			}
+
+			c.Emit(OpCodes.Ldarg_0);
+
+			c.EmitDelegate<Func<int, Player, int>>((returnValue, player) =>
+			{
+				// Regular c# code
+				// Original code:
+
+				// else if (num3 < num2)		<---- Editing this num2
+				// {
+				//	Vector2 vector2 = hitPos - base.Center;
+				//	vector2.Normalize();
+				//	vector2 *= 16f;
+				//	float knockBack = (kb + 6f) / 2f;
+				//	IEntitySource spawnSource = Projectile.InheritSource(Main.projectile[num]);
+				//	if (num3 > 0)
+				// 		Projectile.NewProjectile(spawnSource, base.Center.X, base.Center.Y, vector2.X, vector2.Y, counterWeight, (int)((double)dmg * 0.8), knockBack, whoAmI, 1f);
+				//	else
+				// 		Projectile.NewProjectile(spawnSource, base.Center.X, base.Center.Y, vector2.X, vector2.Y, counterWeight, (int)((double)dmg * 0.8), knockBack, whoAmI);
+				// }
+
+				// This will give the player an extra counterweight (no extra yoyo, though).
+				return returnValue + player.GetModPlayer<RijamsModPlayer>().bonusCounterweights;
+			});
 		}
 	}
 }

@@ -25,8 +25,8 @@ namespace RijamsMod.Items.Accessories.Movement
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.jumpSpeedBoost += 2.5f;
-			player.hasJumpOption_Fart = true;
-			player.hasJumpOption_Sail = true;
+			player.GetJumpState<FartInAJarJump>().Enable();
+			player.GetJumpState<TsunamiInABottleJump>().Enable();
 			player.honeyCombItem = Item;
 		}
 
@@ -61,8 +61,8 @@ namespace RijamsMod.Items.Accessories.Movement
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.jumpSpeedBoost += 2.5f;
-			player.hasJumpOption_Fart = true;
-			player.hasJumpOption_Sail = true;
+			player.GetJumpState<FartInAJarJump>().Enable();
+			player.GetJumpState<TsunamiInABottleJump>().Enable();
 			player.honeyCombItem = Item;
 			player.noFallDmg = true;
 		}
@@ -125,11 +125,11 @@ namespace RijamsMod.Items.Accessories.Movement
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.jumpSpeedBoost += 5f;
-			player.hasJumpOption_Cloud = true;
-			player.hasJumpOption_Blizzard = true;
-			player.hasJumpOption_Sandstorm = true;
-			player.hasJumpOption_Fart = true;
-			player.hasJumpOption_Sail = true;
+			player.GetJumpState<CloudInABottleJump>().Enable();
+			player.GetJumpState<BlizzardInABottleJump>().Enable();
+			player.GetJumpState<SandstormInABottleJump>().Enable();
+			player.GetJumpState<FartInAJarJump>().Enable();
+			player.GetJumpState<TsunamiInABottleJump>().Enable();
 			player.honeyCombItem = Item;
 		}
 
@@ -171,11 +171,11 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.noFallDmg = true;
 			player.fireWalk = true;
 			player.jumpSpeedBoost += 5f;
-			player.hasJumpOption_Cloud = true;
-			player.hasJumpOption_Blizzard = true;
-			player.hasJumpOption_Sandstorm = true;
-			player.hasJumpOption_Fart = true;
-			player.hasJumpOption_Sail = true;
+			player.GetJumpState<CloudInABottleJump>().Enable();
+			player.GetJumpState<BlizzardInABottleJump>().Enable();
+			player.GetJumpState<SandstormInABottleJump>().Enable();
+			player.GetJumpState<FartInAJarJump>().Enable();
+			player.GetJumpState<TsunamiInABottleJump>().Enable();
 			player.honeyCombItem = Item;
 		}
 

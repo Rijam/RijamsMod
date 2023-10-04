@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using RijamsMod.Items;
+using RijamsMod.Items.Accessories.Melee;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -41,10 +42,14 @@ namespace RijamsMod
 		public bool dwarfStarPet;
 		public bool redSkywareLeggings;
 		public bool babyStardustDragonPet;
+		public bool loopingOil;
+		public bool sideEffects;
 
 		public int supportMinionRadiusIncrease = 0;
 		public float criticalHitAdditionalDamage = 0f;
 		public float knockbackSusceptibility = 1f;
+		public int bonusYoyosAndCounterweights = 0;
+		public int bonusCounterweights = 0;
 
 		public override void ResetEffects()
 		{
@@ -77,10 +82,14 @@ namespace RijamsMod
 			dwarfStarPet = false;
 			redSkywareLeggings = false;
 			babyStardustDragonPet = false;
+			loopingOil = false;
+			sideEffects = false;
 
 			supportMinionRadiusIncrease = 0;
 			criticalHitAdditionalDamage = 0f;
 			knockbackSusceptibility = 1f;
+			bonusYoyosAndCounterweights = 0;
+			bonusCounterweights = 0;
 			if (!hailfireBootsBoost)
 			{
 				Player.rocketTimeMax = 7;
@@ -187,6 +196,8 @@ namespace RijamsMod
 				Player.yoyoGlove = true;
 				Player.yoyoString = true;
 				Player.stringColor = 27;
+				bonusCounterweights += 2;
+				loopingOil = true;
 			}
 		}
 		public override void UpdateBadLifeRegen()

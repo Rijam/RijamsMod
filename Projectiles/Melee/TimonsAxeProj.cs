@@ -34,7 +34,7 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.rotation += 0.4f * Projectile.direction;
 			Projectile.alpha += 25;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
 		}

@@ -59,7 +59,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			NPCID.Sets.AttackAverageChance[NPC.type] = 1;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
 			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
-			NPCID.Sets.ShimmerImmunity[Type] = false;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Shimmer] = false;
 			NPCID.Sets.ExtraTextureCount[Type] = 0;
 			NPCID.Sets.NPCFramingGroup[Type] = 6;
 

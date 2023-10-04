@@ -90,15 +90,9 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCProfile = new HellTraderProfile();
 
 			// Specify the debuffs it is immune to
-			NPCDebuffImmunityData debuffData = new()
-			{
-				SpecificallyImmuneTo = new int[] {
-					BuffID.Confused,
-					BuffID.OnFire,
-					ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(),
-				}
-			};
-			NPCID.Sets.DebuffImmunitySets[Type] = debuffData;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>()] = true;
 		}
 
 		public override void SetDefaults()

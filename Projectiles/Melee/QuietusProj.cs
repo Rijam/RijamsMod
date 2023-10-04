@@ -24,6 +24,8 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.penetrate = 1;
 			AIType = ProjectileID.Bullet;
 			Projectile.timeLeft = 180;
+			Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 10;
 			//projectile.extraUpdates = 1;
 		}
 
@@ -64,7 +66,7 @@ namespace RijamsMod.Projectiles.Melee
 			}
 			return true;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			for (int i = 0; i < 10; i++)
             {

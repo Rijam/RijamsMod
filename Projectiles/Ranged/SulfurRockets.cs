@@ -167,7 +167,7 @@ namespace RijamsMod.Projectiles.Ranged
 			// Rocket I: 8f, Rocket III: 10f, Mini Nuke Rocket: 12f
 			projectile.knockBack = 8f;
 		}
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
@@ -347,7 +347,7 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 		}
 
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item62, Projectile.position);
 
@@ -547,7 +547,7 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 		}
 
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 
@@ -794,7 +794,7 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 		}
 
-		public override void Kill(int timeLeft)
+		public override void OnKill(int timeLeft)
 		{
 			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
 

@@ -220,3 +220,13 @@
 
 1.2.3.1 - (September 6, 2023)
 	* Fixed cross mod content.
+
+1.2.4.0 - (September 28, 2023)
+	* Yoyo Backback now gives 2 additional counterweights. It now requires an addition counterweight in its recipe.
+	* Solyo now uses Static immunity (instead of Global).
+	* Lost Skulls from the Meatball Demon minion now use Local immunity (instead of Global).
+	* Skyware Armor feather projectiles now use Static immunity (instead of Global).
+	* Hammer of Retribution and Quietus projectiles now use Static immunity (instead of Global).
+	* Plumage and The Shredder projectiles now use Static immunity (instead of Global).
+	* Added Looping Oil. Early Pre-Hardmode accessory that makes Yoyo have infinite duration. (Now required in the Yoyo Backpack.)
+	* Added Side Effects. A Post-Plantera accessory that makes Yoyos twice as fast.
