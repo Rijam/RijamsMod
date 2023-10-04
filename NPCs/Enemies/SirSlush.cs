@@ -20,7 +20,7 @@ namespace RijamsMod.NPCs.Enemies
 			// DisplayName.SetDefault("Sir Slush");
 			Main.npcFrameCount[NPC.type] = 12;
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
 			{
 				PortraitPositionYOverride = 3
 			};

@@ -19,7 +19,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			// DisplayName.SetDefault("Armed Skeleton");
 			Main.npcFrameCount[NPC.type] = 7;
-			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new(0)
+			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new()
 			{
 				Hide = true // Hides this NPC from the bestiary
 			};
