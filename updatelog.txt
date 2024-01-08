@@ -221,7 +221,7 @@
 1.2.3.1 - (September 6, 2023)
 	* Fixed cross mod content.
 
-1.2.4.0 - (September 28, 2023)
+1.2.4.0 - (October 3, 2023)
 	* Yoyo Backback now gives 2 additional counterweights. It now requires an addition counterweight in its recipe.
 	* Solyo now uses Static immunity (instead of Global).
 	* Lost Skulls from the Meatball Demon minion now use Local immunity (instead of Global).
@@ -230,3 +230,12 @@
 	* Plumage and The Shredder projectiles now use Static immunity (instead of Global).
 	* Added Looping Oil. Early Pre-Hardmode accessory that makes Yoyo have infinite duration. (Now required in the Yoyo Backpack.)
 	* Added Side Effects. A Post-Plantera accessory that makes Yoyos twice as fast.
+
+1.2.4.1 - (? ?, 2023)
+	* Fixed placement of the Living Sulfur Fire blocks
+	* Added Emotes for the Interstellar Traveler, Harpy, and Hell Trader.
+	* Updated Dilapidated Crimson armor to give +3% damage per piece (instead of +2%).
+	* Dilapidated Crimson armor is now truly interchangeable with Crimson armor.
+	* Improved the Hell Trader's missing stock system before they have moved in.
+	* Fixed Pumpkin Hat only giving its extra minion slot when the player had the full Pumpkin set on.
+	* Fixed Shoomite Visor only giving its increased ranged damage and critical strike chance when the player had the full Shroomite set on.

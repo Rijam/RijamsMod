@@ -28,12 +28,16 @@ namespace RijamsMod.Items.Armor
 			return body.type == ItemID.ShroomiteBreastplate && legs.type == ItemID.ShroomiteLeggings;
 		}
 
+		public override void UpdateEquip(Player player)
+		{
+			player.GetCritChance(DamageClass.Ranged) += 5;
+			player.GetDamage(DamageClass.Ranged) += 0.1f;
+		}
+
 		public override void UpdateArmorSet(Player player)
 		{
 			player.setBonus = Language.GetTextValue("ArmorSetBonus.Shroomite");
 			player.shroomiteStealth = true;
-			player.GetCritChance(DamageClass.Ranged) += 5;
-			player.GetDamage(DamageClass.Ranged) += 0.1f;
 		}
 		public override void ArmorSetShadows(Player player)
 		{

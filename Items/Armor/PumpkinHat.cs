@@ -28,9 +28,13 @@ namespace RijamsMod.Items.Armor
 			return body.type == ItemID.PumpkinBreastplate && legs.type == ItemID.PumpkinLeggings;
 		}
 
+		public override void UpdateEquip(Player player)
+		{
+			player.maxMinions++;
+		}
+
 		public override void UpdateArmorSet(Player player)
 		{
-			player.maxMinions += 1;
 			player.setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
 			player.GetDamage(DamageClass.Generic) += 0.1f;
 		}

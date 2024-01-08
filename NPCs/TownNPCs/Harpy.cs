@@ -17,6 +17,7 @@ using Terraria.ModLoader.IO;
 using RijamsMod.Items.Placeable;
 using Terraria.GameContent.Drawing;
 using Microsoft.Xna.Framework;
+using RijamsMod.EmoteBubbles;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -80,6 +81,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			; // < Mind the semicolon!
 
 			NPCProfile = new HarpyProfile();
+
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<HarpyEmote>();
 		}
 
 		public override void SetDefaults()

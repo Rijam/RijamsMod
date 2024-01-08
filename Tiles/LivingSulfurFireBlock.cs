@@ -12,30 +12,32 @@ namespace RijamsMod.Tiles
 	{
 		public override void SetStaticDefaults()
 		{
-			Main.tileSolid[Type] = false;
-			Main.tileBlockLight[Type] = false;
+			// Main.tileSolid[Type] = false;
+			// Main.tileBlockLight[Type] = false;
 			Main.tileLighted[Type] = true;
-			Main.tileNoAttach[Type] = true;
+			// Main.tileNoAttach[Type] = true;
 			// Main.placementPreview = false; // Actually turns it off for everything :skull_emoji:
 			// TileID.Sets.IsBeam[Type] = true; // Similar but not exactly the same.
 
 			// Placeable in mid air to get around the fact that you can't place tiles on top of tiles if the tile is non-solid (which this tile is)
 			// Adapted from Magic Storage StorageConnector.cs
-			TileObjectData.newTile.Width = 1;
-			TileObjectData.newTile.Height = 1;
-			TileObjectData.newTile.Origin = new Point16(0, 0);
-			TileObjectData.newTile.CoordinateHeights = new int[] { 16 };
-			TileObjectData.newTile.CoordinateWidth = 16;
-			TileObjectData.newTile.CoordinatePadding = 2;
+			// TileObjectData.newTile.Width = 1;
+			// TileObjectData.newTile.Height = 1;
+			// TileObjectData.newTile.Origin = new Point16(0, 0);
+			// TileObjectData.newTile.CoordinateHeights = new int[] { 16 };
+			// TileObjectData.newTile.CoordinateWidth = 16;
+			// TileObjectData.newTile.CoordinatePadding = 2;
 
-			ModTile theTile = ModContent.GetInstance<LivingSulfurFireBlock>();
+			// ModTile theTile = ModContent.GetInstance<LivingSulfurFireBlock>();
 
 			// Custom placement
-			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(CanPlace, -1, 0, true);
-			TileObjectData.newTile.UsesCustomCanPlace = true;
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(Hook_AfterPlacement, -1, 0, false);
+			// TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(CanPlace, -1, 0, true);
+			// TileObjectData.newTile.UsesCustomCanPlace = true;
+			// TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(Hook_AfterPlacement, -1, 0, false);
 
-			TileObjectData.addTile(Type);
+			// TileObjectData.addTile(Type);
+
+			TileID.Sets.CanPlaceNextToNonSolidTile[Type] = true;
 
 			DustType = ModContent.DustType<Dusts.SulfurDust>();
 			AddMapEntry(new Color(255, 255, 0));
@@ -43,6 +45,7 @@ namespace RijamsMod.Tiles
 		}
 
 		// Adapted from Magic Storage StorageConnector.cs
+		/*
 		public static int CanPlace(int i, int j, int type, int style, int direction, int alternative)
 		{
 			if (Main.tile[i + 1, j].HasTile || Main.tile[i - 1, j].HasTile || Main.tile[i, j + 1].HasTile || Main.tile[i, j -1].HasTile ||
@@ -52,7 +55,9 @@ namespace RijamsMod.Tiles
 			}
 			return 0; // Returning -1 stops the placement as desired, but it breaks the player's animations.
 		}
+		*/
 
+		/*
 		public static int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternative)
 		{
 			if (Main.netMode == NetmodeID.MultiplayerClient)
@@ -62,6 +67,7 @@ namespace RijamsMod.Tiles
 			}
 			return 0; // Does this also need to be -1?
 		}
+		*/
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
 		{
@@ -79,6 +85,13 @@ namespace RijamsMod.Tiles
 		{
 			frame = Main.tileFrame[TileID.LivingFire];
 		}
+
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
+		{
+			// The Living Fire Blocks are drawn 2 pixels lower so that they sink into the tile below it.
+			offsetY = 2;
+		}
+
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			Tile tile = Main.tile[i, j];

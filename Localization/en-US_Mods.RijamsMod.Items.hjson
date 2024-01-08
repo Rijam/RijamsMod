@@ -519,7 +519,7 @@ DilapidatedCrimsonGreaves: {
 	DisplayName: Dilapidated Crimson Greaves
 	Tooltip:
 		'''
-		2% increased damage
+		3% increased damage
 		Interchangeable with Crimson Armor
 		'''
 }
@@ -528,7 +528,7 @@ DilapidatedCrimsonHelmet: {
 	DisplayName: Dilapidated Crimson Helmet
 	Tooltip:
 		'''
-		2% increased damage
+		3% increased damage
 		Interchangeable with Crimson Armor
 		'''
 }
@@ -537,7 +537,7 @@ DilapidatedCrimsonScalemail: {
 	DisplayName: Dilapidated Crimson Scalemail
 	Tooltip:
 		'''
-		2% increased damage
+		3% increased damage
 		Interchangeable with Crimson Armor
 		'''
 }

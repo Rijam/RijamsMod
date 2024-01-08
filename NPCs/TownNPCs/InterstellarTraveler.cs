@@ -27,6 +27,7 @@ using System;
 using Terraria.GameContent.Drawing;
 using RijamsMod.Items.Tools;
 using System.Reflection;
+using RijamsMod.EmoteBubbles;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -98,6 +99,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			; // < Mind the semicolon!
 
 			NPCProfile = new InterstellarTravelerProfile();
+
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<InterstellarTravelerEmote>();
 		}
 
 		public override void SetDefaults()

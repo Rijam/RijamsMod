@@ -17,6 +17,7 @@ using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.DataStructures;
 using System.Reflection.Metadata;
+using RijamsMod.EmoteBubbles;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -93,6 +94,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
 			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>()] = true;
+
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<HellTraderEmote>();
 		}
 
 		public override void SetDefaults()
@@ -578,7 +581,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			// Get each entry of the shop and add it to the ItemsEnabled List.
 			foreach (AbstractNPCShop.Entry entry in npcShop.Entries)
 			{
-				int disableChance = 3;
+				int disableChance = 3; // Higher numbers == lower chance of being disabled, because the chance is actually 1/x
 				if (entry.Item.type == ModContent.ItemType<Items.Weapons.Melee.TimonsAxe>() ||
 					entry.Item.type == ModContent.ItemType<Items.Weapons.Melee.HammerOfRetribution>() ||
 					entry.Item.type == ModContent.ItemType<Items.Weapons.Melee.Quietus>())
@@ -602,7 +605,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		/// <summary>
 		/// <br>Contains a list of the items in the shop, what their chance of being disable is, and if they are enabled.</br>
 		/// <br>int: item type</br>
-		/// <br>int: chance of being disabled</br>
+		/// <br>int: chance of being disabled (reciprocal, 1/x) </br>
 		/// <br>bool: enabled/disabled</br>
 		/// </summary>
 		private static List<Tuple<int, int, bool>> ItemsEnabled = new();
@@ -617,21 +620,60 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
-		private static readonly List<int> IsPylon = new() { ItemID.TeleportationPylonPurity, ItemID.TeleportationPylonSnow, ItemID.TeleportationPylonDesert,
-			ItemID.TeleportationPylonUnderground, ItemID.TeleportationPylonOcean, ItemID.TeleportationPylonJungle, ItemID.TeleportationPylonHallow,
-			ItemID.TeleportationPylonMushroom };
-
 		public override void ModifyActiveShop(string shopName, Item[] items)
 		{
-			// Disable certain shop items
-			// Will refine this in the future because it is still a little iffy.
 			if (!ShopConditions.HellTraderMovedIn.IsMet())
 			{
-				for (int i = 0; i < ItemsEnabled.Count; i++)
+				// Disable certain shop items:
+				// Seems complex, but it's pretty simple actually.
+				// When the Hell Trader spawned, each item in the shop was taken note in ItemsEnabled list with a certain items being set to be disabled.
+				// This loops through every item in the shop. If item in the shop matches the item in the ItemsEnabled list, disable if it applicable.
+				// Otherwise, continue through list until we find a match.
+
+				// Example:
+				// The first two items in the shop, Obsidian Rose and Magma Stone are always available, so check to see if we should disable those.
+				// The third item in the shop is the Demon Scythe which isn't always available.
+				// If this the beginning of the game, the next actual available item will be Ash.
+				// So skip the Demon Scythe and the next items until we reach Ash, then check to see if we should disable it.
+				// Continue until we've reach the end of the shop.
+
+				// Uncomment the Main.NewText to get a better visualization.
+
+				// Main.NewText("----");
+
+				int itemsEnabledIndex = 0; // Which item we are currently checking.
+				int itemsArrayIndex = 0; // Basically the index for the foreach loop. Starts at 0 and increments each loop.
+				foreach (Item currentItem in items) // Go through each item in the current shop
 				{
-					if (!ItemsEnabled[i].Item3)
+					// Main.NewText(itemsArrayIndex + " " + itemsEnabledIndex + ", ItemsEnabled item == " + ItemsEnabled[itemsArrayIndex].Item1
+					//	+ " [i:" + ItemsEnabled[itemsArrayIndex].Item1 + "], disableChance == " + ItemsEnabled[itemsArrayIndex].Item2 
+					//	+ ", enabled == " + ItemsEnabled[itemsEnabledIndex].Item3 + ", Shop item slot " + items[itemsEnabledIndex] 
+					//	+ " [i:" + items[itemsEnabledIndex]?.type + "]");
+
+					// If the current shop item doesn't match the ItemsEnabled item, stay on that item and don't go to the next item.
+					// Aka skip the item if the item doesn't actually show up in the shop (due to the shop Conditions)
+					if (items[itemsEnabledIndex]?.type != ItemsEnabled[itemsArrayIndex].Item1)
 					{
-						items[i]?.TurnToAir();
+						itemsEnabledIndex--;
+					}
+					// Disable the item if it matches the item in the ItemsEnabled list and is set to be disabled.
+					if (items[itemsEnabledIndex]?.type == ItemsEnabled[itemsArrayIndex].Item1 && !ItemsEnabled[itemsEnabledIndex].Item3)
+					{
+						items[itemsEnabledIndex]?.TurnToAir();
+					}
+
+					// Disable the Hell Trader from selling Pylons before moving in.
+					if (currentItem is not null && TileID.Sets.CountsAsPylon.Contains(currentItem.createTile))
+					{
+						// Main.NewText(itemsArrayIndex);
+						items[itemsArrayIndex]?.TurnToAir();
+					}
+
+					itemsArrayIndex++;
+					itemsEnabledIndex++;
+					if (itemsArrayIndex >= ItemsEnabled.Count)
+					{
+						break;
 					}
 				}
 			}

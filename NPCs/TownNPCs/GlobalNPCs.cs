@@ -516,6 +516,79 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 		}
 
+		public override int? PickEmote(NPC npc, Player closestPlayer, List<int> emoteList, WorldUIAnchor otherAnchor)
+		{
+			if (npc.type == ModContent.NPCType<Harpy>())
+			{
+				emoteList.Add(EmoteID.BiomeSky); // Sky or Space
+				emoteList.Add(EmoteID.TownBestiaryGirl);
+
+				if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman))
+				{
+					if (otherAnchor?.entity is NPC entityNPCFisherman && entityNPCFisherman.type == fisherman.Type)
+					{
+						emoteList.Add(EmoteID.EmotionLove);
+					}
+				}
+				if (!Main.dayTime)
+				{
+					emoteList.Add(EmoteID.EmoteSleep);
+				}
+				else if (!Main.raining)
+				{
+					emoteList.Add(EmoteID.WeatherSunny);
+				}
+				else
+				{
+					emoteList.Add(EmoteID.EmoteSadness);
+				}
+			}
+			if (npc.type == ModContent.NPCType<InterstellarTraveler>())
+			{
+				emoteList.Add(EmoteID.BiomeSky);
+				emoteList.Add(EmoteID.BossMartianship);
+				emoteList.Add(EmoteID.CritterBird);
+
+				if (!RijamsModWorld.intTravQuestBreadAndJelly)
+				{
+					emoteList.Add(EmoteID.Hungry);
+				}
+				if (otherAnchor?.entity is NPC entityNPCHarpy && entityNPCHarpy.type == ModContent.NPCType<Harpy>())
+				{
+					emoteList.Add(EmoteID.EmoteHappiness);
+					emoteList.Add(EmoteID.EmoteLaugh);
+				}
+				if (otherAnchor?.entity is NPC entityNPCMerchant && entityNPCMerchant.type == NPCID.Merchant)
+				{
+					emoteList.Add(EmoteID.EmoteAnger); // The face emote
+					emoteList.Add(EmoteID.EmotionAnger); // The 4 red corner angry emote
+				}
+			}
+			if (npc.type == ModContent.NPCType<HellTrader>())
+			{
+				emoteList.Add(EmoteID.BiomeLavalayer); // Underworld
+				emoteList.Add(EmoteID.MiscFire);
+				emoteList.Add(EmoteID.DebuffBurn);
+				emoteList.Add(EmoteID.BossWoF);
+				emoteList.Add(EmoteID.ItemManaPotion);
+			}
+
+			if (npc.type == ModContent.NPCType<SnuggetPet.SnuggetPet>())
+			{
+				emoteList.Clear();
+				emoteList.Add(EmoteID.EmoteSilly);
+				emoteList.Add(EmoteID.EmoteHappiness);
+				emoteList.Add(EmoteID.EmoteSleep);
+				emoteList.Add(EmoteID.EmotionLove);
+				emoteList.Add(EmoteID.EmoteNote);
+				emoteList.Add(EmoteID.EmoteEating);
+			}
+
+			return base.PickEmote(npc, closestPlayer, emoteList, otherAnchor);
+		}
+		
+		// Detour no longer needed now that the PickEmote hook is a thing.
+		/*
 		public override void Load()
 		{
 			Terraria.GameContent.UI.On_EmoteBubble.ProbeExceptions += EmoteBubble_Hook_ProbeEmotions;
@@ -595,5 +668,6 @@ namespace RijamsMod.NPCs.TownNPCs
 				list.Add(EmoteID.EmoteEating);
 			}
 		}
+		*/
 	}
 }

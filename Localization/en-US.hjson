@@ -454,6 +454,12 @@ Mods: {
 			CudgelPrefixShort.DisplayName: Short
 			CudgelPrefixVigilant.DisplayName: Vigilant
 		}
+
+		Emotes: {
+			InterstellarTravelerEmote.Command: rijamsmodinttrav
+			HarpyEmote.Command: rijamsmodharpy
+			HellTraderEmote.Command: rijamsmodhelltrader
+		}
 	}
 }
 

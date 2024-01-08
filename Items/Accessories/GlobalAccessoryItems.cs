@@ -138,7 +138,6 @@ namespace RijamsMod.Items.Accessories
 			ILCursor c = new(il);
 
 			// Try to find where 2 is placed onto the stack
-			// This 2 is the start of the crowding 
 			if (!c.TryGotoNext(MoveType.After, i => i.MatchLdcI4(2)))
 			{
 				ModContent.GetInstance<RijamsMod>().Logger.Debug("Patch 1 of Player_Counterweight_YoyoBackpackEdit unable to be applied! ");
