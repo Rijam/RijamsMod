@@ -297,6 +297,11 @@ Mods: {
 				Description: +10 armor penetration
 			}
 
+			Frenzy: {
+				DisplayName: Frenzy
+				Description: +10% Critical Hit Damage
+			}
+
 			BabyStardustDragonBuff: {
 				DisplayName: Baby Stardust Dragon
 				Description: The Baby Stardust Dragon will comfort you
@@ -459,6 +464,10 @@ Mods: {
 			InterstellarTravelerEmote.Command: rijamsmodinttrav
 			HarpyEmote.Command: rijamsmodharpy
 			HellTraderEmote.Command: rijamsmodhelltrader
+			InterstellarTravelerShimmeredEmote.Command: rijamsmodinttravshimmer
+			HarpyShimmeredEmote.Command: rijamsmodharpyshimmer
+			HellTraderShimmeredEmote.Command: rijamsmodhelltradershimmer
+			SnuggetEmote.Command: rijamsmodsnugget
 		}
 	}
 }

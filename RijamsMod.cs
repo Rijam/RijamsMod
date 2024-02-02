@@ -94,6 +94,7 @@ namespace RijamsMod
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
 			{
 				fishermanNPC.Call("AddToShop", "DefaultPrice", "Fish", ModContent.ItemType<Items.Fishing.HornetTail>(), new List<Condition>() { });
+				fishermanNPC.Call("AddToShop", "DefaultPrice", "Fish", ModContent.ItemType<Items.Fishing.FungiEel>(), new List<Condition>() { });
 				fishermanNPC.Call("AddToShop", "CustomPrice", "Bait", ModContent.ItemType<Items.Fishing.WildBait>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(3) }, 5000);
 			}
 

@@ -38,6 +38,6 @@ namespace RijamsMod.Items.Fishing
 				.Register();
 		}
 
-		// Double fish chance in HornetTail.cs
+		// Double fish chance in FishingPlayer.cs
 	}
 }

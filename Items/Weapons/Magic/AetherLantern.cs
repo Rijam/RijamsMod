@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
+using rail;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Placeable;
 using RijamsMod.Projectiles.Magic;
@@ -44,13 +45,13 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.mana = 25;
 			Item.UseSound = SoundID.Item82 with { Pitch = 0.4f };
 			Item.scale = 0.75f;
-			if (!Main.dedServ)
+			/*if (!Main.dedServ)
 			{
 				var glowMask = Item.GetGlobalItem<ItemUseGlow>();
 				glowMask.glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
 				glowMask.drawOnPlayer =	false;
 				glowMask.drawColor = new(100, 100, 100, 0);
-			}
+			}*/
 			Item.useLimitPerAnimation = 4; // Added by TML.
 			Item.noUseGraphic = true;
 			Item.channel = true;
@@ -193,6 +194,90 @@ namespace RijamsMod.Items.Weapons.Magic
 			}
 
 			//Main.NewText("Post HoldStyle " + player.heldProj);
+		}
+
+		private readonly Texture2D TextureGlass = ModContent.Request<Texture2D>("RijamsMod/Items/Weapons/Magic/AetherLantern_Glass").Value;
+
+		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+		{
+			// SpriteEffects change which direction the sprite is drawn.
+			SpriteEffects spriteEffects = ((Item.direction <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+
+			DrawNPCDirect_Faeling(Item, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, 0f, position, false);
+
+			spriteBatch.Draw(TextureGlass,
+				position,
+				frame, new(drawColor.R, drawColor.G, drawColor.B, 100), 0f, origin, scale, spriteEffects, 0);
+
+			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
+		}
+
+		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+		{
+			// SpriteEffects change which direction the sprite is drawn.
+			SpriteEffects spriteEffects = ((Item.direction <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+
+			Texture2D textureLantern = TextureAssets.Item[Type].Value;
+
+			// Get the currently selected frame on the texture.
+			Rectangle sourceRectangleSingle = textureLantern.Bounds;
+
+			Vector2 origin = sourceRectangleSingle.Size() / 2f;
+
+			DrawNPCDirect_Faeling(Item, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, rotation, Vector2.Zero, true);
+
+			spriteBatch.Draw(TextureGlass,
+				Item.Center - Main.screenPosition,
+				sourceRectangleSingle, new(lightColor.R, lightColor.G, lightColor.B, 100), rotation, origin, scale, spriteEffects, 0);
+
+			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+		}
+
+		// Copied from vanilla. Modified for items.
+		private static void DrawNPCDirect_Faeling(Item rCurrentItem, ref Vector2 screenPos, Texture2D texture, SpriteEffects itemSpriteEffect, float rotation, Vector2 inventoryPos, bool inWorld)
+		{
+			Vector2 itemCenter;
+			if (inWorld)
+			{
+				itemCenter = rCurrentItem.Center - screenPos;
+				itemCenter.Y += 5f;
+			}
+			else
+			{
+				itemCenter = inventoryPos;
+				itemCenter.Y += 3f;
+			}
+			int verticalFrames = 5;
+			int horizontalFrames = 4;
+			int currentFrame = (int)Main.GameUpdateCount % 30 / 6;
+			float colorPulseWings = (rCurrentItem.whoAmI * 0.11f + (float)Main.timeForVisualEffects / 360f) % 1f;
+			Color colorWings = Main.hslToRgb(colorPulseWings, 1f, 0.65f);
+			colorWings.A /= 2;
+			Rectangle sourceRectBody = texture.Frame(horizontalFrames, verticalFrames, 0, currentFrame);
+			Vector2 origin = sourceRectBody.Size() / 2f;
+			float scale = rCurrentItem.scale;
+			if (inWorld)
+			{
+				scale *= 1.5f; // Slightly scaled up in the world.
+			}
+			Rectangle sourceRectGlow = texture.Frame(horizontalFrames, verticalFrames, 2);
+			Color color2 = new Color(255, 255, 255, 0) * 1f;
+
+			// Remove all of the after image trail code.
+
+			Main.EntitySpriteDraw(texture, itemCenter, sourceRectGlow, color2, rotation, origin, scale, itemSpriteEffect, 0f);
+			Rectangle sourceRectWings = texture.Frame(horizontalFrames, verticalFrames, 1, currentFrame);
+			Color white = Color.White;
+			white.A /= 2;
+			Main.EntitySpriteDraw(texture, itemCenter, sourceRectWings, white, rotation, origin, scale, itemSpriteEffect, 0f);
+			Main.EntitySpriteDraw(texture, itemCenter, sourceRectBody, colorWings, rotation, origin, scale, itemSpriteEffect, 0f);
+			float colorPulse = MathHelper.Clamp((float)Math.Sin(Main.timeForVisualEffects / 60.0) * 0.3f + 0.3f, 0f, 1f);
+			float scaleMulti = 0.8f + (float)Math.Sin(Main.timeForVisualEffects / 15.0 * MathHelper.TwoPi) * 0.3f;
+			Color colorFlash = Color.Lerp(colorWings, new Color(255, 255, 255, 0), 0.5f) * colorPulse;
+			Rectangle sourceRectFlash = texture.Frame(horizontalFrames, verticalFrames, 3, rCurrentItem.whoAmI % verticalFrames);
+			Rectangle sourceRectFlash0 = texture.Frame(horizontalFrames, verticalFrames, 3, 1);
+			Main.EntitySpriteDraw(texture, itemCenter, sourceRectFlash, colorFlash, rotation, origin, scale * scaleMulti, SpriteEffects.None, 0f);
+			Main.EntitySpriteDraw(texture, itemCenter, sourceRectFlash0, colorFlash, rotation, origin, scale * scaleMulti, SpriteEffects.None, 0f);
 		}
 	}
 }

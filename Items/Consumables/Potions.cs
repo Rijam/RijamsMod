@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using RijamsMod.Buffs.Potions;
+using RijamsMod.Items.Fishing;
 
 namespace RijamsMod.Items.Consumables
 {
@@ -172,6 +173,45 @@ namespace RijamsMod.Items.Consumables
 				.AddIngredient(ModContent.ItemType<Fishing.HornetTail>(), 1)
 				.AddIngredient(ModContent.ItemType<Materials.CrawlerChelicera>(), 1)
 				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.AddTile(TileID.Bottles)
+				.Register();
+		}
+	}
+	public class FrenzyPotion : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
+			{
+				new Color(96, 211, 255),
+				new Color(24, 168, 168),
+				new Color(44, 47, 176)
+			};
+		}
+
+		public override void SetDefaults()
+		{
+			Item.width = 22;
+			Item.height = 28;
+			Item.useStyle = ItemUseStyleID.DrinkLiquid;
+			Item.useAnimation = 15;
+			Item.useTime = 15;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item3;
+			Item.maxStack = Item.CommonMaxStack;
+			Item.consumable = true;
+			Item.rare = ItemRarityID.Blue;
+			Item.value = Item.sellPrice(silver: 1);
+			Item.buffType = ModContent.BuffType<Frenzy>();
+			Item.buffTime = 14400; //4 minutes
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.BottledWater, 1)
+				.AddIngredient(ModContent.ItemType<FungiEel>(), 1)
+				.AddIngredient(ItemID.SharkFin, 1)
+				.AddIngredient(ItemID.MagicLavaDropper)
 				.AddTile(TileID.Bottles)
 				.Register();
 		}

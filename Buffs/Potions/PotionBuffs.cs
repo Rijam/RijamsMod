@@ -58,4 +58,12 @@ namespace RijamsMod.Buffs.Potions
 			player.GetArmorPenetration(DamageClass.Generic) += 10f;
 		}
 	}
+
+	public class Frenzy : ModBuff
+	{
+		public override void Update(Player player, ref int buffIndex)
+		{
+			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.1f;
+		}
+	}
 }

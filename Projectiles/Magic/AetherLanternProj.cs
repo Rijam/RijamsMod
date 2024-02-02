@@ -36,30 +36,12 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.direction = owner.direction; // Set the direction of the projectile to the same direction as the owner.
 			owner.heldProj = Projectile.whoAmI; // Set the owner's held projectile to this projectile.
 
-			if (owner.channel && owner.itemAnimation < owner.itemAnimationMax)
-			{
-				//owner.SetDummyItemTime(owner.itemAnimationMax); // This makes it so the projectile never dies while we are holding it (except when we take damage, see ExampleJoustingLancePlayer).
-			}
-
-			// If the Jousting Lance is no longer being used, kill the projectile.
+			// If the Lantern is no longer being used, kill the projectile.
 			if (owner.ItemAnimationEndingOrEnded)
 			{
 				Projectile.Kill();
 				return;
 			}
-
-			
-
-			/*Vector2 pos = owner.GetBackHandPosition(Player.CompositeArmStretchAmount.Full, MathHelper.PiOver4);
-			if (owner.direction > 0)
-			{
-				pos.X += owner.width;
-			}
-			else
-			{
-				pos.X -= owner.width / 4f;
-			}
-			Projectile.Center = pos;*/
 		}
 		public override bool PreAI()
 		{
@@ -70,6 +52,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.direction = owner.direction; // Set the direction of the projectile to the same direction as the owner.
 			Projectile.spriteDirection = Projectile.direction;
 			owner.heldProj = Projectile.whoAmI; // Set the owner's held projectile to this projectile.
+			Projectile.rotation = owner.fullRotation; // Rotate based on the owner's rotation (when riding mounts and stuff).
 
 			Vector2 pos = owner.GetBackHandPosition(Player.CompositeArmStretchAmount.Full, MathHelper.PiOver4);
 			if (owner.gravDir == -1f)
@@ -83,26 +66,22 @@ namespace RijamsMod.Projectiles.Magic
 			if (owner.direction > 0)
 			{
 				pos.X += owner.width;
+				pos.Y += Projectile.rotation * 10f; // Move the position based on the rotation.
+				pos.X += Projectile.rotation * 10f; // These values are just guesswork and aren't perfect, but they are good enough.
 			}
 			else
 			{
 				pos.X -= owner.width / 4f;
+				pos.Y -= Projectile.rotation * 20f;
+				pos.X += Projectile.rotation * 20f;
 			}
+			
 			Projectile.Center = pos;
-
-			if (owner.channel && owner.itemAnimation < owner.itemAnimationMax)
-			{
-				//owner.SetDummyItemTime(owner.itemAnimationMax); // This makes it so the projectile never dies while we are holding it (except when we take damage, see ExampleJoustingLancePlayer).
-			}
 
 			// If the Jousting Lance is no longer being used, kill the projectile.
 			if (owner.ItemAnimationEndingOrEnded)
 			{
 				Projectile.Kill();
-			}
-			if (Projectile.ai[2] == 1f)
-			{
-				//Projectile.Kill();
 			}
 
 			// frame is the flash frame

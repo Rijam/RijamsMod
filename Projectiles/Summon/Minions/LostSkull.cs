@@ -122,7 +122,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			{
 				Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 1, 1, DustID.Torch);
 			}
-			SoundEngine.PlaySound(SoundID.Item14, Projectile.position);
+			SoundEngine.PlaySound(SoundID.Item14 with { Volume = 0.5f }, Projectile.position);
 		}
 
 		public override Color? GetAlpha(Color lightColor) => Color.White; //Fullbright

@@ -63,6 +63,11 @@ namespace RijamsMod
 				.AddTile(TileID.CookingPots)
 				.Register();
 
+			Recipe.Create(ItemID.Sashimi)
+				.AddIngredient(ModContent.ItemType<Items.Fishing.FungiEel>())
+				.AddTile(TileID.WorkBenches)
+				.Register();
+
 			if (ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs)
 			{
 				Recipe.Create(ItemID.FleshBlock, 25)

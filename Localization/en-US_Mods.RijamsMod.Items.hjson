@@ -903,6 +903,11 @@ FerociousPotion: {
 	Tooltip: +10 armor penetration
 }
 
+FrenzyPotion: {
+	DisplayName: Frenzy Potion
+	Tooltip: +10% Critical Hit Damage
+}
+
 # Items/Dyes
 
 BeamDye: {
@@ -924,6 +929,11 @@ YellaDye: {
 
 HornetTail: {
 	DisplayName: Hornet Tail
+	Tooltip: ""
+}
+
+FungiEel: {
+	DisplayName: Fungi Eel
 	Tooltip: ""
 }
 
@@ -994,6 +1004,11 @@ DistortionSphereItem: {
 		Equip Balloons to increase jump height.
 		Cannot use any items when transformed.
 		'''
+}
+
+SwiftSphereItem: {
+	DisplayName: Swift Sphere
+	Tooltip: "{$Mods.RijamsMod.Items.DistortionSphereItem.Tooltip}"
 }
 
 # Items/Pets
@@ -2224,9 +2239,4 @@ DebugSuperDummy: {
 		Right click the item in the inventory to kill all of the dummies.
 		Probably doesn't work in multiplayer.
 		'''
-}
-
-SwiftSphereItem: {
-	DisplayName: Swift Sphere Item
-	Tooltip: ""
 }

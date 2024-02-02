@@ -65,6 +65,7 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.GetJumpState<TsunamiInABottleJump>().Enable();
 			player.honeyCombItem = Item;
 			player.noFallDmg = true;
+			player.hasLuck_LuckyHorseshoe = true;
 		}
 
 		public override void AddRecipes()
@@ -177,6 +178,7 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.GetJumpState<FartInAJarJump>().Enable();
 			player.GetJumpState<TsunamiInABottleJump>().Enable();
 			player.honeyCombItem = Item;
+			player.hasLuck_LuckyHorseshoe = true;
 		}
 
 		public override void AddRecipes()

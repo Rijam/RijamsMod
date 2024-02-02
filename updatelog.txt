@@ -231,11 +231,16 @@
 	* Added Looping Oil. Early Pre-Hardmode accessory that makes Yoyo have infinite duration. (Now required in the Yoyo Backpack.)
 	* Added Side Effects. A Post-Plantera accessory that makes Yoyos twice as fast.
 
-1.2.4.1 - (? ?, 2023)
+1.2.5.0 - (February 1, 2024)
 	* Fixed placement of the Living Sulfur Fire blocks
-	* Added Emotes for the Interstellar Traveler, Harpy, and Hell Trader.
+	* Added Emotes for the Interstellar Traveler, Harpy, Hell Trader, their shimmered forms, and the Snugget.
 	* Updated Dilapidated Crimson armor to give +3% damage per piece (instead of +2%).
 	* Dilapidated Crimson armor is now truly interchangeable with Crimson armor.
 	* Improved the Hell Trader's missing stock system before they have moved in.
 	* Fixed Pumpkin Hat only giving its extra minion slot when the player had the full Pumpkin set on.
-	* Fixed Shoomite Visor only giving its increased ranged damage and critical strike chance when the player had the full Shroomite set on.
+	* Fixed Shroomite Visor only giving its increased ranged damage and critical strike chance when the player had the full Shroomite set on.
+	* Different Bundle of Horseshoe Balloons and Too Many Horseshoe Balloons now give the +0.05 luck of the Lucky Horseshoe.
+	* Added Fungi Eel which can be fished up in underground Glowing Mushroom biomes.
+	* Added Frenzy Potion which grants +10% Critical Hit Damage.
+	* Hornet Tail is now Blue rarity and double the value.
+	* Aether Lantern now animates while in the inventory and thrown in the world.

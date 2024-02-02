@@ -53,4 +53,24 @@ namespace RijamsMod.EmoteBubbles
 	{
 		public override int Row => 2;
 	}
+
+	public class InterstellarTravelerShimmeredEmote : ModTownEmote
+	{
+		public override int Row => 3;
+	}
+
+	public class HarpyShimmeredEmote : ModTownEmote
+	{
+		public override int Row => 4;
+	}
+
+	public class HellTraderShimmeredEmote : ModTownEmote
+	{
+		public override int Row => 5;
+	}
+
+	public class SnuggetEmote : ModTownEmote
+	{
+		public override int Row => 6;
+	}
 }

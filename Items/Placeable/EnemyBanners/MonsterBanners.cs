@@ -7,22 +7,14 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 {
 	public class DarkSoldierBanner : ModItem
 	{
-		// The tooltip for this item is automatically assigned from .lang files
+		// The tooltip for this item is automatically assigned from .hjson files
 		public override void SetDefaults()
 		{
+			Item.DefaultToPlaceableTile(ModContent.TileType<MonsterBanners>(), 0); // Place style means which frame (Horizontally, starting from 0) of the tile should be placed
 			Item.width = 10;
 			Item.height = 24;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.useTurn = true;
-			Item.autoReuse = true;
-			Item.useAnimation = 15;
-			Item.useTime = 10;
-			Item.useStyle = ItemUseStyleID.Swing;
-			Item.consumable = true;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(0, 0, 10, 0);
-			Item.createTile = ModContent.TileType<MonsterBanners>();
-			Item.placeStyle = 0;        //Place style means which frame(Horizontally, starting from 0) of the tile should be placed
 		}
 	}
 	public class SkeletonCrossbowerBanner : DarkSoldierBanner
@@ -30,7 +22,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.createTile = ModContent.TileType<MonsterBanners>();
 			Item.placeStyle = 1;
 		}
 	}
@@ -39,7 +30,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.createTile = ModContent.TileType<MonsterBanners>();
 			Item.placeStyle = 2;
 		}
 	}
@@ -48,7 +38,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.createTile = ModContent.TileType<MonsterBanners>();
 			Item.placeStyle = 3;
 		}
 	}
@@ -58,7 +47,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.createTile = ModContent.TileType<MonsterBanners>();
 			Item.placeStyle = 4;
 		}
 	}
@@ -67,7 +55,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.createTile = ModContent.TileType<MonsterBanners>();
 			Item.placeStyle = 5;
 		}
 	}
@@ -77,7 +64,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.createTile = ModContent.TileType<MonsterBanners>();
 			Item.placeStyle = 6;
 		}
 	}
@@ -87,7 +73,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.createTile = ModContent.TileType<MonsterBanners>();
 			Item.placeStyle = 7;
 		}
 	}

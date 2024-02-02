@@ -13,6 +13,7 @@ using Terraria.ModLoader.IO;
 using System.Xml;
 using System;
 using Terraria.GameContent.UI;
+using RijamsMod.EmoteBubbles;
 
 namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 {
@@ -77,6 +78,8 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
 			NPCProfile = new SnuggetPetProfile();
+
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<SnuggetEmote>();
 		}
 
 		public override void SetDefaults()

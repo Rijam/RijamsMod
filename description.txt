@@ -13,13 +13,13 @@ Includes:
 - - Spawns randomly in the Underworld, can move in in Hardmode.
 - Snugget Town Pet: License sold after 60% Bestiary completion and Interstellar Traveler is present.
 
-[c/ff8000:241 new items and weapons] throughout the game's progression
+[c/ff8000:243 new items and weapons] throughout the game's progression
 - 69 weapons: 12 Melee, 10 Ranged, 25 Magic, 23 Summoner.
 - 13 ammo types.
 - 44 accessories.
 - 26 armor pieces.
 - 13 vanity items + 3 dyes.
-- 13 potions/food.
+- 14 potions/food.
 
 [c/ff8000:Some QoL changes]
 - Town NPCs sell more things.
