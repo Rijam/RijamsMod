@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using RijamsMod.Items.Materials;
 using RijamsMod.Projectiles.Magic;
 using System;
@@ -41,7 +42,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			if (!Main.dedServ)
 			{
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 				flash.posOffsetXLeft = 24;
 				flash.posOffsetXRight = -70;
 				flash.posOffsetY = -46;
@@ -55,7 +56,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				flash.discoColor = true;
 
 				var glowMask = Item.GetGlobalItem<ItemUseGlow>();
-				glowMask.glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				glowMask.glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 				glowMask.flameFlicker = true;
 				glowMask.drawColor = new(Math.Clamp(Main.DiscoR, 0, 100), Math.Clamp(Main.DiscoG, 0, 100), Math.Clamp(Main.DiscoB, 0, 100), 0);
 				glowMask.discoColor = true;

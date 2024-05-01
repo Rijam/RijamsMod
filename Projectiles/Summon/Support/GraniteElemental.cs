@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -272,10 +273,10 @@ namespace RijamsMod.Projectiles.Summon.Support
 			#endregion
 		}
 
-		private readonly Texture2D textureSmallRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_SmallRocks").Value;
-		private readonly Texture2D textureMediumRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_MediumRocks").Value;
-		private readonly Texture2D textureBigRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_BigRocks").Value;
-		private readonly Texture2D textureLight = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_Light").Value;
+		private readonly Asset<Texture2D> textureSmallRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_SmallRocks");
+		private readonly Asset<Texture2D> textureMediumRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_MediumRocks");
+		private readonly Asset<Texture2D> textureBigRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_BigRocks");
+		private readonly Asset<Texture2D> textureLight = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_Light");
 
 
 		public override void PostDraw(Color lightColor)
@@ -287,24 +288,24 @@ namespace RijamsMod.Projectiles.Summon.Support
 			
 			Rectangle sourceRectangleRocks = textureSmallRocks.Frame(1, 12, frameY: (int)(Projectile.ai[2] / 4f));
 
-			Main.EntitySpriteDraw(textureLight, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+			Main.EntitySpriteDraw(textureLight.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangleLight, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleLight.Size() / 2f, Projectile.scale, spriteEffects, 0);
 
 			float cooldownDiv4 = cooldownTime / 4f;
 
 			if (Projectile.ai[0] >= cooldownDiv4)
 			{
-				Main.EntitySpriteDraw(textureSmallRocks, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				Main.EntitySpriteDraw(textureSmallRocks.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 					sourceRectangleRocks, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleRocks.Size() / 2f, Projectile.scale, spriteEffects, 0);
 			}
 			if (Projectile.ai[0] >= cooldownDiv4 * 2)
 			{
-				Main.EntitySpriteDraw(textureMediumRocks, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				Main.EntitySpriteDraw(textureMediumRocks.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 					sourceRectangleRocks, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleRocks.Size() / 2f, Projectile.scale, spriteEffects, 0);
 			}
 			if (Projectile.ai[0] >= cooldownDiv4 * 3)
 			{
-				Main.EntitySpriteDraw(textureBigRocks, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				Main.EntitySpriteDraw(textureBigRocks.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 					sourceRectangleRocks, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleRocks.Size() / 2f, Projectile.scale, spriteEffects, 0);
 			}
 		}

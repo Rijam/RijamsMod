@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.IO;
 using Terraria;
@@ -162,15 +163,14 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		private int fadeInOrOut = 0;
 		private Color lerpColor = Color.White;
+		private readonly Asset<Texture2D> brightTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/CrystalClusterBright");
+
 		public override void PostDraw(Color lightColor)
 		{
 			Projectile.ai[1] += 1;
 
-			// Get texture of projectile
-			Texture2D texture = ModContent.Request<Texture2D>((GetType().Namespace + "." + Name + "Bright").Replace('.', '/')).Value;
-
 			// Get the currently selected frame on the texture.
-			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+			Rectangle sourceRectangle = brightTexture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
 
 			if (fadeInOrOut == 0)
 			{
@@ -181,7 +181,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 				lerpColor = Color.Lerp(new(0, 0, 0, 0), Color.White, Projectile.ai[1] / 100f);
 			}
 
-			Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+			Main.EntitySpriteDraw(brightTexture.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, lerpColor, Projectile.rotation, sourceRectangle.Size() / 2f, Projectile.scale, SpriteEffects.None, 0);
 
 			if (Projectile.ai[1] > 100)

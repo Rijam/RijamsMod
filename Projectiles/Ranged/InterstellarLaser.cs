@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
+using ReLogic.Content;
 using RijamsMod.Items.Weapons.Ranged;
 using System;
 using System.IO;
@@ -180,6 +181,9 @@ namespace RijamsMod.Projectiles.Ranged
 				}
 			}
 		}
+
+		private readonly Asset<Texture2D> projTextureOpaque = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Ranged/InterstellarLaser_Opaque");
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			Player owner = Main.player[Projectile.owner];
@@ -192,11 +196,10 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 
 			// Get texture of projectile
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-			Texture2D texture2 = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Ranged/" + Name + "_Opaque").Value;
+			Texture2D projTexture = TextureAssets.Projectile[Type].Value;
 
 			// Get the currently selected frame on the texture.
-			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+			Rectangle sourceRectangle = projTexture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
 
 			// The origin 
 			Vector2 origin = new(sourceRectangle.Size().X / 2f, sourceRectangle.Size().Y / 2f + DrawOriginOffsetY);
@@ -217,7 +220,7 @@ namespace RijamsMod.Projectiles.Ranged
 				//Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
 			}*/
 
-			Main.EntitySpriteDraw(texture2,
+			Main.EntitySpriteDraw(projTextureOpaque.Value,
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 

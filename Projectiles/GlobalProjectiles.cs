@@ -161,6 +161,7 @@ namespace RijamsMod.Projectiles
 					}
 				}
 			}
+
 			return base.PreAI(projectile);
 		}
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)

@@ -5,17 +5,12 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
 	public class Cresceptre : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Cresceptre");
-			// Tooltip.SetDefault("'Just going through a purple patch, don't mind me.'");
-		}
-
 		public override void SetDefaults()
 		{
 			Item.damage = 45;
@@ -31,10 +26,10 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.UseSound = new(Mod.Name + "/Sounds/Item/Cresceptre") { PitchVariance = 0.05f, MaxInstances = 5 };
 			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 				flash.posOffsetXLeft = 12;
 				flash.posOffsetXRight = -24;
 				flash.posOffsetY = -12;

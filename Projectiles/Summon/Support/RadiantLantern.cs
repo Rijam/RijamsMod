@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -262,10 +263,10 @@ namespace RijamsMod.Projectiles.Summon.Support
 			return new(r, g, b, 255);
 		}
 
+		private readonly Asset<Texture2D> lightTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/RadiantLanternShine");
+
 		public override void PostDraw(Color lightColor)
 		{
-			Texture2D lightTexture = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Summon/Support/RadiantLanternShine").Value;
-
 			Player owner = Main.player[Projectile.owner];
 
 			// SpriteEffects change which direction the sprite is drawn.
@@ -290,7 +291,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 			Color drawColor = Color.Lime * LerpValue();
 			drawColor.A = 255;
 
-			Main.EntitySpriteDraw(lightTexture,
+			Main.EntitySpriteDraw(lightTexture.Value,
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColor, rotation, origin, LerpValue(), spriteEffects, 0);
 

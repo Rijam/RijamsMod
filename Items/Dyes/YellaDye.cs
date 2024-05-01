@@ -24,7 +24,8 @@ namespace RijamsMod.Items.Dyes
 				GameShaders.Armor.BindShader
 				(
 					Item.type,
-					new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Effects/YellaShader", AssetRequestMode.ImmediateLoad).Value), "YellaDyePass") // Be sure to update the effect path and pass name here.
+					// new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Effects/YellaShader", AssetRequestMode.ImmediateLoad).Value), "YellaDyePass") // Be sure to update the effect path and pass name here.
+					new ArmorShaderData(Mod.Assets.Request<Effect>("Effects/YellaShader"), "YellaDyePass") // Be sure to update the effect path and pass name here.
 				).UseColor(2f, 2f, 0f).UseSecondaryColor(0.6f, 0.3f, 0f);
 			}
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;

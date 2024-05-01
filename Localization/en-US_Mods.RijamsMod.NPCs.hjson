@@ -21,8 +21,7 @@ Harpy: {
 		Princess_LovesNPC: Using a Jetpack, I was able to go flying with {NPCName}!
 	}
 
-	Census_SpawnCondition: Rescue her in space
-	Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.Harpy.Census_SpawnCondition}"
+	Census.SpawnCondition: Rescue her in space
 
 	Bestiary: {
 		Description: A head injury resulted in this Harpy forgetting to be hostile. She will sell items from the sky.
@@ -96,8 +95,7 @@ HellTrader: {
 		Princess_LovesNPC: Just because {NPCName} is a demon doesn't mean she can't be friendly!
 	}
 
-	Census_SpawnCondition: Found in Hell. Can move in in Hardmode
-	Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.HellTrader.Census_SpawnCondition}"
+	Census.SpawnCondition: Found in Hell. Can move in in Hardmode
 
 	Bestiary: {
 		Description: A fire imp who spent their life studying the remains of the cities in the Underworld. She has acquired many goods to trade.
@@ -168,8 +166,7 @@ UnconsciousHarpy: {
 
 SnuggetPet: {
 	DisplayName: Snugget
-	Census_SpawnCondition: License sold after 60% Bestiary completion and Interstellar Traveler is present.
-	Census.SpawnCondition: "{$Mods.RijamsMod.NPCs.SnuggetPet.Census_SpawnCondition}"
+	Census.SpawnCondition: License sold after 60% Bestiary completion and Interstellar Traveler is present.
 	Bestiary.Description: Ahh! An alien! Fortunately, this one is super fluffy and just wants to snuggle with you.
 }
 

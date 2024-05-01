@@ -110,6 +110,9 @@ namespace RijamsMod
 		[DrawTicks]
 		public SupportSummonsAura DisplayHealingSupportSummonsAura { get; set; }
 
+		[DefaultValue(true)]
+		public bool SnowDuringFrostLegion { get; set; }
+
 		public enum WhipMultihitPenalty
 		{
 			On,

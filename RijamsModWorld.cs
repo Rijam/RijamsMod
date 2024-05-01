@@ -243,6 +243,77 @@ namespace RijamsMod
 								}
 							}
 						}
+						if (WorldGen.genRand.NextBool(7))
+						{
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							{
+								if (chest.item[inventoryIndex].IsAir)
+								{
+									//Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Gold Chest.");
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Other.StumbleCard>());
+									chest.item[inventoryIndex].stack = 1;
+									break;
+								}
+							}
+						}
+					}
+					if (Main.tile[chest.x, chest.y].TileFrameX == 4 * 36) // Locked Shadow Chest
+					{
+						if (WorldGen.genRand.NextBool(5))
+						{
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							{
+								if (chest.item[inventoryIndex].IsAir)
+								{
+									//Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Shadow Chest.");
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Other.StumbleCard>());
+									chest.item[inventoryIndex].stack = 1;
+									break;
+								}
+							}
+						}
+					}
+					if (Main.tile[chest.x, chest.y].TileFrameX == 17 * 36) // Water Chest
+					{
+						if (WorldGen.genRand.NextBool(6))
+						{
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							{
+								if (chest.item[inventoryIndex].IsAir)
+								{
+									//Mod.Logger.Debug("RijamsMod: Wild Bait added.");
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Fishing.WildBait>());
+									chest.item[inventoryIndex].stack = WorldGen.genRand.Next(1, 4); // 1 to 3
+									break;
+								}
+							}
+						}
+						if (WorldGen.genRand.NextBool(15))
+						{
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							{
+								if (chest.item[inventoryIndex].IsAir)
+								{
+									//Mod.Logger.Debug("RijamsMod: Trap Bobber added.");
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.TrapBobber>());
+									chest.item[inventoryIndex].stack = 1;
+									break;
+								}
+							}
+						}
+						if (WorldGen.genRand.NextBool(15))
+						{
+							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							{
+								if (chest.item[inventoryIndex].IsAir)
+								{
+									//Mod.Logger.Debug("RijamsMod: Spinner Bobber added.");
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.SpinnerBobber>());
+									chest.item[inventoryIndex].stack = 1;
+									break;
+								}
+							}
+						}
 					}
 				}
 			}

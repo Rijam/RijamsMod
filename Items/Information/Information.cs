@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -177,7 +178,6 @@ namespace RijamsMod.Items.Information
 	}
 	public class InformationInterface : ModItem
 	{
-		//public override string Texture => "Terraria/Item_" + ItemID.CellPhone;
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Information Interface");
@@ -186,7 +186,7 @@ namespace RijamsMod.Items.Information
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
 			if (!Main.dedServ)
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 			}
 		}
 

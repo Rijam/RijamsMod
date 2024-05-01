@@ -1,11 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -26,7 +25,7 @@ namespace RijamsMod
 	///Can be set as well.
 	public class ItemUseGlow : GlobalItem
 	{
-		public Texture2D glowTexture = null;
+		public Asset<Texture2D> glowTexture = null;
 		public int glowOffsetY = 0;
 		public int glowOffsetX = 0;
 		public float angleAdd = 0f;
@@ -47,7 +46,7 @@ namespace RijamsMod
 		{
 			if (glowTexture != null && drawOnGround)
 			{
-				Texture2D texture = glowTexture;
+				Texture2D texture = glowTexture.Value;
 				Vector2 pos = new
 				(
 					item.position.X - Main.screenPosition.X + item.width * 0.5f - glowOffsetX,
@@ -91,7 +90,7 @@ namespace RijamsMod
 		{
 			if (glowTexture != null && drawInInventory)
 			{
-				Texture2D texture = glowTexture;
+				Texture2D texture = glowTexture.Value;
 				Vector2 pos = position;
 				int numTimesToDraw = 1;
 				ulong seed = 0;
@@ -160,7 +159,7 @@ namespace RijamsMod
 
 			if (heldItem.TryGetGlobalItem(out ItemUseGlow result))
 			{
-				Texture2D glowTexture = result.glowTexture;
+				Asset<Texture2D> glowTexture = result.glowTexture;
 				int glowOffsetY = result.glowOffsetY;
 				int glowOffsetX = result.glowOffsetX;
 				bool blendAlpha = result.blendAlpha;
@@ -288,7 +287,7 @@ namespace RijamsMod
 									origin5 = new Vector2(itemTexture.Width, itemTexture.Height);
 									posX -= itemTexture.Width;
 								}
-								drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)posX), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + (float)posY)) + flameRandom, sourceRect, drawColor, rotation, origin5, adjustedItemScale, drawInfo.itemEffect, 0);
+								drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + origin5.X + (float)posX), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + (float)posY)) + flameRandom, sourceRect, drawColor, rotation, origin5, adjustedItemScale, drawInfo.itemEffect, 0);
 								drawInfo.DrawDataCache.Add(drawData);
 								return;
 							}
@@ -302,20 +301,20 @@ namespace RijamsMod
 							{
 								origin6 = new Vector2(itemTexture.Width + vector4X, itemTexture.Height / 2);
 							}
-							drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
 							drawInfo.DrawDataCache.Add(drawData);
 							if (heldItem.color != default)
 							{
-								drawData = new DrawData(glowTexture, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)) + flameRandom, sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+								drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)) + flameRandom, sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
 								drawInfo.DrawDataCache.Add(drawData);
 							}
 							return;
 						}
-						drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+						drawData = new DrawData(glowTexture.Value, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
 						drawInfo.DrawDataCache.Add(drawData);
 						if (heldItem.color != default)
 						{
-							drawData = new DrawData(glowTexture, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawData = new DrawData(glowTexture.Value, position + flameRandom, sourceRect, drawColor, itemRotation, origin, adjustedItemScale, drawInfo.itemEffect, 0);
 							drawInfo.DrawDataCache.Add(drawData);
 						}
 					}

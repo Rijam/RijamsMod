@@ -12,8 +12,7 @@ namespace RijamsMod.Items.Quest
 		public override string Texture => "Terraria/Images/UI/Cursor_2";
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Keep searching!");
-			// Tooltip.SetDefault("[c/403638:UI Item]");
+			Item.ResearchUnlockCount = 0;
 		}
 
 		public override void SetDefaults()
@@ -22,7 +21,7 @@ namespace RijamsMod.Items.Quest
 			Item.width = 22;
 			Item.height = 24;
 			Item.value = 0;
-			Item.rare = ItemRarityID.White;
+			Item.rare = ItemRarityID.Gray;
 		}
 	}
 	public class QuestTrackerComplete : ModItem
@@ -30,8 +29,7 @@ namespace RijamsMod.Items.Quest
 		public override string Texture => "Terraria/Images/UI/Cursor_3";
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("You have completed all of the quests!");
-			// Tooltip.SetDefault("[c/403638:UI Item]");
+			Item.ResearchUnlockCount = 0;
 		}
 
 		public override void SetDefaults()
@@ -40,7 +38,34 @@ namespace RijamsMod.Items.Quest
 			Item.width = 22;
 			Item.height = 24;
 			Item.value = 0;
-			Item.rare = ItemRarityID.White;
+			Item.rare = ItemRarityID.Gray;
+		}
+	}
+	public class LimitedStockMissingItem : ModItem
+	{
+		public override string Texture => "Terraria/Images/UI/Bestiary/Icon_Locked";
+
+		public override void SetStaticDefaults()
+		{
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/403638:UI Item]" });
+			Item.ResearchUnlockCount = 0;
+		}
+
+		public override void SetDefaults()
+		{
+			Item.maxStack = 1;
+			Item.width = 24;
+			Item.height = 34;
+			Item.value = 0;
+			Item.rare = ItemRarityID.Gray;
+			Item.alpha = 240;
+		}
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			if (GlobalItems.FindTooltipIndex(tooltips, "JourneyResearch", "Terraria", out int index, silenceWarning: true))
+			{
+				tooltips[index].Hide();
+			}
 		}
 	}
 	public class OddDevice : ModItem

@@ -5,11 +5,16 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ObjectData;
 using Terraria.DataStructures;
+using Terraria.GameContent.Drawing;
+using ReLogic.Content;
+using Terraria.GameContent;
 
 namespace RijamsMod.Tiles
 {
 	public class LivingSulfurFireBlock : ModTile
 	{
+		private Asset<Texture2D> glowmask;
+
 		public override void SetStaticDefaults()
 		{
 			// Main.tileSolid[Type] = false;
@@ -42,6 +47,9 @@ namespace RijamsMod.Tiles
 			DustType = ModContent.DustType<Dusts.SulfurDust>();
 			AddMapEntry(new Color(255, 255, 0));
 			AnimationFrameHeight = 90;
+
+			glowmask = TextureAssets.Tile[Type]; // Mod.Assets.Request<Texture2D>("Tiles/LivingSulfurFireBlock");
+			
 		}
 
 		// Adapted from Magic Storage StorageConnector.cs
@@ -95,6 +103,10 @@ namespace RijamsMod.Tiles
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			Tile tile = Main.tile[i, j];
+			if (!TileDrawing.IsVisible(tile))
+			{
+				return;
+			}
 			Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
 			if (Main.drawToScreen)
 			{
@@ -102,7 +114,7 @@ namespace RijamsMod.Tiles
 			}
 			int height = tile.TileFrameY == 36 ? 18 : 16;
 			int animate = Main.tileFrame[Type] * AnimationFrameHeight;
-			Main.spriteBatch.Draw(Mod.Assets.Request<Texture2D>("Tiles/LivingSulfurFireBlock").Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+			Main.spriteBatch.Draw(glowmask.Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 		}
 	}
 }

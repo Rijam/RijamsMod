@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
 using rail;
+using ReLogic.Content;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Placeable;
 using RijamsMod.Projectiles.Magic;
@@ -196,7 +197,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			//Main.NewText("Post HoldStyle " + player.heldProj);
 		}
 
-		private readonly Texture2D TextureGlass = ModContent.Request<Texture2D>("RijamsMod/Items/Weapons/Magic/AetherLantern_Glass").Value;
+		private readonly Asset<Texture2D> TextureGlass = ModContent.Request<Texture2D>("RijamsMod/Items/Weapons/Magic/AetherLantern_Glass");
 
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
@@ -205,7 +206,7 @@ namespace RijamsMod.Items.Weapons.Magic
 
 			DrawNPCDirect_Faeling(Item, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, 0f, position, false);
 
-			spriteBatch.Draw(TextureGlass,
+			spriteBatch.Draw(TextureGlass.Value,
 				position,
 				frame, new(drawColor.R, drawColor.G, drawColor.B, 100), 0f, origin, scale, spriteEffects, 0);
 
@@ -226,7 +227,7 @@ namespace RijamsMod.Items.Weapons.Magic
 
 			DrawNPCDirect_Faeling(Item, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, rotation, Vector2.Zero, true);
 
-			spriteBatch.Draw(TextureGlass,
+			spriteBatch.Draw(TextureGlass.Value,
 				Item.Center - Main.screenPosition,
 				sourceRectangleSingle, new(lightColor.R, lightColor.G, lightColor.B, 100), rotation, origin, scale, spriteEffects, 0);
 

@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.Enums;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace RijamsMod.Projectiles.Melee
 {
@@ -88,8 +89,8 @@ namespace RijamsMod.Projectiles.Melee
 		{
 			
 			// 32 is the sprite size (here both width and height equal)
-			int HalfSpriteWidth = ModContent.Request<Texture2D>(Texture).Value.Width / 2;
-			int HalfSpriteHeight = ModContent.Request<Texture2D>(Texture).Value.Height / 2;
+			int HalfSpriteWidth = TextureAssets.Projectile[Type].Value.Width / 2;
+			int HalfSpriteHeight = TextureAssets.Projectile[Type].Value.Height / 2;
 
 			int HalfProjWidth = Projectile.width / 2;
 			int HalfProjHeight = Projectile.height / 2;

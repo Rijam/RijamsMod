@@ -5,15 +5,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using RijamsMod.NPCs.TownNPCs;
 using RijamsMod.NPCs;
+using ReLogic.Content;
 
 namespace RijamsMod.Items.Placeable
 {
 	public class GroupHologramItem : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
 		public override void SetDefaults()
 		{
 			Item.width = 36;
@@ -29,7 +26,7 @@ namespace RijamsMod.Items.Placeable
 			if (!Main.dedServ)
 			{
 				var glow = Item.GetGlobalItem<ItemUseGlow>();
-				glow.glowTexture = ModContent.Request<Texture2D>(GetType().FullName.Replace('.', '/') + "_Glow").Value;
+				glow.glowTexture = ModContent.Request<Texture2D>(GetType().FullName.Replace('.', '/') + "_Glow");
 				//glow.blendAlpha = true;
 				glow.drawColor = new Color(255, 255, 255, 0);
 			}

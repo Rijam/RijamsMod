@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RijamsMod.Projectiles.Magic;
+using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
@@ -37,7 +38,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			if (!Main.dedServ)
 			{
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 				flash.posOffsetXLeft = 6;
 				flash.posOffsetXRight = -4;
 				flash.posOffsetY = 0;

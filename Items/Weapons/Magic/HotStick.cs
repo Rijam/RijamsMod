@@ -4,16 +4,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
 	public class HotStick : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Hot Stick");
-		}
-
 		public override void SetDefaults()
 		{
 			Item.damage = 5;
@@ -36,7 +32,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.value = Item.sellPrice(copper: 5);
 			if (!Main.dedServ)
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 			}
 		}
 		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)

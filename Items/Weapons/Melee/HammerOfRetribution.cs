@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using RijamsMod.Items.Armor.Vanity.IntTrav;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.shootSpeed = 16f;
 			if (!Main.dedServ)
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 			}
 			Item.hammer = 0;
 		}

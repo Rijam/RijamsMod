@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
-using System.Reflection;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -14,44 +14,44 @@ namespace RijamsMod.Items.Weapons
 	
 	/// <summary>
 	/// Usage: In the item's SetDefaults(), Check for !Main.dedServ first, then add:
-	/// var flash = Item.GetGlobalItem<WeaponAttackFlash>().flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
+	/// var flash = Item.GetGlobalItem<WeaponAttackFlash>().flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 	/// flash.firstProperty = 1;
 	/// </summary>
 	public class WeaponAttackFlash : GlobalItem
 	{
-		/// <summary> The texture to be used. The texture should face right. </summary>
-		public Texture2D flashTexture = null;
-		/// <summary> Positive numbers moves the origin down. </summary>
+		/// <summary> The texture to be used. The texture should face right.<br>Default: null</br> </summary>
+		public Asset<Texture2D> flashTexture = null;
+		/// <summary> Positive numbers moves the origin down.<br>Default: 0</br> </summary>
 		public int posOffsetY = 0;
-		/// <summary> Positive numbers moves the origin away from the player. This value is for when facing left. </summary>
+		/// <summary> Positive numbers moves the origin away from the player. This value is for when facing left.<br>Default: 0</br> </summary>
 		public int posOffsetXLeft = 0;
-		/// <summary> Positive numbers moves the origin away from the player. This value is for when facing right. </summary>
+		/// <summary> Positive numbers moves the origin away from the player. This value is for when facing right.<br>Default: 0</br> </summary>
 		public int posOffsetXRight = 0;
-		/// <summary> Positive numbers moves the origin down (relative to the player when upside-down). This is used for when the player has reversed gravity. The normal posOffsetY will be already included. </summary>
+		/// <summary> Positive numbers moves the origin down (relative to the player when upside-down). This is used for when the player has reversed gravity. The normal posOffsetY will be already included.<br>Default: 0</br> </summary>
 		public int posOffsetYGravity = 0;
-		/// <summary> Draw alpha </summary>
+		/// <summary> Draw alpha<br>Default: 255</br> </summary>
 		public int alpha = 255;
-		/// <summary> Rotates the drawing </summary>
+		/// <summary> Rotates the drawing<br>Default: 0f</br> </summary>
 		public float angleAdd = 0f;
-		/// <summary> Scales the drawing. The scale of the item is already taken into account. This will scale it beyond that. </summary>
+		/// <summary> Scales the drawing. The scale of the item is already taken into account. This will scale it beyond that.<br>Default: 1f</br> </summary>
 		public float scale = 1f;
-		/// <summary> The color of the drawing. No alpha is included, set that alpha property instead. </summary>
+		/// <summary> The color of the drawing. No alpha is included, set that alpha property instead.<br>Default: (255, 255, 255)</br> </summary>
 		public Color colorNoAlpha = new(255, 255, 255);
-		/// <summary> How many frames are in the texture. Defaults to 1. </summary>
+		/// <summary> How many frames are in the texture.<br>Default: 1</br> </summary>
 		public int frameCount = 1;
-		/// <summary> How fast should the frames update (in ticks). </summary>
+		/// <summary> How fast should the frames update (in ticks).<br>Default: 0</br> </summary>
 		public int frameRate = 0;
-		/// <summary> If true, it will select a random frame every frame update. If false, it will cycle through from 0 to the frameCount. </summary>
+		/// <summary> If true, it will select a random frame every frame update. If false, it will cycle through from 0 to the frameCount.<br>Default: false</br> </summary>
 		public bool useRandomFrame = false;
-		/// <summary> The animation will always start on the first frame. False by default. </summary>
+		/// <summary> The animation will always start on the first frame. False by default.<br>Default: false</br> </summary>
 		public bool forceFirstFrame = false;
-		/// <summary> The animation will loop. True by default. </summary>
+		/// <summary> The animation will loop. True by default.<br>Default: true</br> </summary>
 		public bool animationLoop = true;
-		/// <summary> A specific condition that the flash will play. Default is true (always). </summary>
+		/// <summary> A specific condition that the flash will play. Default is true (always).<br>Default: () =>  true</br> </summary>
 		public Func<bool> flashCondition = () => true;
-		/// <summary> If true, the flash will only draw if the item is being used. Aka, it won't draw when it's just being held. </summary>
+		/// <summary> If true, the flash will only draw if the item is being used. Aka, it won't draw when it's just being held.<br>Default: true</br> </summary>
 		public bool onlyDrawInUse = true;
-		/// <summary> If true, overrides colorNoAlpha to use Main.DiscoColor </summary>
+		/// <summary> If true, overrides colorNoAlpha to use Main.DiscoColor.<br>Default: false</br> </summary>
 		public bool discoColor = false;
 
 		public override bool InstancePerEntity => true;
@@ -116,7 +116,7 @@ namespace RijamsMod.Items.Weapons
 			if (heldItem.TryGetGlobalItem(out WeaponAttackFlash result))
 			{
 				Player drawPlayer = drawInfo.drawPlayer;
-				Texture2D flashTexture = result.flashTexture;
+				Asset<Texture2D> flashTexture = result.flashTexture;
 				int posOffsetXLeft = result.posOffsetXLeft;
 				int posOffsetXRight = result.posOffsetXRight;
 				int posOffsetY = result.posOffsetY;
@@ -196,7 +196,7 @@ namespace RijamsMod.Items.Weapons
 						colorNoAlpha = Main.DiscoColor;
 					}
 
-					DrawData drawData = new(flashTexture, position + halfTextureSize, sourceRect, new(colorNoAlpha.R, colorNoAlpha.G, colorNoAlpha.B, alpha), itemRotation, origin, adjustedItemScale * scale, drawInfo.itemEffect, 0);
+					DrawData drawData = new(flashTexture.Value, position + halfTextureSize, sourceRect, new(colorNoAlpha.R, colorNoAlpha.G, colorNoAlpha.B, alpha), itemRotation, origin, adjustedItemScale * scale, drawInfo.itemEffect, 0);
 					drawInfo.DrawDataCache.Add(drawData);
 				}
 			}

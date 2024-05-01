@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -48,6 +49,11 @@ namespace RijamsMod.Items.Weapons.Melee
 	
 	public class FrostyShiv : ModItem
 	{
+		private Asset<Texture2D> glowTexture;
+		public override void Load()
+		{
+			glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
+		}
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Frosty Shiv");
@@ -74,7 +80,7 @@ namespace RijamsMod.Items.Weapons.Melee
 			Item.noMelee = true; // The projectile will do the damage and not the item
 			if (!Main.dedServ)
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = glowTexture;
 			}
 
 			Item.shoot = ModContent.ProjectileType<Projectiles.Melee.FrostyShivProjectile>(); // The projectile is what makes a shortsword work

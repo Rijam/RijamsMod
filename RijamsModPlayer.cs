@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using RijamsMod.Items;
 using RijamsMod.Items.Accessories.Melee;
+using RijamsMod.Items.Accessories.Misc;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -44,6 +45,9 @@ namespace RijamsMod
 		public bool babyStardustDragonPet;
 		public bool loopingOil;
 		public bool sideEffects;
+		public bool curiosityLure;
+		public bool trapBobber;
+		public bool spinnerBobber;
 
 		public int supportMinionRadiusIncrease = 0;
 		public float criticalHitAdditionalDamage = 0f;
@@ -84,6 +88,9 @@ namespace RijamsMod
 			babyStardustDragonPet = false;
 			loopingOil = false;
 			sideEffects = false;
+			curiosityLure = false;
+			trapBobber = false;
+			spinnerBobber = false;
 
 			supportMinionRadiusIncrease = 0;
 			criticalHitAdditionalDamage = 0f;

@@ -29,7 +29,7 @@ namespace RijamsMod.Tiles
 					{
 						Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Consumables.CaveCarrot>());
 					}
-					if (Main.hardMode && Main.rand.NextBool(WorldGen.dontStarveWorldGen | Main.dontStarveWorld ? 100 : 150))
+					if (Main.hardMode && Main.rand.NextBool(WorldGen.dontStarveWorldGen || Main.dontStarveWorld ? 100 : 150))
 					{
 						Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Consumables.CaveCarrot>());
 					}

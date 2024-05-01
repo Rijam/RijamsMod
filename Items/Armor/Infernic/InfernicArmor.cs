@@ -49,7 +49,7 @@ namespace RijamsMod.Items.Armor.Infernic
 			{
 				float x2 = player.position.X - player.velocity.X / 10f;
 				float y2 = player.position.Y - player.velocity.Y / 10f;
-				Dust.NewDust(new Vector2(x2,y2), player.width / 2, player.height, DustID.Ash, 0f, 0f, 100, default, 0.5f);
+				Dust.NewDust(new Vector2(x2, y2), player.width / 2, player.height, DustID.Ash, 0f, 0f, 100, default, 0.5f);
 			}
 		}
 

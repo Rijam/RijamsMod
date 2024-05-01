@@ -67,6 +67,19 @@ RijamsModConfigClient: {
 			Default value: Normal
 			'''
 	}
+
+	SnowDuringFrostLegion: {
+		Label: "[i:SnowGlobe]   Snow During the Frost Legion"
+		Tooltip:
+			'''
+			This option toggles if it will snow during the Frost Legion.
+			This is completely visual and has no extra impact on gameplay.
+			  When On: It will snow while fighting the Frost Legion.
+			  When Off: It will not snow while fighting the Frost Legion.
+			    Turn Off if you don't want to see the snow.
+			Default value: On
+			'''
+	}
 }
 
 WhipMultihitPenalty: {

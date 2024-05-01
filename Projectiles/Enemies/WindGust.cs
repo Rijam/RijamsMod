@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -120,6 +122,8 @@ namespace RijamsMod.Projectiles.Enemies
 			//target.fallStart -= 100;
 			//target.fallStart2 -= 100;
 			//Main.NewText(target.position + " " + target.fallStart + " " + target.fallStart2);
+			PunchCameraModifier screenshake = new(target.Center, new Vector2(info.HitDirection, -0.1f), 5f, 2f, 10, 1000f, FullName); // Very subtle screen shake.
+			Main.instance.CameraModifiers.Add(screenshake);
 		}
 
 		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)

@@ -42,7 +42,7 @@ namespace RijamsMod.Items
 			Item.noUseGraphic = true;
 			Item.consumable = true;
 			Item.UseSound = SoundID.Item44;
-			Item.makeNPC = (short)ModContent.NPCType<Harpy>();
+			Item.makeNPC = ModContent.NPCType<Harpy>();
 			Item.tileBoost += 20;
 		}
 
@@ -101,7 +101,7 @@ namespace RijamsMod.Items
 			Item.noUseGraphic = true;
 			Item.consumable = true;
 			Item.UseSound = SoundID.Item44;
-			Item.makeNPC = (short)ModContent.NPCType<InterstellarTraveler>();
+			Item.makeNPC = ModContent.NPCType<InterstellarTraveler>();
 			Item.tileBoost += 20;
 		}
 
@@ -159,7 +159,7 @@ namespace RijamsMod.Items
 			Item.noUseGraphic = true;
 			Item.consumable = true;
 			Item.UseSound = SoundID.Item44;
-			Item.makeNPC = (short)ModContent.NPCType<HellTrader>();
+			Item.makeNPC = ModContent.NPCType<HellTrader>();
 			Item.tileBoost += 20;
 		}
 

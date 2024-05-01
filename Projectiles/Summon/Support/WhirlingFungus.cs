@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -174,23 +175,22 @@ namespace RijamsMod.Projectiles.Summon.Support
 			return new(r, g, b, alpha);
 		}
 
+		private readonly Asset<Texture2D> outlineTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/WhirlingFungus_Outline");
+		private readonly Asset<Texture2D> glowTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/WhirlingFungus_Glow");
 
 		public override bool PreDraw(ref Color lightColor)
 		{
 			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-			// Get texture of projectile
-			Texture2D texture = ModContent.Request<Texture2D>((GetType().Namespace + "." + Name + "_Outline").Replace('.', '/')).Value;
-
 			// Get the currently selected frame on the texture.
-			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+			Rectangle sourceRectangle = outlineTexture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
 
 			FadingBrightness(lightColor, out float fadeAmount);
 
-			Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(1f, Projectile.gfxOffY),
+			Main.EntitySpriteDraw(outlineTexture.Value, Projectile.Center - Main.screenPosition + new Vector2(1f, Projectile.gfxOffY),
 				sourceRectangle, new Color(0, 50, 250, 0) * fadeAmount, Projectile.rotation, sourceRectangle.Size() / 2f, Projectile.scale, spriteEffects, 0);
 
-			Main.EntitySpriteDraw(texture, Projectile.oldPos[1] + new Vector2(Projectile.width / 2f, Projectile.height / 2f) - Main.screenPosition + new Vector2(1f, Projectile.gfxOffY),
+			Main.EntitySpriteDraw(outlineTexture.Value, Projectile.oldPos[1] + new Vector2(Projectile.width / 2f, Projectile.height / 2f) - Main.screenPosition + new Vector2(1f, Projectile.gfxOffY),
 				sourceRectangle, new Color(0, 0, 150, 0) * fadeAmount, Projectile.rotation, sourceRectangle.Size() / 2f, Projectile.scale, spriteEffects, 0);
 
 			return true;
@@ -200,13 +200,10 @@ namespace RijamsMod.Projectiles.Summon.Support
 		{
 			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-			// Get texture of projectile
-			Texture2D texture = ModContent.Request<Texture2D>((GetType().Namespace + "." + Name + "_Glow").Replace('.', '/')).Value;
-
 			// Get the currently selected frame on the texture.
-			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+			Rectangle sourceRectangle = glowTexture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
 
-			Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(1f, Projectile.gfxOffY),
+			Main.EntitySpriteDraw(glowTexture.Value, Projectile.Center - Main.screenPosition + new Vector2(1f, Projectile.gfxOffY),
 				sourceRectangle, FadingBrightness(lightColor, out _), Projectile.rotation, sourceRectangle.Size() / 2f, Projectile.scale, spriteEffects, 0);
 		}
 	}

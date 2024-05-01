@@ -17,6 +17,13 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
+			NPCID.Sets.BelongsToInvasionFrostLegion[NPC.type] = true; // Make it count towards Frost Legion for music playback and invasion progress
+			NPCID.Sets.InvasionSlotCount[NPC.type] = 1; // Make it count as 1 enemies defeated for the invasion progress
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frozen] = true; // Frozen or Chilled don't do anything to NPCs I don't think.
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Chilled] = true;
+
 			// DisplayName.SetDefault("Sir Slush");
 			Main.npcFrameCount[NPC.type] = 12;
 			// Influences how the NPC looks in the Bestiary
@@ -63,7 +70,7 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ItemID.SlushBlock, 1, 10, 20));
 
 			//From Spirit Mod FrostSaucer.cs
-			if (Main.invasionType == InvasionID.SnowLegion)
+			/*if (Main.invasionType == InvasionID.SnowLegion)
 			{
 				Main.invasionSize -= 1;
 				if (Main.invasionSize < 0)
@@ -80,7 +87,7 @@ namespace RijamsMod.NPCs.Enemies
 				{
 					NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, Main.invasionProgress, (float)Main.invasionProgressMax, (float)Main.invasionProgressIcon, 0f, 0, 0, 0);
 				}
-			}
+			}*/
 		}
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
@@ -88,10 +95,7 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				return SpawnCondition.FrostLegion.Chance * 0.1f;
 			}
-			else
-			{
-				return 0;
-			}
+			return 0;
 		}
 
 		public override void HitEffect(NPC.HitInfo hit)
@@ -106,7 +110,7 @@ namespace RijamsMod.NPCs.Enemies
 			}
 		}
 
-		public int AIState = 0;
+		public ref float AIState => ref NPC.ai[1];
 		//0 == idle
 		//1 == alert
 		//2 == attack
@@ -117,61 +121,70 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.ai[0]++;
 			//Main.NewText("npc.ai[0] " + npc.ai[0]);
 			//Main.NewText("AIState " + AIState);
+
+			float requiredDistance = Main.expertMode ? 1300f : 1000f;
+
 			if (AIState == 0) //idle
 			{
 				NPC.TargetClosest();
 				NPC.FaceTarget();
 				bool lineOfSight = Collision.CanHitLine(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height);
-				float distance = Math.Abs(NPC.position.X - Main.player[NPC.target].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.target].position.Y);
-				if (NPC.ai[0] >= 30 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f && lineOfSight)
+				float distance = Math.Abs(NPC.Center.X - Main.player[NPC.target].Center.X) + Math.Abs(NPC.Center.Y - Main.player[NPC.target].Center.Y);
+				if (NPC.ai[0] >= 30 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= requiredDistance && lineOfSight)
 				{
 					NPC.ai[0] = 0;
 					SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/SirSlushAlert") { MaxInstances = 5 }, NPC.position);
 					AIState = 1;
 					NPC.netUpdate = true;
 				}
+				NPC.immortal = true;
+				NPC.reflectsProjectiles = true;
+				NPC.dontTakeDamage = false;
 			}
 			else if (AIState == 1) //alert
 			{
 				NPC.FaceTarget();
-				float distance = Math.Abs(NPC.position.X - Main.player[NPC.target].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.target].position.Y);
-				if (NPC.ai[0] == 80 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= 1000f)
+				float distance = Math.Abs(NPC.Center.X - Main.player[NPC.target].Center.X) + Math.Abs(NPC.Center.Y - Main.player[NPC.target].Center.Y);
+				if (NPC.ai[0] == 80 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= requiredDistance)
 				{
 					NPC.ai[0] = 0;
 					NPC.frameCounter = 0;
 					AIState = 2;
 					NPC.netUpdate = true;
 				}
-				else if (NPC.ai[0] > 80 || distance > 1000f)
+				else if (NPC.ai[0] > 80 || distance > requiredDistance)
 				{
 					NPC.ai[0] = 0;
 					AIState = 0;
 					NPC.netUpdate = true;
 				}
+				NPC.immortal = false;
+				NPC.reflectsProjectiles = false;
+				NPC.dontTakeDamage = false;
 			}
 			else if (AIState == 2) //attack
 			{
 				NPC.FaceTarget();
 				if (NPC.ai[0] == 20)
 				{
-					Vector2 vectoryForProj = new(NPC.position.X + NPC.width * 0.5f, NPC.position.Y + NPC.height * 0.5f);
-					float projSpeedX = Main.player[NPC.target].position.X + Main.player[NPC.target].width * 0.5f - vectoryForProj.X;
-					float projSpeedXAbs; //= Math.Abs(projSpeedX) * 0.1f;
-					projSpeedXAbs = Math.Abs(projSpeedX) * Main.rand.Next(10, 20) * 0.01f;
-					float projSpeedY = Main.player[NPC.target].position.Y + Main.player[NPC.target].height * 0.5f - vectoryForProj.Y - projSpeedXAbs;
-					float sqrtXto2PlusYto2 = (float)Math.Sqrt(projSpeedX * projSpeedX + projSpeedY * projSpeedY);
+					Vector2 velocityForProj = NPC.Center;
+					float projSpeedX = Main.player[NPC.target].Center.X - velocityForProj.X;
+					//float projSpeedXAbs; //= Math.Abs(projSpeedX) * 0.1f;
+					float projSpeedXAbs = Math.Abs(projSpeedX) * 0.05f;
+					float projSpeedY = Main.player[NPC.target].Center.Y - velocityForProj.Y - projSpeedXAbs;
+					float speedDistance = (float)Math.Sqrt(projSpeedX * projSpeedX + projSpeedY * projSpeedY);
 					NPC.netUpdate = true;
-					sqrtXto2PlusYto2 = 10f / sqrtXto2PlusYto2;
-					projSpeedX *= sqrtXto2PlusYto2;
-					projSpeedY *= sqrtXto2PlusYto2;
+					speedDistance = 10f / speedDistance;
+					float speedMulti = Main.expertMode ? 1.3f : 1.1f;
+					projSpeedX *= speedDistance * speedMulti;
+					projSpeedY *= speedDistance * speedMulti;
 					int projDamage = 30;
 					int projType = ModContent.ProjectileType<Projectiles.Enemies.SirSlushSnowball>();
-					vectoryForProj.X += projSpeedX;
-					vectoryForProj.Y += projSpeedY;
+					velocityForProj += new Vector2(projSpeedX, projSpeedY);
 					if (!Main.dedServ)
 					{
 						SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/SirSlushThrow") { MaxInstances = 10 }, NPC.position);
-						Projectile.NewProjectile(Entity.GetSource_FromAI(), vectoryForProj.X, vectoryForProj.Y, projSpeedX, projSpeedY, projType, projDamage, 4f, Main.myPlayer);
+						Projectile.NewProjectile(Entity.GetSource_FromAI(), velocityForProj, new Vector2(projSpeedX, projSpeedY), projType, projDamage, 4f, Main.myPlayer);
 					}
 				}
 				if (NPC.ai[0] >= 40)
@@ -180,6 +193,9 @@ namespace RijamsMod.NPCs.Enemies
 					AIState = 0;
 					NPC.netUpdate = true;
 				}
+				NPC.immortal = false;
+				NPC.reflectsProjectiles = false;
+				NPC.dontTakeDamage = false;
 			}
 			else
 			{
@@ -280,6 +296,7 @@ namespace RijamsMod.NPCs.Enemies
 			}
 		}
 
+		/*
 		public override void SendExtraAI(BinaryWriter writer)
 		{
 			writer.Write(AIState);
@@ -289,6 +306,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			AIState = reader.ReadInt32();
 		}
+		*/
 
 		/*
 		public override bool? CanBeHitByProjectile(Projectile projectile)

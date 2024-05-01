@@ -7,6 +7,7 @@ using Terraria.GameContent;
 using System;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
+using ReLogic.Content;
 
 namespace RijamsMod.Projectiles.Magic
 {
@@ -89,6 +90,9 @@ namespace RijamsMod.Projectiles.Magic
 			return true;
 		}
 
+		private readonly Asset<Texture2D> textureGlass = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/AetherLanternProj_Glass");
+		private readonly Asset<Texture2D> textureFlashBack = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/AetherLanternProj_FlashBack");
+
 		public override bool PreDraw(ref Color lightColor)
 		{
 			Player owner = Main.player[Projectile.owner];
@@ -101,10 +105,6 @@ namespace RijamsMod.Projectiles.Magic
 			}
 
 			Texture2D textureLantern = TextureAssets.Projectile[Type].Value;
-			//Texture2D textureFaeling = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Magic/" + Name + "_Faeling").Value;
-			Texture2D textureGlass = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Magic/" + Name + "_Glass").Value;
-			
-			Texture2D textureFlashBack = ModContent.Request<Texture2D>(Mod.Name + "/Projectiles/Magic/" + Name + "_FlashBack").Value;
 
 			// Get the currently selected frame on the texture.
 			Rectangle sourceRectangleSingle = textureLantern.Frame(1, Main.projFrames[Type]);
@@ -125,7 +125,7 @@ namespace RijamsMod.Projectiles.Magic
 
 			for (int i = 0; i < Projectile.timeLeft; i++)
 			{
-				Main.EntitySpriteDraw(textureFlashBack,
+				Main.EntitySpriteDraw(textureFlashBack.Value,
 					position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 					sourceRectangleSingle, new(10, 10, 10, 0), rotation, origin, Projectile.scale, spriteEffects, 0);
 			}
@@ -139,7 +139,7 @@ namespace RijamsMod.Projectiles.Magic
 				sourceRectangleFaeling, Color.White, rotation, origin, Projectile.scale, spriteEffects, 0);*/
 			DrawNPCDirect_Faeling(Projectile, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects);
 
-			Main.EntitySpriteDraw(textureGlass,
+			Main.EntitySpriteDraw(textureGlass.Value,
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangleSingle, new(lightColor.R, lightColor.G, lightColor.B, 100), rotation, origin, Projectile.scale, spriteEffects, 0);
 

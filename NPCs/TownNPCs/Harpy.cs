@@ -1,4 +1,3 @@
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -13,7 +12,6 @@ using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.IO;
 using RijamsMod.Items.Placeable;
 using Terraria.GameContent.Drawing;
 using Microsoft.Xna.Framework;
@@ -441,7 +439,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(ItemID.HarpyWings, Condition.Hardmode, Condition.DownedPlantera);
 			npcShop.Add(ModContent.ItemType<GuideToProperFlightTechniques>(), Condition.Hardmode, Condition.DownedMechBossAll);
 			npcShop.Add(ModContent.ItemType<Items.Materials.SunEssence>(), Condition.Hardmode, Condition.DownedGolem);
-			npcShop.Add(ItemID.BirdieRattle, new Condition(ShopConditions.CountTownNPCsS(20), ShopConditions.CountTownNPCsFb(20)));
+			npcShop.Add(ItemID.BirdieRattle, ShopConditions.CountTownNPCs(20));
 			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.Harpy.Harpy_Shirt>());
 			npcShop.Add(ModContent.ItemType<Items.Armor.Vanity.Harpy.Harpy_Shorts>());
 			if (ModLoader.TryGetMod("Split", out Mod split) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Split Mod
@@ -449,7 +447,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				NPCHelper.SafelySetCrossModItem(split, "Split/PosterHarpy", npcShop, 10000);
 			}
 			npcShop.Add(ModContent.ItemType<GroupHologramItem>(),
-				new Condition(ShopConditions.IntTravQuestsS(3), ShopConditions.IntTravQuestsFb(3)),
+				ShopConditions.IntTravQuests(3),
 				Condition.NpcIsPresent(ModContent.NPCType<Harpy>()),
 				Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()),
 				Condition.NpcIsPresent(ModContent.NPCType<HellTrader>()),

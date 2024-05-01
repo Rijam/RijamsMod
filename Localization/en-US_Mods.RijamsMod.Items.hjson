@@ -274,6 +274,21 @@ MorphasRing: {
 		'''
 }
 
+CuriosityLure: {
+	DisplayName: Curiosity Lure
+	Tooltip: Doubles your chance to catch rare fish
+}
+
+SpinnerBobber: {
+	DisplayName: Spinner Bobber
+	Tooltip: Increases the bite-rate when fishing
+}
+
+TrapBobber: {
+	DisplayName: Trap Bobber
+	Tooltip: Causes fish to escape slower when you aren't reeling them in
+}
+
 # Items/Accessories/Movement
 
 DifferentBundleOfBalloons: {
@@ -1152,13 +1167,23 @@ AngryGusterBanner: {
 # Items/Quest
 
 QuestTrackerComplete: {
-	Tooltip: "[c/403638:UI Item]"
 	DisplayName: You have completed all of the quests!
+	Tooltip: "[c/403638:UI Item]"
 }
 
 QuestTrackerIncomplete: {
-	Tooltip: "[c/403638:UI Item]"
 	DisplayName: Keep searching!
+	Tooltip: "[c/403638:UI Item]"
+}
+
+LimitedStockMissingItem: {
+	DisplayName: "[c/FF5555:Item currently unavailable!]"
+	Tooltip:
+		'''
+		The Hell Trader isn't selling this item at this moment.
+		  Find the Hell Trader at a different time
+		  for a chance for this item to be available
+		'''
 }
 
 BlankDisplay: {
@@ -1979,6 +2004,13 @@ ForbiddenWhip: {
 		  Scales with Summon Knockback
 		{$CommonItemTooltip.Whips}
 		'''
+}
+
+# Items/Weapons/Other
+
+StumbleCard: {
+	DisplayName: Stumble
+	Tooltip: +25% Critical Hit Damage while firing
 }
 
 # Items/Armor/Vanity

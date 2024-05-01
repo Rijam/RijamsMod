@@ -430,12 +430,15 @@ Mods: {
 			FrostyWindGust.DisplayName: Frosty Wind Gust
 			GleamingFungus.DisplayName: Gleaming Fungus
 			WhirlingFungus.DisplayName: Whirling Fungus
+			CuriosityLureProj.DisplayName: Curiosity Lure Proj
+			SpinnerBobberProj.DisplayName: Spinner Bobber Proj
+			TrapBobberProj.DisplayName: Trap Bobber Proj
+			ClankBeam.DisplayName: Clank Beam
 		}
 
 		Tiles: {
 			LifeFruitSanctuary.MapEntry: Life Fruit Sanctuary
 			MonsterBanners.MapEntry: Banner
-			MusicBoxOSW.MapEntry: Music Box
 			StripLight.MapEntry: Strip Light
 			SulfurTorch.MapEntry: Torch
 			SulfurCampfire.MapEntry: Sulfur Campfire
@@ -473,7 +476,7 @@ Mods: {
 }
 
 TownNPCMood_Princess: {
-	LoveNPC_RijamsMod/Harpy: Using a Jetpack, I was able to go flying with {NPCName}!
-	LoveNPC_RijamsMod/InterstellarTraveler: A friendly alien! {NPCName} is so interesting!
-	LoveNPC_RijamsMod/HellTrader: Just because {NPCName} is a demon doesn't mean she can't be friendly!
+	LoveNPC_RijamsMod/Harpy: "{$Mods.RijamsMod.NPCs.Harpy.TownNPCMood.Princess_LoveNPC}"
+	LoveNPC_RijamsMod/InterstellarTraveler: "{$Mods.RijamsMod.NPCs.InterstellarTraveler.TownNPCMood.Princess_LoveNPC}"
+	LoveNPC_RijamsMod/HellTrader: "{$Mods.RijamsMod.NPCs.HellTrader.TownNPCMood.Princess_LoveNPC}"
 }

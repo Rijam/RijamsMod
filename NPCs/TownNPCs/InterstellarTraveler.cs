@@ -207,12 +207,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				RijamsModWorld.intTravArrived = true; //Set the flag to true when a name is picked
 			}
-			else 
+			else
 			{
 				RijamsModWorld.intTravArrived = true;
 				RijamsModWorld.UpdateWorldBool();
 			}
-			
+
 			return new List<string>()
 			{
 				"Tlani", "Cuia", "Cuemal", "Teztlal", "Nezal", "Zelelli", "Matlin", "Xoco", "Zillin", "Centia", "Citzil", "Malxoc", "Izta", "Xical", "Mazalch", "Tlazoh", "Checa", "Acnopan", "Uetlac", "Illi", "Zina"
@@ -263,9 +263,9 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		#region PostDraw
 		//Note about the glow mask, the sitting frame needs to be 2 visible pixels higher.
-		private readonly Asset<Texture2D> texture1 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Arm");
-		private readonly Asset<Texture2D> texture2 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Casual_Arm");
-		private readonly Asset<Texture2D> texture3 = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/InterstellarTraveler_Arm");
+		private readonly Asset<Texture2D> textureArm = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Arm");
+		private readonly Asset<Texture2D> textureCasualArm = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/InterstellarTraveler_Casual_Arm");
+		private readonly Asset<Texture2D> textureShimmeredArm = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/InterstellarTraveler_Arm");
 		private readonly Asset<Texture2D> questIcons = ModContent.Request<Texture2D>("RijamsMod/Items/Quest/QuestIcons");
 		private readonly Asset<Texture2D> questQuestion = ModContent.Request<Texture2D>("RijamsMod/Items/Quest/Question");
 
@@ -274,14 +274,14 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-			Asset<Texture2D> drawTexture = texture1;
+			Asset<Texture2D> drawTexture = textureArm;
 			if (NPC.IsShimmerVariant)
 			{
-				drawTexture = texture3;
+				drawTexture = textureShimmeredArm;
 			}
 			if (NPC.altTexture == 1 && NPCHelper.AllQuestsCompleted())
 			{
-				drawTexture = texture2;
+				drawTexture = textureCasualArm;
 			}
 
 			Color color = NPC.GetAlpha(drawColor);
@@ -1129,9 +1129,9 @@ namespace RijamsMod.NPCs.TownNPCs
 			Item dPSMeter = new(ItemID.DPSMeter) { shopCustomPrice = 75000 };
 			Item stopwatch = new(ItemID.Stopwatch) { shopCustomPrice = 75000 };
 
-			Condition TownNPCRange1013 = new(ShopConditions.TownNPCRangeS("10-13"), () => NPCHelper.CountTownNPCs() >= 10 && NPCHelper.CountTownNPCs() <= 13);
-			Condition TownNPCRange1419 = new(ShopConditions.TownNPCRangeS("14-19"), () => NPCHelper.CountTownNPCs() >= 14 && NPCHelper.CountTownNPCs() <= 19);
-			Condition TownNPCOver20 = new(ShopConditions.CountTownNPCsS(20), ShopConditions.CountTownNPCsFb(20));
+			Condition TownNPCRange1013 = ShopConditions.TownNPCRange(10, 13);
+			Condition TownNPCRange1419 = ShopConditions.TownNPCRange(14, 19);
+			Condition TownNPCOver20 = ShopConditions.CountTownNPCs(20);
 
 			npcShop.Add(lifeformAnalyzer, ShopConditions.MoonPhase036, TownNPCRange1013);
 			npcShop.Add(dPSMeter, ShopConditions.MoonPhase147, TownNPCRange1013);
@@ -1155,8 +1155,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			Item sextant = new(ItemID.Sextant) { shopCustomPrice = 75000 };
 			Item weatherRadio = new(ItemID.WeatherRadio) { shopCustomPrice = 75000 };
 
-			Condition AnglerQuestsFinishedRange13 = new(ShopConditions.AnglerQuestsFinishedRangeS("1-3"), ShopConditions.AnglerQuestsFinishedRangeFb(1, 3));
-			Condition AnglerQuestsFinishedRange45 = new(ShopConditions.AnglerQuestsFinishedRangeS("4-5"), ShopConditions.AnglerQuestsFinishedRangeFb(4, 5));
+			Condition AnglerQuestsFinishedRange13 = ShopConditions.AnglerQuestsFinishedRange(1, 3);
+			Condition AnglerQuestsFinishedRange45 = ShopConditions.AnglerQuestsFinishedRange(4, 5);
 
 			npcShop.Add(fishermansGuide, ShopConditions.MoonPhase036, AnglerQuestsFinishedRange13, Condition.NpcIsPresent(NPCID.Angler));
 			npcShop.Add(sextant, ShopConditions.MoonPhase147, AnglerQuestsFinishedRange13, Condition.NpcIsPresent(NPCID.Angler));

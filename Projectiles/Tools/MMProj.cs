@@ -1,30 +1,27 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
-using Steamworks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipelines;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ReLogic.Content;
 
 namespace RijamsMod.Projectiles.Tools
 {
 	public class MMProj : ModProjectile
 	{
-		readonly private Texture2D textureNone = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MatterManipulator").Value;
-		readonly private Texture2D texturePick = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMPickaxe").Value;
-		readonly private Texture2D textureAxe = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMAxe").Value;
-		readonly private Texture2D textureHammer = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMHammer").Value;
-		readonly private Texture2D textureNoneGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MatterManipulator_Glow").Value;
-		readonly private Texture2D texturePickGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMPickaxe_Glow").Value;
-		readonly private Texture2D textureAxeGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMAxe_Glow").Value;
-		readonly private Texture2D textureHammerGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMHammer_Glow").Value;
-		readonly private Texture2D lightning = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Tools/MMLightning").Value;
+		private readonly Asset<Texture2D> textureNone = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MatterManipulator");
+		private readonly Asset<Texture2D> texturePick = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMPickaxe");
+		private readonly Asset<Texture2D> textureAxe = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMAxe");
+		private readonly Asset<Texture2D> textureHammer = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMHammer");
+		private readonly Asset<Texture2D> textureNoneGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MatterManipulator_Glow");
+		private readonly Asset<Texture2D> texturePickGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMPickaxe_Glow");
+		private readonly Asset<Texture2D> textureAxeGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMAxe_Glow");
+		private readonly Asset<Texture2D> textureHammerGlow = ModContent.Request<Texture2D>("RijamsMod/Items/Tools/MMHammer_Glow");
+		private readonly Asset<Texture2D> lightning = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Tools/MMLightning");
 		public bool pick;
 		public bool axe;
 		public bool hammer;
@@ -297,27 +294,27 @@ namespace RijamsMod.Projectiles.Tools
 			// Main.instance.LoadItem(type2);
 			// Texture2D value151 = TextureAssets.Item[type2].Value;
 
-			Texture2D itemTexture = texturePick;
-			Texture2D glowTexture = texturePickGlow;
+			Texture2D itemTexture = texturePick.Value;
+			Texture2D glowTexture = texturePickGlow.Value;
 			if (pick)
 			{
-				itemTexture = texturePick;
-				glowTexture = texturePickGlow;
+				itemTexture = texturePick.Value;
+				glowTexture = texturePickGlow.Value;
 			}
 			else if (axe)
 			{
-				itemTexture = textureAxe;
-				glowTexture = textureAxeGlow;
+				itemTexture = textureAxe.Value;
+				glowTexture = textureAxeGlow.Value;
 			}
 			else if (hammer)
 			{
-				itemTexture = textureHammer;
-				glowTexture = textureHammerGlow;
+				itemTexture = textureHammer.Value;
+				glowTexture = textureHammerGlow.Value;
 			}
 			else
 			{
-				itemTexture = textureNone;
-				glowTexture = textureNoneGlow;
+				itemTexture = textureNone.Value;
+				glowTexture = textureNoneGlow.Value;
 			}
 			
 			Color color94 = Lighting.GetColor((int)playerPos.X / 16, (int)playerPos.Y / 16);
@@ -370,7 +367,7 @@ namespace RijamsMod.Projectiles.Tools
 					Color drawColor = SetColorType(1);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
+					Main.EntitySpriteDraw(lightning.Value, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 				if (axe)
@@ -378,7 +375,7 @@ namespace RijamsMod.Projectiles.Tools
 					Color drawColor = SetColorType(2);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
+					Main.EntitySpriteDraw(lightning.Value, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 				if (hammer)
@@ -386,7 +383,7 @@ namespace RijamsMod.Projectiles.Tools
 					Color drawColor = SetColorType(3);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
+					Main.EntitySpriteDraw(lightning.Value, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 
@@ -395,7 +392,7 @@ namespace RijamsMod.Projectiles.Tools
 					Color drawColor = SetColorType(0);
 					drawColor.A = 0;
 					Rectangle sourceRectangle = lightning.Frame(1, 8, 0, Main.rand.Next(0, 7));
-					Main.EntitySpriteDraw(lightning, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
+					Main.EntitySpriteDraw(lightning.Value, beamPos - Main.screenPosition, sourceRectangle, drawColor, worldPosRotation2, sourceRectangle.Size() / 2f, new Vector2(length, thinkness), laserSpriteEffects, 0);
 					Main.EntitySpriteDraw(projTexture, projPos, null, drawColor, Projectile.rotation, new Vector2(projTexture.Width, projTexture.Height) / 2f, Projectile.scale, SpriteEffects.None, 0);
 				}
 			}

@@ -9,9 +9,6 @@ using ReLogic.Content;
 using Terraria.GameContent;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.IO;
-using System.Xml;
-using System;
 using Terraria.GameContent.UI;
 using RijamsMod.EmoteBubbles;
 
@@ -20,11 +17,6 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 	[AutoloadHead]
 	public class SnuggetPet : ModNPC
 	{
-		public override bool IsLoadingEnabled(Mod mod)
-		{
-			return true;
-		}
-
 		internal static int HeadIndex1;
 		internal static int HeadIndex2;
 		internal static int HeadIndex3;
@@ -119,7 +111,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			{
 				NPC.localAI[0]++;
 
-				bool flag12 = NPC.ai[0] == 3f;
+				bool chatting = NPC.ai[0] == 3f;
 				int time1 = -1;
 				int time2 = -1;
 
@@ -137,7 +129,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 					time2 = 90;
 				}
 
-				if (flag12)
+				if (chatting)
 				{
 					NPC nPC = Main.npc[(int)NPC.ai[2]];
 					if (time1 != -1)
@@ -196,33 +188,30 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			return NPCProfile;
 		}
 
-		public int variationType = 0;
+		public readonly List<string> NameList0 = new()
+		{
+			"Petty", "Fluffles", "Fluffy"
+		};
+		public readonly List<string> NameList1 = new()
+		{
+			"Floofy", "Puffy", "Shiny"
+		};
+		public readonly List<string> NameList2 = new()
+		{
+			"Nugget", "Snuggly", "Vibrant"
+		};
+		public readonly List<string> NameList3 = new()
+		{
+			"Snuggles", "Glowy", "Cuddles"
+		};
+		public readonly List<string> NameList4 = new()
+		{
+			"Rainbow", "Disco", "Illuminant"
+		};
+
 		public override List<string> SetNPCNameList()
 		{
-			//variationType = Main.rand.Next(2);
-
-			List<string> NameList0 = new()
-			{
-				"Petty", "Fluffles", "Fluffy"
-			};
-			List<string> NameList1 = new()
-			{
-				"Floofy", "Puffy", "Shiny"
-			};
-			List<string> NameList2 = new()
-			{
-				"Nugget", "Snuggly", "Vibrant"
-			};
-			List<string> NameList3 = new()
-			{
-				"Snuggles", "Glowy", "Cuddles"
-			};
-			List<string> NameList4 = new()
-			{
-				"Rainbow", "Disco", "Illuminant"
-			};
-
-			return variationType switch
+			return NPC.townNpcVariationIndex switch // Change the name based on the variation.
 			{
 				0 => NameList0,
 				1 => NameList4, // Shimmered?
@@ -254,33 +243,14 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			button = Language.GetTextValue("UI.PetTheAnimal"); // Pet
 		}
 
-		/*public override void OnChatButtonClicked(bool firstButton, ref string shop)
-		{
-			if (firstButton)
-			{
-				shop = false;
-			}
-		}*/
-
 		public override bool CanGoToStatue(bool toKingStatue)
 		{
-			return false;
+			return false; // Don't go to King or Queen statues. (Default is false so this technically isn't needed.)
 		}
 
 		public override Color? GetAlpha(Color drawColor)
 		{
 			return NPC.IsShimmerVariant ? Main.DiscoColor : Color.White; // variationType of 1 makes it shimmered, even when it isn't.
-			// return Color.White;
-		}
-
-		public override void SaveData(TagCompound tag)
-		{
-			tag["SnuggetVariationType"] = variationType;
-		}
-
-		public override void LoadData(TagCompound tag)
-		{
-			variationType = tag.GetInt("SnuggetVariationType");
 		}
 	}
 
@@ -290,33 +260,12 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 		private string NPCName => (GetType().Name.Split("Profile")[0]).Replace('.', '/');
 		private string FilePath => (Namespace + "/" + NPCName);
 
-		private static SnuggetPet GetModNPCForPet() // bit of a hack
-		{
-			int index = NPC.FindFirstNPC(ModContent.NPCType<SnuggetPet>());
-			if (index > -1)
-			{
-				ModNPC thePet = Main.npc[index].ModNPC;
-				if (thePet is SnuggetPet snuggetPet)
-				{
-					return snuggetPet;
-				}
-			}
-			return null;
-		}
 		public int RollVariation()
 		{
-			int random = Main.rand.Next(8); // 8 variants
+			int random = Main.rand.Next(8); // 8 variants; 0 through 7.
 			if (random == 1) // variationType of 1 makes it shimmered, even when it isn't.
 			{
-				random = 8;
-			}
-			if (GetModNPCForPet() is not null)
-			{
-				GetModNPCForPet().variationType = random;
-			}
-			else
-			{
-				return 0;
+				random = 8; // So variation 1 becomes number 8.
 			}
 			return random;
 		}
@@ -325,32 +274,24 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
-			if (GetModNPCForPet() is not null)
-			{
-				return ModContent.Request<Texture2D>(FilePath + "_" + GetModNPCForPet().variationType);
-			}
-			return ModContent.Request<Texture2D>(FilePath + "_" + RollVariation());
+			return ModContent.Request<Texture2D>(FilePath + "_" + npc.townNpcVariationIndex);
 		}
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
-			if (GetModNPCForPet() is not null)
+			return npc.townNpcVariationIndex switch
 			{
-				return GetModNPCForPet().variationType switch
-				{
-					0 => ModContent.GetModHeadSlot(FilePath + "_Head"),
-					1 => SnuggetPet.HeadIndex1, // Shimmered?
-					2 => SnuggetPet.HeadIndex2,
-					3 => SnuggetPet.HeadIndex3,
-					4 => SnuggetPet.HeadIndex4,
-					5 => SnuggetPet.HeadIndex5,
-					6 => SnuggetPet.HeadIndex6,
-					7 => SnuggetPet.HeadIndex7,
-					8 => SnuggetPet.HeadIndex8,
-					_ => ModContent.GetModHeadSlot(FilePath + "_Head")
-				};
-			}
-			return ModContent.GetModHeadSlot(FilePath + "_Head");
+				0 => ModContent.GetModHeadSlot(FilePath + "_Head"),
+				1 => SnuggetPet.HeadIndex1, // Shimmered?
+				2 => SnuggetPet.HeadIndex2,
+				3 => SnuggetPet.HeadIndex3,
+				4 => SnuggetPet.HeadIndex4,
+				5 => SnuggetPet.HeadIndex5,
+				6 => SnuggetPet.HeadIndex6,
+				7 => SnuggetPet.HeadIndex7,
+				8 => SnuggetPet.HeadIndex8,
+				_ => ModContent.GetModHeadSlot(FilePath + "_Head")
+			};
 		}
 	}
 }

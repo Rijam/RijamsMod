@@ -24,7 +24,8 @@ namespace RijamsMod.Items.Dyes
 				GameShaders.Armor.BindShader
 				(
 					Item.type,
-					new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Effects/BeamShader", AssetRequestMode.ImmediateLoad).Value), "BeamDyePass") // Be sure to update the effect path and pass name here.
+					// new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Effects/BeamShader", AssetRequestMode.ImmediateLoad).Value), "BeamDyePass") // Be sure to update the effect path and pass name here.
+					new ArmorShaderData(Mod.Assets.Request<Effect>("Effects/BeamShader"), "BeamDyePass") // Be sure to update the effect path and pass name here.
 				).UseColor(0f, 1f, 2f);
 			}
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
@@ -49,7 +50,8 @@ namespace RijamsMod.Items.Dyes
 				GameShaders.Armor.BindShader
 				(
 					Item.type,
-					new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Effects/BeamShader", AssetRequestMode.ImmediateLoad).Value), "BeamDyePass") // Be sure to update the effect path and pass name here.
+					// new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Effects/BeamShader", AssetRequestMode.ImmediateLoad).Value), "BeamDyePass") // Be sure to update the effect path and pass name here.
+					new ArmorShaderData(Mod.Assets.Request<Effect>("Effects/BeamShader"), "BeamDyePass") // Be sure to update the effect path and pass name here.
 				).UseColor(2f, 1f, 0f);
 			}
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;

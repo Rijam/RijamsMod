@@ -244,3 +244,15 @@
 	* Added Frenzy Potion which grants +10% Critical Hit Damage.
 	* Hornet Tail is now Blue rarity and double the value.
 	* Aether Lantern now animates while in the inventory and thrown in the world.
+
+1.2.6.0 - (May 1, 2024)
+	* Updated the Snugget License: exchanging now works in multiplayer!
+	* Updated the invasion related things for the Snowman Muscle and Sir Slush.
+	* Sir Slush now targets from further away and throws harder in Expert Mode.
+	* Sir Slush now reflects projectiles and doesn't take damage while idle.
+	* Added some snow visuals during the Frost Legion.
+	* The missing stock from the Hell Trader now shows an item saying it is unavailable instead of being empty.
+	* Fixed Wild Bait stacking non-stackable items.
+	* Added Curiosity Lure, Trap Bobber, and Spinner Bobber.
+	* Added Stumble summon & magic weapon. Found in the Dungeon or Shadow chests.
+	* Upgraded to .NET 8

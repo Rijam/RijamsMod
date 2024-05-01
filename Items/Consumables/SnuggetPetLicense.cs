@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Chat;
 using Terraria.Enums;
-using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -18,8 +17,9 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			// Tooltip.SetDefault("Use to adopt a Snugget for your town\nAlready have a Snugget?\nUse additional licenses to activate the Pet Exchange Program!\nFind the perfect fit for you and your Snugget!");
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Zoologist]", "[c/474747:after 60% Bestiary completion]" });
 		}
+
 		public override void SetDefaults()
 		{
 			Item.useStyle = ItemUseStyleID.HoldUp;
@@ -33,129 +33,61 @@ namespace RijamsMod.Items.Consumables
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(0, 5));
 		}
 
-		/* Player
-		private void ItemCheck_UsePetLicenses(Item sItem)
-		{
-			if (sItem.type == 4829 && itemAnimation > 0)
-				LicenseOrExchangePet(sItem, ref NPC.boughtCat, 637, "Misc.LicenseCatUsed", -12);
-
-			if (sItem.type == 4830 && itemAnimation > 0)
-				LicenseOrExchangePet(sItem, ref NPC.boughtDog, 638, "Misc.LicenseDogUsed", -13);
-
-			if (sItem.type == 4910 && itemAnimation > 0)
-				LicenseOrExchangePet(sItem, ref NPC.boughtBunny, 656, "Misc.LicenseBunnyUsed", -14);
-		}
-		private void LicenseOrExchangePet(Item sItem, ref bool petBoughtFlag, int npcType, string textKeyForLicense, int netMessageData)
-		{
-			if (ItemTimeIsZero && (!petBoughtFlag || NPC.AnyNPCs(npcType))) {
-				ApplyItemTime(sItem);
-				NPC.UnlockOrExchangePet(ref petBoughtFlag, npcType, textKeyForLicense, netMessageData);
-			}
-		}
-		*/
-		/* NPC
-		public static void UnlockOrExchangePet(ref bool petBoughtFlag, int npcType, string textKeyForLicense, int netMessageData)
-		{
-			Color color = new Color(50, 255, 130);
-			if (Main.netMode == 1) {
-				if (!petBoughtFlag || AnyNPCs(npcType))
-					NetMessage.SendData(61, -1, -1, null, Main.myPlayer, netMessageData);
-			}
-			else if (!petBoughtFlag) {
-				petBoughtFlag = true;
-				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(textKeyForLicense), color);
-				NetMessage.TrySendData(7);
-			}
-			else if (RerollVariationForNPCType(npcType)) {
-				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Misc.PetExchangeSuccess"), color);
-			}
-			else {
-				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Misc.PetExchangeFail"), color);
-			}
-		}
-		public static bool RerollVariationForNPCType(int npcType)
-		{
-			for (int i = 0; i < 200; i++) {
-				NPC nPC = Main.npc[i];
-				if (nPC.active && nPC.type == npcType)
-					return nPC.RerollVariation();
-			}
-
-			return false;
-		}
-
-		public bool RerollVariation()
-		{
-			if (!TownNPCProfiles.Instance.GetProfile(this, out var profile))
-				return false;
-
-			int num = townNpcVariationIndex;
-			int num2 = 0;
-			while (num2++ < 100 && townNpcVariationIndex == num) {
-				townNpcVariationIndex = profile.RollVariation();
-			}
-
-			if (num == townNpcVariationIndex)
-				return false;
-
-			GivenName = profile.GetNameForVariant(this);
-			life = lifeMax;
-			if (Main.netMode != 1) {
-				ParticleOrchestraSettings particleOrchestraSettings = default(ParticleOrchestraSettings);
-				particleOrchestraSettings.PositionInWorld = base.Center;
-				particleOrchestraSettings.MovementVector = velocity;
-				ParticleOrchestraSettings settings = particleOrchestraSettings;
-				ParticleOrchestrator.BroadcastParticleSpawn(ParticleOrchestraType.PetExchange, settings);
-			}
-
-			NetMessage.TrySendData(56, -1, -1, null, whoAmI);
-			return true;
-		}
-		*/
-
-		public override bool ConsumeItem(Player player)
-		{
-			return true;
-		}
 		public override void OnConsumeItem(Player player)
 		{
-			int npcType = ModContent.NPCType<SnuggetPet>();
-			if (player.whoAmI == Main.myPlayer && player.itemAnimation >= 0)
+			int npcType = ModContent.NPCType<SnuggetPet>(); // The NPC Type for the Town Pet.
+			if (player.whoAmI == Main.myPlayer && player.itemAnimation > 0)
 			{
-				if (!RijamsModWorld.boughtSnuggetPet || NPC.AnyNPCs(npcType)) // && player.ItemTimeIsZero
+				// Only do something if the License hasn't been used before or the Town Pet exists in the world.
+				if (!RijamsModWorld.boughtSnuggetPet || NPC.AnyNPCs(npcType))
 				{
-					player.ApplyItemTime(Item);
-					if (Main.netMode == NetmodeID.SinglePlayer)
-					{
-						NPC.UnlockOrExchangePet(ref RijamsModWorld.boughtSnuggetPet, npcType, "Mods.RijamsMod.UI.LicenseSnuggetUse", -15);
-					}
-					if (Main.netMode == NetmodeID.MultiplayerClient)
-					{
-						string chatMessage = Language.GetTextValue("Mods.RijamsMod.UI.LicenseSnuggetUse");
-						ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(chatMessage), new Color(50, 255, 130));
-						RijamsModWorld.boughtSnuggetPet = true;
-						NetMessage.SendData(MessageID.WorldData);
-						ModPacket packet = Mod.GetPacket();
-						packet.Write((byte)RijamsModMessageType.SetSnuggetTownPetArrivable);
-						packet.Send();
-					}
-					//if (Main.netMode == NetmodeID.MultiplayerClient)
-					//{
-					//	NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, -1, -1, null, Main.myPlayer, -15);
-					//}
-					//NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, -1, -1, null, Main.myPlayer, -14);
+					player.ApplyItemTime(Item); // Make it so the player uses the item for the useAnimation.
+					SnuggetUnlockOrExchangePet(ref RijamsModWorld.boughtSnuggetPet, npcType, "Mods.RijamsMod.UI.LicenseSnuggetUse"); // Modified NPC.UnlockOrExchangePet method.
 				}
 			}
 		}
 		public override bool? UseItem(Player player)
 		{
-			return true;
+			// Only consume the item if it is going to do something.
+			if (!RijamsModWorld.boughtSnuggetPet || NPC.AnyNPCs(ModContent.NPCType<SnuggetPet>()))
+			{
+				return true;
+			}
+			return null;
 		}
-		public override void ModifyTooltips(List<TooltipLine> tooltips)
+
+		/// <summary>
+		/// <br>The vanilla method NPC.UnlockOrExchangePet will not work for our modded Town Pets because the NetMessage only works with vanilla NPCs.</br>
+		/// <br>This version uses a ModPacket for that instead.</br>
+		/// </summary>
+		/// <param name="petBoughtFlag">The bool that determines if the License has been used once. Doesn't really have anything to do with buying.</param>
+		/// <param name="npcType">The NPC Type for the Town Pet.</param>
+		/// <param name="textKeyForLicense">The localization path for when the License has been used for the first time.</param>
+		public static void SnuggetUnlockOrExchangePet(ref bool petBoughtFlag, int npcType, string textKeyForLicense)
 		{
+			Color color = new(50, 255, 130);
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
-				tooltips.Add(new TooltipLine(Mod, "SnuggetPetLicense", "[c/ff8300:Exchanging doesn't work in Multiplayer]"));
+				if (!petBoughtFlag || NPC.AnyNPCs(npcType))
+				{
+					ModPacket packet = ModContent.GetInstance<RijamsMod>().GetPacket();
+					packet.Write((byte)RijamsModMessageType.SnuggetUnlockOrExchange);
+					packet.Send();
+				}
+			}
+			else if (!petBoughtFlag)
+			{
+				petBoughtFlag = true;
+				ChatHelper.BroadcastChatMessage(NetworkText.FromKey(textKeyForLicense), color);
+				NetMessage.TrySendData(MessageID.WorldData);
+			}
+			else if (NPC.RerollVariationForNPCType(npcType))
+			{
+				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Misc.PetExchangeSuccess"), color);
+			}
+			else
+			{
+				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Misc.PetExchangeFail"), color);
 			}
 		}
 	}

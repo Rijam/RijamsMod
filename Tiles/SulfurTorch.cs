@@ -9,6 +9,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using ReLogic.Content;
+using Terraria.GameContent.Drawing;
 
 namespace RijamsMod.Tiles
 {
@@ -25,6 +26,7 @@ namespace RijamsMod.Tiles
 			Main.tileWaterDeath[Type] = false;
 			TileID.Sets.FramesOnKillWall[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
+			TileID.Sets.DisableSmartInteract[Type] = true;
 			TileID.Sets.Torch[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Torches, 0));
@@ -59,10 +61,7 @@ namespace RijamsMod.Tiles
 			AdjTiles = new int[] { TileID.Torches };
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
 			// Assets
-			if (!Main.dedServ)
-			{
-				flameTexture = ModContent.Request<Texture2D>("RijamsMod/Tiles/SulfurTorch_Flame");
-			}
+			flameTexture = ModContent.Request<Texture2D>("RijamsMod/Tiles/SulfurTorch_Flame");
 		}
 
 		public override float GetTorchLuck(Player player)
@@ -120,10 +119,17 @@ namespace RijamsMod.Tiles
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
+			Tile tile = Main.tile[i, j];
+
+			if (!TileDrawing.IsVisible(tile))
+			{
+				return;
+			}
+
 			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i);
 			Color color = new(100, 100, 100, 0);
-			int frameX = Main.tile[i, j].TileFrameX;
-			int frameY = Main.tile[i, j].TileFrameY;
+			int frameX = tile.TileFrameX;
+			int frameY = tile.TileFrameY;
 			int width = 20;
 			int height = 20;
 			int offsetY = 0;

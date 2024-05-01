@@ -16,6 +16,9 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void SetStaticDefaults()
 		{
+			NPCID.Sets.BelongsToInvasionFrostLegion[NPC.type] = true; // Make it count towards Frost Legion for music playback and invasion progress
+			NPCID.Sets.InvasionSlotCount[NPC.type] = 1; // Make it count as 1 enemies defeated for the invasion progress
+
 			// DisplayName.SetDefault("Snowman Muscle");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SnowmanGangsta];
 
@@ -63,7 +66,7 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ItemID.Fedora, 50));
 
 			//From Spirit Mod FrostSaucer.cs
-			if (Main.invasionType == InvasionID.SnowLegion)
+			/*if (Main.invasionType == InvasionID.SnowLegion)
 			{
 				Main.invasionSize -= 1;
 				if (Main.invasionSize < 0)
@@ -80,7 +83,7 @@ namespace RijamsMod.NPCs.Enemies
 				{
 					NetMessage.SendData(MessageID.InvasionProgressReport, -1, -1, null, Main.invasionProgress, (float)Main.invasionProgressMax, (float)Main.invasionProgressIcon, 0f, 0, 0, 0);
 				}
-			}
+			}*/
 		}
 
 		//AI copied from the Snowman Gangsta

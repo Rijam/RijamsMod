@@ -391,7 +391,7 @@ namespace RijamsMod.Items
 		/// <param name="mod">Which mod the tooltip line is from. "Terraria" for vanilla.</param>
 		/// <param name="index">Out: the index of the tooltip line. 0 if not found.</param>
 		/// <returns>True if found.</returns>
-		public static bool FindTooltipIndex(List<TooltipLine> tooltips, string name, string mod, out int index)
+		public static bool FindTooltipIndex(List<TooltipLine> tooltips, string name, string mod, out int index, bool silenceWarning = false)
 		{
 			TooltipLine tooltipLine = tooltips.FirstOrDefault(x => x.Name == name && x.Mod == mod);
 			if (tooltipLine != null)
@@ -400,7 +400,10 @@ namespace RijamsMod.Items
 				return true;
 			}
 			index = 0;
-			RijamsMod.Instance.Logger.WarnFormat("Tooltip line {0} from mod {1} not found!", name, mod);
+			if (!silenceWarning)
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.WarnFormat("Tooltip line {0} from mod {1} not found!", name, mod);
+			}
 			return false;
 		}
 
@@ -512,6 +515,11 @@ namespace RijamsMod.Items
 			if (item.type == ItemID.LockBox)
 			{
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.CobaltProtectorCudgel>(), 7));
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Other.StumbleCard>(), 10));
+			}
+			if (item.type == ItemID.ObsidianLockbox)
+			{
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Other.StumbleCard>(), 7));
 			}
 			if (item.type == ItemID.QueenSlimeBossBag)
 			{

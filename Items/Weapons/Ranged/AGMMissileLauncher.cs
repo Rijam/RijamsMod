@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -13,8 +14,23 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			// DisplayName.SetDefault("AGM Missile Launcher");
 			// Tooltip.SetDefault("10% chance not to consume ammo");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]" } );
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]" });
 			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
+
+			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.Add(Type, new Dictionary<int, int> {
+				{ ItemID.RocketI, ProjectileID.RocketI },
+				{ ItemID.RocketII, ProjectileID.RocketII },
+				{ ItemID.RocketIII, ProjectileID.RocketIII },
+				{ ItemID.RocketIV, ProjectileID.RocketIV },
+				{ ItemID.ClusterRocketI, ProjectileID.ClusterRocketI },
+				{ ItemID.ClusterRocketII, ProjectileID.ClusterRocketII },
+				{ ItemID.MiniNukeI, ProjectileID.MiniNukeRocketI },
+				{ ItemID.MiniNukeII, ProjectileID.MiniNukeRocketII },
+				{ ItemID.DryRocket, ProjectileID.DryRocket },
+				{ ItemID.WetRocket, ProjectileID.WetRocket },
+				{ ItemID.LavaRocket, ProjectileID.LavaRocket },
+				{ ItemID.HoneyRocket, ProjectileID.HoneyRocket }
+			});
 		}
 
 		public override void SetDefaults()
@@ -39,7 +55,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
 			{
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 				flash.posOffsetXLeft = 8;
 				flash.posOffsetXRight = -36;
 				flash.posOffsetY = 2;

@@ -9,6 +9,7 @@ using Terraria.DataStructures;
 using RijamsMod.Items.Armor.Vanity.IntTrav;
 using RijamsMod.Projectiles.Ranged;
 using Terraria.Audio;
+using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -45,10 +46,10 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.useAmmo = AmmoID.Bullet;
 			if (!Main.dedServ)
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 				flash.posOffsetXLeft = 13;
 				flash.posOffsetXRight = -6;
 				flash.posOffsetY = 6;

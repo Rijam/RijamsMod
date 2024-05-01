@@ -12,6 +12,9 @@ using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameContent;
 using Terraria.Audio;
 using FullSerializer.Internal;
+using Terraria.GameContent.Drawing;
+using Terraria.DataStructures;
+using Terraria.Utilities;
 
 namespace RijamsMod.Tiles
 {
@@ -29,6 +32,7 @@ namespace RijamsMod.Tiles
 			Main.tileLavaDeath[Type] = false;
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.Campfire[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.StyleWrapLimit = 16;
@@ -41,16 +45,14 @@ namespace RijamsMod.Tiles
 
 			LocalizedText name = CreateMapEntryName();
 
+			AdjTiles = new int[] { TileID.Campfire };
 			AddMapEntry(new Color(250, 250, 0), name);
 			DustType = ModContent.DustType<SulfurDust>();
 
 			AnimationFrameHeight = 36;
 
 			// Assets
-			if (!Main.dedServ)
-			{
-				flameTexture = ModContent.Request<Texture2D>("RijamsMod/Tiles/SulfurCampfire_Flame");
-			}
+			flameTexture = ModContent.Request<Texture2D>("RijamsMod/Tiles/SulfurCampfire_Flame");
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num)
@@ -128,9 +130,11 @@ namespace RijamsMod.Tiles
 			Tile tile = Main.tile[i, j];
 			if (tile.TileFrameY < 36)
 			{
-				r = 1.2f;
-				g = 1.2f;
-				b = 0.3f;
+				float pulse = Main.rand.Next(28, 42) * 0.005f;
+				pulse += (270 - Main.mouseTextColor) / 700f;
+				r = 1.2f + pulse;
+				g = 1.2f + pulse;
+				b = 0.3f + pulse;
 			}
 		}
 
@@ -138,7 +142,8 @@ namespace RijamsMod.Tiles
 		{
 			if (Main.tile[i, j].TileFrameY < 36)
 			{
-				Main.LocalPlayer.AddBuff(BuffID.Campfire, 5, quiet: true);
+				Main.SceneMetrics.HasCampfire = true;
+				// Main.LocalPlayer.AddBuff(BuffID.Campfire, 5, quiet: true);
 			}
 		}
 
@@ -147,7 +152,8 @@ namespace RijamsMod.Tiles
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;
-			player.cursorItemIconID = ModContent.ItemType<Items.Placeable.SulfurCampfire>();
+			int style = TileObjectData.GetTileStyle(Main.tile[i, j]);
+			player.cursorItemIconID = TileLoader.GetItemDropFromTypeAndStyle(Type, style);
 		}
 
 		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
@@ -155,6 +161,11 @@ namespace RijamsMod.Tiles
 			Tile tile = Main.tile[i, j];
 			int width = 18;
 			int height = 18;
+
+			if (!TileDrawing.IsVisible(tile))
+			{
+				return;
+			}
 
 			int addFrY = 252;
 			if (tile.TileFrameY < 36)
@@ -177,20 +188,33 @@ namespace RijamsMod.Tiles
 					new Rectangle(tile.TileFrameX, tile.TileFrameY + addFrY, width, height),
 					color, 0f, default, 1f, SpriteEffects.None, 0f);
 			}
+		}
 
-			if (tile.TileFrameY < 36 && Main.rand.NextBool(3) && ((Main.drawToScreen && Main.rand.NextBool(4)) || !Main.drawToScreen) && tile.TileFrameY == 0)
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+		{
+			if (Main.gamePaused || !Main.instance.IsActive)
 			{
-				int dustSmoke = Dust.NewDust(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
-				if (tile.TileFrameX == 0)
-					Main.dust[dustSmoke].position.X += Main.rand.Next(8);
+				return;
+			}
 
-				if (tile.TileFrameX == 36)
-					Main.dust[dustSmoke].position.X -= Main.rand.Next(8);
+			if (!Lighting.UpdateEveryFrame || new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) == 0)
+			{
+				Tile tile = Main.tile[i, j];
+				// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
+				if (tile.TileFrameY == 0 && Main.rand.NextBool(3) && ((Main.drawToScreen && Main.rand.NextBool(4)) || !Main.drawToScreen))
+				{
+					Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
+					if (tile.TileFrameX == 0)
+						dust.position.X += Main.rand.Next(8);
 
-				Main.dust[dustSmoke].alpha += Main.rand.Next(100);
-				Main.dust[dustSmoke].velocity *= 0.2f;
-				Main.dust[dustSmoke].velocity.Y -= 0.5f + (float)Main.rand.Next(10) * 0.1f;
-				Main.dust[dustSmoke].fadeIn = 0.5f + (float)Main.rand.Next(10) * 0.1f;
+					if (tile.TileFrameX == 36)
+						dust.position.X -= Main.rand.Next(8);
+
+					dust.alpha += Main.rand.Next(100);
+					dust.velocity *= 0.2f;
+					dust.velocity.Y -= 0.5f + Main.rand.Next(10) * 0.1f;
+					dust.fadeIn = 0.5f + Main.rand.Next(10) * 0.1f;
+				}
 			}
 		}
 	}

@@ -10,6 +10,7 @@ using Terraria.ModLoader.IO;
 using RijamsMod.NPCs.TownNPCs;
 using Terraria.Localization;
 using System.Linq;
+using System.Reflection;
 
 namespace RijamsMod.NPCs
 {
@@ -234,7 +235,7 @@ namespace RijamsMod.NPCs
 			switch (searchMode)
 			{
 				case 1: // Everything that could be a Town NPC, including Town Pets, Old Man, Traveling Merchant, and Skeleton Merchant.
-					if (NPCID.Sets.ActsLikeTownNPC[npc2.type] || npc2.housingCategory >= 1)
+					if (npc2.townNPC || NPCID.Sets.ActsLikeTownNPC[npc2.type] || npc2.housingCategory >= 1)
 					{
 						return true;
 					}
@@ -455,13 +456,12 @@ namespace RijamsMod.NPCs
 		
 		public static Condition IsNotNpcShimmered = new("When the vendor is not a shimmer variant", () => !Condition.IsNpcShimmered.IsMet());
 
-		public static string TownNPCRangeS(string range) => $"Where there are {range} or more Town NPCs in the world";
-		public static string CountTownNPCsS(int number) => $"When there are {number} or more Town NPCs in the world";
-		public static string IntTravQuestsS(int number) => $"After completing {number} or more quests for the Interstellar Traveler";
-		public static string AnglerQuestsFinishedRangeS(string range) => $"When the player has finished {range} Angler Quests";
-		public static Func<bool> CountTownNPCsFb(int number) => () => NPCHelper.CountTownNPCs() >= number;
-		public static Func<bool> IntTravQuestsFb(int number) => () => NPCHelper.NumberOfQuestsCompleted() >= number;
-		public static Func<bool> AnglerQuestsFinishedRangeFb(int min, int max) => () => Main.LocalPlayer.anglerQuestsFinished >= min && Main.LocalPlayer.anglerQuestsFinished <= max;
+		public static Condition TownNPCRange(int min, int max) => new($"Where there are {min}-{max} Town NPCs in the world", () => NPCHelper.CountTownNPCs() >= min && NPCHelper.CountTownNPCs() <= max);
+		public static Condition CountTownNPCs(int number) => new($"When there are {number} or more Town NPCs in the world", () => NPCHelper.CountTownNPCs() >= number);
+		public static Condition IntTravQuests(int number) => new($"After completing {number} or more quests for the Interstellar Traveler", () => NPCHelper.NumberOfQuestsCompleted() >= number);
+		public static Condition AnglerQuestsFinishedRange(int min, int max) => new($"When the player has finished {min}-{max} Angler Quests", () => Main.LocalPlayer.anglerQuestsFinished >= min && Main.LocalPlayer.anglerQuestsFinished <= max);
+		public static Condition RandomBasedOnGameTick(int modulo, int numberToCheck) => new("Randomly when the shop is opened", () => Main.GameUpdateCount % modulo == numberToCheck);
+		public static Condition RandomBasedOnGameTick(int modulo, int numberToCheck, string uniqueMessage) => new(uniqueMessage, () => Main.GameUpdateCount % modulo == numberToCheck);
 
 #pragma warning restore CA2211 // Non-constant fields should not be visible
 	}

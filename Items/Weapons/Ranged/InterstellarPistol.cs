@@ -13,13 +13,12 @@ using Steamworks;
 using log4net;
 using Terraria.Chat;
 using Terraria.Localization;
+using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
 	public class InterstellarPistol : ModItem
 	{
-		//public static bool tileCollide;
-
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Inherits many aspects of the bullets used");
@@ -49,10 +48,10 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.useAmmo = AmmoID.Bullet;
 			if (!Main.dedServ)
 			{
-				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_MuzzleFlash").Value;
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 				flash.posOffsetXLeft = 10;
 				flash.posOffsetXRight = -2;
 				flash.posOffsetY = 0;

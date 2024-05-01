@@ -1,10 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Placeable;
 using RijamsMod.Projectiles.Magic;
-using System;
-using System.Drawing.Imaging;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -17,6 +16,7 @@ namespace RijamsMod.Items.Weapons.Magic
 	public class AvoliteLantern : ModItem
 	{
 		public int colorMode = 0;
+
 		public override void SetStaticDefaults()
 		{
 			GlobalItems.isLanternWeapon.Add(Item.type);
@@ -44,7 +44,7 @@ namespace RijamsMod.Items.Weapons.Magic
 			if (!Main.dedServ)
 			{
 				var flash = Item.GetGlobalItem<WeaponAttackFlash>();
-				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash").Value;
+				flash.flashTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Flash");
 				flash.posOffsetXLeft = 4;
 				flash.posOffsetXRight = -48;
 				flash.posOffsetY = -32;
@@ -56,7 +56,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				flash.animationLoop = false;
 
 				var glowMask = Item.GetGlobalItem<ItemUseGlow>();
-				glowMask.glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
+				glowMask.glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow");
 			}
 			//Item.flame = true; // Doesn't create the flame when it is thrown on the ground.
 			Item.useLimitPerAnimation = 4; // Added by TML.

@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Items.Consumables;
 using RijamsMod.Items.Weapons;
 using RijamsMod.NPCs;
 using RijamsMod.NPCs.TownNPCs;
+using RijamsMod.NPCs.TownNPCs.SnuggetPet;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,20 +54,6 @@ namespace RijamsMod
 
 		public override void PostSetupContent()
 		{
-			/*if (ModLoader.TryGetMod("Census", out Mod censusMod))
-			{
-				// Here I am using Chat Tags to make my condition even more interesting.
-				// If you localize your mod, pass in a localized string instead of just English.
-				//censusMod.Call("TownNPCCondition", NPCType("Example Person"), $"Have [i:{ItemType<Items.ExampleItem>()}] or [i:{ItemType<Items.Placeable.ExampleBlock>()}] in inventory and build a house out of [i:{ItemType<Items.Placeable.ExampleBlock>()}] and [i:{ItemType<Items.Placeable.ExampleWall>()}]");
-				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.InterstellarTraveler>(), $"Defeat EoW or BoW and have [i:RijamsMod/OddDevice] Odd Device in your inventory");
-				// Additional lines for additional town npc that your mod adds
-				// Simpler example:
-				// censusMod.Call("TownNPCCondition", NPCType("Simple"), "Defeat Duke Fishron");
-				//censusMod.Call("TownNPCCondition", Find<ModNPC>("Fisherman").Type, "Rescue the Angler and have at least 5 Town NPCs");
-				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.Harpy>(), "Rescue her in space");
-				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.HellTrader>(), "Found in Hell. Can move in in Hardmode");
-				censusMod.Call("TownNPCCondition", ModContent.NPCType<NPCs.TownNPCs.SnuggetPet.SnuggetPet>(), "License sold after 60% Bestiary completion and Interstellar Traveler is present");
-			}*/
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils))
 			{
 				//Something must be wrong, I can't get it to work.
@@ -96,6 +84,9 @@ namespace RijamsMod
 				fishermanNPC.Call("AddToShop", "DefaultPrice", "Fish", ModContent.ItemType<Items.Fishing.HornetTail>(), new List<Condition>() { });
 				fishermanNPC.Call("AddToShop", "DefaultPrice", "Fish", ModContent.ItemType<Items.Fishing.FungiEel>(), new List<Condition>() { });
 				fishermanNPC.Call("AddToShop", "CustomPrice", "Bait", ModContent.ItemType<Items.Fishing.WildBait>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(3) }, 5000);
+				fishermanNPC.Call("AddToShop", "DefaultPrice", "Extra", ModContent.ItemType<Items.Accessories.Misc.CuriosityLure>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(3) });
+				fishermanNPC.Call("AddToShop", "DefaultPrice", "Extra", ModContent.ItemType<Items.Accessories.Misc.TrapBobber>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(1) });
+				fishermanNPC.Call("AddToShop", "DefaultPrice", "Extra", ModContent.ItemType<Items.Accessories.Misc.SpinnerBobber>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(1) });
 			}
 
 			if (ModLoader.TryGetMod("DialogueTweak", out Mod dialogueTweak))
@@ -342,13 +333,12 @@ namespace RijamsMod
 					NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Hell Trader Arrivable (Multiplayer packet).");
 					break;
-				case RijamsModMessageType.SetSnuggetTownPetArrivable:
-					RijamsModWorld.boughtSnuggetPet = true;
-					NetMessage.SendData(MessageID.WorldData);
-					Logger.Debug("RijamsMod: Snugget Town Pet Arrivable (Multiplayer packet).");
-					break;
 				case RijamsModMessageType.PlayNetworkSound:
 					PlayNetworkSoundReceive(reader);
+					break;
+				case RijamsModMessageType.SnuggetUnlockOrExchange:
+					SnuggetPetLicense.SnuggetUnlockOrExchangePet(ref RijamsModWorld.boughtSnuggetPet, ModContent.NPCType<SnuggetPet>(), "Mods.RijamsMod.UI.LicenseSnuggetUse");
+					Logger.Debug("RijamsMod: Snugget Town Pet Unlock or Exchange (Multiplayer packet).");
 					break;
 				default:
 					Logger.WarnFormat("RijamsMod: Unknown Message type: {0}", msgType);
@@ -366,7 +356,7 @@ namespace RijamsMod
 		SetQuestMagicOxygenizer,
 		SetQuestPrimeThruster,
 		SetHellTraderArrivable,
-		SetSnuggetTownPetArrivable,
-		PlayNetworkSound
+		PlayNetworkSound,
+		SnuggetUnlockOrExchange
 	}
 }

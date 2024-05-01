@@ -16,8 +16,9 @@ using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.DataStructures;
-using System.Reflection.Metadata;
 using RijamsMod.EmoteBubbles;
+using RijamsMod.Items.Quest;
+using Terraria.GameContent.UI;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -36,10 +37,17 @@ namespace RijamsMod.NPCs.TownNPCs
 		internal static int ShimmerHeadIndex;
 		private static ITownNPCProfile NPCProfile;
 
+		// Fake custom currency for the limited stock
+		public static HellTraderMissingItemCurrency HellTraderMissingItemCurrencySystem;
+		public static int HellTraderMissingItemCurrencyID;
+
 		public override void Load()
 		{
 			// Adds our Shimmer Head to the NPCHeadLoader.
 			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, GetType().Namespace.Replace('.', '/') + "/Shimmered/" + Name + "_Head");
+
+			HellTraderMissingItemCurrencySystem = new HellTraderMissingItemCurrency(ModContent.ItemType<LimitedStockMissingItem>(), 999);
+			HellTraderMissingItemCurrencyID = CustomCurrencyManager.RegisterCurrency(HellTraderMissingItemCurrencySystem);
 		}
 
 		public override void SetStaticDefaults()
@@ -202,7 +210,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override List<string> SetNPCNameList()
 		{
 			return new List<string>()
-			{ 
+			{
 				"Mixi", "Brima", "Sulfura", "Leh", "Inferna", "Purgator", "Haidess", "Blaiz", "Agoni", "Flaima", "Nethi", "Perdition", "Do\'om", "Braz", "Grihmos", "Da\'nur"
 			};
 			
@@ -262,11 +270,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			Asset<Texture2D> drawTexture = glowmask;
 			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 			Color color = new(255, 255, 255, 255);
-			Vector2 verticalOffset = new(0, 4 - NPC.gfxOffY);
-			if (NPC.frame.Y == 18 * NPC.frame.Height) // Sitting, move up 4 pixels
-			{
-				verticalOffset.Y += 4;
-			}
+			Vector2 verticalOffset = new(0, 4 - NPC.gfxOffY - Main.NPCAddHeight(NPC));
 
 			if (NPC.IsShimmerVariant)
 			{
@@ -287,11 +291,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (NPC.IsShimmerVariant)
 			{
 				SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-				Vector2 verticalOffset = new(8, 4 - NPC.gfxOffY);
-				if (NPC.frame.Y == 18 * NPC.frame.Height) // Sitting, move up 4 pixels
-				{
-					verticalOffset.Y += 4;
-				}
+				Vector2 verticalOffset = new(8, 4 - NPC.gfxOffY - Main.NPCAddHeight(NPC));
 				spriteBatch.Draw(shimmerWings.Value, NPC.Center - screenPos - verticalOffset, new Rectangle(NPC.frame.X, NPC.frame.Y, shimmerWings.Width(), NPC.frame.Height), drawColor, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 			}
 			return true;
@@ -446,14 +446,14 @@ namespace RijamsMod.NPCs.TownNPCs
 					if (thorium.TryFind<ModNPC>("WeaponMaster", out ModNPC weaponMasterModNPC))
 					{
 						int weaponMaster = NPC.FindFirstNPC(weaponMasterModNPC.Type);
-						if (weaponMaster >= 0 && npcTypeListVillage.Contains(thorium.Find<ModNPC>("WeaponMaster").Type))
+						if (weaponMaster >= 0 && npcTypeListVillage.Contains(weaponMasterModNPC.Type))
 						{
 							chat.Add("Hmm...\nHuh? No, I wasn't staring at " + Main.npc[weaponMaster].GivenName + "!");
 							chat.Add("So... heard anything new about " + Main.npc[weaponMaster].GivenName + "? I'm just asking...");
 							chat.Add(Main.npc[weaponMaster].GivenName + "'s helmet is very nice.\nNothing! It's just a casual observation.");
 						}
 					}
-					if (thorium.TryFind<ModItem>("PLG8999", out ModItem plg))
+					if (thorium.TryFind<ModItem>("PLG", out ModItem plg)) // P.L.G. 8999
 					{
 						if (player.HasItem(plg.Type))
 						{
@@ -615,7 +615,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			for (int i = 0; i < ItemsEnabled.Count; i++)
 			{
 				// Probably a better way of doing this than remaking the Tuple every time.
-				// Assigning ItemsEnabled[i].Item3 directly won't work because it is read only.
+				// Assigning ItemsEnabled[i].Item3 directly won't work because it is immutable.
 				ItemsEnabled[i] = new (ItemsEnabled[i].Item1, ItemsEnabled[i].Item2, !Main.rand.NextBool(ItemsEnabled[i].Item2));
 			}
 		}
@@ -659,7 +659,12 @@ namespace RijamsMod.NPCs.TownNPCs
 					// Disable the item if it matches the item in the ItemsEnabled list and is set to be disabled.
 					if (items[itemsEnabledIndex]?.type == ItemsEnabled[itemsArrayIndex].Item1 && !ItemsEnabled[itemsEnabledIndex].Item3)
 					{
-						items[itemsEnabledIndex]?.TurnToAir();
+						// items[itemsEnabledIndex]?.TurnToAir();
+
+						// Turn the item into the limited stock missing item that cannot be bought.
+						items[itemsEnabledIndex]?.SetDefaults(ModContent.ItemType<LimitedStockMissingItem>());
+						items[itemsEnabledIndex].shopCustomPrice = 1;
+						items[itemsEnabledIndex].shopSpecialCurrency = HellTraderMissingItemCurrencyID;
 					}
 
 					// Disable the Hell Trader from selling Pylons before moving in.

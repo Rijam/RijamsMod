@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.GameContent;
@@ -70,9 +71,9 @@ namespace RijamsMod.Projectiles.Magic
 			target.AddBuff(BuffID.Frostburn2, damageDone * 5);
 		}
 
-		public Texture2D Sparkles = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Sparkles").Value;
-		public Texture2D Flakes = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Flakes").Value;
-		public Texture2D Shine = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Shine").Value;
+		public Asset<Texture2D> Sparkles = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Sparkles");
+		public Asset<Texture2D> Flakes = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Flakes");
+		public Asset<Texture2D> Shine = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Shine");
 
 		public override bool PreDraw(ref Color lightColor)
 		{
@@ -98,11 +99,11 @@ namespace RijamsMod.Projectiles.Magic
 			Color drawColor = new(255, 255, 255, 0);
 			Color drawColorBlue = new(100, 200, 255, 0);
 
-			Main.EntitySpriteDraw(Shine,
+			Main.EntitySpriteDraw(Shine.Value,
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColorBlue, rotation, origin, Projectile.scale, spriteEffects, 0);
 
-			Main.EntitySpriteDraw(Flakes,
+			Main.EntitySpriteDraw(Flakes.Value,
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 
@@ -110,7 +111,7 @@ namespace RijamsMod.Projectiles.Magic
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 
-			Main.EntitySpriteDraw(Sparkles,
+			Main.EntitySpriteDraw(Sparkles.Value,
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 
