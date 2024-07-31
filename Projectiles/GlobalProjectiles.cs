@@ -23,63 +23,6 @@ namespace RijamsMod.Projectiles
 		public override void PostAI(Projectile projectile)
 		{
 			Player owner = Main.player[projectile.owner];
-			if (owner != null)
-			{
-				RijamsModPlayer moddedplayer = owner.GetModPlayer<RijamsModPlayer>();
-				if (projectile.CountsAsClass(DamageClass.Melee))
-				{
-					if (moddedplayer.daybreakStone)
-					{
-						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
-						{
-							int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.SolarFlare, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
-							Main.dust[dust].noGravity = true;
-							Main.dust[dust].velocity *= 0.7f;
-							Main.dust[dust].velocity.Y -= 0.5f;
-							Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.875f);
-						}
-					}
-					if (moddedplayer.frostburnStone)
-					{
-						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
-						{
-							int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.Frost, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
-							Main.dust[dust].noGravity = true;
-							Main.dust[dust].velocity *= 0.7f;
-							Main.dust[dust].velocity.Y -= 0.5f;
-							Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.875f);
-						}
-					}
-					if (moddedplayer.flaskBuff >= 1 && projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
-					{
-						int dustType = DustID.Dirt;
-						if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
-						{
-							dustType = ModContent.DustType<Dusts.SulfurDust>();
-						}
-						if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
-						{
-							dustType = DustID.Asphalt;
-						}
-						int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, dustType, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
-						Main.dust[dust].noGravity = true;
-						Main.dust[dust].velocity *= 0.7f;
-						Main.dust[dust].velocity.Y -= 0.5f;
-						Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.1f);
-					}
-					if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
-					{
-						if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
-						{
-							int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.Asphalt, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
-							Main.dust[dust].noGravity = true;
-							Main.dust[dust].velocity *= 0.7f;
-							Main.dust[dust].velocity.Y -= 0.5f;
-							Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.1f);
-						}
-					}
-				}
-			}
 			if (projectile.type == ProjectileID.JoustingLance)
 			{
 				// The Hallowed and Shadow Jousting Lance spawn dusts when the player is moving at a certain speed.

@@ -1,18 +1,8 @@
-using RijamsMod.Items;
-using RijamsMod.NPCs;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using System.IO;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.Generation;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
-using System.Linq;
 
 namespace RijamsMod
 { 
@@ -156,7 +146,7 @@ namespace RijamsMod
 			boughtSnuggetPet = flags2[1];
 		}
 
-		public static void UpdateWorldBool() //from Calamity's Vanities
+		public static void UpdateWorldBool() // from Calamity's Vanities
 		{
 			if (Main.netMode == NetmodeID.Server)
 			{
@@ -169,7 +159,7 @@ namespace RijamsMod
 			{
 				Chest chest = Main.chest[chestIndex];
 
-				//Mod.Logger.Debug("RijamsMod: chestIndex " + chestIndex);
+				// Mod.Logger.Debug("RijamsMod: chestIndex " + chestIndex);
                 
 				if (chest != null && Main.tile[chest.x, chest.y].TileType == TileID.Containers)
 				{
@@ -177,7 +167,7 @@ namespace RijamsMod
 					// Wooden Chest (0)
 					if (Main.tile[chest.x, chest.y].TileFrameX == 0 * 36)
 					{
-						//Mod.Logger.Debug("RijamsMod: Wooden Chest found at: " + chest.x + " " + chest.y);
+						// Mod.Logger.Debug("RijamsMod: Wooden Chest found at: " + chest.x + " " + chest.y);
 
 						// 1 in 4 may seem super common, but it really isn't.
 						// If there are 40 Wooden Chests in a large world, then that means only 10 of them have the item.
@@ -202,7 +192,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Small Glow Ring added.");
+									// Mod.Logger.Debug("RijamsMod: Small Glow Ring added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.SmallGlowRing>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
@@ -213,7 +203,7 @@ namespace RijamsMod
 					// Locked Golden Chest (2)
 					if (Main.tile[chest.x, chest.y].TileFrameX == 2 * 36)
 					{
-						//Mod.Logger.Debug("RijamsMod: Locked Golden Chest found at: " + chest.x + " " + chest.y);
+						// Mod.Logger.Debug("RijamsMod: Locked Golden Chest found at: " + chest.x + " " + chest.y);
 
 						// Again, seems common but is not.
 						// If there are 20 Locked Golden Chests in a large world, only 4 of them have the item.
@@ -223,7 +213,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Cobalt Protector Cudgel added.");
+									// Mod.Logger.Debug("RijamsMod: Cobalt Protector Cudgel added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Summon.Cudgels.CobaltProtectorCudgel>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
@@ -236,7 +226,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Stockade Crossbow added.");
+									// Mod.Logger.Debug("RijamsMod: Stockade Crossbow added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Ranged.StockadeCrossbow>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
@@ -249,7 +239,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Gold Chest.");
+									// Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Gold Chest.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Other.StumbleCard>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
@@ -265,7 +255,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Shadow Chest.");
+									// Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Shadow Chest.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Other.StumbleCard>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
@@ -281,7 +271,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Wild Bait added.");
+									// Mod.Logger.Debug("RijamsMod: Wild Bait added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Fishing.WildBait>());
 									chest.item[inventoryIndex].stack = WorldGen.genRand.Next(1, 4); // 1 to 3
 									break;
@@ -294,7 +284,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Trap Bobber added.");
+									// Mod.Logger.Debug("RijamsMod: Trap Bobber added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.TrapBobber>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
@@ -307,7 +297,7 @@ namespace RijamsMod
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
-									//Mod.Logger.Debug("RijamsMod: Spinner Bobber added.");
+									// Mod.Logger.Debug("RijamsMod: Spinner Bobber added.");
 									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Accessories.Misc.SpinnerBobber>());
 									chest.item[inventoryIndex].stack = 1;
 									break;

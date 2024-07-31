@@ -3,7 +3,6 @@ using System.ComponentModel;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 namespace RijamsMod
@@ -34,11 +33,22 @@ namespace RijamsMod
 		[DefaultValue(false)]
 		public bool CatchNPCs { get; set; }
 
+		[DefaultValue(SnowBallaGriefingOptions.DropAsItem)]
+		[DrawTicks]
+		public SnowBallaGriefingOptions SnowBallaGriefing { get; set; }
+
 		public enum ArmorOptions
 		{
 			All,
 			VanityOnly,
 			ArmorOnly,
+			Off
+		}
+
+		public enum SnowBallaGriefingOptions
+		{
+			On,
+			DropAsItem,
 			Off
 		}
 

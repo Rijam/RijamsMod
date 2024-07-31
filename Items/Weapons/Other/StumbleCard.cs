@@ -33,6 +33,7 @@ namespace RijamsMod.Items.Weapons.Other
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.HoldUp;
+			Item.holdStyle = ItemHoldStyleID.HoldHeavy;
 			Item.noMelee = true;
 			Item.useTurn = true;
 			Item.UseSound = SoundID.Item71 with { Pitch = -1f };
@@ -80,6 +81,12 @@ namespace RijamsMod.Items.Weapons.Other
 			{
 				player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
 			}
+		}
+
+		public override void HoldStyle(Player player, Rectangle heldItemFrame)
+		{
+			player.itemLocation.X += 4 * player.direction;
+			player.itemLocation.Y += heldItemFrame.Height;
 		}
 	}
 }

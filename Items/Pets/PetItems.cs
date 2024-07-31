@@ -71,6 +71,15 @@ namespace RijamsMod.Items.Pets
 				.AddIngredient(ItemID.SoulofFlight, 1)
 				.AddTile(TileID.WorkBenches)
 				.Register();
+			if (ModLoader.TryGetMod("SpiritMod", out Mod spiritMod) && spiritMod.TryFind<ModItem>("LumothItem", out ModItem lumoth))
+			{
+				CreateRecipe()
+					.AddIngredient(lumoth, 1)
+					.AddIngredient(ItemID.PixieDust, 1)
+					.AddIngredient(ItemID.SoulofFlight, 1)
+					.AddTile(TileID.WorkBenches)
+					.Register();
+			}
 		}
 	}
 	public class LEDLumothBulb : ModItem

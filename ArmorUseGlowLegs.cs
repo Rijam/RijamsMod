@@ -1,10 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.IO;
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using ReLogic.Content;
@@ -34,10 +31,7 @@ namespace RijamsMod
 		/// <br>ArmorHeadLegsOptions Effects is the special effect. This can be omitted and defaults to None.</br></param>
 		public static void RegisterData(int legSlot, ArmorHeadLegsOptions values)
 		{
-			if (!GlowListLegs.ContainsKey(legSlot))
-			{
-				GlowListLegs.Add(legSlot, values);
-			}
+			GlowListLegs.TryAdd(legSlot, values);
 		}
 
 		public override void Load()
@@ -79,7 +73,7 @@ namespace RijamsMod
 			{
 				return;
 			}
-			Asset<Texture2D> glowmask = ModContent.Request<Texture2D>(values.Texture);
+			Asset<Texture2D> glowmask = values.Texture;
 
 			int numTimesToDraw = 1;
 

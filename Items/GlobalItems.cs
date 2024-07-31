@@ -12,7 +12,6 @@ using System.Linq;
 using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Weapons.Ranged;
-using RijamsMod.Buffs.Potions;
 using static RijamsMod.RijamsModConfigServer;
 
 namespace RijamsMod.Items
@@ -150,27 +149,6 @@ namespace RijamsMod.Items
 				{
 					item.ResearchUnlockCount = 2;
 				}
-			}
-		}
-		public override void MeleeEffects(Item item, Player player, Rectangle hitbox)
-		{
-			RijamsModPlayer moddedplayer = player.GetModPlayer<RijamsModPlayer>();
-			if (moddedplayer.flaskBuff >= 1 && item.CountsAsClass(DamageClass.Melee) && !item.noMelee && !item.noUseGraphic && Main.rand.NextBool(2))
-			{
-				int dustType = DustID.Dirt;
-				if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
-				{
-					dustType = ModContent.DustType<Dusts.SulfurDust>();
-				}
-				if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
-				{
-					dustType = DustID.Asphalt;
-				}
-				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, dustType, player.velocity.X * 0.2f + (float)(player.direction * 3), player.velocity.Y * 0.2f, 100, default, 1f);
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].velocity *= 0.7f;
-				Main.dust[dust].velocity.Y -= 0.5f;
-				Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.1f);
 			}
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

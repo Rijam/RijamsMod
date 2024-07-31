@@ -14,7 +14,6 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Dungeon Bat");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.CaveBat]; //5
 		}
 
@@ -56,7 +55,7 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
-			//Copy the drops from the normal cave bat (Chain Knife and Depth Meter)
+			// Copy the drops from the normal cave bat (Chain Knife and Depth Meter)
 			var batDropRules = Main.ItemDropsDB.GetRulesForNPCID(NPCID.CaveBat, false); // false is important here
 			foreach (var batDropRule in batDropRules)
 			{
@@ -66,7 +65,7 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 5)); //20% chance
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) //would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
+		public override float SpawnChance(NPCSpawnInfo spawnInfo) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
 		{
 			return (spawnInfo.Player.ZoneDungeon) ? 0.03f : 0f;
 		}

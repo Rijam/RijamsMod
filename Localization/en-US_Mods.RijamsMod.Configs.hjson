@@ -102,15 +102,16 @@ RijamsModConfigServer: {
 	Headers.ServerOptions: "[c/00FF00:Server Options]"
 
 	VanillaVanityToArmor: {
-		Label: "[i:848]   Vanilla Vanity to Armor Changes"
+		Label: "[i:848]   Vanilla Vanity and Armor Changes"
 		Tooltip:
 			'''
-			This option toggles if certain vanilla vanity sets are changed into armor sets.
-			  When All: The follow vanity sets will be changed to armor.
+			This option toggles if certain vanilla vanity sets are changed into armor sets
+			and if certain vanilla armor sets are changed.
+			  When All: The follow vanity sets will be changed to armor and armor sets are changed.
 			  When Vanity Only: Only the vanity sets will be changed to armor.
 			  When Armor Only: Only the armor sets will be changed.
-			  When Off: None of the vanilla sets will be changed.
-			    Turn Off to keep them as vanity or for cross mod compatibility.
+			  When Off: Same as vanilla. None of the vanilla sets will be changed.
+			    Turn Off to keep them the same as vanilla or for cross mod compatibility.
 			* Pharaoh's Set
 			* Ancient Set
 			* Buffs to Stardust set bonus
@@ -161,6 +162,19 @@ RijamsModConfigServer: {
 			Requires a Reload.
 			'''
 	}
+
+	SnowBallaGriefing: {
+		Label: "[i:SnowBlock] Snow Balla Griefing"
+		Tooltip:
+			'''
+			This option toggles if the snowballs thrown by the Snow Balla will place snow blocks.
+			  When On: Same as vanilla. The snowballs will place snow block tiles.
+			  When Drop as Item: The snowballs will drop snow block items instead.
+			  When Off: The snowballs will not place nor drop anything.
+			    Turn Off if you don't want your world filled with snow blocks.
+			Default value: Drop as Item
+			'''
+	}
 }
 
 ArmorOptions: {
@@ -168,5 +182,12 @@ ArmorOptions: {
 	All.Label: All
 	VanityOnly.Label: Vanity Only
 	ArmorOnly.Label: Armor Only
+	Off.Label: Off
+}
+
+SnowBallaGriefingOptions: {
+	Tooltip: ""
+	On.Label: On
+	DropAsItem.Label: Drop as Item
 	Off.Label: Off
 }

@@ -1,13 +1,13 @@
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
 using Terraria.GameContent;
-using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
 using RijamsMod.EmoteBubbles;
@@ -43,15 +43,15 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Snugget");
-			Main.npcFrameCount[NPC.type] = 27;
-			NPCID.Sets.ExtraFramesCount[NPC.type] = 20;
-			NPCID.Sets.AttackFrameCount[NPC.type] = 0;
-			NPCID.Sets.DangerDetectRange[NPC.type] = 250;
-			NPCID.Sets.AttackType[NPC.type] = -1;
-			NPCID.Sets.AttackTime[NPC.type] = -1;
-			NPCID.Sets.AttackAverageChance[NPC.type] = 1;
-			NPCID.Sets.HatOffsetY[NPC.type] = 4;
-			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
+			Main.npcFrameCount[Type] = 27;
+			NPCID.Sets.ExtraFramesCount[Type] = 20;
+			NPCID.Sets.AttackFrameCount[Type] = 0;
+			NPCID.Sets.DangerDetectRange[Type] = 250;
+			NPCID.Sets.AttackType[Type] = -1;
+			NPCID.Sets.AttackTime[Type] = -1;
+			NPCID.Sets.AttackAverageChance[Type] = 1;
+			NPCID.Sets.HatOffsetY[Type] = 4;
+			NPCID.Sets.ShimmerTownTransform[Type] = true;
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Shimmer] = false;
 			NPCID.Sets.ExtraTextureCount[Type] = 0;
 			NPCID.Sets.NPCFramingGroup[Type] = 6;
@@ -72,6 +72,9 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			NPCProfile = new SnuggetPetProfile();
 
 			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<SnuggetEmote>();
+
+			NPCID.Sets.IsPetSmallForPetting[Type] = true;
+			NPCID.Sets.PlayerDistanceWhilePetting[Type] = 34;
 		}
 
 		public override void SetDefaults()
@@ -89,7 +92,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			NPC.knockBackResist = 0.5f;
 			NPC.housingCategory = 1;
 			AnimationType = NPCID.TownBunny;
-			Main.npcCatchable[NPC.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			Main.npcCatchable[Type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
 			NPC.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? ModContent.ItemType<Items.CaughtSnugget>() : -1;
 		}
 
@@ -252,13 +255,39 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 		{
 			return NPC.IsShimmerVariant ? Main.DiscoColor : Color.White; // variationType of 1 makes it shimmered, even when it isn't.
 		}
+
+		public override void EmoteBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+		{
+			spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+			position.X += NPC.width * 1.5f * NPC.spriteDirection;
+		}
+
+		// public override void ChatBubblePosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+		// {
+			// position.X += NPC.width * NPC.spriteDirection;
+		// }
+
+		public override void PartyHatPosition(ref Vector2 position, ref SpriteEffects spriteEffects)
+		{
+			position.X += 5 * NPC.spriteDirection;
+			position.Y += 2;
+		}
 	}
 
 	public class SnuggetPetProfile : ITownNPCProfile
 	{
-		private string Namespace => GetType().Namespace.Replace('.', '/');
-		private string NPCName => (GetType().Name.Split("Profile")[0]).Replace('.', '/');
-		private string FilePath => (Namespace + "/" + NPCName);
+		private static readonly string filePath = "RijamsMod/NPCs/TownNPCs/SnuggetPet/SnuggetPet";
+
+		private readonly Asset<Texture2D> variant0 = ModContent.Request<Texture2D>(filePath);
+		private readonly Asset<Texture2D> variant1 = ModContent.Request<Texture2D>($"{filePath}_1");
+		private readonly Asset<Texture2D> variant2 = ModContent.Request<Texture2D>($"{filePath}_2");
+		private readonly Asset<Texture2D> variant3 = ModContent.Request<Texture2D>($"{filePath}_3");
+		private readonly Asset<Texture2D> variant4 = ModContent.Request<Texture2D>($"{filePath}_4");
+		private readonly Asset<Texture2D> variant5 = ModContent.Request<Texture2D>($"{filePath}_5");
+		private readonly Asset<Texture2D> variant6 = ModContent.Request<Texture2D>($"{filePath}_6");
+		private readonly Asset<Texture2D> variant7 = ModContent.Request<Texture2D>($"{filePath}_7");
+		private readonly Asset<Texture2D> variant8 = ModContent.Request<Texture2D>($"{filePath}_8");
+		private readonly int headIndex0 = ModContent.GetModHeadSlot($"{filePath}_Head");
 
 		public int RollVariation()
 		{
@@ -274,15 +303,27 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
-			return ModContent.Request<Texture2D>(FilePath + "_" + npc.townNpcVariationIndex);
+			return npc.townNpcVariationIndex switch
+			{
+				0 => variant0,
+				1 => variant1, // Shimmered
+				2 => variant2,
+				3 => variant3,
+				4 => variant4,
+				5 => variant5,
+				6 => variant6,
+				7 => variant7,
+				8 => variant8,
+				_ => variant0
+			};
 		}
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
 			return npc.townNpcVariationIndex switch
 			{
-				0 => ModContent.GetModHeadSlot(FilePath + "_Head"),
-				1 => SnuggetPet.HeadIndex1, // Shimmered?
+				0 => headIndex0,
+				1 => SnuggetPet.HeadIndex1, // Shimmered
 				2 => SnuggetPet.HeadIndex2,
 				3 => SnuggetPet.HeadIndex3,
 				4 => SnuggetPet.HeadIndex4,
@@ -290,7 +331,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 				6 => SnuggetPet.HeadIndex6,
 				7 => SnuggetPet.HeadIndex7,
 				8 => SnuggetPet.HeadIndex8,
-				_ => ModContent.GetModHeadSlot(FilePath + "_Head")
+				_ => headIndex0
 			};
 		}
 	}

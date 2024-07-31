@@ -1,21 +1,20 @@
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using RijamsMod.Items;
-using RijamsMod.Items.Accessories.Movement;
-using RijamsMod.Projectiles.Magic;
 using Terraria.GameContent;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
-using RijamsMod.Items.Placeable;
 using Terraria.GameContent.Drawing;
-using Microsoft.Xna.Framework;
 using RijamsMod.EmoteBubbles;
+using RijamsMod.Items.Placeable;
+using RijamsMod.Items.Accessories.Movement;
+using RijamsMod.Projectiles.Magic;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -218,14 +217,13 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
 
-			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
-			NPCHelper.GetNearbyResidentNPCs(Main.npc[harpy], 1, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
+			NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.whoAmI], 1, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
 
 			chat.Add("Don't attack, please!");
 			chat.Add("Friends? I am friendly.");
 			chat.Add("I think I am different...");
 			chat.Add("Buy items from me?");
-			chat.Add("Hi, I'm " + Main.npc[harpy].GivenName + ".");
+			chat.Add("Hi, I'm " + Main.npc[NPC.whoAmI].GivenName + ".");
 			chat.Add("Flying is fun and all, but I sometimes wish I had hands.");
 			chat.Add("Hm? Chicken Nuggets?", 0.5);
 			
@@ -274,9 +272,9 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("That's so cool! You made a banner just for me?", 5.0);
 			}
-			if ((Main.LocalPlayer.HasItem(ItemID.TallyCounter) || Main.LocalPlayer.HasItem(ItemID.REK) || Main.LocalPlayer.HasItem(ItemID.PDA) || Main.LocalPlayer.HasItem(ItemID.CellPhone)) && Main.player[Main.myPlayer].lastCreatureHit == Item.NPCtoBanner(NPCID.Harpy))
-			//The player has the Tally Counter, R.E.K. 3000, PDA, or Cellphone in their inventory. The last enemy they hit was a Harpy and the kill count for Harpies is more than 0.
-			//Item.NPCtoBanner(NPCID.Harpy) == 44
+			if (Main.LocalPlayer.accJarOfSouls && Main.player[Main.myPlayer].lastCreatureHit == Item.NPCtoBanner(NPCID.Harpy))
+			// The player has the Tally Counter, R.E.K. 3000, PDA, Cellphone, or Shellphone in their inventory. The last enemy they hit was a Harpy and the kill count for Harpies is more than 0.
+			// Item.NPCtoBanner(NPCID.Harpy) == 44
 			{
 				if (NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] > 0)
 				{
@@ -512,25 +510,31 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
+		private Asset<Texture2D> justRescuedShimmered;
+		private Asset<Texture2D> justRescued;
+		private Asset<Texture2D> shimmered;
+		private Asset<Texture2D> shimmeredParty;
+		private Asset<Texture2D> normal;
+
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
 			if (RijamsModWorld.harpyJustRescued > 0)
 			{
 				if (npc.IsShimmerVariant)
 				{
-					return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Alt");
+					return justRescuedShimmered ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Alt");
 				}
-				return ModContent.Request<Texture2D>(Path + "_Alt");
+				return justRescued ??= ModContent.Request<Texture2D>(Path + "_Alt");
 			}
 			if (npc.IsShimmerVariant && npc.altTexture != 1)
 			{
-				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
+				return shimmered ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
 			}
 			if (npc.IsShimmerVariant && npc.altTexture == 1)
 			{
-				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Hatless");
+				return shimmeredParty ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Hatless");
 			}
-			return ModContent.Request<Texture2D>(Path);
+			return normal ??= ModContent.Request<Texture2D>(Path);
 		}
 
 		public int GetHeadTextureIndex(NPC npc)

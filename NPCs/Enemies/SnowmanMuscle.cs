@@ -12,8 +12,6 @@ namespace RijamsMod.NPCs.Enemies
 {
 	class SnowmanMuscle : ModNPC
 	{
-		//public override string Texture => "Terraria/NPC_" + NPCID.GreekSkeleton;
-
 		public override void SetStaticDefaults()
 		{
 			NPCID.Sets.BelongsToInvasionFrostLegion[NPC.type] = true; // Make it count towards Frost Legion for music playback and invasion progress
@@ -86,82 +84,77 @@ namespace RijamsMod.NPCs.Enemies
 			}*/
 		}
 
-		//AI copied from the Snowman Gangsta
+		// AI copied from the Snowman Gangsta
 
 		public override void AI()
 		{
 			float speed = 2f;
-			float num526 = 0.6f;
-			if (true)
+			float movementSpeedX = 0.6f;
+
+			NPC.ai[2] += 1f;
+			if (NPC.ai[2] >= 180f)
 			{
-				NPC.ai[2] += 1f;
-				if (NPC.ai[2] >= 180f)
+				NPC.ai[2] = 0f;
+				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
-					NPC.ai[2] = 0f;
-					if (Main.netMode != NetmodeID.MultiplayerClient)
+					Vector2 projectileVector = new(NPC.position.X + (float)NPC.width * 0.5f - (float)(NPC.direction * 12), NPC.position.Y + (float)NPC.height * 0.5f);
+					float speedX = Main.player[NPC.target].position.X + (float)Main.player[NPC.target].width * 0.5f - projectileVector.X;
+					float speedY = Main.player[NPC.target].position.Y + (float)Main.player[NPC.target].height * 0.5f - projectileVector.Y;
+					float sqrtX2Y2 = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
+					NPC.netUpdate = true;
+					sqrtX2Y2 = 9f / sqrtX2Y2;
+					speedX *= sqrtX2Y2;
+					speedY *= sqrtX2Y2;
+					projectileVector.X += speedX;
+					projectileVector.Y += speedY;
+
+					NPC.FaceTarget();
+					int projectileDamage = 15;
+					int projectileType = ProjectileID.BulletSnowman;
+					SoundEngine.PlaySound(SoundID.Item36, NPC.position);
+					for (int i=0; i < 3; i++)
 					{
-						Vector2 projectileVector = new(NPC.position.X + (float)NPC.width * 0.5f - (float)(NPC.direction * 12), NPC.position.Y + (float)NPC.height * 0.5f);
-						float speedX = Main.player[NPC.target].position.X + (float)Main.player[NPC.target].width * 0.5f - projectileVector.X;
-						float speedY = Main.player[NPC.target].position.Y + (float)Main.player[NPC.target].height * 0.5f - projectileVector.Y;
-						float sqrtX2Y2 = (float)Math.Sqrt(speedX * speedX + speedY * speedY);
+						int newProjectile = Projectile.NewProjectile(Entity.GetSource_FromAI(), projectileVector.X, projectileVector.Y, speedX, speedY, projectileType, projectileDamage, 0.5f, Main.myPlayer);
+						Main.projectile[newProjectile].ai[0] = 2f;
+						Main.projectile[newProjectile].timeLeft = 300;
+						Main.projectile[newProjectile].friendly = false;
+						NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, newProjectile);
 						NPC.netUpdate = true;
-						sqrtX2Y2 = 9f / sqrtX2Y2;
-						speedX *= sqrtX2Y2;
-						speedY *= sqrtX2Y2;
-						projectileVector.X += speedX;
-						projectileVector.Y += speedY;
-						if (Main.netMode != NetmodeID.MultiplayerClient)
-						{
-							NPC.FaceTarget();
-							int projectileDamage = 15;
-							int projectileType = ProjectileID.BulletSnowman;
-							SoundEngine.PlaySound(SoundID.Item36, NPC.position);
-							for (int i=0; i < 3; i++)
-							{
-								int newProjectile = Projectile.NewProjectile(Entity.GetSource_FromAI(), projectileVector.X, projectileVector.Y, speedX, speedY, projectileType, projectileDamage, 0.5f, Main.myPlayer);
-								Main.projectile[newProjectile].ai[0] = 2f;
-								Main.projectile[newProjectile].timeLeft = 300;
-								Main.projectile[newProjectile].friendly = false;
-								NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, newProjectile);
-								NPC.netUpdate = true;
-								speedY += Main.rand.Next(-60, 60) * sqrtX2Y2;
-								speedX += Main.rand.Next(-20, 20) * sqrtX2Y2;
-							}
-						}
+						speedY += Main.rand.Next(-60, 60) * sqrtX2Y2;
+						speedX += Main.rand.Next(-20, 20) * sqrtX2Y2;
 					}
 				}
 			}
-			if (true)
+
+			if (NPC.velocity.Y == 0f)
 			{
-				if (NPC.velocity.Y == 0f)
+				if (NPC.localAI[2] == NPC.position.X)
 				{
-					if (NPC.localAI[2] == NPC.position.X)
-					{
-						NPC.direction *= -1;
-						NPC.ai[3] = 60f;
-					}
-					NPC.localAI[2] = NPC.position.X;
-					if (NPC.ai[3] == 0f)
-					{
-						NPC.TargetClosest();
-					}
-					NPC.ai[0] += 1f;
-					if (NPC.ai[0] > 2f)
-					{
-						NPC.ai[0] = 0f;
-						NPC.ai[1] += 1f;
-						NPC.velocity.Y = -8.2f;
-						NPC.velocity.X += (float)NPC.direction * num526 * 1.1f;
-					}
-					else
-					{
-						NPC.velocity.Y = -6f;
-						NPC.velocity.X += (float)NPC.direction * num526 * 0.9f;
-					}
-					NPC.spriteDirection = NPC.direction;
+					NPC.direction *= -1;
+					NPC.ai[3] = 60f;
 				}
-				NPC.velocity.X += (float)NPC.direction * num526 * 0.01f;
+				NPC.localAI[2] = NPC.position.X;
+				if (NPC.ai[3] == 0f)
+				{
+					NPC.TargetClosest();
+				}
+				NPC.ai[0] += 1f;
+				if (NPC.ai[0] > 2f)
+				{
+					NPC.ai[0] = 0f;
+					NPC.ai[1] += 1f;
+					NPC.velocity.Y = -8.2f;
+					NPC.velocity.X += (float)NPC.direction * movementSpeedX * 1.1f;
+				}
+				else
+				{
+					NPC.velocity.Y = -6f;
+					NPC.velocity.X += (float)NPC.direction * movementSpeedX * 0.9f;
+				}
+				NPC.spriteDirection = NPC.direction;
 			}
+			NPC.velocity.X += (float)NPC.direction * movementSpeedX * 0.01f;
+
 			if (NPC.ai[3] > 0f)
 			{
 				NPC.ai[3] -= 1f;
@@ -182,10 +175,7 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				return SpawnCondition.FrostLegion.Chance * 0.2f;
 			}
-			else
-			{
-				return 0;
-			}
+			return 0;
 		}
 	}
 }

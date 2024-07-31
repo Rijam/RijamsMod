@@ -93,7 +93,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			if (SpawnCondition.FrostLegion.Active)
 			{
-				return SpawnCondition.FrostLegion.Chance * 0.1f;
+				return SpawnCondition.FrostLegion.Chance * 0.15f;
 			}
 			return 0;
 		}
@@ -111,25 +111,25 @@ namespace RijamsMod.NPCs.Enemies
 		}
 
 		public ref float AIState => ref NPC.ai[1];
-		//0 == idle
-		//1 == alert
-		//2 == attack
+		// 0 == idle
+		// 1 == alert
+		// 2 == attack
 
-		
 		public override void AI()
 		{
 			NPC.ai[0]++;
-			//Main.NewText("npc.ai[0] " + npc.ai[0]);
-			//Main.NewText("AIState " + AIState);
+			// Main.NewText("npc.ai[0] " + npc.ai[0]);
+			// Main.NewText("AIState " + AIState);
 
-			float requiredDistance = Main.expertMode ? 1300f : 1000f;
+			float requiredDistance = Main.expertMode ? 1200f : 800f;
 
-			if (AIState == 0) //idle
+			if (AIState == 0) // idle
 			{
 				NPC.TargetClosest();
 				NPC.FaceTarget();
 				bool lineOfSight = Collision.CanHitLine(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height);
 				float distance = Math.Abs(NPC.Center.X - Main.player[NPC.target].Center.X) + Math.Abs(NPC.Center.Y - Main.player[NPC.target].Center.Y);
+				// Can attack the player
 				if (NPC.ai[0] >= 30 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= requiredDistance && lineOfSight)
 				{
 					NPC.ai[0] = 0;
@@ -137,34 +137,51 @@ namespace RijamsMod.NPCs.Enemies
 					AIState = 1;
 					NPC.netUpdate = true;
 				}
+				// Too far away from the player. Move forward very slowly.
+				else if (distance > requiredDistance)
+				{
+					float acceleration = Main.getGoodWorld ? 1.1f : Main.expertMode ? 0.105f : 0.1f;
+					NPC.velocity.X += acceleration * NPC.direction;
+					Dust dust = Dust.NewDustDirect(new Vector2(NPC.position.X, NPC.position.Y + (NPC.height * 0.9f)), NPC.width, 1, DustID.Snow, SpeedX: NPC.velocity.X, SpeedY: 0);
+					dust.noGravity = true;
+
+					// Step up single tiles and half tiles.
+					Collision.StepUp(ref NPC.position, ref NPC.velocity, NPC.width, NPC.height, ref NPC.stepSpeed, ref NPC.gfxOffY);
+				}
+				// Doesn't take any damage while idle.
 				NPC.immortal = true;
-				NPC.reflectsProjectiles = true;
-				NPC.dontTakeDamage = false;
+				// NPC.reflectsProjectiles = true;
+				NPC.dontTakeDamage = true; // Needs to be false or the projectiles won't reflect. But then you still see the damage numbers even though the NPC takes no damage.
+				NPC.DiscourageDespawn(60);
 			}
-			else if (AIState == 1) //alert
+			else if (AIState == 1) // alert
 			{
 				NPC.FaceTarget();
 				float distance = Math.Abs(NPC.Center.X - Main.player[NPC.target].Center.X) + Math.Abs(NPC.Center.Y - Main.player[NPC.target].Center.Y);
+				// Can attack the player
 				if (NPC.ai[0] == 80 && NPC.HasValidTarget && Main.netMode != NetmodeID.Server && distance <= requiredDistance)
 				{
 					NPC.ai[0] = 0;
 					NPC.frameCounter = 0;
-					AIState = 2;
+					AIState = 2; // attack
 					NPC.netUpdate = true;
 				}
+				// Can't attack the player, go back to idling.
 				else if (NPC.ai[0] > 80 || distance > requiredDistance)
 				{
 					NPC.ai[0] = 0;
-					AIState = 0;
+					AIState = 0; // idle
 					NPC.netUpdate = true;
 				}
+				// Can take damage while creating a snowball
 				NPC.immortal = false;
-				NPC.reflectsProjectiles = false;
+				// NPC.reflectsProjectiles = false;
 				NPC.dontTakeDamage = false;
 			}
-			else if (AIState == 2) //attack
+			else if (AIState == 2) // attack
 			{
 				NPC.FaceTarget();
+				// Wait 20 ticks before the projectile is created.
 				if (NPC.ai[0] == 20)
 				{
 					Vector2 velocityForProj = NPC.Center;
@@ -187,28 +204,30 @@ namespace RijamsMod.NPCs.Enemies
 						Projectile.NewProjectile(Entity.GetSource_FromAI(), velocityForProj, new Vector2(projSpeedX, projSpeedY), projType, projDamage, 4f, Main.myPlayer);
 					}
 				}
+				// Wait 20 ticks after the projectile has been created. Go back to idling.
 				if (NPC.ai[0] >= 40)
 				{
 					NPC.ai[0] = 0;
-					AIState = 0;
+					AIState = 0; // idle
 					NPC.netUpdate = true;
 				}
+				// Can take damage while throwing snowball
 				NPC.immortal = false;
-				NPC.reflectsProjectiles = false;
+				// NPC.reflectsProjectiles = false;
 				NPC.dontTakeDamage = false;
 			}
 			else
 			{
-				AIState = 0;
+				AIState = 0; // idle
 				NPC.netUpdate = true;
 			}
 		}
 
 
-		//Animations
-		//0-3 idle
-		//4-7 alert
-		//8-11 attack
+		// Animations
+		// 0-3 idle
+		// 4-7 alert
+		// 8-11 attack
 		private const int Frame_Idle1 = 0;
 		private const int Frame_Idle2 = 1;
 		private const int Frame_Idle3 = 2;
@@ -225,7 +244,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override void FindFrame(int frameHeight)
 		{
 			NPC.frameCounter++;
-			if (AIState == 0) //idle
+			if (AIState == 0) // idle
 			{
 				if (NPC.frameCounter < 10)
 				{
@@ -248,7 +267,7 @@ namespace RijamsMod.NPCs.Enemies
 					NPC.frameCounter = 0;
 				}
 			}
-			else if (AIState == 1) //alert
+			else if (AIState == 1) // alert
 			{
 				if (NPC.frameCounter < 10)
 				{
@@ -271,7 +290,7 @@ namespace RijamsMod.NPCs.Enemies
 					NPC.frameCounter = 0;
 				}
 			}
-			else if (AIState == 2) //attack
+			else if (AIState == 2) // attack
 			{
 				if (NPC.frameCounter < 10)
 				{

@@ -1,6 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Utilities;
 using System;
 using System.Linq;
 using Terraria;
@@ -8,7 +6,6 @@ using Terraria.Audio;
 using Terraria.Graphics.Capture;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace RijamsMod.Items.Tools
 {

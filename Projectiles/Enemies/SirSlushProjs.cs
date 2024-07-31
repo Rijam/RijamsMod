@@ -48,7 +48,7 @@ namespace RijamsMod.Projectiles.Enemies
         {
 			Projectile.rotation += 0.4f * (float)Projectile.direction;
 			Projectile.ai[0]++;
-			if (Projectile.ai[0] >= 20f)
+			if (Projectile.ai[0] >= (Main.expertMode ? 40f : 20f))
 			{
 				Projectile.ai[0] = 120f;
 				Projectile.velocity.Y += 0.1f;

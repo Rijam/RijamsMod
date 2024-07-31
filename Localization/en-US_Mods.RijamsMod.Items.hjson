@@ -88,6 +88,7 @@ CosmicSorcery: {
 		+15% Magic damage
 		+10% Magic Critical Strike chance
 		+20 Max Mana
+		-8% Mana Cost
 		Increased mana regeneration rate
 		Increases pickup range for mana stars
 		Restores mana when damage
@@ -204,7 +205,11 @@ FireBreathingPack: {
 
 LargeGlowRing: {
 	DisplayName: Large Glow Ring
-	Tooltip: Emits a large amount of light
+	Tooltip:
+		'''
+		Emits a large amount of light
+		Works in the vanity slot, but is a quarter as effective
+		'''
 }
 
 LegionScarf: {
@@ -248,9 +253,22 @@ MasterBuilderPack: {
 		'''
 }
 
+MediumGlowRing: {
+	DisplayName: Medium Glow Ring
+	Tooltip:
+		'''
+		Emits a medium amount of light
+		Works in the vanity slot, but is a quarter as effective
+		'''
+}
+
 SmallGlowRing: {
 	DisplayName: Small Glow Ring
-	Tooltip: Emits a small amount of light
+	Tooltip:
+		'''
+		Emits a small amount of light
+		Works in the vanity slot, but is a quarter as effective
+		'''
 }
 
 WarriorRing: {
@@ -1507,7 +1525,7 @@ HammerOfRetribution: {
 		Much more powerful when combined with mana:
 		  Throws a long range projectile
 		  Weapon does double damage
-		  Uses 20 mana
+		  Uses {0} mana
 		'''
 }
 
@@ -1532,7 +1550,7 @@ Quietus: {
 		Much more powerful when combined with mana:
 		  Throws multiple long range projectiles
 		  Weapon does double damage
-		  Uses 20 mana
+		  Uses {0} mana
 		'Not to be confused with the Whisper's Edge'
 		'''
 }
@@ -1563,7 +1581,7 @@ TimonsAxe: {
 		Much more powerful when combined with mana:
 		  Has a swinging aura
 		  Weapon does double damage
-		  Uses 20 mana
+		  Uses {0} mana
 		'''
 }
 
@@ -1746,6 +1764,7 @@ SulfurRocket: {
 		'''
 		Goes through tiles
 		Inflicts Sulfuric Acid
+		Medium blast radius. Will not destroy tiles
 		'''
 }
 

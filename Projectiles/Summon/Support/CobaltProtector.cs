@@ -18,7 +18,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Cobalt Protector");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 8;
 			// This is necessary for right-click targeting

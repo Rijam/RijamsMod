@@ -1,7 +1,6 @@
-using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Ranged.Ammo
@@ -10,7 +9,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.RocketI"));
 			AmmoID.Sets.IsSpecialist[Type] = true;
 
 			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ItemID.RocketLauncher].Add(Type, ProjectileID.RocketI);
@@ -29,7 +27,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 			Item.consumable = false;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.value = 100000;
 			Item.rare = ItemRarityID.Green;
-			//Item.shoot = ProjectileID.RocketI;   //The projectile shoot when your weapon using this ammo
+			Item.shoot = ProjectileID.RocketI;   //The projectile shoot when your weapon using this ammo
 			Item.ammo = AmmoID.Rocket;				//The ammo class this ammo belongs to.
 		}
 
@@ -70,7 +68,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.RocketI"));
 			AmmoID.Sets.IsSpecialist[Type] = true;
 
 			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches[ItemID.RocketLauncher].Add(Type, ModContent.ProjectileType<Projectiles.Ranged.SulfurRocket>());
@@ -85,7 +82,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 
 		public override void SetDefaults()
 		{
-			//Item.shoot = ModContent.ProjectileType<Projectiles.Ranged.SulfurRocket>();
+			// Item.shoot = ModContent.ProjectileType<Projectiles.Ranged.SulfurRocket>();
 			Item.damage = 50;
 			Item.width = 20;
 			Item.height = 14;

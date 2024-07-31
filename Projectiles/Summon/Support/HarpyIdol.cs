@@ -15,7 +15,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Harpy Idol");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 6;
 			// This is necessary for right-click targeting

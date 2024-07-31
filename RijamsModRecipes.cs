@@ -1,9 +1,8 @@
-using RijamsMod.Items;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using System.Linq;
+using RijamsMod.Items;
 
 namespace RijamsMod
 {
@@ -185,9 +184,9 @@ namespace RijamsMod
 			});
 			RecipeGroup.RegisterGroup(Counterweights, group);
 
-			if (RecipeGroup.recipeGroupIDs.ContainsKey("Fruit"))
+			if (RecipeGroup.recipeGroupIDs.TryGetValue("Fruit", out int value))
 			{
-				int index = RecipeGroup.recipeGroupIDs["Fruit"];
+				int index = value;
 				RecipeGroup vanillaGroup = RecipeGroup.recipeGroups[index];
 				vanillaGroup.ValidItems.Add(ItemID.BlueBerries);
 			}

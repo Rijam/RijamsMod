@@ -3,19 +3,16 @@ using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using RijamsMod.Items;
-using RijamsMod.Items.Weapons;
+using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Weapons.Melee;
 using RijamsMod.Items.Weapons.Ranged;
 using RijamsMod.Items.Weapons.Summon.Whips;
 using RijamsMod.Items.Weapons.Summon.Minions;
 using RijamsMod.Items.Weapons.Summon.Cudgels;
-using RijamsMod.Items.Accessories;
 using RijamsMod.Items.Accessories.Defense;
 using RijamsMod.Items.Accessories.Misc;
 using RijamsMod.Items.Accessories.Vanity;
 using RijamsMod.Items.Materials;
-using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Pets;
 using RijamsMod.Buffs.Potions;
 using RijamsMod.NPCs;
@@ -77,13 +74,17 @@ namespace RijamsMod
 			}
 			if (npc.type == NPCID.ChaosElemental || npc.type == NPCID.EnchantedSword)
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.TeleportationCore>(), 20));
+				// Decrease the drop chance after the quest has been completed.
+				LeadingConditionRule questComplete = new(ShopConditions.IntTravQuestTPCore.ToDropCondition(ShowItemDropInUI.Always));
+				questComplete.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<TeleportationCore>(), 20));
+				questComplete.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TeleportationCore>(), 40));
+				npcLoot.Add(questComplete);
 			}
-			if (ModLoader.TryGetMod("Consolaria", out Mod consolaria)) //Consolaria's Spectral Elemental can also drop it
+			if (ModLoader.TryGetMod("Consolaria", out Mod consolaria)) // Consolaria's Spectral Elemental can also drop it
 			{
 				if (consolaria.TryFind<ModNPC>("SpectralElemental", out ModNPC spectralElemental) && npc.type == spectralElemental.Type)
 				{
-					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Quest.TeleportationCore>(), 20));
+					npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TeleportationCore>(), 20));
 				}
 			}
 			if (npc.type == NPCID.Crimera)
@@ -197,106 +198,6 @@ namespace RijamsMod
 			if (npc.type == NPCID.BrainofCthulhu)
 			{
 				npcLoot.Add(ItemDropRule.ByCondition(ShopConditions.NotIntTravMovedIn.ToDropCondition(ShowItemDropInUI.Never), ModContent.ItemType<OddDevice>()));
-			}
-		}
-
-		public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
-		{
-			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
-			if (projectile != null)
-			{
-				if (moddedplayer.daybreakStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.CountsAsClass(DamageClass.Melee))
-				{
-					//Same chances as Magma Stone, but half duration
-					if (Main.rand.Next(8) <= 2)
-					{
-						npc.AddBuff(BuffID.Daybreak, 180);
-					}
-					else if (Main.rand.Next(8) <= 3)
-					{
-						npc.AddBuff(BuffID.Daybreak, 120);
-					}
-					else if (Main.rand.Next(8) <= 3)
-					{
-						npc.AddBuff(BuffID.Daybreak, 60);
-					}
-				}
-				if (moddedplayer.frostburnStone && projectile.owner == Main.LocalPlayer.whoAmI && projectile.CountsAsClass(DamageClass.Melee))
-				{
-					//Same chances as Magma Stone, but half duration
-					if (Main.rand.Next(8) <= 2)
-					{
-						npc.AddBuff(BuffID.Frostburn2, 360);
-					}
-					else if (Main.rand.Next(8) <= 3)
-					{
-						npc.AddBuff(BuffID.Frostburn2, 240);
-					}
-					else if (Main.rand.Next(8) <= 3)
-					{
-						npc.AddBuff(BuffID.Frostburn2, 120);
-					}
-				}
-				if (projectile.owner == Main.LocalPlayer.whoAmI && (projectile.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[projectile.type]))
-				{
-					if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
-					{
-						npc.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
-					}
-					if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
-					{
-						npc.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
-					}
-				}
-			}
-		}
-		public override void OnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
-		{
-			RijamsModPlayer moddedplayer = Main.LocalPlayer.GetModPlayer<RijamsModPlayer>();
-			if (moddedplayer.daybreakStone && item.playerIndexTheItemIsReservedFor == player.whoAmI && item.CountsAsClass(DamageClass.Melee))
-			{
-				//Same chances as Magma Stone, but half duration
-				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
-				if (dayBreakStoneRand <= 1)//0 or 1
-				{
-					npc.AddBuff(BuffID.Daybreak, 180);
-				}
-				else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
-				{
-					npc.AddBuff(BuffID.Daybreak, 120);
-				}
-				else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
-				{
-					npc.AddBuff(BuffID.Daybreak, 60);
-				}
-			}
-			if (moddedplayer.frostburnStone && item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && item.CountsAsClass(DamageClass.Melee))
-			{
-				//Same chances as Magma Stone
-				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
-				if (dayBreakStoneRand <= 1)//0 or 1
-				{
-					npc.AddBuff(BuffID.Frostburn2, 360);
-				}
-				else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
-				{
-					npc.AddBuff(BuffID.Frostburn2, 240);
-				}
-				else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
-				{
-					npc.AddBuff(BuffID.Frostburn2, 120);
-				}
-			}
-			if (item.playerIndexTheItemIsReservedFor == Main.LocalPlayer.whoAmI && (item.CountsAsClass(DamageClass.Melee) || ProjectileID.Sets.IsAWhip[item.shoot]))
-			{
-				if (moddedplayer.flaskBuff == FlaskIDs.SulfuricAcid)
-				{
-					npc.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
-				}
-				if (moddedplayer.flaskBuff == FlaskIDs.Oiled)
-				{
-					npc.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
-				}
 			}
 		}
 

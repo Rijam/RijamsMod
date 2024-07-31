@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using RijamsMod.Items.Placeable;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;

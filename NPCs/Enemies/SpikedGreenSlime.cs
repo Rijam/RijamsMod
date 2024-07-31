@@ -12,7 +12,6 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Spiked Green Slime");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SlimeSpiked];
 		}
 
@@ -21,14 +20,11 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.CloneDefaults(NPCID.SlimeSpiked);
 			NPC.damage = 40;
 			NPC.defense = 6;
-			NPC.lifeMax = NPC.downedPlantBoss ? 300 : 200; //Doubled in Expert Mode
+			NPC.lifeMax = NPC.downedPlantBoss ? 300 : 200; // Doubled in Expert Mode
 			NPC.value = NPC.downedPlantBoss ? 400 : 200;
 			NPC.knockBackResist = 0.1f;
 			NPC.aiStyle = -1;
-			//AIType = NPCID.SlimeSpiked;
 			AnimationType = NPCID.SlimeSpiked;
-			//banner = Item.NPCtoBanner(NPCID.GreenSlime);
-			//bannerItem = Item.BannerToItem(banner);
 			NPC.npcSlots = 0.5f;
 		}
 
@@ -226,7 +222,6 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 2, 1, 4));
 		}
-
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{

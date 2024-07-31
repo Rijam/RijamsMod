@@ -1,18 +1,15 @@
 using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
-using Terraria.GameContent.Events;
-using Terraria.Net;
 using System;
-using Terraria.Graphics;
-using Terraria.Map;
 using Microsoft.Xna.Framework;
+using static RijamsMod.RijamsModConfigServer;
 
 namespace RijamsMod.NPCs
 {
 	public class FrostLegionGlobalNPC : GlobalNPC
 	{
-
+		// Loot set in RijamsModNPCs.cs
 	}
 
 	public class FrostLegionSystem : ModSystem
@@ -127,6 +124,31 @@ namespace RijamsMod.NPCs
 				}
 				catch
 				{
+				}
+			}
+		}
+	}
+
+	public class SnowBallHostileGlobalProjectile : GlobalProjectile
+	{
+		public override void SetDefaults(Projectile entity)
+		{
+			// Config is set to DropAsItem or Off
+			if (ModContent.GetInstance<RijamsModConfigServer>().SnowBallaGriefing >= SnowBallaGriefingOptions.DropAsItem && entity.type == ProjectileID.SnowBallHostile)
+			{
+				entity.noDropItem = true;
+			}
+		}
+		public override void OnKill(Projectile projectile, int timeLeft)
+		{
+			if (ModContent.GetInstance<RijamsModConfigServer>().SnowBallaGriefing == SnowBallaGriefingOptions.DropAsItem && projectile.type == ProjectileID.SnowBallHostile)
+			{
+				int newItem = Item.NewItem(projectile.GetSource_DropAsItem(), projectile.Hitbox, ItemID.SnowBlock);
+
+				// Here we need to make sure the item is synced in multiplayer games.
+				if (Main.netMode == NetmodeID.MultiplayerClient && newItem >= 0)
+				{
+					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, newItem, 1f);
 				}
 			}
 		}

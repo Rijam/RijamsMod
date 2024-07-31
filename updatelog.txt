@@ -256,3 +256,25 @@
 	* Added Curiosity Lure, Trap Bobber, and Spinner Bobber.
 	* Added Stumble summon & magic weapon. Found in the Dungeon or Shadow chests.
 	* Upgraded to .NET 8
+
+1.2.7.0 - (? ?, 2024)
+	* Sir Slush now has the ability to slowly move towards the player.
+	* Slightly reduced the distance Sir Slush can target the player.
+	* Sir Slush's snowballs wait longer before applying gravity and drag in Expert Mode.
+	* Sir Slush no longer reflects projectiles.
+	* New server config to stop Snow Balla's snowballs from placing snow blocks.
+	* Renamed "Vanilla Vanity to Armor Changes" config to "Vanilla Vanity and Armor Changes" and updated the description to better match what it does.
+	* Dark Soldier now moves faster.
+	* Dark Soldier drops fewer coins (60 silver in normal mode -> 50 silver).
+	* Dark Soldier has less HP (200 -> 160 in normal mode).
+	* Dark Soldier is no longer afraid of the surface or daytime.
+	* Dark Soldier can now actually open doors during Blood Moons or Solar Eclipses.
+	* Updated the Snugget Town Pet with the new petting, emote bubble, and party hat position features.
+	* Updated Sulfur Rockets and AGM Missile Launcher with the new rocket features.
+	* Updated the logic of the Flask of Sulfur, Flask of Oil, Daybreak Stone, and frostburn stone items.
+	* Buffed the light from the Large Glow Ring and Lumoth light pet.
+	* Added Medium Glow Ring.
+	* The Small Glow Ring, Medium Glow Ring, and Large Glow Ring now emit light while in vanity slots, but at 1/4 effectiveness.
+	* Cosmic Sorcery now grants -8% mana cost just like the Mana Flower.
+	* Redid the Red Harpy Wings' animations. Now has custom drawing and 7 frames of animation.
+	* The mana cost tooltip for the Timon's Axe, Hammer of Retribution, and Quietus now takes into account the player's mana cost multiplier.

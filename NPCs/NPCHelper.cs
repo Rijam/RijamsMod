@@ -294,18 +294,6 @@ namespace RijamsMod.NPCs
 		}
 
 		/// <summary>
-		/// Returns true if all mechanical bosses have been defeated.
-		/// </summary>
-		public static bool DownedMechBossAll()
-		{
-			if (NPC.downedMechBoss1 && NPC.downedBoss2 && NPC.downedBoss3)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		/// <summary>
 		/// Safely returns the integer of the ModItem from the given mod.
 		/// </summary>
 		/// <param name="mod">The mod that the item is from.</param>

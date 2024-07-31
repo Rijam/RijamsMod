@@ -14,8 +14,7 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Skeleton Crossbower");
-			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.GoblinArcher]; //21
+			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.GoblinArcher]; // 21
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
@@ -56,10 +55,10 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void OnKill()
 		{
-			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 16, 0), NPC.velocity, 42, 1f); //Skeleton head gore
-			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * -16, 0), NPC.velocity, 43, 1f); //Skeleton arm gore
-			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 43, 1f); //Skeleton arm gore
-			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 44, 1f); //Skeleton leg gore
+			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 16, 0), NPC.velocity, 42, 1f); // Skeleton head gore
+			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * -16, 0), NPC.velocity, 43, 1f); // Skeleton arm gore
+			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 43, 1f); // Skeleton arm gore
+			Gore.NewGore(Entity.GetSource_Death(), NPC.Center + new Vector2(NPC.spriteDirection * 8, 0), NPC.velocity, 44, 1f); // Skeleton leg gore
 		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
@@ -75,7 +74,7 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Ranged.StockadeCrossbow>(), 15)); //6.67% chance
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) //would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
+		public override float SpawnChance(NPCSpawnInfo spawnInfo) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
 		{
 			return (spawnInfo.Player.ZoneDungeon) ? 0.02f : 0f;
 		}

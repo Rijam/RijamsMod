@@ -1,16 +1,10 @@
-﻿using RijamsMod.Items.Quest;
-using RijamsMod.Items.Weapons.Melee;
-using RijamsMod.Items.Weapons.Magic;
-using RijamsMod.Items.Weapons.Ranged;
-using RijamsMod.Items.Weapons.Summon;
-using RijamsMod.Items.Accessories;
-using RijamsMod.Items.Information;
-using RijamsMod.Items.Accessories.Summoner;
-using RijamsMod.Items.Accessories.Ranger;
-using RijamsMod.Items.Accessories.Misc;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Text;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -18,16 +12,19 @@ using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent;
-using System.Collections.Generic;
 using Terraria.Audio;
-using ReLogic.Content;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
-using System;
 using Terraria.GameContent.Drawing;
-using RijamsMod.Items.Tools;
-using System.Reflection;
 using RijamsMod.EmoteBubbles;
+using RijamsMod.Items.Accessories.Summoner;
+using RijamsMod.Items.Accessories.Ranger;
+using RijamsMod.Items.Accessories.Misc;
+using RijamsMod.Items.Information;
+using RijamsMod.Items.Quest;
+using RijamsMod.Items.Tools;
+using RijamsMod.Items.Weapons.Magic;
+using RijamsMod.Items.Weapons.Ranged;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -337,14 +334,13 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
 
-			int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
-			NPCHelper.GetNearbyResidentNPCs(Main.npc[interTravel], 1, out List<int> npcTypeListHouse, out List<int> npcTypeListNearBy, out List<int> npcTypeListVillage, out List<int> _);
+			NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.whoAmI], 1, out List<int> npcTypeListHouse, out List<int> npcTypeListNearBy, out List<int> npcTypeListVillage, out List<int> _);
 
 			chat.Add("I'm pretty far from home, but this place is pretty cool.");
 			chat.Add("Nice to meet you!");
 			chat.Add("I'm pretty lucky to have ended up on this planet. Not only is it inhabitable, but it also contains intelligent life!");
 			chat.Add("I have a few things that I can sell you if you want to take a look.");
-			chat.Add("Hi there! My name is " + Main.npc[interTravel].GivenName + ".");
+			chat.Add("Hi there! My name is " + Main.npc[NPC.whoAmI].GivenName + ".");
 			chat.Add("Hey, do you know where I could get some food?", 0.5);
 
 			if (usedMicronWrap)
@@ -891,6 +887,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					lines.Add("It looks like you've found everything I needed, thanks!");
 					lines.Add("Nice job! You have collected and turned in everything I needed.");
 					lines.Add("With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!");
+					lines.Add("I'm going to be in so much trouble when I get back home. Not only have I been MIA for a long time, but when I do show up, how do I explain all of the magical parts in my ship? Sorry, none of this is your fault. You were great help!");
 				}
 				else
 				{
@@ -923,7 +920,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					{
 						lines.Add("Without thrusters, my ship isn't going to move anywhere! A new [c/FFFF00:thruster] should solve that, of course!");
 						int cyborg = NPC.FindFirstNPC(NPCID.Cyborg);
-						if (cyborg > 0)
+						if (cyborg >= 0)
 						{
 							lines.Add($"{Main.npc[cyborg].FullName} has several rockets available. I bet you could use those to craft a new [c/FFFF00:thruster] for my ship.");
 						}
@@ -1309,31 +1306,37 @@ namespace RijamsMod.NPCs.TownNPCs
 		public int RollVariation() => 0;
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
+		private Asset<Texture2D> helmet;
+		private Asset<Texture2D> normal;
+		private Asset<Texture2D> casual;
+		private Asset<Texture2D> shimmered;
+		private Asset<Texture2D> shimmeredParty;
+
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
 			if (ModContent.GetInstance<RijamsModConfigClient>().Ornithophobia)
 			{
-				return ModContent.Request<Texture2D>(Path + "_Helmet");
+				return helmet ??= ModContent.Request<Texture2D>(Path + "_Helmet");
 			}
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
 			{
-				return ModContent.Request<Texture2D>(Path);
+				return normal ??= ModContent.Request<Texture2D>(Path);
 			}
 			if (npc.altTexture == 1 && NPCHelper.AllQuestsCompleted())
 			{
-				return ModContent.Request<Texture2D>(Path + "_Casual");
+				return casual ??= ModContent.Request<Texture2D>(Path + "_Casual");
 			}
 
 			if (npc.IsShimmerVariant && npc.altTexture != 1)
 			{
-				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
+				return shimmered ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
 			}
 			if (npc.IsShimmerVariant && npc.altTexture == 1)
 			{
-				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Hatless");
+				return shimmeredParty ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "_Hatless");
 			}
 
-			return ModContent.Request<Texture2D>(Path);
+			return normal ??= ModContent.Request<Texture2D>(Path);
 		}
 
 		public int GetHeadTextureIndex(NPC npc)

@@ -48,12 +48,18 @@ namespace RijamsMod.Items.Consumables
 		}
 		public override bool? UseItem(Player player)
 		{
-			// Only consume the item if it is going to do something.
-			if (!RijamsModWorld.boughtSnuggetPet || NPC.AnyNPCs(ModContent.NPCType<SnuggetPet>()))
+			// Only do something if the License hasn't been used before or the Town Pet exists in the world.
+			int npcType = ModContent.NPCType<SnuggetPet>(); // The NPC Type for the Town Pet.
+			if (player.ItemAnimationJustStarted && (!RijamsModWorld.boughtSnuggetPet || NPC.AnyNPCs(npcType)))
 			{
+				if (player.whoAmI == Main.myPlayer)
+				{
+					player.ApplyItemTime(Item); // Make it so the player uses the item for the useAnimation.
+					SnuggetUnlockOrExchangePet(ref RijamsModWorld.boughtSnuggetPet, npcType, "Mods.RijamsMod.UI.LicenseSnuggetUse"); // Modified NPC.UnlockOrExchangePet method.
+				}
 				return true;
 			}
-			return null;
+			return false;
 		}
 
 		/// <summary>

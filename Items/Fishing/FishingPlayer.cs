@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
-using System.Collections.Generic;
 using RijamsMod.Items.Accessories.Misc;
 
 namespace RijamsMod.Items.Fishing
@@ -120,7 +120,7 @@ namespace RijamsMod.Items.Fishing
 
 				if (Main.player[projectile.owner].GetModPlayer<RijamsModPlayer>().spinnerBobber && projectile.ai[1] == 0f && Main.myPlayer == projectile.owner)
 				{
-					projectile.localAI[1] += 4;
+					projectile.localAI[1] += 4; // Timer until you can catch a fish. Increasing it makes you catch it faster.
 				}
 				if (Main.player[projectile.owner].GetModPlayer<RijamsModPlayer>().trapBobber && projectile.ai[1] < 0f)
 				{

@@ -1,17 +1,12 @@
 using RijamsMod.Items.Accessories.Melee;
 using RijamsMod.Items.Consumables;
-using RijamsMod.Projectiles.Pets;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -161,9 +156,6 @@ namespace RijamsMod.NPCs.TownNPCs
 		}
 		public override void ModifyShop(NPCShop shop)
 		{
-			//bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
-			//int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
-
 			// BossesAsNPCs support in RijamsMod.cs PostSetupContent()
 
 			if (shop.NpcType == NPCID.ArmsDealer)
@@ -261,36 +253,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop.Add(new Item(ItemID.MiningPants) { shopCustomPrice = 100000 }, Condition.Hardmode);
 				}
 			}
-
-			/*
-			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && ShopConditions.TownNPCsCrossModSupport.IsMet())
-			{
-				if (fishermanNPC.TryFind<ModNPC>("Fisherman", out ModNPC fisherman) && shop.NpcType == fisherman.Type)
-				{
-					if (shop.Name == "Fish") // Fish shop is open
-					{
-						Item hornetTail = new(ModContent.ItemType<Items.Fishing.HornetTail>());
-						int itemValue = hornetTail.GetStoreValue();
-						shop.Add(new Item(hornetTail.type) { shopCustomPrice = (int)Math.Round(itemValue * (float)fishermanNPC.Call("shopMulti")) });
-					}
-					if (shop.Name == "Bait") // Bait shop is open
-					{
-						Item wildBait = new(ModContent.ItemType<Items.Fishing.WildBait>());
-						int itemValue = wildBait.GetStoreValue();
-						shop.Add(new Item(wildBait.type) { shopCustomPrice = (int)Math.Round(itemValue * (float)fishermanNPC.Call("shopMulti")) }, Condition.AnglerQuestsFinishedOver(3));
-					}
-				}
-			}*/
-
 		}
-		// TODO: Figure out the new way to add items to the Traveling Merchant.
-		/*public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
-		{
-			if (npc.type == NPCID.TravellingMerchant && shopName == "Shop")
-			{
-				TravellingMerchantShop.AddInfoEntry(ModContent.ItemType<Items.Consumables.StrangeRoll>(), Condition.DownedEyeOfCthulhu);
-			}
-		}*/
 		public override void SetupTravelShop(int[] shop, ref int nextSlot)
 		{
 			if (NPC.downedBoss1 && Main.rand.NextBool(5)) //EoC
@@ -331,7 +294,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					shop[nextSlot] = ItemID.Gatligator;
 					nextSlot++;
 				}
-				if (!NPCHelper.FindItemInShop(shop, ItemID.BouncingShield, out int? _) && Main.rand.NextBool(5) && NPCHelper.DownedMechBossAll())
+				if (!NPCHelper.FindItemInShop(shop, ItemID.BouncingShield, out int? _) && Main.rand.NextBool(5) && Condition.DownedMechBossAll.IsMet())
 				{
 					shop[nextSlot] = ItemID.BouncingShield;
 					nextSlot++;

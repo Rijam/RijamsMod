@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Weapons.Melee
@@ -59,6 +60,14 @@ namespace RijamsMod.Items.Weapons.Melee
 			if (player.CheckMana(20, false))
 			{
 				damage *= 2 + (player.GetTotalDamage(DamageClass.Magic).Additive - 1);
+			}
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			if (GlobalItems.FindTooltipIndex(tooltips, "Tooltip3", "Terraria", out int index))
+			{
+				tooltips[index].Text = "  " + Language.GetTextValue("CommonItemTooltip.UsesMana", (int)(20 * Main.LocalPlayer.manaCost));
 			}
 		}
 	}

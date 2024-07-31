@@ -17,7 +17,6 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Firmament Harpy");
 			Main.npcFrameCount[NPC.type] = 12;
 
 			// Influences how the NPC looks in the Bestiary
@@ -259,7 +258,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			npcLoot.Add(ItemDropRule.Common(ItemID.ChickenNugget, 50));
 			npcLoot.Add(ItemDropRule.Common(ItemID.Feather, 2, 1, 2));
-			npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>(), 200, 150)); //0.5% chance normal mode, 0.67% chance in expert
+			npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>(), 200, 150)); // 0.5% chance normal mode, 0.67% chance in expert
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Materials.SunEssence>(), 1, 1, 4));
 		}
 

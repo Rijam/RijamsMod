@@ -9,12 +9,8 @@ namespace RijamsMod.Items.Accessories.Misc
 	[AutoloadEquip(EquipType.HandsOn)]
 	public class SmallGlowRing : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Small Glow Ring");
-			// Tooltip.SetDefault("Emits a small amount of light");
-		}
-
+		Vector3 LightColor = new(0.35f, 0.35f, 0f);
+		
 		public override void SetDefaults()
 		{
 			Item.width = 20;
@@ -23,13 +19,19 @@ namespace RijamsMod.Items.Accessories.Misc
 			Item.value = Item.sellPrice(0, 0, 10, 0);
 			Item.accessory = true;
 		}
+
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			Lighting.AddLight(player.Center, Color.Yellow.ToVector3() * 0.35f);
+			Lighting.AddLight(player.Center, LightColor);
 		}
+		public override void UpdateVanity(Player player)
+		{
+			Lighting.AddLight(player.Center, LightColor * 0.25f);
+		}
+
 		public override Color? GetAlpha(Color newColor)
 		{
-			return new Color(255, 255, 255, 255);
+			return Color.White;
 		}
 		public override void AddRecipes()
 		{
@@ -41,35 +43,70 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 	}
 	[AutoloadEquip(EquipType.HandsOn)]
-	public class LargeGlowRing : ModItem
+	public class MediumGlowRing : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Large Glow Ring");
-			// Tooltip.SetDefault("Emits a large amount of light");
-		}
+		Vector3 LightColor = new(0.90f, 0.80f, 0.40f);
 
 		public override void SetDefaults()
 		{
 			Item.width = 20;
 			Item.height = 24;
-			Item.rare = ItemRarityID.Orange; //3
+			Item.rare = ItemRarityID.Green; // 2
 			Item.value = Item.sellPrice(0, 0, 75, 0);
 			Item.accessory = true;
 		}
+
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			Lighting.AddLight(player.Center, 1.0f, 0.90f, 0.40f);
+			Lighting.AddLight(player.Center, LightColor);
 		}
+		public override void UpdateVanity(Player player)
+		{
+			Lighting.AddLight(player.Center, LightColor * 0.25f);
+		}
+
 		public override Color? GetAlpha(Color newColor)
 		{
-			return new Color(255, 255, 255, 255);
+			return Color.White;
 		}
 		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<SmallGlowRing>(), 1)
 				.AddIngredient(ItemID.Meteorite, 1)
+				.AddTile(TileID.WorkBenches)
+				.Register();
+		}
+	}
+	[AutoloadEquip(EquipType.HandsOn)]
+	public class LargeGlowRing : ModItem
+	{
+		Vector3 LightColor = new(1.2f, 1.2f, 0.60f);
+
+		public override void SetDefaults()
+		{
+			Item.width = 20;
+			Item.height = 26;
+			Item.rare = ItemRarityID.Orange; // 3
+			Item.value = Item.sellPrice(0, 1, 0, 0);
+			Item.accessory = true;
+		}
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			Lighting.AddLight(player.Center, LightColor);
+		}
+		public override void UpdateVanity(Player player)
+		{
+			Lighting.AddLight(player.Center, LightColor * 0.25f);
+		}
+		public override Color? GetAlpha(Color newColor)
+		{
+			return Color.White;
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<MediumGlowRing>(), 1)
 				.AddIngredient(ItemID.Hellstone, 1)
 				.AddTile(TileID.WorkBenches)
 				.Register();
@@ -78,12 +115,6 @@ namespace RijamsMod.Items.Accessories.Misc
 	[AutoloadEquip(EquipType.HandsOn)]
 	public class BurglarsRing : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Burglar's Ring");
-			// Tooltip.SetDefault("Enemies drop double loot\n'Purple burglar alarm'");
-		}
-
 		public override void SetDefaults()
 		{
 			Item.width = 20;

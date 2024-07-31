@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Buffs.Potions;
 using RijamsMod.Items;
-using RijamsMod.Items.Accessories.Melee;
-using RijamsMod.Items.Accessories.Misc;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -31,7 +31,7 @@ namespace RijamsMod
 		public bool snuggetPet;
 		public bool fluffaloPet;
 		public bool hailfireBootsBoost;
-		public int flaskBuff = 0;
+		public int flaskBuff = FlaskIDs.None;
 		public int skywareArmorSetBonus = 0;
 		public int skywareArmorSetBonusTimer = 0;
 		public bool bleedingOut = false;
@@ -48,6 +48,11 @@ namespace RijamsMod
 		public bool curiosityLure;
 		public bool trapBobber;
 		public bool spinnerBobber;
+		public bool oiled;
+		public bool onShadowflame;
+		public bool betsysCurse;
+		public bool dryadsBane;
+		public bool onDaybroken;
 
 		public int supportMinionRadiusIncrease = 0;
 		public float criticalHitAdditionalDamage = 0f;
@@ -75,7 +80,7 @@ namespace RijamsMod
 			snuggetPet = false;
 			fluffaloPet = false;
 			hailfireBootsBoost = false;
-			flaskBuff = 0;
+			flaskBuff = FlaskIDs.None;
 			skywareArmorSetBonus = 0;
 			bleedingOut = false;
 			soaringPotion = false;
@@ -91,6 +96,11 @@ namespace RijamsMod
 			curiosityLure = false;
 			trapBobber = false;
 			spinnerBobber = false;
+			oiled = false;
+			onShadowflame = false;
+			betsysCurse = false;
+			dryadsBane = false;
+			onDaybroken = false;
 
 			supportMinionRadiusIncrease = 0;
 			criticalHitAdditionalDamage = 0f;
@@ -106,6 +116,11 @@ namespace RijamsMod
 		public override void UpdateDead()
 		{
 			sulfuricAcid = false;
+			oiled = false;
+			onShadowflame = false;
+			betsysCurse = false;
+			dryadsBane = false;
+			onDaybroken = false;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 		{
@@ -237,9 +252,9 @@ namespace RijamsMod
 		}
 		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
 		{
-			if (sulfuricAcid)
+			if (drawInfo.drawPlayer.active && !drawInfo.drawPlayer.dead)
 			{
-				if (drawInfo.drawPlayer.active && !drawInfo.drawPlayer.dead)
+				if (sulfuricAcid)
 				{
 					if (Main.rand.NextBool(4) && drawInfo.shadow == 0f)
 					{
@@ -258,10 +273,7 @@ namespace RijamsMod
 					b *= 0.0f;
 					fullBright = true;
 				}
-			}
-			if (bleedingOut)
-			{
-				if (drawInfo.drawPlayer.active && !drawInfo.drawPlayer.dead)
+				if (bleedingOut)
 				{
 					for (int i = 0; i < 5; i++)
 					{
@@ -304,6 +316,185 @@ namespace RijamsMod
 		{
 			MathHelper.Clamp(knockbackSusceptibility, 0, 10);
 			modifiers.Knockback *= knockbackSusceptibility;
+		}
+
+		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			if (daybreakStone && item.DamageType.CountsAsClass<MeleeDamageClass>())
+			{
+				//Same chances as Magma Stone, but half duration
+				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
+				if (dayBreakStoneRand <= 1)//0 or 1
+				{
+					target.AddBuff(BuffID.Daybreak, 180);
+				}
+				else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
+				{
+					target.AddBuff(BuffID.Daybreak, 120);
+				}
+				else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
+				{
+					target.AddBuff(BuffID.Daybreak, 60);
+				}
+			}
+			if (frostburnStone && item.DamageType.CountsAsClass<MeleeDamageClass>())
+			{
+				//Same chances as Magma Stone
+				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
+				if (dayBreakStoneRand <= 1)//0 or 1
+				{
+					target.AddBuff(BuffID.Frostburn2, 360);
+				}
+				else if (dayBreakStoneRand > 1 && dayBreakStoneRand <= 4)//2, 3, or 4
+				{
+					target.AddBuff(BuffID.Frostburn2, 240);
+				}
+				else if (dayBreakStoneRand > 4 && dayBreakStoneRand <= 7)//5, 6, or 7
+				{
+					target.AddBuff(BuffID.Frostburn2, 120);
+				}
+			}
+			if (flaskBuff == FlaskIDs.SulfuricAcid)
+			{
+				target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+			}
+			if (flaskBuff == FlaskIDs.Oiled)
+			{
+				target.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
+			}
+		}
+
+		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			if ((proj.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[proj.type]) && !proj.noEnchantments)
+			{
+				if (flaskBuff == FlaskIDs.SulfuricAcid)
+				{
+					target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
+				}
+				if (flaskBuff == FlaskIDs.Oiled)
+				{
+					target.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
+				}
+				if (daybreakStone)
+				{
+					//Same chances as Magma Stone, but half duration
+					if (Main.rand.Next(8) <= 2)
+					{
+						target.AddBuff(BuffID.Daybreak, 180);
+					}
+					else if (Main.rand.Next(8) <= 3)
+					{
+						target.AddBuff(BuffID.Daybreak, 120);
+					}
+					else if (Main.rand.Next(8) <= 3)
+					{
+						target.AddBuff(BuffID.Daybreak, 60);
+					}
+				}
+				if (frostburnStone)
+				{
+					//Same chances as Magma Stone
+					if (Main.rand.Next(8) <= 2)
+					{
+						target.AddBuff(BuffID.Frostburn2, 360);
+					}
+					else if (Main.rand.Next(8) <= 3)
+					{
+						target.AddBuff(BuffID.Frostburn2, 240);
+					}
+					else if (Main.rand.Next(8) <= 3)
+					{
+						target.AddBuff(BuffID.Frostburn2, 120);
+					}
+				}
+			}
+		}
+
+		public override void MeleeEffects(Item item, Rectangle hitbox)
+		{
+			if (item.DamageType.CountsAsClass<MeleeDamageClass>() && !item.noMelee && !item.noUseGraphic && Main.rand.NextBool(2))
+			{
+				if (daybreakStone)
+				{
+					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.SolarFlare, Player.velocity.X * 0.2f + (Player.direction * 3), Player.velocity.Y * 0.2f, 100, default, 1f);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity *= 0.7f;
+					Main.dust[dust].velocity.Y -= 0.5f;
+					Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.875f);
+				}
+				if (frostburnStone)
+				{
+					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Frost, Player.velocity.X * 0.2f + (Player.direction * 3), Player.velocity.Y * 0.2f, 100, default, 1f);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity *= 0.7f;
+					Main.dust[dust].velocity.Y -= 0.5f;
+					Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.LightBlue.ToVector3() * 0.875f);
+				}
+				if (flaskBuff >= 1)
+				{
+					int dustType = DustID.Dirt;
+					if (flaskBuff == FlaskIDs.SulfuricAcid)
+					{
+						dustType = ModContent.DustType<Dusts.SulfurDust>();
+						Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.1f);
+					}
+					if (flaskBuff == FlaskIDs.Oiled)
+					{
+						dustType = DustID.Asphalt;
+					}
+					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, dustType, Player.velocity.X * 0.2f + (Player.direction * 3), Player.velocity.Y * 0.2f, 100, default, 1f);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity *= 0.7f;
+					Main.dust[dust].velocity.Y -= 0.5f;
+				}
+			}
+		}
+
+		public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+		{
+			if ((projectile.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[projectile.type]) && !projectile.noEnchantments && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
+			{
+				if (daybreakStone)
+				{
+					if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
+					{
+						int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.SolarFlare, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
+						Main.dust[dust].noGravity = true;
+						Main.dust[dust].velocity *= 0.7f;
+						Main.dust[dust].velocity.Y -= 0.5f;
+						Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.875f);
+					}
+				}
+				if (frostburnStone)
+				{
+					if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
+					{
+						int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, DustID.Frost, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
+						Main.dust[dust].noGravity = true;
+						Main.dust[dust].velocity *= 0.7f;
+						Main.dust[dust].velocity.Y -= 0.5f;
+						Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.875f);
+					}
+				}
+				if (flaskBuff >= 1)
+				{
+					int dustType = DustID.Dirt;
+					if (flaskBuff == FlaskIDs.SulfuricAcid)
+					{
+						dustType = ModContent.DustType<Dusts.SulfurDust>();
+						Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.1f);
+					}
+					if (flaskBuff == FlaskIDs.Oiled)
+					{
+						dustType = DustID.Asphalt;
+					}
+					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, dustType, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].velocity *= 0.7f;
+					Main.dust[dust].velocity.Y -= 0.5f;
+				}
+			}
 		}
 	}
 }

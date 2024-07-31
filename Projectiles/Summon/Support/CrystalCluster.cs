@@ -18,7 +18,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Crystal Cluster");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 1;
 			// This is necessary for right-click targeting
@@ -137,7 +136,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 			for (int i = 0; i < Main.maxPlayers; i++)
 			{
 				Player searchPlayer = Main.player[i];
-				if (searchPlayer.active && !searchPlayer.dead && !searchPlayer.hostile && searchPlayer.team == player.team && searchPlayer.team != 0)
+				if (HarpyIdol.SearchPlayers(player, searchPlayer))
 				{
 					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 					if (distance <= radius)

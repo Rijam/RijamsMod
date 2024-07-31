@@ -9,13 +9,11 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Flask of Sulfuric Acid");
-			// Tooltip.SetDefault("Melee attacks inflict enemies with Sulfuric Acid");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
-				new Color(255, 255, 0),
-				new Color(193, 43, 43),
-				new Color(181, 115, 20)
+				new(255, 255, 0),
+				new(193, 43, 43),
+				new(181, 115, 20)
 			};
 		}
 
@@ -33,7 +31,7 @@ namespace RijamsMod.Items.Consumables
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.sellPrice(silver: 10);
 			Item.buffType = ModContent.BuffType<Buffs.Potions.ImbueSulfuricAcid>();
-			Item.buffTime = 72000; //20 minutes
+			Item.buffTime = Item.flaskTime; //20 minutes
 		}
 		public override void AddRecipes()
 		{
@@ -52,9 +50,9 @@ namespace RijamsMod.Items.Consumables
 			// Tooltip.SetDefault("Melee attacks inflict enemies with Oiled");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
-				new Color(176, 177, 57),
-				new Color(59, 48, 32),
-				new Color(10, 9, 9)
+				new(176, 177, 57),
+				new(59, 48, 32),
+				new(10, 9, 9)
 			};
 		}
 
@@ -72,7 +70,7 @@ namespace RijamsMod.Items.Consumables
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.sellPrice(silver: 5);
 			Item.buffType = ModContent.BuffType<Buffs.Potions.ImbueOiled>();
-			Item.buffTime = 72000; //20 minutes
+			Item.buffTime = Item.flaskTime; //20 minutes
 		}
 		public override void AddRecipes()
 		{

@@ -17,6 +17,8 @@ namespace RijamsMod.Items.Weapons.Ranged
 			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]" });
 			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 
+			AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[Type] = ItemID.RocketLauncher;
+
 			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.Add(Type, new Dictionary<int, int> {
 				{ ItemID.RocketI, ProjectileID.RocketI },
 				{ ItemID.RocketII, ProjectileID.RocketII },
@@ -35,22 +37,14 @@ namespace RijamsMod.Items.Weapons.Ranged
 
 		public override void SetDefaults()
 		{
-			Item.CloneDefaults(ItemID.RocketLauncher);
+			Item.DefaultToRangedWeapon(ProjectileID.RocketI, AmmoID.Rocket, singleShotTime: 30, shotVelocity: 6f, hasAutoReuse: true);
 			Item.damage = 58;
-			Item.DamageType = DamageClass.Ranged;
 			Item.width = 70;
 			Item.height = 28;
-			Item.useTime = 30;
-			Item.useAnimation = 30;
-			//item.noMelee = true; //so the item's animation doesn't do damage
 			Item.knockBack = 5;
 			Item.value = 300000;
 			Item.rare = ItemRarityID.Yellow; //8
 			Item.UseSound = new(Mod.Name + "/Sounds/Item/AGMMissileLauncher") { Volume = 0.7f, MaxInstances = 5 };
-			//item.autoReuse = true;
-			//item.shootSpeed = 16f;
-			//item.shoot = AmmoID.Rocket;
-			//item.useAmmo = AmmoID.Rocket;
 
 			if (!Main.dedServ) //Need to check if a server is running, otherwise it will break multiplayer
 			{

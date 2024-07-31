@@ -1,9 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using ReLogic.Content;
@@ -33,10 +31,7 @@ namespace RijamsMod
 		/// <br>ArmorHeadLegsOptions Effects is the special effect. This can be omitted and defaults to None.</br></param>
 		public static void RegisterData(int headSlot, ArmorHeadLegsOptions values)
 		{
-			if (!GlowListHead.ContainsKey(headSlot))
-			{
-				GlowListHead.Add(headSlot, values);
-			}
+			GlowListHead.TryAdd(headSlot, values);
 		}
 
 		// Returning true in this property makes this layer appear on the minimap player head icon.
@@ -81,7 +76,7 @@ namespace RijamsMod
 			{
 				return;
 			}
-			Asset<Texture2D> glowmask = ModContent.Request<Texture2D>(values.Texture);
+			Asset<Texture2D> glowmask = values.Texture;
 
 			int numTimesToDraw = 1;
 
@@ -159,25 +154,25 @@ namespace RijamsMod
 	{
 		public ArmorHeadLegsOptions(string texture)
 		{
-			Texture = texture;
+			Texture = ModContent.Request<Texture2D>(texture);
 			Color = Color.White;
 			Effects = GlowMaskEffects.None;
 		}
 		public ArmorHeadLegsOptions(string texture, Color color)
 		{
-			Texture = texture;
+			Texture = ModContent.Request<Texture2D>(texture);
 			Color = color;
 			Effects = GlowMaskEffects.None;
 		}
 
 		public ArmorHeadLegsOptions(string texture, Color color, GlowMaskEffects effects)
 		{
-			Texture = texture;
+			Texture = ModContent.Request<Texture2D>(texture);
 			Color = color;
 			Effects = effects;
 		}
 
-		public string Texture { get; }
+		public Asset<Texture2D> Texture { get; }
 		public Color Color { get; }
 		public GlowMaskEffects Effects { get; }
 	}

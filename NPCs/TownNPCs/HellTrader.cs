@@ -1,24 +1,23 @@
+using System;
 using System.Linq;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using RijamsMod.Items;
-using RijamsMod.Projectiles;
-using System;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.Audio;
-using System.Collections.Generic;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
 using Terraria.DataStructures;
-using RijamsMod.EmoteBubbles;
-using RijamsMod.Items.Quest;
 using Terraria.GameContent.UI;
+using RijamsMod.EmoteBubbles;
+using RijamsMod.Items;
+using RijamsMod.Items.Quest;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -79,7 +78,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				.SetBiomeAffection<DesertBiome>(AffectionLevel.Like)
 				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike)
 				.SetNPCAffection(NPCID.Wizard, AffectionLevel.Love)
-				//Love Weapon Master (cross mod)
+				// Love Weapon Master (cross mod)
 				.SetNPCAffection(ModContent.NPCType<Harpy>(), AffectionLevel.Like)
 				.SetNPCAffection(NPCID.DD2Bartender, AffectionLevel.Like)
 				.SetNPCAffection(NPCID.WitchDoctor, AffectionLevel.Like)
@@ -87,13 +86,13 @@ namespace RijamsMod.NPCs.TownNPCs
 				.SetNPCAffection(NPCID.Clothier, AffectionLevel.Like)
 				.SetNPCAffection(NPCID.Truffle, AffectionLevel.Like)
 				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Like)
-				//Like Fisherman (cross mod)
-				//Like Goat (cross mod)
+				// Like Fisherman (cross mod)
+				// Like Goat (cross mod)
 				.SetNPCAffection(NPCID.ArmsDealer, AffectionLevel.Dislike)
 				.SetNPCAffection(NPCID.Stylist, AffectionLevel.Dislike)
 				.SetNPCAffection(NPCID.DyeTrader, AffectionLevel.Dislike)
 				.SetNPCAffection(NPCID.Cyborg, AffectionLevel.Hate)
-				//Princess is automatically set
+				// Princess is automatically set
 			; // < Mind the semicolon!
 
 			NPCProfile = new HellTraderProfile();
@@ -114,7 +113,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.height = 40;
 			NPC.aiStyle = 7;
 			NPC.damage = 10;
-			NPC.defense = 30;//def 15
+			NPC.defense = 30; // default: 15
 			NPC.lifeMax = 250;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
@@ -191,10 +190,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 
 		public override bool CheckConditions(int left, int right, int top, int bottom)
@@ -222,15 +218,15 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				if (spawnInfo.SpawnTileType == TileID.ObsidianBrick || spawnInfo.SpawnTileType == TileID.HellstoneBrick || spawnInfo.SpawnTileType == TileID.Platforms || spawnInfo.SpawnTileType == TileID.AshGrass)
 				{
-					if (!NPC.downedBoss1) //Haven't killed EoC
+					if (!NPC.downedBoss1) // Haven't killed EoC
 					{
 						return 0.05f;
 					}
-					if (!NPC.downedBoss3) //Have killed EoC but not Skeletron
+					if (!NPC.downedBoss3) // Have killed EoC but not Skeletron
 					{
 						return 0.075f;
 					}
-					return 0.1f; //Else
+					return 0.1f; // Else
 				}
 			}
 			return 0f;
@@ -303,8 +299,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
 
-			int hellTrader = NPC.FindFirstNPC(ModContent.NPCType<HellTrader>());
-			NPCHelper.GetNearbyResidentNPCs(Main.npc[hellTrader], 1, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
+			NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.whoAmI], 1, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
 
 			if (!RijamsModWorld.hellTraderArrivable)
 			{
@@ -312,7 +307,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 				chat.Add("Hello, human. An unexpected confrontation, for sure.");
 				chat.Add("My robes are made from a special fabric. They are fire proof, just like me.");
-				chat.Add("You shall know me by " + Main.npc[hellTrader].GivenName + ". I look forward to trading with you, " + Main.LocalPlayer.name + ".");
+				chat.Add("You shall know me by " + Main.npc[NPC.whoAmI].GivenName + ". I look forward to trading with you, " + Main.LocalPlayer.name + ".");
 				chat.Add("I have some fine goods to trade with you if you have the money.");
 				chat.Add("Are you here to trade? Good, I have something that might interest you.");
 				chat.Add("The Underworld is a dangerous place. You are brave to venture down here.");
@@ -352,9 +347,9 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("Thanks again, " + Main.LocalPlayer.name + ", for asking me to live in your town. Much better than living alone in the Underworld!");
 				}
 
-				if ((Main.LocalPlayer.HasItem(ItemID.TallyCounter) || Main.LocalPlayer.HasItem(ItemID.REK) || Main.LocalPlayer.HasItem(ItemID.PDA) || Main.LocalPlayer.HasItem(ItemID.CellPhone)) && Main.LocalPlayer.lastCreatureHit == Item.NPCtoBanner(NPCID.FireImp))
-				//The player has the Tally Counter, R.E.K. 3000, PDA, or Cellphone in their inventory. The last enemy they hit was a Fire Imp and the kill count for Fire Imps is more than 0.
-				//Item.NPCtoBanner(NPCID.FireImp) == 24
+				if (Main.LocalPlayer.accJarOfSouls && Main.LocalPlayer.lastCreatureHit == Item.NPCtoBanner(NPCID.FireImp))
+				// The player has the Tally Counter, R.E.K. 3000, PDA, Cellphone, or Shellphone in their inventory. The last enemy they hit was a Fire Imp and the kill count for Fire Imps is more than 0.
+				// Item.NPCtoBanner(NPCID.FireImp) == 24
 				{
 					if (NPC.killCount[Item.NPCtoBanner(NPCID.FireImp)] > 0)
 					{
@@ -487,7 +482,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void SetChatButtons(ref string button, ref string button2)
 		{
-			button = Language.GetTextValue("LegacyInterface.28"); //Shop
+			button = Language.GetTextValue("LegacyInterface.28"); // Shop
 			if (Main.hardMode && !RijamsModWorld.hellTraderArrivable)
 			{
 				button2 = "Ask to move in";
@@ -598,7 +593,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					disableChance = 20;
 				}
-				ItemsEnabled.Add(new Tuple<int, int, bool> (entry.Item.type, disableChance, true));
+				ItemsEnabled.Add(new HellTraderShopDataStruct(entry.Item.type, disableChance, true));
 			}
 		}
 
@@ -608,15 +603,14 @@ namespace RijamsMod.NPCs.TownNPCs
 		/// <br>int: chance of being disabled (reciprocal, 1/x) </br>
 		/// <br>bool: enabled/disabled</br>
 		/// </summary>
-		private static List<Tuple<int, int, bool>> ItemsEnabled = new();
+		private static List<HellTraderShopDataStruct> ItemsEnabled = new();
 
 		public override void OnSpawn(IEntitySource source)
 		{
 			for (int i = 0; i < ItemsEnabled.Count; i++)
 			{
-				// Probably a better way of doing this than remaking the Tuple every time.
-				// Assigning ItemsEnabled[i].Item3 directly won't work because it is immutable.
-				ItemsEnabled[i] = new (ItemsEnabled[i].Item1, ItemsEnabled[i].Item2, !Main.rand.NextBool(ItemsEnabled[i].Item2));
+				// Disable certain items based on their disable chance.
+				ItemsEnabled[i].Enabled = !Main.rand.NextBool(ItemsEnabled[i].DisableChance);
 			}
 		}
 
@@ -645,21 +639,21 @@ namespace RijamsMod.NPCs.TownNPCs
 				int itemsArrayIndex = 0; // Basically the index for the foreach loop. Starts at 0 and increments each loop.
 				foreach (Item currentItem in items) // Go through each item in the current shop
 				{
-					// Main.NewText(itemsArrayIndex + " " + itemsEnabledIndex + ", ItemsEnabled item == " + ItemsEnabled[itemsArrayIndex].Item1
-					//	+ " [i:" + ItemsEnabled[itemsArrayIndex].Item1 + "], disableChance == " + ItemsEnabled[itemsArrayIndex].Item2 
-					//	+ ", enabled == " + ItemsEnabled[itemsEnabledIndex].Item3 + ", Shop item slot " + items[itemsEnabledIndex] 
-					//	+ " [i:" + items[itemsEnabledIndex]?.type + "]");
+					// Main.NewText(itemsArrayIndex + " " + itemsEnabledIndex + ", ItemsEnabled item == " + ItemsEnabled[itemsArrayIndex].ItemType
+					// + " [i:" + ItemsEnabled[itemsArrayIndex].ItemType + "], disableChance == " + ItemsEnabled[itemsArrayIndex].DisableChance 
+					// + ", enabled == " + ItemsEnabled[itemsEnabledIndex].Enabled + ", Shop item slot " + items[itemsEnabledIndex] 
+					// + " [i:" + items[itemsEnabledIndex]?.type + "]");
 
 					// If the current shop item doesn't match the ItemsEnabled item, stay on that item and don't go to the next item.
 					// Aka skip the item if the item doesn't actually show up in the shop (due to the shop Conditions)
-					if (items[itemsEnabledIndex]?.type != ItemsEnabled[itemsArrayIndex].Item1)
+					if (items[itemsEnabledIndex]?.type != ItemsEnabled[itemsArrayIndex].ItemType)
 					{
 						itemsEnabledIndex--;
 					}
 					// Disable the item if it matches the item in the ItemsEnabled list and is set to be disabled.
-					if (items[itemsEnabledIndex]?.type == ItemsEnabled[itemsArrayIndex].Item1 && !ItemsEnabled[itemsEnabledIndex].Item3)
+					if (items[itemsEnabledIndex]?.type == ItemsEnabled[itemsArrayIndex].ItemType && !ItemsEnabled[itemsEnabledIndex].Enabled)
 					{
-						// items[itemsEnabledIndex]?.TurnToAir();
+						items[itemsEnabledIndex]?.TurnToAir();
 
 						// Turn the item into the limited stock missing item that cannot be bought.
 						items[itemsEnabledIndex]?.SetDefaults(ModContent.ItemType<LimitedStockMissingItem>());
@@ -739,41 +733,48 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
+		private Asset<Texture2D> normal;
+		private Asset<Texture2D> town;
+		private Asset<Texture2D> townParty;
+		private Asset<Texture2D> shimmered;
+		private Asset<Texture2D> shimmeredTown;
+		private Asset<Texture2D> shimmeredTownParty;
+
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc)
 		{
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
 			{
 				if (RijamsModWorld.hellTraderArrivable)
 				{
-					return ModContent.Request<Texture2D>(Path + "Town");
+					return town ??= ModContent.Request<Texture2D>(Path + "Town");
 				}
-				return ModContent.Request<Texture2D>(Path);
+				return normal ??= ModContent.Request<Texture2D>(Path);
 			}
 
 			if (RijamsModWorld.hellTraderArrivable && npc.altTexture == 1)
 			{
 				if (npc.IsShimmerVariant)
 				{
-					return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town_Alt");
+					return shimmeredTownParty ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town_Alt");
 				}
-				return ModContent.Request<Texture2D>(Path + "Town_Alt");
+				return townParty ??= ModContent.Request<Texture2D>(Path + "Town_Alt");
 			}
 
 			if (RijamsModWorld.hellTraderArrivable && !(npc.homeless || NPCHelper.IsFarFromHome(npc)))
 			{
 				if (npc.IsShimmerVariant)
 				{
-					return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town");
+					return shimmeredTown ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town");
 				}
-				return ModContent.Request<Texture2D>(Path + "Town");
+				return town ??= ModContent.Request<Texture2D>(Path + "Town");
 			}
 
 			if (npc.IsShimmerVariant)
 			{
-				return ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
+				return shimmered ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
 			}
 
-			return ModContent.Request<Texture2D>(Path);
+			return normal ??= ModContent.Request<Texture2D>(Path);
 		}
 
 		public int GetHeadTextureIndex(NPC npc)
@@ -784,5 +785,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			return ModContent.GetModHeadSlot(Path + "_Head");
 		}
+	}
+
+	public class HellTraderShopDataStruct(int itemType, int disableChance, bool enabled)
+	{
+		public int ItemType { get; set; } = itemType;
+		public int DisableChance { get; set; } = disableChance;
+		public bool Enabled { get; set; } = enabled;
 	}
 }

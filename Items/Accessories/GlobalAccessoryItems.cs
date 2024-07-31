@@ -16,25 +16,6 @@ namespace RijamsMod.Items.Accessories
 	// See other GlobalItem classes in ExampleMod to see other ways that GlobalItem can be used.
 	public class GlobalAccessoryItems : GlobalItem
 	{
-		public override void MeleeEffects(Item item, Player player, Rectangle hitbox)
-		{
-			if (player.GetModPlayer<RijamsModPlayer>().daybreakStone && item.CountsAsClass(DamageClass.Melee) && !item.noMelee && !item.noUseGraphic && Main.rand.NextBool(2))
-			{
-				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.SolarFlare, player.velocity.X * 0.2f + (float)(player.direction * 3), player.velocity.Y * 0.2f, 100, default, 1f);
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].velocity *= 0.7f;
-				Main.dust[dust].velocity.Y -= 0.5f;
-				Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.875f);
-			}
-			if (player.GetModPlayer<RijamsModPlayer>().frostburnStone && item.CountsAsClass(DamageClass.Melee) && !item.noMelee && !item.noUseGraphic && Main.rand.NextBool(2))
-			{
-				int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Frost, player.velocity.X * 0.2f + (float)(player.direction * 3), player.velocity.Y * 0.2f, 100, default, 1f);
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].velocity *= 0.7f;
-				Main.dust[dust].velocity.Y -= 0.5f;
-				Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.LightBlue.ToVector3() * 0.875f);
-			}
-		}
 		public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
 		{
 			if (player.GetModPlayer<RijamsModPlayer>().rocketBooster && (ammo.type == AmmoID.Rocket || weapon.useAmmo == AmmoID.Rocket || 

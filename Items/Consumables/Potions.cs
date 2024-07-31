@@ -15,9 +15,9 @@ namespace RijamsMod.Items.Consumables
 			// Tooltip.SetDefault("+10% attack speed");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
-				new Color(255, 181, 229),
-				new Color(159, 36, 159),
-				new Color(168, 24, 24)
+				new(255, 181, 229),
+				new(159, 36, 159),
+				new(168, 24, 24)
 			};
 		}
 
@@ -56,9 +56,9 @@ namespace RijamsMod.Items.Consumables
 			// Tooltip.SetDefault("+1 sentry capacity");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
-				new Color(252, 98, 100),
-				new Color(223, 17, 20),
-				new Color(132, 17, 19)
+				new(252, 98, 100),
+				new(223, 17, 20),
+				new(132, 17, 19)
 			};
 		}
 
@@ -96,9 +96,9 @@ namespace RijamsMod.Items.Consumables
 			// Tooltip.SetDefault("+0.5 seconds wing flight");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
-				new Color(139, 235, 239),
-				new Color(15, 167, 211),
-				new Color(1, 70, 161)
+				new(139, 235, 239),
+				new(15, 167, 211),
+				new(1, 70, 161)
 			};
 		}
 
@@ -137,9 +137,9 @@ namespace RijamsMod.Items.Consumables
 			// Tooltip.SetDefault("+10 armor penetration");
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
-				new Color(251, 194, 29),
-				new Color(209, 127, 147),
-				new Color(140, 85, 10)
+				new(251, 194, 29),
+				new(209, 127, 147),
+				new(140, 85, 10)
 			};
 		}
 
@@ -162,19 +162,32 @@ namespace RijamsMod.Items.Consumables
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.BottledWater, 1)
-				.AddIngredient(ModContent.ItemType<Fishing.HornetTail>(), 1)
-				.AddIngredient(ItemID.WormTooth, 1)
-				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.AddIngredient(ItemID.BottledWater)
+				.AddIngredient(ModContent.ItemType<Fishing.HornetTail>())
+				.AddIngredient(ItemID.WormTooth)
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>())
 				.AddTile(TileID.Bottles)
 				.Register();
 			CreateRecipe()
-				.AddIngredient(ItemID.BottledWater, 1)
-				.AddIngredient(ModContent.ItemType<Fishing.HornetTail>(), 1)
-				.AddIngredient(ModContent.ItemType<Materials.CrawlerChelicera>(), 1)
-				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.AddIngredient(ItemID.BottledWater)
+				.AddIngredient(ModContent.ItemType<Fishing.HornetTail>())
+				.AddIngredient(ModContent.ItemType<Materials.CrawlerChelicera>())
+				.AddIngredient(ModContent.ItemType<Materials.Sulfur>())
 				.AddTile(TileID.Bottles)
 				.Register();
+			if (ModLoader.TryGetMod("ExxoAvalonOrigins", out Mod avalon))
+			{
+				if (avalon.TryFind<ModItem>("YuckyBit", out ModItem yuckyBit))
+				{
+					CreateRecipe()
+						.AddIngredient(ItemID.BottledWater)
+						.AddIngredient(ModContent.ItemType<Fishing.HornetTail>())
+						.AddIngredient(yuckyBit)
+						.AddIngredient(ModContent.ItemType<Materials.Sulfur>())
+						.AddTile(TileID.Bottles)
+						.Register();
+				}
+			}
 		}
 	}
 	public class FrenzyPotion : ModItem
@@ -183,9 +196,9 @@ namespace RijamsMod.Items.Consumables
 		{
 			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
 			{
-				new Color(96, 211, 255),
-				new Color(24, 168, 168),
-				new Color(44, 47, 176)
+				new(96, 211, 255),
+				new(24, 168, 168),
+				new(44, 47, 176)
 			};
 		}
 

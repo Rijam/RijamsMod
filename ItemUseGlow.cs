@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using ReLogic.Content;
 using System;
 using Terraria;
@@ -11,18 +12,19 @@ using Terraria.UI;
 
 namespace RijamsMod
 {
-	///Adapted from Qwerty's random content mod
-	///https://github.com/qwerty3-14/QwertyMod/blob/main/Common/Playerlayers/ItemUseGlow.cs github source
-	///Usage: In the item's SetDefaults(), Check for !Main.dedServ first, then add:
-	///```
-	///Item.GetGlobalItem<ItemUseGlow>().glowTexture = ModContent.Request<Texture2D>(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;
-	///```
-	///Additionally,
-	///Item.GetGlobalItem<ItemUseGlow>().glowOffsetX = int
-	///Item.GetGlobalItem<ItemUseGlow>().glowOffsetY = int
-	///Item.GetGlobalItem<ItemUseGlow>().angleAdd = float
-	///Item.GetGlobalItem<ItemUseGlow>().blendAlpha = bool
-	///Can be set as well.
+	// Adapted from Qwerty's random content mod
+	// https://github.com/qwerty3-14/QwertyMod/blob/main/Common/Playerlayers/ItemUseGlow.cs github source
+
+	/// <summary>
+	/// <br>Usage: In the item's SetDefaults(), Check for !Main.dedServ first, then add:</br>
+	/// <br><code>Item.GetGlobalItem&lt;ItemUseGlow&gt;().glowTexture = ModContent.Request&lt;Texture2D&gt;(Mod.Name + "/Items/GlowMasks/" + Name + "_Glow").Value;</code></br>
+	/// <br>Additionally,</br>
+	/// <br><code>Item.GetGlobalItem&lt;ItemUseGlow&gt;().glowOffsetX = int</code></br>
+	/// <br><code>Item.GetGlobalItem&lt;ItemUseGlow&gt;().glowOffsetY = int</code></br>
+	/// <br><code>Item.GetGlobalItem&lt;ItemUseGlow&gt;().angleAdd = float</code></br>
+	/// <br><code>Item.GetGlobalItem&lt;ItemUseGlow&gt;().blendAlpha = bool</code></br>
+	/// <br>Can be set as well.</br>
+	/// </summary>
 	public class ItemUseGlow : GlobalItem
 	{
 		public Asset<Texture2D> glowTexture = null;
@@ -179,23 +181,21 @@ namespace RijamsMod
 					drawInfo.itemColor = Lighting.GetColor((int)(drawInfo.Position.X + drawInfo.drawPlayer.width * 0.5) / 16, (int)((drawInfo.Position.Y + drawInfo.drawPlayer.height * 0.5) / 16.0));
 					if (drawInfo.drawPlayer.shroomiteStealth && heldItem.CountsAsClass(DamageClass.Ranged))
 					{
-						float num2 = drawInfo.drawPlayer.stealth;
-						if (num2 < 0.03)
+						float alphaMulti = drawInfo.drawPlayer.stealth;
+						if (alphaMulti < 0.03)
 						{
-							num2 = 0.03f;
+							alphaMulti = 0.03f;
 						}
-						float num3 = (1f + num2 * 10f) / 11f;
-						drawInfo.itemColor = new Color((byte)(drawInfo.itemColor.R * num2), (byte)(drawInfo.itemColor.G * num2), (byte)(drawInfo.itemColor.B * num3), (byte)(drawInfo.itemColor.A * num2));
+						drawColor *= alphaMulti;
 					}
 					if (drawInfo.drawPlayer.setVortex && heldItem.CountsAsClass(DamageClass.Ranged))
 					{
-						float num4 = drawInfo.drawPlayer.stealth;
-						if (num4 < 0.03)
+						float alphaMulti = drawInfo.drawPlayer.stealth;
+						if (alphaMulti < 0.03)
 						{
-							num4 = 0.03f;
+							alphaMulti = 0.03f;
 						}
-						//_ = (1f + num4 * 10f) / 11f;
-						drawInfo.itemColor = drawInfo.itemColor.MultiplyRGBA(new Color(Vector4.Lerp(Vector4.One, new Vector4(0f, 0.12f, 0.16f, 0f), 1f - num4)));
+						drawColor = drawInfo.itemColor.MultiplyRGBA(new Color(Vector4.Lerp(Vector4.One, new Vector4(0f, 0.12f, 0.16f, 0f), 1f - alphaMulti)));
 					}
 					bool usingItem = drawInfo.drawPlayer.itemAnimation > 0 && heldItem.useStyle != ItemUseStyleID.None;
 					bool holdingAndNotPully = heldItem.holdStyle != 0 && !drawInfo.drawPlayer.pulley;
@@ -207,7 +207,7 @@ namespace RijamsMod
 					{
 						return;
 					}
-					//Special check for the Timon's Axe, Hammer of Retribution, Quietus. Only draw the glowmask if the player has enough mana.
+					// Special check for the Timon's Axe, Hammer of Retribution, Quietus. Only draw the glowmask if the player has enough mana.
 					if (heldItem.ModItem != null && heldItem.ModItem is Items.MagicMeleeGlow && !drawInfo.drawPlayer.CheckMana(20, false))
 					{
 						return;
@@ -232,7 +232,7 @@ namespace RijamsMod
 					{
 						origin.Y = sourceRect.Value.Height - origin.Y;
 					}
-					//origin += vector;
+					// origin += vector;
 					float itemRotation = drawInfo.drawPlayer.itemRotation + angleAdd;
 					if (heldItem.useStyle == ItemUseStyleID.GolfPlay)
 					{
@@ -291,21 +291,21 @@ namespace RijamsMod
 								drawInfo.DrawDataCache.Add(drawData);
 								return;
 							}
-							int vector4X;
 							Vector2 vector3 = new(itemTexture.Width / 2, itemTexture.Height / 2);
 							Vector2 vector4 = Main.DrawPlayerItemPos(drawInfo.drawPlayer.gravDir, itemID);
-							vector4X = (int)vector4.X;
 							vector3.Y = vector4.Y;
-							Vector2 origin6 = new(-vector4X, itemTexture.Height / 2);
+							Vector2 origin6 = new(-vector4.X, itemTexture.Height / 2);
 							if (drawInfo.drawPlayer.direction == -1)
 							{
-								origin6 = new Vector2(itemTexture.Width + vector4X, itemTexture.Height / 2);
+								origin6 = new Vector2(itemTexture.Width + vector4.X, itemTexture.Height / 2);
 							}
-							drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+							drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+							// drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)), sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
 							drawInfo.DrawDataCache.Add(drawData);
 							if (heldItem.color != default)
 							{
-								drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)) + flameRandom, sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+								drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)) + flameRandom, sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
+								// drawData = new DrawData(glowTexture.Value, new Vector2((int)(drawInfo.ItemLocation.X - Main.screenPosition.X + vector3.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y + vector3.Y)) + flameRandom, sourceRect, drawColor, drawInfo.drawPlayer.itemRotation, origin6, adjustedItemScale, drawInfo.itemEffect, 0);
 								drawInfo.DrawDataCache.Add(drawData);
 							}
 							return;

@@ -76,7 +76,9 @@ namespace RijamsMod
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), new List<Condition>() { });
-				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CrimsonOrHardmode") }, 40);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CrimsonWorld, Condition.Hardmode, Condition.DownedEowOrBoc }, 40);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CrimsonWorld, Condition.PreHardmode, Condition.DownedEowOrBoc }, 40 * 2);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CrimsonOrHardmode"), Condition.NotDownedEowOrBoc }, 40 * 5);
 				bossesAsNPCs.Call("AddToShop", "WithDiv", "KingSlime", ModContent.ItemType<Items.Accessories.Misc.MorphasRing>(), new List<Condition>() { }, 0.17f);
 			}
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
@@ -128,8 +130,7 @@ namespace RijamsMod
 		//Adapted from absoluteAquarian's GraphicsLib
 		public override object Call(params object[] args)
 		{
-			if (args is null)
-				throw new ArgumentNullException(nameof(args));
+			ArgumentNullException.ThrowIfNull(args);
 
 			if (args[0] is not string function)
 				throw new ArgumentException("Expected a function name for the first argument");
@@ -295,7 +296,7 @@ namespace RijamsMod
 			switch (msgType)
 			{
 				case RijamsModMessageType.DummyPacket: 
-					NetMessage.SendData(MessageID.WorldData);
+					// NetMessage.SendData(MessageID.WorldData);
 					Logger.Debug("RijamsMod: Dummy Packet (Multiplayer packet).");
 					break;
 				case RijamsModMessageType.SetQuestOddDevice:

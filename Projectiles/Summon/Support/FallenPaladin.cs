@@ -15,7 +15,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Fallen Paladin");
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 4;
 			// This is necessary for right-click targeting

@@ -47,7 +47,7 @@ namespace RijamsMod.Items.Weapons
 		public bool forceFirstFrame = false;
 		/// <summary> The animation will loop. True by default.<br>Default: true</br> </summary>
 		public bool animationLoop = true;
-		/// <summary> A specific condition that the flash will play. Default is true (always).<br>Default: () =>  true</br> </summary>
+		/// <summary> A specific condition that the flash will play. Default is true (always).<br>Default: () => true</br> </summary>
 		public Func<bool> flashCondition = () => true;
 		/// <summary> If true, the flash will only draw if the item is being used. Aka, it won't draw when it's just being held.<br>Default: true</br> </summary>
 		public bool onlyDrawInUse = true;
@@ -196,7 +196,16 @@ namespace RijamsMod.Items.Weapons
 						colorNoAlpha = Main.DiscoColor;
 					}
 
-					DrawData drawData = new(flashTexture.Value, position + halfTextureSize, sourceRect, new(colorNoAlpha.R, colorNoAlpha.G, colorNoAlpha.B, alpha), itemRotation, origin, adjustedItemScale * scale, drawInfo.itemEffect, 0);
+					if (heldItem.useStyle == ItemUseStyleID.Shoot)
+					{
+						position.Y += halfTextureSize.Y;
+					}
+					else
+					{
+						position += halfTextureSize;
+					}
+
+					DrawData drawData = new(flashTexture.Value, position, sourceRect, new(colorNoAlpha.R, colorNoAlpha.G, colorNoAlpha.B, alpha), itemRotation, origin, adjustedItemScale * scale, drawInfo.itemEffect, 0);
 					drawInfo.DrawDataCache.Add(drawData);
 				}
 			}

@@ -57,7 +57,7 @@ namespace RijamsMod.Projectiles.Pets
 				Projectile.velocity *= 0.1f;
 				Projectile.netUpdate = true;
 			}
-			Lighting.AddLight(Projectile.Center, 1f, 1f, 0.5f);
+			Lighting.AddLight(Projectile.Center, 1.2f, 1.2f, 0.8f);
 		}
 	}
 	public class LEDLumoth : ModProjectile

@@ -10,7 +10,6 @@ namespace RijamsMod.NPCs.Enemies
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Flying Purple Slime");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.Slimer];
 		}
 
@@ -19,14 +18,11 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.CloneDefaults(NPCID.Slimer);
 			NPC.damage = 50;
 			NPC.defense = 16;
-			NPC.lifeMax = NPC.downedPlantBoss ? 200 : 100; //Doubled in Expert Mode
+			NPC.lifeMax = NPC.downedPlantBoss ? 200 : 100; // Doubled in Expert Mode
 			NPC.value = NPC.downedPlantBoss ? 200 : 100;
 			NPC.knockBackResist = 0.5f;
 			NPC.aiStyle = 14;
-			//AIType = NPCID.Slimer;
 			AnimationType = NPCID.Slimer;
-			//banner = Item.NPCtoBanner(NPCID.PurpleSlime);
-			//bannerItem = Item.BannerToItem(banner);
 			NPC.npcSlots = 0.5f;
 		}
 

@@ -674,6 +674,11 @@ namespace RijamsMod.Items
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.TargetDummy];
+			NPCID.Sets.NPCBestiaryDrawModifiers bestiaryData = new()
+			{
+				Hide = true // Hides this NPC from the bestiary
+			};
+			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
 		}
 
 		public override void SetDefaults()
