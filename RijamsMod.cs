@@ -75,6 +75,7 @@ namespace RijamsMod
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "GoblinTinkerer", ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "DownedGoblinWarlock") });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Whips.TailoThreeCats>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "QueenSlime", ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), new List<Condition>() { });

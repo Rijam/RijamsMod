@@ -2134,6 +2134,17 @@ VileWhip: {
 		'''
 }
 
+TailoThreeCats: {
+	DisplayName: Tail o' Three Cats
+	Tooltip:
+		'''
+		5 summon tag damage
+		Inflicts Confused 25% of the time
+		{$CommonItemTooltip.Whips}
+		'Dish out some constructive feedback'
+		'''
+}
+
 ForbiddenWhip: {
 	DisplayName: Forbidden Whip
 	Tooltip:

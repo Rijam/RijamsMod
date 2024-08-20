@@ -302,6 +302,13 @@ namespace RijamsMod.Items
 						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "10% damage penalty per enemy pierced"));
 					}
 				}
+				if (item.type == ModContent.ItemType<TailoThreeCats>())
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "25% damage penalty per enemy pierced"));
+					}
+				}
 				if (item.type == ItemID.FireWhip)
 				{
 					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
@@ -521,6 +528,7 @@ namespace RijamsMod.Items
 			{
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Pets.StarCallerStaff>(), 4));
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.SanityFlowerCudgel> (), 4));
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Whips.TailoThreeCats> (), 4));
 			}
 			if (item.type == ItemID.FairyQueenBossBag)
 			{

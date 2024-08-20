@@ -323,6 +323,11 @@ Mods: {
 				DisplayName: Swift Sphere Buff
 				Description: Mods.RijamsMod.Buffs.SwiftSphereBuff.Description
 			}
+
+			TailoThreeCatsDebuff: {
+				DisplayName: Tailo Three Cats Debuff
+				Description: Mods.RijamsMod.Buffs.TailoThreeCatsDebuff.Description
+			}
 		}
 
 		Projectiles: {
@@ -445,6 +450,7 @@ Mods: {
 			ShadewoodJoustingLanceProj.DisplayName: Shadewood Jousting Lance
 			SulfuricJoustingLanceProj.DisplayName: Sulfuric Jousting Lance
 			EtherealJoustingLanceProj.DisplayName: Ethereal Jousting Lance
+			TailoThreeCatsProj.DisplayName: Tailo Three Cats Proj
 		}
 
 		Tiles: {

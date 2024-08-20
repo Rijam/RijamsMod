@@ -40,6 +40,22 @@ namespace RijamsMod.Buffs.Debuffs
 			npc.GetGlobalNPC<WhipDebuffNPC>().markedByViciousWhip = true;
 		}
 	}
+	public class TailoThreeCatsDebuff : ModBuff
+	{
+		public static readonly int TagDamage = 5;
+
+		public override void SetStaticDefaults()
+		{
+			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
+			// Other mods may check it for different purposes.
+			BuffID.Sets.IsATagBuff[Type] = true;
+			Main.debuff[Type] = true;
+		}
+		public override void Update(NPC npc, ref int buffIndex)
+		{
+			npc.GetGlobalNPC<WhipDebuffNPC>().markedByTailoThreeCats = true;
+		}
+	}
 	public class SulfuricWhipDebuff : ModBuff
 	{
 		public static readonly int TagDamage = 10;
@@ -110,6 +126,7 @@ namespace RijamsMod.Buffs.Debuffs
 
 		public bool markedByVileWhip;
 		public bool markedByViciousWhip;
+		public bool markedByTailoThreeCats;
 		public bool markedBySulfuricWhip;
 		public bool markedByForbiddenWhip;
 		public bool markedByFestiveWhip;
@@ -119,6 +136,7 @@ namespace RijamsMod.Buffs.Debuffs
 		{
 			markedByVileWhip = false;
 			markedByViciousWhip = false;
+			markedByTailoThreeCats = false;
 			markedBySulfuricWhip = false;
 			markedByForbiddenWhip = false;
 			markedByFestiveWhip = false;
@@ -144,6 +162,11 @@ namespace RijamsMod.Buffs.Debuffs
 			if (markedByViciousWhip)
 			{
 				modifiers.FlatBonusDamage += ViciousWhipDebuff.TagDamage * projTagMultiplier;
+			}
+			if (markedByTailoThreeCats)
+			{
+				modifiers.FlatBonusDamage += TailoThreeCatsDebuff.TagDamage * projTagMultiplier;
+				npc.AddBuff(BuffID.Confused, 240);
 			}
 			if (markedBySulfuricWhip)
 			{

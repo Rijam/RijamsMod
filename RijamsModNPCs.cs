@@ -181,6 +181,7 @@ namespace RijamsMod
 				LeadingConditionRule notExpertRule = new (new Conditions.NotExpert());
 				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<StarCallerStaff>(), 4));
 				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SanityFlowerCudgel>(), 4));
+				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TailoThreeCats>(), 4));
 				npcLoot.Add(notExpertRule);
 			}
 			if (npc.type == NPCID.HallowBoss)
