@@ -218,8 +218,10 @@ Mods: {
 				DisplayName: Warrior Energy
 				Description:
 					'''
-					(+10% damage)
 					(+5% attack speed)
+					(+10% damage)
+					(+10% critical hit chance)
+					(+25% critical hit damage)
 					'''
 			}
 
@@ -430,10 +432,19 @@ Mods: {
 			FrostyWindGust.DisplayName: Frosty Wind Gust
 			GleamingFungus.DisplayName: Gleaming Fungus
 			WhirlingFungus.DisplayName: Whirling Fungus
-			CuriosityLureProj.DisplayName: Curiosity Lure Proj
-			SpinnerBobberProj.DisplayName: Spinner Bobber Proj
-			TrapBobberProj.DisplayName: Trap Bobber Proj
+			CuriosityLureProj.DisplayName: Curiosity Lure
+			SpinnerBobberProj.DisplayName: Spinner Bobber
+			TrapBobberProj.DisplayName: Trap Bobber
 			ClankBeam.DisplayName: Clank Beam
+			AshWoodJoustingLanceProj.DisplayName: Ash Wood Jousting Lance
+			BorealWoodJoustingLanceProj.DisplayName: Boreal Wood Jousting Lance
+			EbonwoodJoustingLanceProj.DisplayName: Ebonwood Jousting Lance
+			PalmWoodJoustingLanceProj.DisplayName: Palm Wood Jousting Lance
+			PearlwoodJoustingLanceProj.DisplayName: Pearlwood Jousting Lance
+			RichMahoganyJoustingLanceProj.DisplayName: Rich Mahogany Jousting Lance
+			ShadewoodJoustingLanceProj.DisplayName: Shadewood Jousting Lance
+			SulfuricJoustingLanceProj.DisplayName: Sulfuric Jousting Lance
+			EtherealJoustingLanceProj.DisplayName: Ethereal Jousting Lance
 		}
 
 		Tiles: {

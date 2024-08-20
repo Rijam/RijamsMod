@@ -257,7 +257,7 @@
 	* Added Stumble summon & magic weapon. Found in the Dungeon or Shadow chests.
 	* Upgraded to .NET 8
 
-1.2.7.0 - (? ?, 2024)
+1.2.7.0 - (August 1, 2024)
 	* Sir Slush now has the ability to slowly move towards the player.
 	* Slightly reduced the distance Sir Slush can target the player.
 	* Sir Slush's snowballs wait longer before applying gravity and drag in Expert Mode.
@@ -278,3 +278,16 @@
 	* Cosmic Sorcery now grants -8% mana cost just like the Mana Flower.
 	* Redid the Red Harpy Wings' animations. Now has custom drawing and 7 frames of animation.
 	* The mana cost tooltip for the Timon's Axe, Hammer of Retribution, and Quietus now takes into account the player's mana cost multiplier.
+
+1.2.8.0 - (August ?, 2024)
+	* Decreased the Dark Soldier's stats while in Pre-Hardmode Don't Dig Up worlds.
+	* Sort of fixed the missing item system from not working in multiplayer.
+	* Fixed Soul Sapper Ring and Mana Sapper Ring giving its effects from enemies killed by anyone instead of the just person who killed the enemy.
+	* Added Boreal Wood Jousting Lance, Palm Wood Jousting Lance, Rich Mahogany Jousting Lance, Ebonwood Jousting Lance, Shadewood Jousting Lance, Ash Wood Jousting Lance, and Pearlwood Jousting Lance.
+	* Added Sulfuric Jousting Lance.
+	* Horseman's Jousting Lance is now more likely to spawn Flaming Jacks while moving at high speeds.
+	* Added Band of Life Sapping: A combination of the Band of Regeneration and Life Sapper Ring.
+	* Added Band of Mana Sapping: A combination of the Band of Starpower and Mana Sapper Ring.
+	* Cosmic Sorcery now requires the Band of Mana Sapping instead of the Mana Sapper Ring and gives an addition +20 max mana.
+	* Buffed the Warrior Ring: Now 10% activation chance instead of 5%. The buff nows lasts 10 seconds instead of 5 seconds. Now gives +10% crit chance and +25% crit damage in addition to the +5% attack speed and +10% damage it had before.
+	* Added Ethereal Jousting Lance: dropped by Empress of Light.

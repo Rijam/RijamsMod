@@ -1,15 +1,12 @@
-using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Weapons.Ranged.Ammo;
 using RijamsMod.Items.Weapons.Summon.Whips;
-using RijamsMod.Buffs.Minions;
-using System.Linq;
-using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Weapons.Ranged;
 using static RijamsMod.RijamsModConfigServer;
@@ -235,12 +232,29 @@ namespace RijamsMod.Items
 					tooltips.Insert(index + 1, new TooltipLine(Mod, "BeeGreaves", "+1 Sentry capacity"));
 				}
 			}
+			if (item.type == ItemID.JoustingLance)
+			{
+				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
+				if (line != null)
+				{
+					line.Text = Language.GetTextValue("ItemTooltip.JoustingLance").Split("\n")[0] + "\n7.65 tile reach";
+				}
+				TooltipLine line2 = tooltips.FirstOrDefault(x => x.Name == "Tooltip3" && x.Mod == "Terraria");
+			}
+			if (item.type == ItemID.HallowJoustingLance)
+			{
+				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
+				if (line != null)
+				{
+					line.Text = Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\n7.65 tile reach";
+				}
+			}
 			if (item.type == ItemID.ShadowJoustingLance)
 			{
 				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
 				if (line != null)
 				{
-					line.Text = Language.GetTextValue("ItemTooltip.ShadowJoustingLance") + "\nInflicts Shadowflame";
+					line.Text = Language.GetTextValue("ItemTooltip.ShadowJoustingLance") + "\n7.65 tile reach\nInflicts Shadowflame";
 				}
 			}
 			RijamsModConfigClient configClient = ModContent.GetInstance<RijamsModConfigClient>();
@@ -511,6 +525,7 @@ namespace RijamsMod.Items
 			if (item.type == ItemID.FairyQueenBossBag)
 			{
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.RadiantLanternCudgel>(), 4));
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Melee.JoustingLances.EtherealJoustingLance>(), 4));
 			}
 		}
 	}

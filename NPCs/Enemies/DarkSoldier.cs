@@ -45,6 +45,15 @@ namespace RijamsMod.NPCs.Enemies
 			AnimationType = NPCID.BoneThrowingSkeleton;
 			Banner = NPC.type;
 			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.DarkSoldierBanner>();
+
+			if (Main.remixWorld && !Main.hardMode) // Don't Dig Up or Get Fixed Boi worlds and Pre-Hardmode.
+			{
+				NPC.lifeMax = 125;
+				NPC.value = 3500f;
+				NPC.defense = 3;
+				NPC.damage = 10;
+				NPC.knockBackResist = 0.75f;
+			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -205,7 +214,7 @@ namespace RijamsMod.NPCs.Enemies
 						projVelocity.Normalize();
 						projVelocity *= 5f;
 
-						int projDamage = 20;
+						int projDamage = Main.remixWorld && !Main.hardMode ? 15 : 20;
 						float projKnockback = 1f;
 						int projType = ProjectileID.Fireball;
 						NPC.netUpdate = true;
@@ -519,6 +528,10 @@ namespace RijamsMod.NPCs.Enemies
 			if (Main.remixWorld && !Main.hardMode) // Don't Dig Up or Get Fixed Boi worlds and Pre-Hardmode.
 			{
 				spawnChance -= 0.2f;
+				if (spawnInfo.SpawnTileX > Main.maxTilesX / 3 && spawnInfo.SpawnTileX < 2 * Main.maxTilesX / 3) // Middle 1/3 of the world, decrease spawns even more.
+				{
+					spawnChance -= 0.05f;
+				}
 			}
 			return (float)Math.Clamp(spawnChance, 0.0, 1.0);
 		}

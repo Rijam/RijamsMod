@@ -106,7 +106,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.friendly = true;
 			NPC.width = 18;
 			NPC.height = 40;
-			NPC.aiStyle = 7;
+			NPC.aiStyle = NPCAIStyleID.Passive;
 			NPC.damage = 10;
 			NPC.defense = 60;//def 15
 			NPC.lifeMax = 250;
@@ -172,15 +172,11 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				else
 				{
-					for (int k = 0; k < Main.maxPlayers; k++)
+					foreach (Player player in Main.ActivePlayers)
 					{
-						Player player = Main.player[k];
-						if (player.active)
+						if (player.HasItem(ModContent.ItemType<OddDevice>())) //check if the player has the Odd Device in their inventory
 						{
-							if (player.HasItem(ModContent.ItemType<OddDevice>())) //check if the player has the Odd Device in their inventory
-							{
-								return true;
-							}
+							return true;
 						}
 					}
 				}
@@ -1079,14 +1075,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				return false;
 			}
 
-			for (int i = 0; i < Main.maxPlayers; i++)
+			foreach (Player searchPlayer in Main.ActivePlayers)
 			{
-				Player searchPlayer = Main.player[i];
-				if (!searchPlayer.active)
-				{
-					continue;
-				}
-
 				if (searchPlayer.HasItem(ModContent.ItemType<OddDevice>()) && !RijamsModWorld.intTravQuestOddDevice) { which = 0; return true; }
 				if (searchPlayer.HasItem(ModContent.ItemType<BlankDisplay>()) && !RijamsModWorld.intTravQuestBlankDisplay) { which = 1; return true; }
 				if (searchPlayer.HasItem(ModContent.ItemType<TeleportationCore>()) && !RijamsModWorld.intTravQuestTPCore) { which = 2; return true; }

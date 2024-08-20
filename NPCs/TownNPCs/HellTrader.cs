@@ -13,7 +13,6 @@ using Terraria.GameContent;
 using Terraria.Audio;
 using Terraria.GameContent.Personalities;
 using Terraria.GameContent.Bestiary;
-using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using RijamsMod.EmoteBubbles;
 using RijamsMod.Items;
@@ -58,7 +57,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.DangerDetectRange[NPC.type] = 1000;
 			NPCID.Sets.AttackType[NPC.type] = 2;
 			NPCID.Sets.AttackTime[NPC.type] = 40;
-			NPCID.Sets.AttackAverageChance[NPC.type] = 10;
+			NPCID.Sets.AttackAverageChance[NPC.type] = 8;
 			NPCID.Sets.HatOffsetY[NPC.type] = 4;
 			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
 
@@ -125,6 +124,13 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? ModContent.ItemType<CaughtHellTrader>() : -1;
 			NPC.rarity = RijamsModWorld.hellTraderArrivable ? 0 : 1;
 			NPC.npcSlots = RijamsModWorld.hellTraderArrivable ? 1 : 0.25f;
+
+			// This works, but it's then different for each client.
+			for (int i = 0; i < ItemsEnabled.Count; i++)
+			{
+				// Disable certain items based on their disable chance.
+				ItemsEnabled[i].Enabled = !Main.rand.NextBool(ItemsEnabled[i].DisableChance);
+			}
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -209,7 +215,6 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				"Mixi", "Brima", "Sulfura", "Leh", "Inferna", "Purgator", "Haidess", "Blaiz", "Agoni", "Flaima", "Nethi", "Perdition", "Do\'om", "Braz", "Grihmos", "Da\'nur"
 			};
-			
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -242,12 +247,16 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (!RijamsModWorld.hellTraderArrivable)
 			{
 				NPC.rarity = 1;
-				float distance = Math.Abs(NPC.position.X - Main.player[NPC.FindClosestPlayer()].position.X) + Math.Abs(NPC.position.Y - Main.player[NPC.FindClosestPlayer()].position.Y);
-				if (distance >= 4000f && NPC.homeless)
+				int nearestPlayer = NPC.FindClosestPlayer();
+				if (nearestPlayer != -1)
 				{
-					NPC.active = false;
-					NPC.netSkip = -1;
-					NPC.life = 0;
+					float distance = Math.Abs(NPC.position.X - Main.player[nearestPlayer].position.X) + Math.Abs(NPC.position.Y - Main.player[nearestPlayer].position.Y);
+					if (distance >= 4000f && NPC.homeless)
+					{
+						NPC.active = false;
+						NPC.netSkip = -1;
+						NPC.life = 0;
+					}
 				}
 			}
 			if (RijamsModWorld.hellTraderArrivable)
@@ -605,7 +614,8 @@ namespace RijamsMod.NPCs.TownNPCs
 		/// </summary>
 		private static List<HellTraderShopDataStruct> ItemsEnabled = new();
 
-		public override void OnSpawn(IEntitySource source)
+		/*
+		public override void OnSpawn(IEntitySource source) // OnSpawn isn't synced, so this doesn't work in multiplayer.
 		{
 			for (int i = 0; i < ItemsEnabled.Count; i++)
 			{
@@ -613,6 +623,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				ItemsEnabled[i].Enabled = !Main.rand.NextBool(ItemsEnabled[i].DisableChance);
 			}
 		}
+		*/
 
 		public override void ModifyActiveShop(string shopName, Item[] items)
 		{
@@ -707,7 +718,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
 		{
 			cooldown = 5;
-			randExtraCooldown = 30;
+			randExtraCooldown = 10;
 		}
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay)

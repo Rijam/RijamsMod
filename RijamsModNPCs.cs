@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
 using RijamsMod.Items.Weapons.Melee;
+using RijamsMod.Items.Weapons.Melee.JoustingLances;
 using RijamsMod.Items.Weapons.Ranged;
 using RijamsMod.Items.Weapons.Summon.Whips;
 using RijamsMod.Items.Weapons.Summon.Minions;
@@ -186,6 +187,7 @@ namespace RijamsMod
 			{
 				LeadingConditionRule notExpertRule = new(new Conditions.NotExpert());
 				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<RadiantLanternCudgel>(), 4));
+				notExpertRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EtherealJoustingLance>(), 4));
 				npcLoot.Add(notExpertRule);
 			}
 			// EoW and BoC will drop the Odd Device if the Interstellar Traveling has not moved in ever. But, don't show it in the Bestiary.

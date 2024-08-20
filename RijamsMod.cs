@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using RijamsMod.Items.Consumables;
 using RijamsMod.Items.Weapons;
 using RijamsMod.NPCs;
@@ -28,7 +29,7 @@ namespace RijamsMod
 
 		public override void Load()
 		{
-			
+			Instance = this;
 		}
 		
 		public override void Unload()
@@ -66,20 +67,21 @@ namespace RijamsMod
 			}
 			if (ModLoader.TryGetMod("BossesAsNPCs", out Mod bossesAsNPCs))
 			{
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "GoblinTinkerer", ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "DownedGoblinWarlock") });
-				bossesAsNPCs.Call("AddToShop", "WithDiv", "Pumpking", ModContent.ItemType<Items.Weapons.Melee.HorsemansJoustingLance>(), new List<Condition>() { }, 0.1f);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Materials.FestivePlating>(), new List<Condition>() { Condition.DownedSantaNK1 });
-				bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), new List<Condition>() { Condition.DownedSantaNK1 }, 0.1f);
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "WithDiv", "KingSlime", ModContent.ItemType<Items.Accessories.Misc.MorphasRing>(), new List<Condition>() { }, 0.17f);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CrimsonWorld, Condition.Hardmode, Condition.DownedEowOrBoc }, 40);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CrimsonOrHardmode"), Condition.NotDownedEowOrBoc }, 40 * 5);
+				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CrimsonWorld, Condition.PreHardmode, Condition.DownedEowOrBoc }, 40 * 2);
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "BrainOfCthulhu", ModContent.ItemType<Items.Materials.CrawlerChelicera>(), new List<Condition>() { });
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "QueenSlime", ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>(), new List<Condition>() { });
-				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "GoblinTinkerer", ModContent.ItemType<Items.Weapons.Summon.Minions.ShadowflameStaff>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "DownedGoblinWarlock") });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Pets.StarCallerStaff>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Deerclops", ModContent.ItemType<Items.Weapons.Summon.Cudgels.SanityFlowerCudgel>(), new List<Condition>() { });
-				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CrimsonWorld, Condition.Hardmode, Condition.DownedEowOrBoc }, 40);
-				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { Condition.CrimsonWorld, Condition.PreHardmode, Condition.DownedEowOrBoc }, 40 * 2);
-				bossesAsNPCs.Call("AddToShop", "CustomPrice", "EyeOfCthulhu", ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "CrimsonOrHardmode"), Condition.NotDownedEowOrBoc }, 40 * 5);
-				bossesAsNPCs.Call("AddToShop", "WithDiv", "KingSlime", ModContent.ItemType<Items.Accessories.Misc.MorphasRing>(), new List<Condition>() { }, 0.17f);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "QueenSlime", ModContent.ItemType<Items.Weapons.Summon.Cudgels.CrystalClusterCudgel>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Weapons.Summon.Whips.FestiveWhip>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Summon.Cudgels.RadiantLanternCudgel>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Melee.JoustingLances.EtherealJoustingLance>(), new List<Condition>() { });
+				bossesAsNPCs.Call("AddToShop", "WithDiv", "Pumpking", ModContent.ItemType<Items.Weapons.Melee.JoustingLances.HorsemansJoustingLance>(), new List<Condition>() { }, 0.1f);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Materials.FestivePlating>(), new List<Condition>() { Condition.DownedSantaNK1 });
+				bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), new List<Condition>() { Condition.DownedSantaNK1 }, 0.1f);
 			}
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
 			{
@@ -290,6 +292,70 @@ namespace RijamsMod
 			SoundEngine.PlaySound(soundStyle, player.Center);
 		}
 
+		/// <summary>
+		/// Use to increase (or decrease) the player's mana and sync it across the network.
+		/// </summary>
+		/// <param name="playerWhoAmI">The index of the player.</param>
+		/// <param name="healAmount">The amount to increase (or decrease) the mana by.</param>
+		/// <param name="showCombatText">If the combat text should be shown.</param>
+		public void HealMana(int playerWhoAmI, int healAmount, bool showCombatText = true)
+		{
+			if (Main.netMode == NetmodeID.SinglePlayer)
+			{
+				Player manaPlayer = Main.player[playerWhoAmI];
+				manaPlayer.statMana += healAmount;
+				if (manaPlayer.statMana > manaPlayer.statManaMax2)
+				{
+					manaPlayer.statMana = manaPlayer.statManaMax2;
+				}
+				if (showCombatText)
+				{
+					manaPlayer.ManaEffect(healAmount);
+				}
+			}
+			else
+			{
+				ModPacket packet = GetPacket();
+				packet.Write((byte)RijamsModMessageType.HealMana);
+				packet.Write((byte)playerWhoAmI);
+				packet.Write((short)healAmount);
+				packet.Write((bool)showCombatText);
+				packet.Send();
+			}
+		}
+
+		/// <summary>
+		/// Receives the packet and changes the player's mana.
+		/// </summary>
+		/// <param name="reader"></param>
+		internal void HealManaReceive(BinaryReader reader)
+		{
+			byte playerIndex = reader.ReadByte();
+			short healAmount = reader.ReadInt16();
+			bool showCombatText = reader.ReadBoolean();
+
+			if (healAmount > 0)
+			{
+				Player manaPlayer = Main.player[playerIndex];
+				manaPlayer.statMana += healAmount;
+				if (manaPlayer.statMana > manaPlayer.statManaMax2)
+				{
+					manaPlayer.statMana = manaPlayer.statManaMax2;
+				}
+				NetMessage.SendData(MessageID.PlayerMana, number: playerIndex);
+
+				if (showCombatText)
+				{
+					manaPlayer.ManaEffect(healAmount);
+				}
+
+				if (Main.netMode == NetmodeID.Server)
+				{
+					HealMana(playerIndex, healAmount, showCombatText);
+				}
+			}
+		}
+
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
 		{
 			RijamsModMessageType msgType = (RijamsModMessageType)reader.ReadByte();
@@ -341,6 +407,9 @@ namespace RijamsMod
 					SnuggetPetLicense.SnuggetUnlockOrExchangePet(ref RijamsModWorld.boughtSnuggetPet, ModContent.NPCType<SnuggetPet>(), "Mods.RijamsMod.UI.LicenseSnuggetUse");
 					Logger.Debug("RijamsMod: Snugget Town Pet Unlock or Exchange (Multiplayer packet).");
 					break;
+				case RijamsModMessageType.HealMana:
+					HealManaReceive(reader);
+					break;
 				default:
 					Logger.WarnFormat("RijamsMod: Unknown Message type: {0}", msgType);
 					break;
@@ -358,6 +427,7 @@ namespace RijamsMod
 		SetQuestPrimeThruster,
 		SetHellTraderArrivable,
 		PlayNetworkSound,
-		SnuggetUnlockOrExchange
+		SnuggetUnlockOrExchange,
+		HealMana
 	}
 }

@@ -1,10 +1,36 @@
-using Microsoft.Xna.Framework;
+using RijamsMod.Items.Accessories.Misc;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Accessories.Magic
 {
+	[AutoloadEquip(EquipType.HandsOn)]
+	public class BandOfManaSapping : ModItem
+	{
+		public override void SetDefaults()
+		{
+			Item.width = 28;
+			Item.height = 20;
+			Item.rare = ItemRarityID.Green;
+			Item.value = Item.sellPrice(0, 1, 50, 0);
+			Item.accessory = true;
+		}
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			player.statManaMax2 += 20;
+			player.GetModPlayer<RijamsModPlayer>().manaSapperRing = true;
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.BandofStarpower, 1)
+				.AddIngredient(ModContent.ItemType<ManaSapperRing>(), 1)
+				.AddTile(TileID.TinkerersWorkbench)
+				.Register();
+		}
+	}
+
 	[AutoloadEquip(EquipType.HandsOn, EquipType.HandsOff)]
 	public class DestroyerCuffs : ModItem
 	{
@@ -58,7 +84,7 @@ namespace RijamsMod.Items.Accessories.Magic
 		{
 			player.GetDamage(DamageClass.Magic) += 0.15f;
 			player.GetCritChance(DamageClass.Magic) += 10;
-			player.statManaMax2 += 20;
+			player.statManaMax2 += 40;
 			player.manaRegenDelayBonus++;
 			player.manaRegenBonus += 25;
 			player.manaMagnet = true;
@@ -76,7 +102,7 @@ namespace RijamsMod.Items.Accessories.Magic
 				.AddIngredient(ModContent.ItemType<DestroyerCuffs>(), 1)
 				.AddIngredient(ItemID.ManaCloak, 1)
 				.AddIngredient(ItemID.PutridScent, 1)
-				.AddIngredient(ModContent.ItemType<Misc.ManaSapperRing>(), 1)
+				.AddIngredient(ModContent.ItemType<BandOfManaSapping>(), 1)
 				.AddIngredient(ItemID.LunarBlockNebula, 5)
 				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)
@@ -87,7 +113,7 @@ namespace RijamsMod.Items.Accessories.Magic
 				.AddIngredient(ModContent.ItemType<DestroyerCuffs>(), 1)
 				.AddIngredient(ItemID.StarCloak, 1)
 				.AddIngredient(ItemID.ArcaneFlower, 1)
-				.AddIngredient(ModContent.ItemType<Misc.ManaSapperRing>(), 1)
+				.AddIngredient(ModContent.ItemType<BandOfManaSapping>(), 1)
 				.AddIngredient(ItemID.LunarBlockNebula, 5)
 				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)

@@ -15,7 +15,6 @@ namespace RijamsMod.Tiles
 		{
             if (type == TileID.Pots)
             {
-
 				if (Main.hardMode && Main.rand.NextBool(100))
                 {
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>(), Main.rand.Next(20, 41));

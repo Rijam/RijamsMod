@@ -1,13 +1,11 @@
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using RijamsMod.Items.Armor.Vanity.IntTrav;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Accessories.Misc
 {
-	// Buffs given in RijamsModNPCs
+	// Buffs given in RingsGlobalNPCs
 
 	[AutoloadEquip(EquipType.HandsOn)]
 	public class LifeSapperRing : ModItem

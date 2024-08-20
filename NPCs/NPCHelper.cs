@@ -1,16 +1,11 @@
 using System;
-using Microsoft.Xna.Framework;
+using System.Linq;
 using System.Collections.Generic;
-using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.Chat;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using RijamsMod.NPCs.TownNPCs;
 using Terraria.Localization;
-using System.Linq;
-using System.Reflection;
 
 namespace RijamsMod.NPCs
 {

@@ -1,22 +1,19 @@
 using Terraria;
 using Terraria.ID;
-using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.Enums;
-using Terraria.Localization;
-using Terraria.Utilities;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
+using System.Collections.Generic;
 
-namespace RijamsMod.Items.Weapons.Melee
+namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 {
 	// I made Example Jousting Lance so I'm going to use it!
-	public class SolarJoustingLance : ModItem
+	public class BoneHeadJoustingLance : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
 			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
-			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nInflicts Daybroken\nCauses Solar Explosion on hit");
+			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\n'You bone head!'");
+			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Angry Bones]", "[c/474747:Or crafted]" });
 			GlobalItems.isJoustingLance.Add(Type);
 			//CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The number of sacrifices that is required to research the item in Journey Mode.
 		}
@@ -28,16 +25,14 @@ namespace RijamsMod.Items.Weapons.Melee
 			// The shoot speed will affect how far away the projectile spawns from the player's hand.
 			// If you are using the custom AI in your projectile (and not aiStyle 19 and AIType = ProjectileID.JoustingLance), the standard value is 1f.
 			// If you are using aiStyle 19 and AIType = ProjectileID.JoustingLance, then multiply the value by about 3.5f.
-			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.Melee.SolarJoustingLanceProj>(), 1.6f, 24); // A special method that sets a variety of item parameters that make the item act like a spear weapon.
-
-			Item.width = 48;
-			Item.height = 48;
-
+			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.Melee.JoustingLances.BoneHeadJoustingLanceProj>(), 0.875f, 24);
+			Item.width = 46;
+			Item.height = 46;
 			Item.DamageType = DamageClass.MeleeNoSpeed; // We need to use MeleeNoSpeed here so that attack speed doesn't effect our held projectile.
 
-			Item.SetWeaponValues(200, 16f, 0); // A special method that sets the damage, knockback, and bonus critical strike chance.
+			Item.SetWeaponValues(45, 10f, 4); // A special method that sets the damage, knockback, and bonus critical strike chance.
 
-			Item.SetShopValues(ItemRarityColor.StrongRed10, Item.buyPrice(0, 90)); // A special method that sets the rarity and value.
+			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(0, 0, 80)); // A special method that sets the rarity and value.
 
 			Item.channel = true; // Channel is important for our projectile.
 
@@ -50,12 +45,11 @@ namespace RijamsMod.Items.Weapons.Melee
 		// This will allow our Jousting Lance to receive the same modifiers as melee weapons.
 		public override bool MeleePrefix() => true;
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.FragmentSolar, 9)
-				.AddTile(TileID.LunarCraftingStation)
+				.AddIngredient(ItemID.Bone, 40)
+				.AddTile(TileID.BoneWelder)
 				.Register();
 		}
 	}

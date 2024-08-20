@@ -1,21 +1,21 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RijamsMod.Projectiles.Melee
+namespace RijamsMod.Projectiles.Melee.JoustingLances
 {
 	// I made Example Jousting Lance so I'm going to use it!
-	public class LonkheJoustingLanceProj : ModProjectile
+	public class JoustingLanceProjBase : ModProjectile
 	{
+		public override bool IsLoadingEnabled(Mod mod) => GetType() != typeof(JoustingLanceProjBase);
+		public override string Texture => Projectile.type == ModContent.ProjectileType<JoustingLanceProjBase>() ? null : (GetType().Namespace + "." + Name).Replace('.', '/');
+
 		public override void SetStaticDefaults()
 		{
-			// In case anyone is curious, Lonkhe is a butchering of the Greek word for Lance. So then name is like "Lance Jousting Lance" lol.
-			// DisplayName.SetDefault("Lonkhe Jousting Lance"); // The English name of the projectile
-
 			// This will cause the player to dismount if they are hit by another Jousting Lance.
 			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.
 			ProjectileID.Sets.DismountsPlayersOnHit[Type] = true;
@@ -51,6 +51,52 @@ namespace RijamsMod.Projectiles.Melee
 			// AIType = ProjectileID.JoustingLance; 
 		}
 
+		/// <summary>
+		/// The dust to use while while moving at high speeds.
+		/// </summary>
+		/// <param name="dustTypeCommon">The first type of dust which is more common.  Set to 0 for no dust.</param>
+		/// <param name="dustTypeRare">The second, rarer dust. Set to 0 for no dust.</param>
+		/// <param name="offset">This offset will affect how much the dust spreads out.</param>
+		public virtual void DustTypes(ref int dustTypeCommon, ref int dustTypeRare, ref int offset)
+		{
+
+		}
+
+		/// <summary>
+		/// Magic numbers used when calculating the distance the jousting lance flies out away from the player.
+		/// </summary>
+		/// <param name="extendDist">How far to fly out during extension</param>
+		/// <param name="tipDistStart">Starting offset for the distance of the tip from the player's position.</param>
+		public virtual void AIDistances(ref float extendDist, ref float tipDistStart)
+		{
+
+		}
+
+		/// <summary>
+		/// The collision for the jousting lance. It is very important to make sure the numbers are adjusted to match the length of the jousting lance.
+		/// </summary>
+		/// <param name="scaleFactor">How far back the hit-line will be from the tip of the Jousting Lance. You will need to modify this if you have a longer or shorter Jousting Lance. Vanilla uses 95f</param>
+		/// <param name="widthMultiplier">How thick the hit-line is. Increase or decrease this value if your Jousting Lance is thicker or thinner. Vanilla uses 23f</param>
+		/// <param name="lanceHitboxBounds">
+		/// <br>This Rectangle is the width and height of the Jousting Lance's hitbox which is used for the first step of collision.</br>
+		/// <br>You will need to modify the last two numbers if you have a bigger or smaller Jousting Lance.</br>
+		/// <br>Vanilla uses (0, 0, 300, 300) which that is quite large for the size of the Jousting Lance.</br>
+		/// <br>The size doesn't matter too much because this rectangle is only a basic check for the collision (the hit-line is much more important).</br>
+		/// </param>
+		public virtual void CollidingPoints(ref float scaleFactor, ref float widthMultiplier, ref Rectangle lanceHitboxBounds)
+		{
+
+		}
+
+		/// <summary>
+		/// Modify the default drawing
+		/// </summary>
+		/// <param name="drawColor">The color that projectile is drawn as. It is the light color by default.</param>
+		public virtual void ModifyDrawing(ref Color drawColor)
+		{
+
+		}
+
 		// This is the behavior of the Jousting Lances.
 		public override void AI()
 		{
@@ -82,8 +128,12 @@ namespace RijamsMod.Projectiles.Melee
 
 			// Distances are in pixels
 			float extendDist = 24; // How far to fly out during extension
+			float tipDistStart = 98; // Starting offset for the distance of the tip from the player's position.
+
+			AIDistances(ref extendDist, ref tipDistStart);
+
 			float retractDist = extendDist / 2; // How far to fly back during retraction
-			float tipDist = 98 + extension * extendDist - retraction * retractDist; // If your Jousting Lance is larger or smaller than the standard size, it is recommended to change the shoot speed of the item instead of this value.
+			float tipDist = tipDistStart + extension * extendDist - retraction * retractDist; // If your Jousting Lance is larger or smaller than the standard size, it is recommended to change the shoot speed of the item instead of this value.
 
 			Vector2 center = owner.RotatedRelativePoint(owner.MountedCenter); // Get the center of the owner. This accounts for the player being shifted up or down while riding a mount, sitting in a chair, etc.
 			Projectile.Center = center; // Set the center of the projectile to the center of the owner. Projectile.Center is now actually the tip of the Jousting Lance.
@@ -103,53 +153,63 @@ namespace RijamsMod.Projectiles.Melee
 			// The Hallowed and Shadow Jousting Lance spawn dusts when the player is moving above a certain speed.
 			float minimumDustVelocity = 6f;
 
-			// This Vector2.Dot is the dot product between the projectile's velocity and the player's velocity normalized to be between -1 and 1.
-			// What this means in this context is that the speed value will be closer to positive 1 if the player is moving in the same direction as the direction the lance was shot.
-			// Example: if the lance is shot up and to the right, the value here will be closer to 1 if the player is also moving up and to the right.
-			float movementInLanceDirection = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.UnitX * owner.direction), owner.velocity.SafeNormalize(Vector2.UnitX * owner.direction));
+			// Set your dust types here.
+			int dustTypeCommon = DustID.WoodFurniture;
+			int dustTypeRare = DustID.Torch;
 
-			float playerVelocity = owner.velocity.Length();
+			int offset = 4; // This offset will affect how much the dust spreads out.
 
-			if (playerVelocity > minimumDustVelocity && movementInLanceDirection > 0.8f)
+			DustTypes(ref dustTypeCommon, ref dustTypeRare, ref offset);
+
+			if (dustTypeCommon > 0 || dustTypeRare > 0) // Only run this logic if there are dusts to be displayed.
 			{
-				// The chance for the dust to spawn. The actual chance (see below) is 1/dustChance. We make the chance higher the faster the player is moving by making the denominator smaller.
-				int dustChance = 8;
-				if (playerVelocity > minimumDustVelocity + 1f)
-				{
-					dustChance = 5;
-				}
-				if (playerVelocity > minimumDustVelocity + 2f)
-				{
-					dustChance = 2;
-				}
+				// This Vector2.Dot is the dot product between the projectile's velocity and the player's velocity normalized to be between -1 and 1.
+				// What this means in this context is that the speed value will be closer to positive 1 if the player is moving in the same direction as the direction the lance was shot.
+				// Example: if the lance is shot up and to the right, the value here will be closer to 1 if the player is also moving up and to the right.
+				float movementInLanceDirection = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.UnitX * owner.direction), owner.velocity.SafeNormalize(Vector2.UnitX * owner.direction));
 
-				// Set your dust types here.
-				int dustTypeCommon = DustID.Marble;
-				int dustTypeRare = DustID.Enchanted_Gold;
+				float playerVelocity = owner.velocity.Length();
 
-				int offset = 2; // This offset will affect how much the dust spreads out.
-
-				// Spawn the dusts based on the dustChance. The dusts are spawned at the tip of the Jousting Lance.
-				if (Main.rand.NextBool(dustChance))
+				if (playerVelocity > minimumDustVelocity && movementInLanceDirection > 0.8f)
 				{
-					int newDust = Dust.NewDust(Projectile.Center - new Vector2(offset, offset), offset * 2, offset * 2, dustTypeCommon, Projectile.velocity.X * 0.2f + (Projectile.direction * 3), Projectile.velocity.Y * 0.2f, 100, default, 0.75f);
-					Main.dust[newDust].noGravity = true;
-					Main.dust[newDust].velocity *= 0.25f;
-					newDust = Dust.NewDust(Projectile.Center - new Vector2(offset, offset), offset * 2, offset * 2, dustTypeCommon, 0f, 0f, 150, default, 1.0f);
-					Main.dust[newDust].velocity *= 0.25f;
-				}
+					// The chance for the dust to spawn. The actual chance (see below) is 1/dustChance. We make the chance higher the faster the player is moving by making the denominator smaller.
+					int dustChance = 8;
+					if (playerVelocity > minimumDustVelocity + 1f)
+					{
+						dustChance = 5;
+					}
+					if (playerVelocity > minimumDustVelocity + 2f)
+					{
+						dustChance = 2;
+					}
 
-				if (Main.rand.NextBool(dustChance + 3))
-				{
-					Dust.NewDust(Projectile.Center - new Vector2(offset, offset), offset * 2, offset * 2, dustTypeRare, 0f, 0f, 150, default, 1.2f);
+					// Spawn the dusts based on the dustChance. The dusts are spawned at the tip of the Jousting Lance.
+					if (dustTypeCommon > 0 && Main.rand.NextBool(dustChance))
+					{
+						int newDust = Dust.NewDust(Projectile.Center - new Vector2(offset, offset), offset * 2, offset * 2, dustTypeCommon, Projectile.velocity.X * 0.2f + (Projectile.direction * 3), Projectile.velocity.Y * 0.2f, 100, default, 0.5f);
+						Main.dust[newDust].noGravity = true;
+						Main.dust[newDust].velocity *= 0.25f;
+						newDust = Dust.NewDust(Projectile.Center - new Vector2(offset, offset), offset * 2, offset * 2, dustTypeCommon, 0f, 0f, 150, default, 0.75f);
+						Main.dust[newDust].velocity *= 0.25f;
+					}
+
+					if (dustTypeRare > 0 && Main.rand.NextBool(dustChance + 3))
+					{
+						Dust.NewDust(Projectile.Center - new Vector2(offset, offset), offset * 2, offset * 2, dustTypeRare, 0f, 0f, 150, default, 1.4f);
+					}
 				}
 			}
 		}
 
 		// This will increase or decrease the knockback of the Jousting Lance depending on how fast the player is moving.
 		// This will increase or decrease the damage of the Jousting Lance depending on how fast the player is moving.
-
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+		{
+			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
+			modifiers.SourceDamage *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
+		}
+
+		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 		{
 			modifiers.Knockback *= Main.player[Projectile.owner].velocity.Length() / 7f;
 			modifiers.SourceDamage *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
@@ -159,15 +219,17 @@ namespace RijamsMod.Projectiles.Melee
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
 		{
 			float rotationFactor = Projectile.rotation + (float)Math.PI / 4f; // The rotation of the Jousting Lance.
-			float scaleFactor = 64f; // How far back the hit-line will be from the tip of the Jousting Lance. You will need to modify this if you have a longer or shorter Jousting Lance. Vanilla uses 95f
-			float widthMultiplier = 21f; // How thick the hit-line is. Increase or decrease this value if your Jousting Lance is thicker or thinner. Vanilla uses 23f
+			float scaleFactor = 95f; // How far back the hit-line will be from the tip of the Jousting Lance. You will need to modify this if you have a longer or shorter Jousting Lance. Vanilla uses 95f
+			float widthMultiplier = 23f; // How thick the hit-line is. Increase or decrease this value if your Jousting Lance is thicker or thinner. Vanilla uses 23f
 			float collisionPoint = 0f; // collisionPoint is needed for CheckAABBvLineCollision(), but it isn't used for our collision here. Keep it at 0f.
 
 			// This Rectangle is the width and height of the Jousting Lance's hitbox which is used for the first step of collision.
 			// You will need to modify the last two numbers if you have a bigger or smaller Jousting Lance.
 			// Vanilla uses (0, 0, 300, 300) which that is quite large for the size of the Jousting Lance.
 			// The size doesn't matter too much because this rectangle is only a basic check for the collision (the hit-line is much more important).
-			Rectangle lanceHitboxBounds = new(0, 0, 130, 130);
+			Rectangle lanceHitboxBounds = new(0, 0, 300, 300);
+
+			CollidingPoints(ref scaleFactor, ref widthMultiplier, ref lanceHitboxBounds);
 
 			// Set the position of the large rectangle.
 			lanceHitboxBounds.X = (int)Projectile.position.X - lanceHitboxBounds.Width / 2;
@@ -177,8 +239,8 @@ namespace RijamsMod.Projectiles.Melee
 			Vector2 hitLineEnd = Projectile.Center + rotationFactor.ToRotationVector2() * scaleFactor;
 
 			// The following is for debugging the size of the hit line. This will allow you to easily see where it starts and ends.
-			//Dust.NewDustPerfect(Projectile.Center, DustID.Pixie, Velocity: Vector2.Zero, Scale: 0.5f);
-			//Dust.NewDustPerfect(hitLineEnd, DustID.Pixie, Velocity: Vector2.Zero, Scale: 0.5f);
+			// Dust.NewDustPerfect(Projectile.Center, DustID.Pixie, Velocity: Vector2.Zero, Scale: 0.5f);
+			// Dust.NewDustPerfect(hitLineEnd, DustID.Pixie, Velocity: Vector2.Zero, Scale: 0.5f);
 
 			// First check that our large rectangle intersects with the target hitbox.
 			// Then we check to see if a line from the tip of the Jousting Lance to the "end" of the lance intersects with the target hitbox.
@@ -223,15 +285,22 @@ namespace RijamsMod.Projectiles.Melee
 			// Apply lighting and draw our projectile
 			Color drawColor = Projectile.GetAlpha(lightColor);
 
+			ModifyDrawing(ref drawColor);
+
 			Main.EntitySpriteDraw(texture,
 				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
 				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 
 			// The following is for debugging the size of the collision rectangle. Set this to the same size as the one you have in Colliding().
-			/*Rectangle lanceHitboxBounds = new(0, 0, 130, 130);
+			/*
+			Rectangle lanceHitboxBounds = new(0, 0, 300, 300);
+			float dummy1 = 0;
+			float dummy2 = 0;
+			CollidingPoints(ref dummy1, ref dummy2, ref lanceHitboxBounds);
 			Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value,
 				new Vector2((int)Projectile.Center.X - lanceHitboxBounds.Width / 2, (int)Projectile.Center.Y - lanceHitboxBounds.Height / 2) - Main.screenPosition,
-				lanceHitboxBounds, Color.Orange * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);*/
+				lanceHitboxBounds, Color.Orange * 0.5f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+			*/
 
 			// It's important to return false, otherwise we also draw the original texture.
 			return false;

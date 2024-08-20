@@ -8,8 +8,6 @@ namespace RijamsMod.Buffs.Other
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Warrior Energy");
-			// Description.SetDefault("(+10% damage)\n(+5% attack speed)");
 			Main.debuff[Type] = false;
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;
@@ -19,6 +17,8 @@ namespace RijamsMod.Buffs.Other
 		{
 			player.GetAttackSpeed(DamageClass.Generic) += 0.05f;
 			player.GetDamage(DamageClass.Generic) += 0.1f;
+			player.GetCritChance(DamageClass.Generic) += 10f;
+			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
 		}
 	}
 }

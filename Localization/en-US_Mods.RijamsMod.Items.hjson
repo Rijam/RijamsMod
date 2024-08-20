@@ -82,12 +82,22 @@ Aspis: {
 
 # Items/Accessories/Magic
 
+BandOfManaSapping: {
+	DisplayName: Band of Mana Sapping
+	Tooltip:
+		'''
+		+20 Max Mana
+		Gain a little bit of mana after slaying an enemy
+		  Scales with max mana
+		'''
+}
+
 CosmicSorcery: {
 	Tooltip:
 		'''
 		+15% Magic damage
 		+10% Magic Critical Strike chance
-		+20 Max Mana
+		+40 Max Mana
 		-8% Mana Cost
 		Increased mana regeneration rate
 		Increases pickup range for mana stars
@@ -166,6 +176,16 @@ SideEffects: {
 }
 
 # Items/Accessories/Misc
+
+BandOfLifeSapping: {
+	DisplayName: Band of Life Sapping
+	Tooltip:
+		'''
+		Provides life regeneration
+		Gain a little bit of life after slaying an enemy
+		  Scales with max health
+		'''
+}
 
 BreathingPack: {
 	DisplayName: Breathing Pack
@@ -278,8 +298,10 @@ WarriorRing: {
 		Occasionally infuses the wearer with
 		"Warrior Energy" after slaying an enemy
 		Warrior Energy gives:
-		  +10% damage
 		  +5% attack speed
+		  +10% damage
+		  +10% critical hit chance
+		  +25% critical hit damage
 		'''
 }
 
@@ -1489,16 +1511,142 @@ FrostyGuster: {
 	Tooltip: Inflicts Frostbite
 }
 
-# Items/Weapons/Melee
+# Items/Weapons/Melee/JoustingLances
+
+WoodenJoustingLance: {
+	DisplayName: Wooden Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		4.42 tile reach
+		'''
+}
+
+BorealWoodJoustingLance: {
+	DisplayName: Boreal Wood Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		4.57 tile reach
+		'''
+}
+
+PalmWoodJoustingLance: {
+	DisplayName: Palm Wood Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		4.72 tile reach
+		'''
+}
+
+RichMahoganyJoustingLance: {
+	DisplayName: Rich Mahogany Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		4.87 tile reach
+		'''
+}
+
+EbonwoodJoustingLance: {
+	DisplayName: Ebonwood Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		5.02 tile reach
+		'''
+}
+
+ShadewoodJoustingLance: {
+	DisplayName: Shadewood Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		5.17 tile reach
+		'''
+}
+
+AshWoodJoustingLance: {
+	DisplayName: Ash Wood Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		5.32 tile reach
+		'''
+}
+
+LonkheJoustingLance: {
+	DisplayName: Lonkhe Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		5.47 tile reach
+		'''
+}
 
 BoneHeadJoustingLance: {
 	DisplayName: Bone Head Jousting Lance
 	Tooltip:
 		'''
 		{$ItemTooltip.HallowJoustingLance}
+		6.72 tile reach
 		'You bone head!'
 		'''
 }
+
+PearlwoodJoustingLance: {
+	DisplayName: Pearlwood Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		5.47 tile reach
+		'''
+}
+
+SulfuricJoustingLance: {
+	DisplayName: Sulfuric Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		7.14 tile reach
+		Inflicts Sulfuric Acid
+		Can hit enemies through tiles
+		'''
+}
+
+HorsemansJoustingLance: {
+	DisplayName: Horseman's Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		9.99 tile reach
+		Occasionally conjures Pumpkin heads to attack your enemies
+		'''
+}
+
+EtherealJoustingLance: {
+	DisplayName: Ethereal Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		10.76 tile reach
+		Conjures Twilight Lances to attack your enemies while moving at max speed
+		'''
+}
+
+SolarJoustingLance: {
+	DisplayName: Solar Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		12.30 tile reach
+		Inflicts Daybroken
+		Causes Solar Explosion on hit
+		'''
+}
+
+# Items/Weapons/Melee
 
 FrostyShiv: {
 	DisplayName: Frosty Shiv
@@ -1529,20 +1677,6 @@ HammerOfRetribution: {
 		'''
 }
 
-HorsemansJoustingLance: {
-	DisplayName: Horseman's Jousting Lance
-	Tooltip:
-		'''
-		{$ItemTooltip.HallowJoustingLance}
-		Occasionally conjures Pumpkin heads to attack your enemies
-		'''
-}
-
-LonkheJoustingLance: {
-	DisplayName: Lonkhe Jousting Lance
-	Tooltip: "{$ItemTooltip.HallowJoustingLance}"
-}
-
 Quietus: {
 	DisplayName: Quietus
 	Tooltip:
@@ -1552,16 +1686,6 @@ Quietus: {
 		  Weapon does double damage
 		  Uses {0} mana
 		'Not to be confused with the Whisper's Edge'
-		'''
-}
-
-SolarJoustingLance: {
-	DisplayName: Solar Jousting Lance
-	Tooltip:
-		'''
-		{$ItemTooltip.HallowJoustingLance}
-		Inflicts Daybroken
-		Causes Solar Explosion on hit
 		'''
 }
 
@@ -1583,11 +1707,6 @@ TimonsAxe: {
 		  Weapon does double damage
 		  Uses {0} mana
 		'''
-}
-
-WoodenJoustingLance: {
-	DisplayName: Wooden Jousting Lance
-	Tooltip: "{$ItemTooltip.HallowJoustingLance}"
 }
 
 InfinityGavel: {
