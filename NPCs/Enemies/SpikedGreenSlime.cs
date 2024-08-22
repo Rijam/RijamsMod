@@ -13,6 +13,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SlimeSpiked];
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 		}
 
 		public override void SetDefaults()

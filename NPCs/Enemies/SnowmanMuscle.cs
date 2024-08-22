@@ -16,6 +16,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			NPCID.Sets.BelongsToInvasionFrostLegion[NPC.type] = true; // Make it count towards Frost Legion for music playback and invasion progress
 			NPCID.Sets.InvasionSlotCount[NPC.type] = 1; // Make it count as 1 enemies defeated for the invasion progress
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 
 			// DisplayName.SetDefault("Snowman Muscle");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.SnowmanGangsta];
@@ -112,7 +113,11 @@ namespace RijamsMod.NPCs.Enemies
 					int projectileDamage = 15;
 					int projectileType = ProjectileID.BulletSnowman;
 					SoundEngine.PlaySound(SoundID.Item36, NPC.position);
-					for (int i=0; i < 3; i++)
+					if (NPC.confused)
+					{
+						speedX *= NPC.direction;
+					}
+					for (int i = 0; i < 3; i++)
 					{
 						int newProjectile = Projectile.NewProjectile(Entity.GetSource_FromAI(), projectileVector.X, projectileVector.Y, speedX, speedY, projectileType, projectileDamage, 0.5f, Main.myPlayer);
 						Main.projectile[newProjectile].ai[0] = 2f;

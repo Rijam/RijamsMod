@@ -15,6 +15,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[Type] = 8;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
@@ -94,7 +95,7 @@ namespace RijamsMod.NPCs.Enemies
 				{
 					int inertia = 40;
 					Vector2 npcNewCenter = new(NPC.Center.X + (NPC.direction * 30), NPC.Center.Y - 10f);
-					float targetPosX = target.position.X + target.width * 0.5f - npcNewCenter.X;
+					float targetPosX = target.Center.X - npcNewCenter.X;
 					float targetPosY = target.position.Y - npcNewCenter.Y;
 					float newTargetDist = (float)Math.Sqrt(targetPosX * targetPosX + targetPosY * targetPosY);
 
@@ -102,6 +103,11 @@ namespace RijamsMod.NPCs.Enemies
 					targetPosY *= 7f / newTargetDist;
 					NPC.velocity.X = (NPC.velocity.X * (inertia - 1) + targetPosX + Main.rand.Next(-5, 5)) / (float)inertia;
 					NPC.velocity.Y = (NPC.velocity.Y * (inertia - 1) + targetPosY + Main.rand.Next(-5, 5)) / (float)inertia;
+
+					if (NPC.confused)
+					{
+						NPC.velocity.X *= -1f;
+					}
 
 					if (NPC.localAI[1] > 5f)
 					{

@@ -1,8 +1,5 @@
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -16,6 +13,7 @@ namespace RijamsMod.NPCs.Enemies
 		{
 			// DisplayName.SetDefault("Skeleton Gunner");
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.PirateDeadeye]; // 20
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()

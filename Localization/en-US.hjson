@@ -130,6 +130,15 @@ Mods: {
 				Description: Reduces enemy velocity by 20% when struck by a minion
 			}
 
+			TailoThreeCatsDebuff: {
+				DisplayName: Tail o' Three Cats Whipped
+				Description:
+					'''
+					+5 summon tag damage
+					Minions will inflict Confused
+					'''
+			}
+
 			SulfuricAcid: {
 				DisplayName: Sulfuric Acid
 				Description:
@@ -315,18 +324,13 @@ Mods: {
 			}
 
 			DistortionSphereBuff: {
-				DisplayName: Distortion Sphere Buff
-				Description: Let's roll
+				DisplayName: Distortion Sphere
+				Description: "{$Mods.RijamsMod.Items.DistortionSphereItem.Tooltip}"
 			}
 
 			SwiftSphereBuff: {
-				DisplayName: Swift Sphere Buff
-				Description: Mods.RijamsMod.Buffs.SwiftSphereBuff.Description
-			}
-
-			TailoThreeCatsDebuff: {
-				DisplayName: Tailo Three Cats Debuff
-				Description: Mods.RijamsMod.Buffs.TailoThreeCatsDebuff.Description
+				DisplayName: Swift Sphere
+				Description: "{$Mods.RijamsMod.Items.SwiftSphereItem.Tooltip}"
 			}
 		}
 
@@ -450,7 +454,7 @@ Mods: {
 			ShadewoodJoustingLanceProj.DisplayName: Shadewood Jousting Lance
 			SulfuricJoustingLanceProj.DisplayName: Sulfuric Jousting Lance
 			EtherealJoustingLanceProj.DisplayName: Ethereal Jousting Lance
-			TailoThreeCatsProj.DisplayName: Tailo Three Cats Proj
+			TailoThreeCatsProj.DisplayName: Tail o' Three Cats
 		}
 
 		Tiles: {

@@ -15,6 +15,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.CaveBat]; //5
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 		}
 
 		public override void SetDefaults()
@@ -25,7 +26,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.defense = 0;
 			NPC.lifeMax = 32;
 			NPC.value = 100f;
-			NPC.aiStyle = 14;
+			NPC.aiStyle = NPCAIStyleID.Bat;
 			NPC.knockBackResist = 0.3f;
 			NPC.npcSlots = 0.5f;
 			AIType = NPCID.CaveBat;

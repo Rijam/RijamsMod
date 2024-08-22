@@ -11,6 +11,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.Slimer];
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 		}
 
 		public override void SetDefaults()
@@ -21,7 +22,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.lifeMax = NPC.downedPlantBoss ? 200 : 100; // Doubled in Expert Mode
 			NPC.value = NPC.downedPlantBoss ? 200 : 100;
 			NPC.knockBackResist = 0.5f;
-			NPC.aiStyle = 14;
+			NPC.aiStyle = NPCAIStyleID.Bat;
 			AnimationType = NPCID.Slimer;
 			NPC.npcSlots = 0.5f;
 		}

@@ -291,3 +291,5 @@
 	* Cosmic Sorcery now requires the Band of Mana Sapping instead of the Mana Sapper Ring and gives an addition +20 max mana.
 	* Buffed the Warrior Ring: Now 10% activation chance instead of 5%. The buff nows lasts 10 seconds instead of 5 seconds. Now gives +10% crit chance and +25% crit damage in addition to the +5% attack speed and +10% damage it had before.
 	* Added Ethereal Jousting Lance: dropped by Empress of Light.
+	* Added Tail o' Three Cats whip: dropped by Deerclops.
+	* All enemies from this mod are no longer immune to Confused.

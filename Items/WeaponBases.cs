@@ -62,11 +62,11 @@ namespace RijamsMod.Items
 			{
 				if (GlobalItems.FindTooltipIndex(tooltips, "Damage", "Terraria", out int indexDamage))
 				{
-					tooltips.RemoveAt(indexDamage);
+					tooltips[indexDamage].Hide();
 				}
 				if (GlobalItems.FindTooltipIndex(tooltips, "Knockback", "Terraria", out int indexKnockback))
 				{
-					tooltips.RemoveAt(indexKnockback);
+					tooltips[indexKnockback].Hide();
 				}
 			}
 		}

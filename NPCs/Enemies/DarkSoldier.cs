@@ -1,8 +1,8 @@
+using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using System;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -14,6 +14,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = Main.npcFrameCount[NPCID.BoneThrowingSkeleton];
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
@@ -269,7 +270,7 @@ namespace RijamsMod.NPCs.Enemies
 					if (canAndAboutToAttack)//about to attack
 					{
 						float numIs10f = 10f;
-						Vector2 vector32 = new (NPC.position.X + NPC.width * 0.5f, NPC.position.Y + NPC.height * 0.5f);
+						Vector2 vector32 = new(NPC.position.X + NPC.width * 0.5f, NPC.position.Y + NPC.height * 0.5f);
 						float numPosXPlusWitdth = Main.player[NPC.target].position.X + Main.player[NPC.target].width * 0.5f - vector32.X;
 						float numPosXPlusWitdthAbs = Math.Abs(numPosXPlusWitdth) * 0.1f;
 						float numPosYPlusHeight = Main.player[NPC.target].position.Y + Main.player[NPC.target].height * 0.5f - vector32.Y - numPosXPlusWitdthAbs;
@@ -325,37 +326,39 @@ namespace RijamsMod.NPCs.Enemies
 						}
 					}
 				}
-				// General Movement
-				if (NPC.ai[2] <= 0f)
+			}
+
+			// General Movement
+			if (NPC.ai[2] <= 0f)
+			{
+				float maxVelocity = Condition.ForTheWorthyWorld.IsMet() ? 3f : 2f;
+				float acceleration = 0.1f;
+				float fallingDeceleration = 0.8f;
+				if (NPC.velocity.X < -maxVelocity || NPC.velocity.X > maxVelocity)
 				{
-					float maxVelocity = Condition.ForTheWorthyWorld.IsMet() ? 3f : 2f;
-					float acceleration = 0.1f;
-					float fallingDeceleration = 0.8f;
-					if (NPC.velocity.X < -maxVelocity || NPC.velocity.X > maxVelocity)
+					if (NPC.velocity.Y == 0f)
 					{
-						if (NPC.velocity.Y == 0f)
-						{
-							NPC.velocity *= fallingDeceleration; // When jumping and lands
-						}
+						NPC.velocity *= fallingDeceleration; // When jumping and lands
 					}
-					else if (NPC.velocity.X < maxVelocity && NPC.direction == 1) // Moving right.
+				}
+				else if (NPC.velocity.X < maxVelocity && NPC.direction == 1) // Moving right.
+				{
+					NPC.velocity.X += acceleration;
+					if (NPC.velocity.X > maxVelocity)
 					{
-						NPC.velocity.X += acceleration;
-						if (NPC.velocity.X > maxVelocity)
-						{
-							NPC.velocity.X = maxVelocity; 
-						}
+						NPC.velocity.X = maxVelocity; 
 					}
-					else if (NPC.velocity.X > -maxVelocity && NPC.direction == -1) // Moving left
+				}
+				else if (NPC.velocity.X > -maxVelocity && NPC.direction == -1) // Moving left
+				{
+					NPC.velocity.X -= acceleration;
+					if (NPC.velocity.X < -maxVelocity)
 					{
-						NPC.velocity.X -= acceleration;
-						if (NPC.velocity.X < -maxVelocity)
-						{
-							NPC.velocity.X = -maxVelocity; 
-						}
+						NPC.velocity.X = -maxVelocity; 
 					}
 				}
 			}
+
 			bool flagTileChecker = false;
 			if (NPC.velocity.Y == 0f)
 			{

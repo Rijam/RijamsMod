@@ -1,15 +1,13 @@
+using System;
+using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using System;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
-using Terraria.DataStructures;
-using System.IO;
 
 namespace RijamsMod.NPCs.Enemies
 {
@@ -18,6 +16,7 @@ namespace RijamsMod.NPCs.Enemies
 		public override void SetStaticDefaults()
 		{
 			Main.npcFrameCount[NPC.type] = 12;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = false;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
@@ -31,19 +30,19 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override void SetDefaults()
 		{
-			NPC.CloneDefaults(NPCID.Harpy);
+			//NPC.CloneDefaults(NPCID.Harpy);
 			NPC.width = 24;
 			NPC.height = 34;
 			NPC.damage = 70;
 			NPC.defense = 16;
 			NPC.lifeMax = 400;
-			NPC.buffImmune[BuffID.Confused] = false;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.value = 1000f;
 			NPC.knockBackResist = 0.4f;
 			NPC.aiStyle = -1;
 			NPC.noGravity = true;
+			NPC.buffImmune[BuffID.Confused] = false;
 			Banner = NPC.type;
 			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.FirmamentHarpyBanner>();
 		}
@@ -147,18 +146,23 @@ namespace RijamsMod.NPCs.Enemies
 					{
 						targetPosX = target.position.X + (float)target.width * 0.5f - npcNewCenter.X;
 						targetPosY = target.Center.Y - npcNewCenter.Y;
-						targetPosX += (float)Main.rand.Next(-35, 36);
-						targetPosY += (float)Main.rand.Next(-35, 36);
-						targetPosX *= 1f + (float)Main.rand.Next(-20, 21) * 0.015f;
-						targetPosY *= 1f + (float)Main.rand.Next(-20, 21) * 0.015f;
+						Vector2 velocity = new(targetPosX, targetPosY);
+						velocity.X += (float)Main.rand.Next(-35, 36);
+						velocity.Y += (float)Main.rand.Next(-35, 36);
+						velocity *= 1f + (float)Main.rand.Next(-20, 21) * 0.015f;
 						targetDist = (float)Math.Sqrt(targetPosX * targetPosX + targetPosY * targetPosY);
-						num1577 = 10f;
-						num1582 = num1577 / targetDist;
-						targetPosX *= num1582;
-						targetPosY *= num1582;
-						targetPosX *= 1f + (float)Main.rand.Next(-10, 11) * 0.0125f;
-						targetPosY *= 1f + (float)Main.rand.Next(-10, 11) * 0.0125f;
-						Projectile.NewProjectile(NPC.GetSource_FromAI(), npcNewCenter, new Vector2(targetPosX, targetPosY),
+						velocity *= 10f / targetDist;
+						velocity *= 1f + (float)Main.rand.Next(-10, 11) * 0.0125f;
+
+						if (NPC.confused)
+						{
+
+							velocity.X *= Main.rand.NextFloat(-1f, 1f);
+							velocity.Y *= Main.rand.NextFloat(-1f, 1f);
+							velocity.Normalize();
+							velocity *= Main.rand.NextFloat(5f, 9f);
+						}
+						Projectile.NewProjectile(NPC.GetSource_FromAI(), npcNewCenter, velocity,
 							ModContent.ProjectileType<Projectiles.Enemies.FirmamentHarpyFeather>(), 25, 2f, Main.myPlayer);
 					}
 					if (NPC.localAI[1] >= 60)

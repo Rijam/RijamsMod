@@ -184,11 +184,11 @@ namespace RijamsMod.NPCs.Enemies
 				// Wait 20 ticks before the projectile is created.
 				if (NPC.ai[0] == 20)
 				{
-					Vector2 velocityForProj = NPC.Center;
-					float projSpeedX = Main.player[NPC.target].Center.X - velocityForProj.X;
+					Vector2 positionForProj = NPC.Center;
+					float projSpeedX = Main.player[NPC.target].Center.X - positionForProj.X;
 					//float projSpeedXAbs; //= Math.Abs(projSpeedX) * 0.1f;
 					float projSpeedXAbs = Math.Abs(projSpeedX) * 0.05f;
-					float projSpeedY = Main.player[NPC.target].Center.Y - velocityForProj.Y - projSpeedXAbs;
+					float projSpeedY = Main.player[NPC.target].Center.Y - positionForProj.Y - projSpeedXAbs;
 					float speedDistance = (float)Math.Sqrt(projSpeedX * projSpeedX + projSpeedY * projSpeedY);
 					NPC.netUpdate = true;
 					speedDistance = 10f / speedDistance;
@@ -197,11 +197,15 @@ namespace RijamsMod.NPCs.Enemies
 					projSpeedY *= speedDistance * speedMulti;
 					int projDamage = 30;
 					int projType = ModContent.ProjectileType<Projectiles.Enemies.SirSlushSnowball>();
-					velocityForProj += new Vector2(projSpeedX, projSpeedY);
+					positionForProj += new Vector2(projSpeedX, projSpeedY);
+					if (NPC.confused)
+					{
+						projSpeedX *= -1f;
+					}
 					if (!Main.dedServ)
 					{
 						SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/SirSlushThrow") { MaxInstances = 10 }, NPC.position);
-						Projectile.NewProjectile(Entity.GetSource_FromAI(), velocityForProj, new Vector2(projSpeedX, projSpeedY), projType, projDamage, 4f, Main.myPlayer);
+						Projectile.NewProjectile(Entity.GetSource_FromAI(), positionForProj, new Vector2(projSpeedX, projSpeedY), projType, projDamage, 4f, Main.myPlayer);
 					}
 				}
 				// Wait 20 ticks after the projectile has been created. Go back to idling.
