@@ -10,6 +10,7 @@ using RijamsMod.Items.Weapons.Summon.Whips;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Weapons.Ranged;
 using static RijamsMod.RijamsModConfigServer;
+using RijamsMod.Items.Weapons.Melee.JoustingLances;
 
 namespace RijamsMod.Items
 {
@@ -30,26 +31,18 @@ namespace RijamsMod.Items
 		/// </summary>
 		// public static List<int> fixItemUseStyleIDRaiseLampFrontArmAnimation = new(); // No longer needed. Fix implemented into tModLoader directly. PR #3530*/
 
+		public override void SetStaticDefaults()
+		{
+			ItemID.Sets.ShimmerTransformToItem[ItemID.WormTooth] = ModContent.ItemType<CrawlerChelicera>(); // Shimmer transforms the item.
+			ItemID.Sets.ShimmerTransformToItem[ItemID.Handgun] = ModContent.ItemType<StockadeCrossbow>(); // Shimmer transforms the item.
+			ItemID.Sets.ShimmerTransformToItem[ItemID.FleshKnuckles] = ItemID.PutridScent; // Shimmer transforms the item.
+			ItemID.Sets.ShimmerTransformToItem[ItemID.PutridScent] = ItemID.FleshKnuckles; // Shimmer transforms the item.
+			ItemID.Sets.ShimmerTransformToItem[ItemID.DarkLance] = ModContent.ItemType<DarkJoustingLance>(); // Shimmer transforms the item.
+		}
+
 		public override void SetDefaults(Item item)
 		{
 			RijamsModConfigServer.ArmorOptions vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
-
-			if (item.type == ItemID.WormTooth)
-			{
-				ItemID.Sets.ShimmerTransformToItem[item.type] = ModContent.ItemType<CrawlerChelicera>(); // Shimmer transforms the item.
-			}
-			if (item.type == ItemID.Handgun)
-			{
-				ItemID.Sets.ShimmerTransformToItem[item.type] = ModContent.ItemType<StockadeCrossbow>(); // Shimmer transforms the item.
-			}
-			if (item.type == ItemID.FleshKnuckles)
-			{
-				ItemID.Sets.ShimmerTransformToItem[item.type] = ItemID.PutridScent; // Shimmer transforms the item.
-			}
-			if (item.type == ItemID.PutridScent)
-			{
-				ItemID.Sets.ShimmerTransformToItem[item.type] = ItemID.FleshKnuckles; // Shimmer transforms the item.
-			}
 
 			if (item.type == ItemID.Coal)
 			{

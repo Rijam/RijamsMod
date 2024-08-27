@@ -59,6 +59,7 @@ namespace RijamsMod
 		public float knockbackSusceptibility = 1f;
 		public int bonusYoyosAndCounterweights = 0;
 		public int bonusCounterweights = 0;
+		public float moveSpeedDamageReductionMax = 0f;
 
 		public override void ResetEffects()
 		{
@@ -107,6 +108,7 @@ namespace RijamsMod
 			knockbackSusceptibility = 1f;
 			bonusYoyosAndCounterweights = 0;
 			bonusCounterweights = 0;
+			moveSpeedDamageReductionMax = 0f;
 			if (!hailfireBootsBoost)
 			{
 				Player.rocketTimeMax = 7;
@@ -133,6 +135,7 @@ namespace RijamsMod
 		{
 			Volume = 0.5f,
 		};
+
 		public override void PostUpdateEquips()
 		{
 			if (frostyRose)
@@ -220,6 +223,15 @@ namespace RijamsMod
 				Player.stringColor = 27;
 				bonusCounterweights += 2;
 				loopingOil = true;
+			}
+
+			if (moveSpeedDamageReductionMax > 0f)
+			{
+				Main.NewText(Player.velocity.Length());
+				double potentialDR = Player.velocity.Length() / 50.0;
+				Main.NewText(potentialDR);
+				Player.endurance += (float)Math.Round(Math.Clamp(potentialDR, 0.0, moveSpeedDamageReductionMax), 3);
+				Main.NewText(Player.endurance);
 			}
 		}
 		public override void UpdateBadLifeRegen()

@@ -208,6 +208,29 @@ namespace RijamsMod.NPCs.Enemies
 			return false;
 		}
 
+		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+		{
+			if (NPC.confused)
+			{
+				Vector2 halfSize = new(TextureAssets.Npc[Type].Width() / 2, TextureAssets.Npc[Type].Height() / Main.npcFrameCount[Type] / 2);
+				Vector2 pos = NPC.position - screenPos;
+				pos.X += (NPC.width / 2) - TextureAssets.Npc[Type].Width() * NPC.scale / 2f + halfSize.X * NPC.scale;
+				pos.Y += NPC.height - TextureAssets.Npc[Type].Height() * NPC.scale / Main.npcFrameCount[Type] + 4f + halfSize.Y * NPC.scale + Main.NPCAddHeight(NPC) - TextureAssets.Confuse.Height() - 20f;
+
+				spriteBatch.Draw(
+					TextureAssets.Confuse.Value,
+					pos,
+					new Rectangle(0, 0, TextureAssets.Confuse.Width(), TextureAssets.Confuse.Height()),
+					NPC.GetShimmerColor(new Color(250, 250, 250, 70)),
+					NPC.velocity.X * -0.05f,
+					new Vector2(TextureAssets.Confuse.Width() / 2,
+					TextureAssets.Confuse.Height() / 2),
+					Main.essScale + 0.2f,
+					SpriteEffects.None,
+					0f);
+			}
+		}
+
 		public override void ModifyNPCLoot(NPCLoot npcLoot)
 		{
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Magic.MiniGuster>(), 7));

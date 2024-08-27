@@ -293,3 +293,4 @@
 	* Added Ethereal Jousting Lance: dropped by Empress of Light.
 	* Added Tail o' Three Cats whip: dropped by Deerclops.
 	* All enemies from this mod are no longer immune to Confused.
+	* Added Dark Jousting Lance: obtained by throwing the Dark Lance in Shimmer.

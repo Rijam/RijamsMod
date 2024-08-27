@@ -247,6 +247,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 			if (lanceHitboxBounds.Intersects(targetHitbox)
 				&& Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, hitLineEnd, widthMultiplier * Projectile.scale, ref collisionPoint))
 			{
+				// Main.NewText(Projectile.Distance(Main.player[Projectile.owner].Center) / 16f); // Display the distance from the player's center to the center of the Jousting Lance.
 				return true;
 			}
 			return false;

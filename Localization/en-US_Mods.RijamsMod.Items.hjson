@@ -80,6 +80,26 @@ Aspis: {
 		'''
 }
 
+EcrancheShield: {
+	DisplayName: Ecranche Shield
+	Tooltip:
+		'''
+		+1 Defense
+		Grants up to 10% damage reduction based on current velocity
+		Damage Reduction does not stack with Grand Guard Shield nor Heater Shield
+		'''
+}
+
+GrandGuardShield: {
+	DisplayName: Grand Guard Shield
+	Tooltip:
+		'''
+		+1 Defense
+		Grants up to 20% damage reduction based on current velocity
+		Damage Reduction does not stack with Grand Guard Shield nor Heater Shield
+		'''
+}
+
 # Items/Accessories/Magic
 
 BandOfManaSapping: {
@@ -1592,6 +1612,16 @@ BoneHeadJoustingLance: {
 		{$ItemTooltip.HallowJoustingLance}
 		6.72 tile reach
 		'You bone head!'
+		'''
+}
+
+DarkJoustingLance: {
+	DisplayName: Dark Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		Inflicts Shadowflame
+		7.14 tile reach
 		'''
 }
 

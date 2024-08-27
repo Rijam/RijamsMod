@@ -455,6 +455,7 @@ Mods: {
 			SulfuricJoustingLanceProj.DisplayName: Sulfuric Jousting Lance
 			EtherealJoustingLanceProj.DisplayName: Ethereal Jousting Lance
 			TailoThreeCatsProj.DisplayName: Tail o' Three Cats
+			DarkJoustingLanceProj.DisplayName: Dark Jousting Lance
 		}
 
 		Tiles: {

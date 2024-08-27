@@ -27,7 +27,7 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 
 			Item.SetWeaponValues(12, 7.3f, 0); // A special method that sets the damage, knockback, and bonus critical strike chance.
 
-			Item.SetShopValues(ItemRarityColor.White0, Item.buyPrice(0, 0, 0, 30)); // A special method that sets the rarity and value.
+			Item.SetShopValues(ItemRarityColor.White0, Item.sellPrice(0, 0, 0, 30)); // A special method that sets the rarity and value.
 
 			Item.channel = true; // Channel is important for our projectile.
 
