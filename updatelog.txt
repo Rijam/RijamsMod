@@ -279,7 +279,7 @@
 	* Redid the Red Harpy Wings' animations. Now has custom drawing and 7 frames of animation.
 	* The mana cost tooltip for the Timon's Axe, Hammer of Retribution, and Quietus now takes into account the player's mana cost multiplier.
 
-1.2.8.0 - (August ?, 2024)
+1.2.8.0 - (December 31, 2024)
 	* Decreased the Dark Soldier's stats while in Pre-Hardmode Don't Dig Up worlds.
 	* Sort of fixed the missing item system from not working in multiplayer.
 	* Fixed Soul Sapper Ring and Mana Sapper Ring giving its effects from enemies killed by anyone instead of the just person who killed the enemy.
@@ -294,3 +294,18 @@
 	* Added Tail o' Three Cats whip: dropped by Deerclops.
 	* All enemies from this mod are no longer immune to Confused.
 	* Added Dark Jousting Lance: obtained by throwing the Dark Lance in Shimmer.
+	* Slime Trap Staff now does a little bit of damage instead of none. The slowing effect is retained.
+	* Buffed Super Spike Trap. 35 damage -> 45 damage.
+	* Added Flinx Fur Hat and Flinx Fur Boots.
+	* Increased the defense on the Flinx Fur Coat. 1 defense -> 3 defense. (When the applicable config option is enabled.)
+	* Enemy banners from this mod are now affected by the player walking by them and wind.
+	* Added Ecranche Shield, Grand Guard Shield, and Heater Shield. They give damage reduction the faster you are moving. (Meant to be used with Jousting Lances.)
+	* Added Grindstone. It removes modifiers from items. Sold by the Goblin Tinkerer.
+	* Fixed Slime Trap Staff, Spike Trap Staff, and Super Spike Trap Staff not working correctly in multiplayer.
+	* Added Peak Performance Ring. It gives +20% damage and +10% attack speed when at max HP and decreases sharply when below max HP.
+	* Slightly decreased the chance for Locked Gold Chests and Locked Shadow Chests to have a Stumble.
+	* Fixed Strip Lights not dropping when mined.
+	* Added Peak Warrior Ring: combined effects of Warrior Ring and Peak Performance Ring.
+	* Added Candy Cane Jousting Lance.
+	* Added a config option to make Jousting Lances use static invincibility instead of global invincibility.
+	* Made the caught Town NPCs compatible with the recipes added for caught Town NPCs in Fargo's Mutant Mod.

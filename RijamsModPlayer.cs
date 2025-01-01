@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using RijamsMod.Buffs.Potions;
 using RijamsMod.Items;
+using RijamsMod.Items.Accessories.Misc;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -53,6 +54,7 @@ namespace RijamsMod
 		public bool betsysCurse;
 		public bool dryadsBane;
 		public bool onDaybroken;
+		public bool peakPerformanceRing;
 
 		public int supportMinionRadiusIncrease = 0;
 		public float criticalHitAdditionalDamage = 0f;
@@ -102,6 +104,7 @@ namespace RijamsMod
 			betsysCurse = false;
 			dryadsBane = false;
 			onDaybroken = false;
+			peakPerformanceRing = false;
 
 			supportMinionRadiusIncrease = 0;
 			criticalHitAdditionalDamage = 0f;
@@ -227,11 +230,11 @@ namespace RijamsMod
 
 			if (moveSpeedDamageReductionMax > 0f)
 			{
-				Main.NewText(Player.velocity.Length());
+				// Main.NewText(Player.velocity.Length());
 				double potentialDR = Player.velocity.Length() / 50.0;
-				Main.NewText(potentialDR);
+				// Main.NewText(potentialDR);
 				Player.endurance += (float)Math.Round(Math.Clamp(potentialDR, 0.0, moveSpeedDamageReductionMax), 3);
-				Main.NewText(Player.endurance);
+				// Main.NewText(Player.endurance);
 			}
 		}
 		public override void UpdateBadLifeRegen()
@@ -328,6 +331,11 @@ namespace RijamsMod
 		{
 			MathHelper.Clamp(knockbackSusceptibility, 0, 10);
 			modifiers.Knockback *= knockbackSusceptibility;
+		}
+
+		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
+		{
+			//modifiers.FinalDamage *= moveSpeedDamageReductionCurrent;
 		}
 
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)

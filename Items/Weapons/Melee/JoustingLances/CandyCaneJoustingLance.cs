@@ -1,11 +1,13 @@
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.Enums;
+using Terraria.ModLoader;
+using RijamsMod.Items.Materials;
 
 namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 {
-	public class PearlwoodJoustingLance : ModItem
+	// I made Example Jousting Lance so I'm going to use it!
+	public class CandyCaneJoustingLance : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -19,15 +21,14 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 			// The shoot speed will affect how far away the projectile spawns from the player's hand.
 			// If you are using the custom AI in your projectile (and not aiStyle 19 and AIType = ProjectileID.JoustingLance), the standard value is 1f.
 			// If you are using aiStyle 19 and AIType = ProjectileID.JoustingLance, then multiply the value by about 3.5f.
-			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.Melee.JoustingLances.PearlwoodJoustingLanceProj>(), 0.7125f, 24);
-
-			Item.width = 46;
+			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.Melee.JoustingLances.CandyCaneJoustingLanceProj>(), 1.3f, 24);
+			Item.width = 44;
 			Item.height = 46;
 			Item.DamageType = DamageClass.MeleeNoSpeed; // We need to use MeleeNoSpeed here so that attack speed doesn't effect our held projectile.
 
-			Item.SetWeaponValues(40, 7.7f, 0); // A special method that sets the damage, knockback, and bonus critical strike chance.
+			Item.SetWeaponValues(160, 13.5f, 0); // A special method that sets the damage, knockback, and bonus critical strike chance.
 
-			Item.SetShopValues(ItemRarityColor.White0, Item.sellPrice(0, 0, 0, 50)); // A special method that sets the rarity and value.
+			Item.SetShopValues(ItemRarityColor.Yellow8, Item.sellPrice(0, 10)); // A special method that sets the rarity and value.
 
 			Item.channel = true; // Channel is important for our projectile.
 
@@ -43,8 +44,9 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.Pearlwood, 10)
-				.AddTile(TileID.WorkBenches)
+				.AddIngredient(ModContent.ItemType<FestivePlating>(), 10)
+				.AddIngredient(ItemID.CandyCaneBlock, 10)
+				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}
 	}

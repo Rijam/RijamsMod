@@ -23,6 +23,9 @@ namespace RijamsMod
 		public ArmorOptions VanillaVanityToArmor { get; set; }
 
 		[DefaultValue(true)]
+		public bool JoustingLanceStaticInvincibility { get; set; }
+
+		[DefaultValue(true)]
 		public bool TownNPCsCrossModSupport { get; set; }
 
 		[ReloadRequired]
@@ -36,6 +39,7 @@ namespace RijamsMod
 		[DefaultValue(SnowBallaGriefingOptions.DropAsItem)]
 		[DrawTicks]
 		public SnowBallaGriefingOptions SnowBallaGriefing { get; set; }
+
 
 		public enum ArmorOptions
 		{

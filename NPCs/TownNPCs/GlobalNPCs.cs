@@ -233,6 +233,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (shop.NpcType == NPCID.GoblinTinkerer)
 			{
+				shop.Add(ModContent.ItemType<Items.Placeable.Grindstone>());
 				shop.Add(ModContent.ItemType<Items.Placeable.StripLight>(), Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
 

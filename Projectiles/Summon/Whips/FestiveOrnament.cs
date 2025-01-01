@@ -1,13 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Graphics.Shaders;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.Audio;
 
 namespace RijamsMod.Projectiles.Summon.Whips
@@ -42,7 +37,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			{
 				Projectile.alpha -= 10;
 			}
-			int num229 = (Projectile.frame = (int)Projectile.ai[1]);
+			int ornamentType = (Projectile.frame = (int)Projectile.ai[1]);
 			if (Projectile.ai[0] < 0f)
 			{
 				Projectile.velocity.Y += 0.25f;
@@ -56,7 +51,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 				if (Main.rand.NextBool(Math.Max(4, 8 - (int)Projectile.velocity.Length())))
 				{
 					Color newColor = Color.White;
-					switch (num229)
+					switch (ornamentType)
 					{
 						case 0:
 							newColor = new Color(255, 100, 100);
@@ -72,8 +67,8 @@ namespace RijamsMod.Projectiles.Summon.Whips
 							break;
 					}
 					int num230 = 5;
-					int num231 = Dust.NewDust(Projectile.position + new Vector2(num230, num230), Projectile.width - num230 * 2, Projectile.height - num230 * 2, DustID.TintableDustLighted, 0f, 0f, 254, newColor);
-					Main.dust[num231].velocity = Projectile.velocity * 0.75f;
+					int dust = Dust.NewDust(Projectile.position + new Vector2(num230, num230), Projectile.width - num230 * 2, Projectile.height - num230 * 2, DustID.TintableDustLighted, 0f, 0f, 254, newColor);
+					Main.dust[dust].velocity = Projectile.velocity * 0.75f;
 				}
 				Projectile.velocity *= 0.95f;
 			}

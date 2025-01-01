@@ -84,9 +84,9 @@ EcrancheShield: {
 	DisplayName: Ecranche Shield
 	Tooltip:
 		'''
-		+1 Defense
 		Grants up to 10% damage reduction based on current velocity
-		Damage Reduction does not stack with Grand Guard Shield nor Heater Shield
+		Damage Reduction does not stack with {$Mods.RijamsMod.Items.GrandGuardShield.DisplayName} nor {$Mods.RijamsMod.Items.HeaterShield.DisplayName}
+		Synergizes well with Jousting Lances
 		'''
 }
 
@@ -94,9 +94,19 @@ GrandGuardShield: {
 	DisplayName: Grand Guard Shield
 	Tooltip:
 		'''
-		+1 Defense
 		Grants up to 20% damage reduction based on current velocity
-		Damage Reduction does not stack with Grand Guard Shield nor Heater Shield
+		Damage Reduction does not stack with {$Mods.RijamsMod.Items.EcrancheShield.DisplayName} nor {$Mods.RijamsMod.Items.HeaterShield.DisplayName}
+		Synergizes well with Jousting Lances
+		'''
+}
+
+HeaterShield: {
+	DisplayName: Heater Shield
+	Tooltip:
+		'''
+		Grants up to 30% damage reduction based on current velocity
+		Damage Reduction does not stack with {$Mods.RijamsMod.Items.EcrancheShield.DisplayName} nor {$Mods.RijamsMod.Items.GrandGuardShield.DisplayName}
+		Synergizes well with Jousting Lances
 		'''
 }
 
@@ -315,7 +325,7 @@ WarriorRing: {
 	DisplayName: Warrior Ring
 	Tooltip:
 		'''
-		Occasionally infuses the wearer with
+		10% chance to infuse the wearer with
 		"Warrior Energy" after slaying an enemy
 		Warrior Energy gives:
 		  +5% attack speed
@@ -347,6 +357,26 @@ SpinnerBobber: {
 TrapBobber: {
 	DisplayName: Trap Bobber
 	Tooltip: Causes fish to escape slower when you aren't reeling them in
+}
+
+PeakPerformanceRing: {
+	DisplayName: Peak Performance Ring
+	Tooltip:
+		'''
+		When above 50% HP:
+		  Up to +20% Damage
+		  Up to +10% Attack Speed
+		The bonuses decrease sharply when below max HP
+		'''
+}
+
+PeakWarriorRing: {
+	DisplayName: Peak Warrior Ring
+	Tooltip:
+		'''
+		{$RijamsMod.Items.WarriorRing.Tooltip}
+		{$RijamsMod.Items.PeakPerformanceRing.Tooltip}
+		'''
 }
 
 # Items/Accessories/Movement
@@ -701,6 +731,20 @@ PumpkinHat: {
 	Tooltip: +1 Minion Capacity
 }
 
+FlinxFurHat: {
+	DisplayName: Flinx Fur Hat
+	Tooltip: +10% Whip speed
+}
+
+FlinxFurBoots: {
+	DisplayName: Flinx Fur Boots
+	Tooltip:
+		'''
+		+3 Support minion radius
+		+5% Whip range
+		'''
+}
+
 ShroomiteVisor: {
 	DisplayName: Shroomite Visor
 	Tooltip:
@@ -720,7 +764,7 @@ SkywareHeadgear: {
 	Tooltip:
 		'''
 		+5% Summon damage
-		+1 summon capacity
+		+1 Summon capacity
 		+2 Support minion radius
 		'''
 }
@@ -1224,6 +1268,15 @@ AngryGusterBanner: {
 	Tooltip: "{$CommonItemTooltip.BannerBonus}{$Mods.RijamsMod.NPCs.AngryGuster.DisplayName}"
 }
 
+Grindstone: {
+	DisplayName: Grindstone
+	Tooltip:
+		'''
+		Right click with an item in your hand to remove its modifier
+		Favorite items to prevent them from being ground
+		'''
+}
+
 # Items/Quest
 
 QuestTrackerComplete: {
@@ -1655,6 +1708,16 @@ HorsemansJoustingLance: {
 		'''
 }
 
+CandyCaneJoustingLance: {
+	DisplayName: Candy Cane Jousting Lance
+	Tooltip:
+		'''
+		{$ItemTooltip.HallowJoustingLance}
+		9.99 tile reach
+		Causes Ornaments to fall from the sky
+		'''
+}
+
 EtherealJoustingLance: {
 	DisplayName: Ethereal Jousting Lance
 	Tooltip:
@@ -2080,6 +2143,7 @@ SlimeTrapStaff: {
 		'''
 		Summons a sentry Slime Trap
 		Reduces enemy movement speed by 25%
+		Deals damage every 0.5 seconds
 		'''
 }
 
@@ -2450,4 +2514,9 @@ DebugSuperDummy: {
 		Right click the item in the inventory to kill all of the dummies.
 		Probably doesn't work in multiplayer.
 		'''
+}
+
+InterstellarTraveler: {
+	DisplayName: Interstellar Traveler
+	Tooltip: ""
 }

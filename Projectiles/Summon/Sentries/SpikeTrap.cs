@@ -1,6 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -67,7 +65,9 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 							}
 							else
 							{
-								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage);
+								// NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage);
+								npc.StrikeNPC(hitInfo, false, true);
+								NetMessage.SendStrikeNPC(npc, hitInfo);
 								npc.netUpdate = true;
 							}
 							Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);
@@ -134,7 +134,9 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 							}
 							else
 							{
-								NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage);
+								// NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage);
+								npc.StrikeNPC(hitInfo, false, true);
+								NetMessage.SendStrikeNPC(npc, hitInfo);
 								npc.netUpdate = true;
 							}
 							Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);
@@ -161,14 +163,14 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 			Projectile.timeLeft = Projectile.SentryLifeTime;
 			Projectile.penetrate = -1;
 			Projectile.usesIDStaticNPCImmunity = true;
-			Projectile.idStaticNPCHitCooldown = 2;
+			Projectile.idStaticNPCHitCooldown = 30; // 2;
 
 			//projectile.usesLocalNPCImmunity = true;
 			//projectile.localNPCHitCooldown = 30;
 		}
 		public override bool MinionContactDamage()
 		{
-			return false;
+			return true;
 		}
 		public override void AI()
 		{
@@ -180,6 +182,7 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 			Projectile.ai[0] += 1;
 			if (Projectile.ai[0] % 2 == 0)
 			{
+				int damage = Main.DamageVar(Projectile.damage, Main.player[Projectile.owner].luck);
 				foreach (NPC npc in Main.npc)
 				{
 					if (!npc.dontTakeDamage && !npc.friendly && !npc.townNPC && npc.active)
@@ -188,19 +191,38 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 						Rectangle rec2 = new((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
 						if (rec1.Intersects(rec2))
 						{
+							NPC.HitInfo hitInfo = new()
+							{
+								Damage = damage,
+								HitDirection = npc.direction,
+								Knockback = 0f
+							};
 							if (Main.netMode == NetmodeID.SinglePlayer)
 							{
+								if (Projectile.ai[0] % 30 == 0)
+								{
+									npc.StrikeNPC(hitInfo, false, true);
+									Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);
+								}
 								//npc.AddBuff(BuffID.Slow, 2);
 								npc.velocity.X *= 0.75f;
-								npc.AddBuff(BuffID.Slimed, 2);
+								npc.AddBuff(BuffID.Slimed, 30);
 								npc.netUpdate = true;
 							}
 							else
 							{
+								if (Projectile.ai[0] % 30 == 0)
+								{
+									// NetMessage.SendData(MessageID.DamageNPC, number: npc.whoAmI, number2: damage);
+									npc.StrikeNPC(hitInfo, false, true);
+									NetMessage.SendStrikeNPC(npc, hitInfo);
+									npc.netUpdate = true;
+									Dust.NewDust(npc.position, npc.width, npc.height, DustID.Blood);
+								}
 								//NetMessage.SendData(MessageID.AddNPCBuff, number: BuffID.Slow, number2: 2);
 								npc.velocity.X *= 0.75f;
-								npc.AddBuff(BuffID.Slimed, 2);
-								NetMessage.SendData(MessageID.NPCBuffs, number: BuffID.Slimed, number2: 2);
+								npc.AddBuff(BuffID.Slimed, 30);
+								NetMessage.SendData(MessageID.NPCBuffs, number: BuffID.Slimed, number2: 30);
 								npc.netUpdate = true;
 							}
 							if (Projectile.ai[0] % 4 == 0)

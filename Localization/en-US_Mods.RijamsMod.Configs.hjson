@@ -116,8 +116,29 @@ RijamsModConfigServer: {
 			* Ancient Set
 			* Buffs to Stardust set bonus
 			* Buffs to the Bee Pants
+			* Buffs to the Flinx Fur Coat
 			Default value: All
 			Reload required
+			'''
+	}
+
+	JoustingLanceStaticInvincibility: {
+		Label: "[i:4788]   Jousting Lances use Static Invincibility"
+		Tooltip:
+			'''
+			This option toggles if Jousting Lances use 
+			static invincibility or global invincibility.
+			  When On: Jousting Lances use static invincibility.
+			  When Off: Jousting Lances use global invincibility.
+			    Turn Off for vanilla behavior.
+			Default value: On
+
+			Global Invincibility means damaged entities will be temporarily
+			  invulnerable to all sources of piercing damage from the same player.
+			  This type of invincibility will block other types of attacks from the player.
+			Static Invincibility means damaged entities will only be
+			  invulnerable to damage from that specific projectile type.
+			  This type of invincibility allows other attacks to still deal damage.
 			'''
 	}
 

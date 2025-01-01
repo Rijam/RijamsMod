@@ -47,6 +47,8 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Set the damage to melee damage.
 
+			// Static Invincibility set in GlobalProjectiles.cs
+
 			// Act like the normal Jousting Lance. Use this if you set the aiStyle to 19.
 			// AIType = ProjectileID.JoustingLance; 
 		}

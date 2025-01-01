@@ -12,7 +12,7 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 		{
 			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
 			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance"));
-			GlobalItems.isJoustingLance.Add(Type);
+			GlobalItems.isJoustingLance.Add(Type, Item.shoot);
 			//CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The number of sacrifices that is required to research the item in Journey Mode.
 		}
 

@@ -63,6 +63,7 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 
 		public override bool CanUseItem(Player player)
 		{
+			Main.NewText($"player.slotsMinions {player.slotsMinions}   player.maxMinions {player.maxMinions}");
 			if (player.slotsMinions < player.maxMinions)
 			{
 				return true;

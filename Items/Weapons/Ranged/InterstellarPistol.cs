@@ -1,19 +1,12 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using System.Collections.Generic;
 using Terraria.DataStructures;
 using RijamsMod.Projectiles.Ranged;
-using Microsoft.CodeAnalysis;
-using Terraria.Audio;
-using Steamworks;
-using log4net;
-using Terraria.Chat;
-using Terraria.Localization;
-using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {

@@ -19,8 +19,13 @@ namespace RijamsMod.Items
 		/// <summary> This set is a set of all whips. </summary>
 		public static List<int> isWhip = new() { ItemID.BlandWhip, ItemID.ThornWhip, ItemID.BoneWhip, ItemID.FireWhip,
 			ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip };
-		/// <summary> This set is a set of all jousting lances. </summary>
-		public static List<int> isJoustingLance = new() { ItemID.JoustingLance, ItemID.HallowJoustingLance, ItemID.ShadowJoustingLance };
+		/// <summary> This set is a set of all jousting lances and their projectiles. </summary>
+		public static Dictionary<int, int> isJoustingLance = new()
+		{
+				{ ItemID.JoustingLance, ProjectileID.JoustingLance},
+				{ ItemID.HallowJoustingLance, ProjectileID.HallowJoustingLance },
+				{ ItemID.ShadowJoustingLance, ProjectileID.ShadowJoustingLance}
+		};
 		/// <summary>
 		/// This set is a set of all lantern weapons (like the Nightglow, but does not include the Nightglow).
 		/// Items in this set will automatically be drawn behind the player's back hand.
@@ -85,6 +90,10 @@ namespace RijamsMod.Items
 				item.UseSound = SoundID.Item2;
 				item.buffType = ModContent.BuffType<Buffs.Potions.Satiated>(); //Specify an existing buff to be applied when used.
 				item.buffTime = 3600; //1 minute
+			}
+			if (item.type == ItemID.FlinxFurCoat && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			{
+				item.defense = 3;
 			}
 			if (item.ModItem != null && item.ModItem.Mod == Mod) //Hacky solution because I'm lazy lol
 			{

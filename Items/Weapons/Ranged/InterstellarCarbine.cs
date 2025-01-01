@@ -6,10 +6,7 @@ using Terraria.ModLoader;
 using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
-using RijamsMod.Items.Armor.Vanity.IntTrav;
 using RijamsMod.Projectiles.Ranged;
-using Terraria.Audio;
-using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {

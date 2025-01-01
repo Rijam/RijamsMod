@@ -30,6 +30,11 @@ namespace RijamsMod
 		public override void Load()
 		{
 			Instance = this;
+			// I could do this, but I already have my own versions in the mod
+			// if (ModLoader.TryGetMod("Fargowiltas", out Mod fargosMutantMod))
+			// {
+			// 	fargosMutantMod.Call("AddCaughtNPC", "InterstellarTraveler", ModContent.NPCType<InterstellarTraveler>(), "'I'm pretty far from home, but this place is pretty cool.'", "RijamsMod");
+			// }
 		}
 		
 		public override void Unload()
@@ -60,7 +65,7 @@ namespace RijamsMod
 				//Something must be wrong, I can't get it to work.
 				byte rarity = 1;
 				Func<bool> condition = () => NPC.downedBoss1;
-				pboneUtils.Call("MysteriousTraderItem", ModLoader.GetMod("RijamsMod"), ModContent.ItemType<Items.Consumables.StrangeRoll>(), rarity, condition);
+				pboneUtils.Call("MysteriousTraderItem", this, ModContent.ItemType<StrangeRoll>(), rarity, condition);
 				//rarity = 0;
 				//condition = () => true;
 				//pboneUtils.Call("MysteriousTraderItem", ModLoader.GetMod("RijamsMod"), ModContent.ItemType<Items.Consumables.StrangeRoll>(), rarity, condition);
@@ -183,8 +188,9 @@ namespace RijamsMod
 					return NPCs.NPCHelper.StatusShop2();
 				case "AddItemToIsJoustingLance":
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Items.GlobalItems.isJoustingLance.Add((int)args[1]);
-					return Items.GlobalItems.isJoustingLance.Contains((int)args[1]);
+					Item newItem = new((int)args[1]);
+					Items.GlobalItems.isJoustingLance.Add((int)args[1], newItem.shoot);
+					return Items.GlobalItems.isJoustingLance.ContainsKey((int)args[1]);
 				case "AddItemToIsLanternWeapon":
 					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
 					Items.GlobalItems.isLanternWeapon.Add((int)args[1]);

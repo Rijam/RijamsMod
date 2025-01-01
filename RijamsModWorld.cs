@@ -233,7 +233,7 @@ namespace RijamsMod
 								}
 							}
 						}
-						if (WorldGen.genRand.NextBool(7))
+						if (WorldGen.genRand.NextBool(9))
 						{
 							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
 							{
@@ -249,7 +249,7 @@ namespace RijamsMod
 					}
 					if (Main.tile[chest.x, chest.y].TileFrameX == 4 * 36) // Locked Shadow Chest
 					{
-						if (WorldGen.genRand.NextBool(5))
+						if (WorldGen.genRand.NextBool(7))
 						{
 							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
 							{

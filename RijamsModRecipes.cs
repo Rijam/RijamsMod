@@ -67,7 +67,7 @@ namespace RijamsMod
 				.AddTile(TileID.WorkBenches)
 				.Register();
 
-			if (ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs)
+			if (ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs && !ModLoader.TryGetMod("Fargowiltas", out Mod _))
 			{
 				Recipe.Create(ItemID.FleshBlock, 25)
 					.AddIngredient(ModContent.ItemType<CaughtHarpy>())
@@ -81,8 +81,8 @@ namespace RijamsMod
 					.AddIngredient(ModContent.ItemType<CaughtIntTrav>())
 					.AddTile(TileID.MeatGrinder)
 					.Register();
-				Recipe.Create(ItemID.FleshBlock, 1)
-					.AddIngredient(ModContent.ItemType<CaughtIntTrav>())
+				Recipe.Create(ItemID.FleshBlock, 25)
+					.AddIngredient(ModContent.ItemType<CaughtSnugget>())
 					.AddTile(TileID.MeatGrinder)
 					.Register();
 			}
@@ -184,11 +184,19 @@ namespace RijamsMod
 			});
 			RecipeGroup.RegisterGroup(Counterweights, group);
 
-			if (RecipeGroup.recipeGroupIDs.TryGetValue("Fruit", out int value))
+			if (RecipeGroup.recipeGroupIDs.TryGetValue("Fruit", out int fruitIndex))
 			{
-				int index = value;
-				RecipeGroup vanillaGroup = RecipeGroup.recipeGroups[index];
+				RecipeGroup vanillaGroup = RecipeGroup.recipeGroups[fruitIndex];
 				vanillaGroup.ValidItems.Add(ItemID.BlueBerries);
+			}
+
+			if (RecipeGroup.recipeGroupIDs.TryGetValue("Fargowiltas:AnyCaughtNPC", out int anyCaughtNPCIndex))
+			{
+				RecipeGroup fargosAnyCaughtNPCGroup = RecipeGroup.recipeGroups[anyCaughtNPCIndex];
+				fargosAnyCaughtNPCGroup.ValidItems.Add(ModContent.ItemType<CaughtHarpy>());
+				fargosAnyCaughtNPCGroup.ValidItems.Add(ModContent.ItemType<CaughtHellTrader>());
+				fargosAnyCaughtNPCGroup.ValidItems.Add(ModContent.ItemType<CaughtIntTrav>());
+				fargosAnyCaughtNPCGroup.ValidItems.Add(ModContent.ItemType<CaughtSnugget>());
 			}
 		}
 	}

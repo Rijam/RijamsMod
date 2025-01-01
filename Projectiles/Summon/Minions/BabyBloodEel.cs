@@ -81,7 +81,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				}
 			}
 			player.slotsMinions += numOfSegments - 3;
-			Main.NewText(" player.slotsMinions " + player.slotsMinions);
+			Main.NewText($" player.slotsMinions {player.slotsMinions}   player.maxMinions {player.maxMinions}");
 			ProjectileID.Sets.TrailCacheLength[Type] += numOfSegments * 2;
 			return true;
 		}

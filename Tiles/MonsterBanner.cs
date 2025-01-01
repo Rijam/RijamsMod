@@ -1,8 +1,10 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using RijamsMod.NPCs.Enemies;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -14,6 +16,8 @@ namespace RijamsMod.Tiles
 	{
 		public override void SetStaticDefaults()
 		{
+			// This allows the tile to sway in the wind and from player interaction when used together with the code in PreDraw below.
+			TileID.Sets.MultiTileSway[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = true;
 			Main.tileLavaDeath[Type] = true;
@@ -67,6 +71,20 @@ namespace RijamsMod.Tiles
 			{
 				offsetY -= 8;
 			}
+		}
+
+		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+		{
+			Tile tile = Main.tile[i, j];
+
+			if (TileObjectData.IsTopLeft(tile))
+			{
+				// Makes this tile sway in the wind and with player interaction when used with TileID.Sets.MultiTileSway
+				Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileDrawing.TileCounterType.MultiTileVine);
+			}
+
+			// We must return false here to prevent the normal tile drawing code from drawing the default static tile. Without this a duplicate tile will be drawn.
+			return false;
 		}
 	}
 }

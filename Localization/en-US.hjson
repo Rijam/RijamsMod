@@ -66,6 +66,12 @@ Mods: {
 				+25% velocity when dashing
 				Allows for more rapid dashing
 				'''
+			FlinxFur:
+				'''
+
+				+1 Minion capacity
+				+1 Defense
+				'''
 		}
 
 		Buffs: {
@@ -456,6 +462,7 @@ Mods: {
 			EtherealJoustingLanceProj.DisplayName: Ethereal Jousting Lance
 			TailoThreeCatsProj.DisplayName: Tail o' Three Cats
 			DarkJoustingLanceProj.DisplayName: Dark Jousting Lance
+			CandyCaneJoustingLanceProj.DisplayName: Candy Cane Jousting Lance Proj
 		}
 
 		Tiles: {
@@ -464,6 +471,7 @@ Mods: {
 			StripLight.MapEntry: Strip Light
 			SulfurTorch.MapEntry: Torch
 			SulfurCampfire.MapEntry: Sulfur Campfire
+			Grindstone.MapEntry: Grindstone
 		}
 
 		Prefixes: {

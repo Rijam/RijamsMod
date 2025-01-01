@@ -59,5 +59,30 @@ namespace RijamsMod.Items.Accessories.Defense
 		}
 	}
 
-	// Heater Shield
+	[AutoloadEquip(EquipType.Shield)]
+	public class HeaterShield : ModItem
+	{
+		public override void SetDefaults()
+		{
+			Item.width = 28;
+			Item.height = 24;
+			Item.value = Item.sellPrice(0, 1, 50);
+			Item.rare = ItemRarityID.Yellow;
+			Item.defense = 1;
+			Item.accessory = true;
+		}
+		public override void UpdateEquip(Player player)
+		{
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			modPlayer.moveSpeedDamageReductionMax = 0.3f;
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<FestivePlating>(), 15)
+				.AddIngredient(ItemID.Silk, 1)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
+		}
+	}
 }

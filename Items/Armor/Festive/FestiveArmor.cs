@@ -41,7 +41,7 @@ namespace RijamsMod.Items.Armor.Festive
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Festive"); ;
+			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Festive");
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.35f;
 			player.whipRangeMultiplier += 0.5f;
 			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.05f;

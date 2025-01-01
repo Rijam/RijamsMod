@@ -2,10 +2,8 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Accessories.Misc
@@ -54,7 +52,7 @@ namespace RijamsMod.Items.Accessories.Misc
 
 		public void RunRingLogic(NPC npc, Player player)
 		{
-			if (true || Main.netMode != NetmodeID.Server)
+			if (Main.netMode != NetmodeID.Server)
 			{
 				RijamsModPlayer moddedplayer = player.GetModPlayer<RijamsModPlayer>();
 				if (moddedplayer.burglarsRing || moddedplayer.warriorRing || moddedplayer.lifeSapperRing || moddedplayer.manaSapperRing)

@@ -27,7 +27,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newTile.LavaPlacement = LiquidPlacement.Allowed;
-			TileObjectData.newTile.StyleLineSkip = 4;
+			//TileObjectData.newTile.StyleLineSkip = 4;
 			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
 
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.Style1x1);
@@ -75,6 +75,7 @@ namespace RijamsMod.Tiles
 			AddMapEntry(new Color(250, 250, 250), name);
 			DustType = DustID.WhiteTorch;
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
+			RegisterItemDrop(ModContent.ItemType<Items.Placeable.StripLight>());
 		}
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
 		{

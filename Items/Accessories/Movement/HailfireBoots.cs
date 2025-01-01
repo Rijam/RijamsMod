@@ -42,8 +42,8 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.lavaRose = true;
 			player.jumpBoost = true;
 			player.autoJump = true;
-			player.jumpSpeedBoost += 1f;
-			player.extraFall += 15;
+			player.jumpSpeedBoost += 1.6f;
+			player.extraFall += 10;
 			player.buffImmune[BuffID.OnFire] = true;
 			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
 		}

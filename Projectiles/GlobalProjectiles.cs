@@ -1,9 +1,9 @@
-using Microsoft.Xna.Framework;
-using RijamsMod.Buffs.Potions;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Items;
 
 namespace RijamsMod.Projectiles
 {
@@ -19,6 +19,30 @@ namespace RijamsMod.Projectiles
 		//	Celebration Rockets explode twice as soon (also they are shared with the placed colored firework Rockets)
 		//  Exctrosphere Missile moves slow enough that it doesn't need extraUpdates.
 		public static List<int> RocketBoosterExtraUpdatesBlackList = new() {  };
+
+		public override void SetDefaults(Projectile projectile)
+		{
+			if (ModContent.GetInstance<RijamsModConfigServer>().JoustingLanceStaticInvincibility)
+			{
+				/*
+				foreach (int itemType in GlobalItems.isJoustingLance)
+				{
+					Item newItem = new(itemType);
+					if (newItem.shoot == projectile.type)
+					{
+						projectile.usesIDStaticNPCImmunity = true;
+						projectile.idStaticNPCHitCooldown = 10;
+					}
+					newItem.TurnToAir();
+				}
+				*/
+				if (GlobalItems.isJoustingLance.ContainsValue(projectile.type))
+				{
+					projectile.usesIDStaticNPCImmunity = true;
+					projectile.idStaticNPCHitCooldown = 10;
+				}
+			}
+		}
 
 		public override void PostAI(Projectile projectile)
 		{
