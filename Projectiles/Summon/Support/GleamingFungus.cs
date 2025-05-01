@@ -1,21 +1,114 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using ReLogic.Content;
 using Terraria;
-using Terraria.Audio;
-using Terraria.Chat;
-using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
-	public class GleamingFungus : ModProjectile
+	public class GleamingFungus : HealingSupportSummonBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 4;
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 32;
+			Projectile.height = 32;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.GleamingFungusBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.DeepSkyBlue;
+			numberOfDusts = 50;
+		}
+
+		public override int HealingProjectile()
+		{
+			return ModContent.ProjectileType<WhirlingFungus>();
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			#region Animation and visuals
+			if (Math.Abs(Projectile.velocity.X) < 1f)
+			{
+				Projectile.spriteDirection = Main.player[Projectile.owner].direction * -1;
+			}
+			else
+			{
+				Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
+			}
+
+			if (Projectile.ai[0] > cooldownTime / 4f)
+			{
+				if (Projectile.ai[0] >= cooldownTime - (3 * 60)) // 17 seconds
+				{
+					Projectile.position.Y -= 4f; // Move up a lot when 3 seconds left
+					Projectile.frame = 3;
+					if (Projectile.ai[0] % 4 == 0)
+					{
+						Dust.NewDust(new(Projectile.position.X + (Projectile.width / 4f), Projectile.position.Y + Projectile.height), Projectile.width / 2, 1, DustID.GlowingMushroom, Scale: 0.75f);
+					}
+				}
+				else if (Projectile.ai[0] > cooldownTime / 2f)
+				{
+					Projectile.frame = 2;
+					if (Projectile.ai[0] % 4 == 0)
+					{
+						Dust.NewDust(new(Projectile.position.X + (Projectile.width / 4f), Projectile.position.Y + Projectile.height - 6), Projectile.width / 2, 1, DustID.GlowingMushroom, Scale: 0.5f);
+					}
+				}
+				else
+				{
+					Projectile.frame = 1;
+					if (Projectile.ai[0] % 4 == 0)
+					{
+						Dust.NewDust(new(Projectile.position.X + (Projectile.width / 4f), Projectile.position.Y + Projectile.height - 8), Projectile.width / 2, 1, DustID.GlowingMushroom, Scale: 0.25f);
+					}
+				}
+			}
+			else
+			{
+				if (Projectile.ai[0] % 4 == 0)
+				{
+					Dust.NewDust(new(Projectile.position.X + (Projectile.width / 4f), Projectile.position.Y + Projectile.height - 10), Projectile.width / 2, 1, DustID.GlowingMushroom, Scale: 0.125f);
+				}
+			}
+
+			Projectile.position.Y += (float)Math.Sin(Projectile.ai[0] / 10f); // Slightly move up and down.
+
+			#endregion
+		}
+
+		private Asset<Texture2D> glowTexture;
+
+		public override void PostDraw(Color lightColor)
+		{
+			SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+			glowTexture ??= ModContent.Request<Texture2D>((GetType().Namespace + "." + Name + "_Glow").Replace('.', '/'));
+
+			// Get the currently selected frame on the texture.
+			Rectangle sourceRectangle = glowTexture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+
+			Main.EntitySpriteDraw(glowTexture.Value, Projectile.Center - Main.screenPosition + new Vector2(0, Projectile.gfxOffY + 1), sourceRectangle, Projectile.GetAlpha(lightColor), Projectile.rotation, sourceRectangle.Size() / 2f, Projectile.scale, spriteEffects);
+		}
+
+		/*
+
 		public int healAmount = 0;
 		public int cooldownTime = 0;
 		public int distRadius = 0;
@@ -138,6 +231,20 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 			}
 
+			// Give passive regen for all players while within the radius.
+			for (int i = 0; i < Main.maxPlayers; i++)
+			{
+				Player searchPlayer = Main.player[i];
+				if (HarpyIdol.SearchPlayers(player, searchPlayer))
+				{
+					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
+					if (distance <= radius)
+					{
+						searchPlayer.lifeRegen += (healAmount / 10); // 1 = +0.5 HP per second
+					}
+				}
+			}
+
 			int delay = cooldownTime; // 30 seconds
 			// If the projectile was spawned without using the item, it'll have a cooldownTime of 0.
 			// That makes it spawn the projectile every tick.
@@ -183,9 +290,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 				if (Main.myPlayer == Projectile.owner)
 				{
-					/*if (targetPlayer > 0)
-						ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer is " + targetPlayer + " Name " + Main.player[targetPlayer].name), Color.Red);*/
-					
 					// Spawn the Curative Butterfly projectile with the player with the lowest HP as its target.
 					Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, new(0, -1), ModContent.ProjectileType<WhirlingFungus>(),
 						0, 0, Projectile.owner,
@@ -297,5 +401,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 			distRadius = reader.ReadInt32();
 			targetPlayer = reader.ReadInt32();
 		}
+		*/
 	}
 }

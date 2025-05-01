@@ -2,7 +2,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Enums;
-using RijamsMod.Items.Materials;
 
 namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 {
@@ -10,8 +9,9 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 	{
 		public override void SetStaticDefaults()
 		{
-			GlobalItems.isJoustingLance.Add(Type, Item.shoot);
+			CustomItemIDSets.IsJoustingLance[Type] = Item.shoot;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.DarkLance;
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Shimmer transmute Dark Lance]"]);
 		}
 
 		public override void SetDefaults()

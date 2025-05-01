@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
@@ -103,40 +104,13 @@ namespace RijamsMod.Items
 
 		internal static readonly int[] allowedPrefixes = new int[] { PrefixID.Adept, PrefixID.Inept, ModContent.PrefixType<CudgelPrefixReaching>(),
 			ModContent.PrefixType<CudgelPrefixShort>(), ModContent.PrefixType<CudgelPrefixHampered>(), ModContent.PrefixType<CudgelPrefixProtective>(),
-			ModContent.PrefixType<CudgelPrefixSupportive>() };
-
-		public override bool CanReforge()
-		{
-			return true;
-		}
+			ModContent.PrefixType<CudgelPrefixSupportive>(), ModContent.PrefixType<CudgelPrefixFree>(), ModContent.PrefixType<CudgelPrefixDefensive>() };
 
 		public override int ChoosePrefix(UnifiedRandom rand)
 		{
 			return rand.Next(allowedPrefixes);
 		}
 
-		public override bool? PrefixChance(int pre, UnifiedRandom rand)
-		{
-			if (pre == -3)
-			{
-				return true;
-			}
-			return base.PrefixChance(pre, rand);
-		}
-
-		/*public override bool AllowPrefix(int pre)
-		{
-			if (Array.IndexOf(allowedPrefixes, pre) > -1)
-			{
-				// IndexOf returns a positive index of the element you search for. If not found, it's less than 0.
-				// Here we check if the selected prefix is positive (it was found).
-				// If so, we found a prefix that we do want.
-				return true;
-			}
-
-			// Reroll.
-			return false;
-		}*/
 	}
 	public class CudgelHealingItem : ModItem
 	{
@@ -168,7 +142,7 @@ namespace RijamsMod.Items
 
 		internal static readonly int[] allowedPrefixes = new int[] { PrefixID.Adept, PrefixID.Inept, ModContent.PrefixType<CudgelPrefixReaching>(),
 			ModContent.PrefixType<CudgelPrefixShort>(), ModContent.PrefixType<CudgelPrefixNoxious>(), ModContent.PrefixType<CudgelPrefixVigilant>(),
-			ModContent.PrefixType<CudgelPrefixCurative>() };
+			ModContent.PrefixType<CudgelPrefixCurative>(), ModContent.PrefixType<CudgelPrefixFree>(), ModContent.PrefixType<CudgelPrefixHealthy>() };
 
 		public override int ChoosePrefix(UnifiedRandom rand)
 		{

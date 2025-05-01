@@ -1,14 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using RijamsMod.Items.Materials;
-using RijamsMod.Items.Placeable;
-using RijamsMod.Projectiles.Magic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Projectiles.Magic;
 
 namespace RijamsMod.Items.Weapons.Magic
 {
@@ -16,7 +13,7 @@ namespace RijamsMod.Items.Weapons.Magic
 	{
 		public override void SetStaticDefaults()
 		{
-			GlobalItems.isLanternWeapon.Add(Item.type);
+			CustomItemIDSets.IsLanternWeapon[Type] = true;
 		}
 		public override void SetDefaults()
 		{

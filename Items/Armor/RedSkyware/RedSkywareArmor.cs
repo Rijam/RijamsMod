@@ -312,7 +312,7 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		{
 			if (!Main.dedServ)
 			{
-				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this);
+				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this, "RedSkywareLeggings_FemaleLegs");
 			}
 		}
 		public override void SetStaticDefaults()

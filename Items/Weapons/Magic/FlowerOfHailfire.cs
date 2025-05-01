@@ -1,8 +1,8 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 
 namespace RijamsMod.Items.Weapons.Magic

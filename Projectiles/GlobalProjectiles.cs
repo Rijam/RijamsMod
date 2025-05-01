@@ -9,38 +9,37 @@ namespace RijamsMod.Projectiles
 {
 	public class RijamsModProjectile : GlobalProjectile
 	{
-		public static List<int> RocketsAffectedByRocketBoosterExtraUpdates = new()
-			{ ProjectileID.RocketI, ProjectileID.RocketII, ProjectileID.RocketIII, ProjectileID.RocketIV,
-			ProjectileID.RocketSnowmanI, ProjectileID.RocketSnowmanII, ProjectileID.RocketSnowmanIII, ProjectileID.RocketSnowmanIV,
-			ProjectileID.ClusterRocketI, ProjectileID.ClusterRocketII, ProjectileID.DryRocket, ProjectileID.WetRocket,
-			ProjectileID.LavaRocket, ProjectileID.HoneyRocket, ProjectileID.MiniNukeRocketI, ProjectileID.MiniNukeRocketII };
+		// public static List<int> RocketsAffectedByRocketBoosterExtraUpdates = new()
+		// 	{ ProjectileID.RocketI, ProjectileID.RocketII, ProjectileID.RocketIII, ProjectileID.RocketIV,
+		// 	ProjectileID.RocketSnowmanI, ProjectileID.RocketSnowmanII, ProjectileID.RocketSnowmanIII, ProjectileID.RocketSnowmanIV,
+		// 	ProjectileID.ClusterRocketI, ProjectileID.ClusterRocketII, ProjectileID.DryRocket, ProjectileID.WetRocket,
+		// 	ProjectileID.LavaRocket, ProjectileID.HoneyRocket, ProjectileID.MiniNukeRocketI, ProjectileID.MiniNukeRocketII };
 		//Not including Grenades, Proximity Mines, or the Celebration Rockets because extraUpdates causes them to:
 		//	Grenades and Proximity Mines fall way faster which makes them have even less range.
 		//	Celebration Rockets explode twice as soon (also they are shared with the placed colored firework Rockets)
 		//  Exctrosphere Missile moves slow enough that it doesn't need extraUpdates.
-		public static List<int> RocketBoosterExtraUpdatesBlackList = new() {  };
+		// public static List<int> RocketBoosterExtraUpdatesBlackList = new() {  };
+		
 
 		public override void SetDefaults(Projectile projectile)
 		{
 			if (ModContent.GetInstance<RijamsModConfigServer>().JoustingLanceStaticInvincibility)
 			{
-				/*
-				foreach (int itemType in GlobalItems.isJoustingLance)
+				foreach (int itemType in CustomItemIDSets.IsJoustingLance)
 				{
-					Item newItem = new(itemType);
-					if (newItem.shoot == projectile.type)
+					if (itemType > 0 && ContentSamples.ItemsByType[itemType].shoot == projectile.type)
 					{
 						projectile.usesIDStaticNPCImmunity = true;
 						projectile.idStaticNPCHitCooldown = 10;
 					}
-					newItem.TurnToAir();
 				}
-				*/
+				/*
 				if (GlobalItems.isJoustingLance.ContainsValue(projectile.type))
 				{
 					projectile.usesIDStaticNPCImmunity = true;
 					projectile.idStaticNPCHitCooldown = 10;
 				}
+				*/
 			}
 		}
 
@@ -98,8 +97,8 @@ namespace RijamsMod.Projectiles
 				if (owner.active && owner.GetModPlayer<RijamsModPlayer>().rocketBooster)
 				{
 					if (owner.HeldItem.useAmmo == AmmoID.Rocket &&
-						(RocketsAffectedByRocketBoosterExtraUpdates.Contains(projectile.type) || ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[projectile.type])
-						&& !RocketBoosterExtraUpdatesBlackList.Contains(projectile.type) && !ProjectileID.Sets.IsAMineThatDealsTripleDamageWhenStationary[projectile.type])
+						(CustomProjectileIDSets.RocketsAffectedByRocketBoosterExtraUpdates[projectile.type] || ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[projectile.type])
+						&& !CustomProjectileIDSets.RocketBoosterExtraUpdatesBlackList[projectile.type] && !ProjectileID.Sets.IsAMineThatDealsTripleDamageWhenStationary[projectile.type])
 					{
 						if (projectile.extraUpdates == 0)
 						{

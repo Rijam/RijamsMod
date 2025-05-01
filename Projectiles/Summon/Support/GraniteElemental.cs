@@ -1,22 +1,152 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Terraria;
-using Terraria.Audio;
-using Terraria.Chat;
-using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
-	public class GraniteElemental : ModProjectile
+	public class GraniteElemental : HealingSupportSummonBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 1;
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 20;
+			Projectile.height = 32;
+			DrawOffsetX = -20;
+			DrawOriginOffsetY = -14;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.GraniteElementalBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.Purple;
+			numberOfDusts = 30;
+		}
+
+		public override int HealingProjectile()
+		{
+			return ModContent.ProjectileType<GraniteEnergy>();
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			#region Animation and visuals
+
+			//if (Math.Abs(Projectile.velocity.X) < 1f)
+			//{
+			//	Projectile.spriteDirection = player.direction * -1;
+			//}
+			//else
+			//{
+			//	Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
+			//}
+			float cooldownDiv4 = cooldownTime / 4f;
+
+			if (Projectile.ai[0] < cooldownDiv4) // 7.5
+			{
+				Projectile.ai[1] = 4;
+				if (Projectile.ai[0] % 4 == 0)
+				{
+					Dust.NewDust(new(Projectile.position.X, Projectile.position.Y + Projectile.height), Projectile.width, 1, DustID.Granite, Scale: 0.125f);
+				}
+			}
+			else if (Projectile.ai[0] < cooldownDiv4 * 2) // 15
+			{
+				Projectile.ai[1] = 0;
+				if (Projectile.ai[0] % 4 == 0)
+				{
+					Dust.NewDust(new(Projectile.position.X, Projectile.position.Y + Projectile.height), Projectile.width, 1, DustID.Granite, Scale: 0.25f);
+				}
+			}
+			else if (Projectile.ai[0] < cooldownDiv4 * 3) // 22.5
+			{
+				Projectile.ai[1] = 1;
+				if (Projectile.ai[0] % 4 == 0)
+				{
+					Dust.NewDust(new(Projectile.position.X, Projectile.position.Y + Projectile.height), Projectile.width, 1, DustID.Granite, Scale: 0.375f);
+				}
+			}
+			else if (Projectile.ai[0] < cooldownDiv4 * 4 - (3 * 60)) // 27
+			{
+				Projectile.ai[1] = 2;
+				if (Projectile.ai[0] % 4 == 0)
+				{
+					Dust.NewDust(new(Projectile.position.X, Projectile.position.Y + Projectile.height), Projectile.width, 1, DustID.Granite, Scale: 0.5f);
+				}
+			}
+			else // 30
+			{
+				Projectile.position.Y -= 4f; // Move up a lot when 3 seconds left
+
+				Projectile.ai[1] = 3;
+				if (Projectile.ai[0] % 4 == 0)
+				{
+					Dust.NewDust(new(Projectile.position.X, Projectile.position.Y + Projectile.height), Projectile.width, 1, DustID.Granite, Scale: 0.75f);
+				}
+			}
+
+			Projectile.ai[2]++;
+			if (Projectile.ai[2] > 48)
+			{
+				Projectile.ai[2] = 0;
+			}
+
+			Projectile.position.Y += (float)Math.Sin(Projectile.ai[0] / 10f); // Slightly move up and down.
+
+			#endregion
+		}
+
+		private readonly Asset<Texture2D> textureSmallRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_SmallRocks");
+		private readonly Asset<Texture2D> textureMediumRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_MediumRocks");
+		private readonly Asset<Texture2D> textureBigRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_BigRocks");
+		private readonly Asset<Texture2D> textureLight = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_Light");
+
+		public override void PostDraw(Color lightColor)
+		{
+			SpriteEffects spriteEffects = SpriteEffects.None;
+
+			// Get the currently selected frame on the texture.
+			Rectangle sourceRectangleLight = textureLight.Frame(1, 4, frameY: (int)Projectile.ai[1]);
+
+			Rectangle sourceRectangleRocks = textureSmallRocks.Frame(1, 12, frameY: (int)(Projectile.ai[2] / 4f));
+
+			Main.EntitySpriteDraw(textureLight.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				sourceRectangleLight, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleLight.Size() / 2f, Projectile.scale, spriteEffects, 0);
+
+			float cooldownDiv4 = cooldownTime / 4f;
+
+			if (Projectile.ai[0] >= cooldownDiv4)
+			{
+				Main.EntitySpriteDraw(textureSmallRocks.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+					sourceRectangleRocks, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleRocks.Size() / 2f, Projectile.scale, spriteEffects, 0);
+			}
+			if (Projectile.ai[0] >= cooldownDiv4 * 2)
+			{
+				Main.EntitySpriteDraw(textureMediumRocks.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+					sourceRectangleRocks, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleRocks.Size() / 2f, Projectile.scale, spriteEffects, 0);
+			}
+			if (Projectile.ai[0] >= cooldownDiv4 * 3)
+			{
+				Main.EntitySpriteDraw(textureBigRocks.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+					sourceRectangleRocks, GetAlpha(lightColor).Value, Projectile.rotation, sourceRectangleRocks.Size() / 2f, Projectile.scale, spriteEffects, 0);
+			}
+		}
+
+		/*
 		public int healAmount = 0;
 		public int cooldownTime = 0;
 		public int distRadius = 0;
@@ -142,6 +272,20 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 			}
 
+			// Give passive regen for all players while within the radius.
+			for (int i = 0; i < Main.maxPlayers; i++)
+			{
+				Player searchPlayer = Main.player[i];
+				if (HarpyIdol.SearchPlayers(player, searchPlayer))
+				{
+					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
+					if (distance <= radius)
+					{
+						searchPlayer.lifeRegen += (healAmount / 10); // 1 = +0.5 HP per second
+					}
+				}
+			}
+
 			int delay = cooldownTime; // 30 seconds
 			// If the projectile was spawned without using the item, it'll have a cooldownTime of 0.
 			// That makes it spawn the projectile every tick.
@@ -187,8 +331,8 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 				if (Main.myPlayer == Projectile.owner)
 				{
-					/*if (targetPlayer > 0)
-						ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer is " + targetPlayer + " Name " + Main.player[targetPlayer].name), Color.Red);*/
+					//if (targetPlayer > 0)
+					//	ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer is " + targetPlayer + " Name " + Main.player[targetPlayer].name), Color.Red);
 
 					// Spawn the Curative Butterfly projectile with the player with the lowest HP as its target.
 					Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, new(0, -1), ModContent.ProjectileType<GraniteEnergy>(),
@@ -209,14 +353,14 @@ namespace RijamsMod.Projectiles.Summon.Support
 			// So it will lean slightly towards the direction it's moving
 			Projectile.rotation = Projectile.velocity.X * 0.01f;
 
-			/*if (Math.Abs(Projectile.velocity.X) < 1f)
-			{
-				Projectile.spriteDirection = player.direction * -1;
-			}
-			else
-			{
-				Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
-			}*/
+			//if (Math.Abs(Projectile.velocity.X) < 1f)
+			//{
+			//	Projectile.spriteDirection = player.direction * -1;
+			//}
+			//else
+			//{
+			//	Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
+			//}
 			float cooldownDiv4 = cooldownTime / 4f;
 
 			if (Projectile.ai[0] < cooldownDiv4) // 7.5
@@ -339,5 +483,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 			distRadius = reader.ReadInt32();
 			targetPlayer = reader.ReadInt32();
 		}
+		*/
 	}
 }

@@ -1,17 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Terraria.Graphics.Shaders;
-using Terraria.Graphics.Effects;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ID;
 using Terraria.ModLoader;
-using MonoMod.Cil;
-using Mono.Cecil.Cil;
-using Terraria.GameContent.UI;
 
 namespace RijamsMod.Items.Armor.DilapidatedCrimson
 {
@@ -22,7 +15,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 		{
 			if (!Main.dedServ)
 			{
-				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Head", EquipType.Head, this, "DilapidatedCrimsonHelmet");
+				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Head", EquipType.Head, this, "DilapidatedCrimsonHelmet_Head");
 			}
 		}
 		public override void SetStaticDefaults()
@@ -75,7 +68,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 		{
 			if (!Main.dedServ)
 			{
-				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Body", EquipType.Body, this, "DilapidatedCrimsonScalemail");
+				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Body", EquipType.Body, this, "DilapidatedCrimsonScalemail_Body");
 			}
 		}
 		public override void SetStaticDefaults()
@@ -115,7 +108,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 		{
 			if (!Main.dedServ)
 			{
-				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Legs", EquipType.Legs, this, "DilapidatedCrimsonGreaves");
+				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Legs", EquipType.Legs, this, "DilapidatedCrimsonGreaves_Legs");
 			}
 		}
 		public override void SetStaticDefaults()

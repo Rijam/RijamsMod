@@ -1,10 +1,10 @@
-using Microsoft.Xna.Framework;
-using RijamsMod.Items;
 using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using RijamsMod.Items;
 
 namespace RijamsMod.Buffs.Minions
 {
@@ -135,7 +135,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class GraniteElementalBuff : ModBuff
 	{
-		public override LocalizedText Description => base.Description.WithFormatArgs(20, 40, 10);
+		public override LocalizedText Description => base.Description.WithFormatArgs(20, 30, 10, 1);
 		public override void SetStaticDefaults()
 		{
 			Main.buffNoSave[Type] = true;
@@ -158,7 +158,7 @@ namespace RijamsMod.Buffs.Minions
 	}
 	public class SanityFlowerBuff : ModBuff
 	{
-		public override LocalizedText Description => base.Description.WithFormatArgs(20, 30, 15);
+		public override LocalizedText Description => base.Description.WithFormatArgs(30, 30, 15, 1.5f);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Sanity Flower");
@@ -184,7 +184,7 @@ namespace RijamsMod.Buffs.Minions
 
 	public class GleamingFungusBuff : ModBuff
 	{
-		public override LocalizedText Description => base.Description.WithFormatArgs(20, 20, 22);
+		public override LocalizedText Description => base.Description.WithFormatArgs(30, 20, 22, 1.5f);
 		public override void SetStaticDefaults()
 		{
 			Main.buffNoSave[Type] = true;
@@ -208,7 +208,7 @@ namespace RijamsMod.Buffs.Minions
 
 	public class RadiantLanternBuff : ModBuff
 	{
-		public override LocalizedText Description => base.Description.WithFormatArgs(20, 30, 30);
+		public override LocalizedText Description => base.Description.WithFormatArgs(30, 20, 30, 1.5f);
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Radiant Lantern");

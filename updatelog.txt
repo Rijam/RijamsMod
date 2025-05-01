@@ -309,3 +309,25 @@
 	* Added Candy Cane Jousting Lance.
 	* Added a config option to make Jousting Lances use static invincibility instead of global invincibility.
 	* Made the caught Town NPCs compatible with the recipes added for caught Town NPCs in Fargo's Mutant Mod.
+
+1.2.9.0 - (May 1, 2025)
+	* Buffed healing support minions: Now gives passive regen to all players within the radius.
+	* Buffed Granite Elemental Cudgel: 40 second delay -> 30 second delay
+	* Buffed Sanity Flower Cudgel: 20 HP -> 30 HP
+	* Buffed Gleaming Fungus Cudgel: 20 HP -> 30 HP
+	* Buffed Radiant Lantern Cudgel: 30 second delay -> 20 second delay, 20 HP -> 30 HP
+	* Added a few more modifiers for the defense and healing Cudgel summon items.
+	* Added support for Alchemist NPC Lite. The Brewer will sell the potions from this mod and the Young Brewer will sell the flasks. The Jeweler will sell the Life Fruit Sanctuary in their Arena shop.
+	* Gem trees have a 33% chance to drop 1-3 of their respective gems when shook.
+	* Gem trees have a 10% chance to drop a Geode when shook.
+	* Ash trees have a 1 in 600 chance to spawn a Dark Soldier in For the Worthy worlds.
+	* Added Ichor Flares and Sulfuric Flares.
+	* You can craft regular Flares into Blue Flares at a Dye Vat and vice versa.
+	* Added Skyware Jousting Lance and Red Skyware Jousting Lance.
+	* Demolitionist now always sells Flares and Blue Flares.
+	* Added Combat Flare Pistol
+	* Added Triple Barrel Flare Pistol
+	* Added Solar Flare Flare
+	* Buffed many of the vanilla flares' damage just ever so slightly.
+	* Added Greek Fire Flare
+	* Added Flare Submachine Gun

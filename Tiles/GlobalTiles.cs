@@ -9,7 +9,7 @@ namespace RijamsMod.Tiles
     public class GlobalTiles : GlobalTile
     {
 		/// <summary> This set is a set of all pianos for the Pianist's Glove. </summary>
-		public static List<int> isPiano = new() { TileID.Pianos };
+		// public static List<int> isPiano = new() { TileID.Pianos };
 
 		public override void Drop(int i, int j, int type)
 		{

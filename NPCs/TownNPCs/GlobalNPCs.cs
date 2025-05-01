@@ -1,5 +1,6 @@
 using RijamsMod.Items.Accessories.Melee;
 using RijamsMod.Items.Consumables;
+using RijamsMod.Items.Placeable;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Personalities;
@@ -199,6 +200,8 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			if (shop.NpcType == NPCID.Demolitionist)
 			{
+				shop.Add(new Item(ItemID.Flare) { shopCustomPrice = 7 });
+				shop.Add(new Item(ItemID.BlueFlare) { shopCustomPrice = 7 });
 				shop.Add(new Item(ItemID.BombFish) { shopCustomPrice = 1000 }, new Condition("Rescued Angler", () => NPC.savedAngler));
 				shop.Add(new Item(ItemID.ScarabBomb) { shopCustomPrice = 1500 }, Condition.DownedEyeOfCthulhu);
 				shop.Add(new Item(ItemID.DryBomb) { shopCustomPrice = 2500 }, ShopConditions.HellTraderMovedIn, Condition.NpcIsPresent(ModContent.NPCType<HellTrader>()));
@@ -210,7 +213,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (shop.NpcType == NPCID.Dryad)
 			{
 				shop.Add(new Item(ItemID.JungleGrassSeeds) { shopCustomPrice = 1500 }, Condition.InJungle);
-				shop.Add(new Item(ItemID.FireBlossomPlanterBox) { shopCustomPrice = 100 }, 
+				shop.Add(new Item(ItemID.FireBlossomPlanterBox) { shopCustomPrice = 100 },
 					Condition.DownedEyeOfCthulhu, Condition.DownedEowOrBoc, Condition.DownedSkeletron, Condition.PreHardmode);
 			}
 			if (shop.NpcType == NPCID.Truffle)
@@ -242,16 +245,38 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.Add(ModContent.ItemType<Items.Pets.StardustDragonCrest>(), Condition.DownedStardustPillar);
 				shop.Add(ModContent.ItemType<SnuggetPetLicense>(),
 					new Condition(Language.GetText("Conditions.BestiaryPercentage").WithFormatArgs(60),
-					() => Main.GetBestiaryProgressReport().CompletionPercent >= 0.6f), 
+					() => Main.GetBestiaryProgressReport().CompletionPercent >= 0.6f),
 					Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
-			
+
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
 				if (pboneUtils.TryFind<ModNPC>("Miner", out ModNPC minerModNPC) && shop.NpcType == minerModNPC.Type)
 				{
 					shop.Add(new Item(ItemID.MiningShirt) { shopCustomPrice = 100000 }, Condition.Hardmode);
 					shop.Add(new Item(ItemID.MiningPants) { shopCustomPrice = 100000 }, Condition.Hardmode);
+				}
+			}
+
+			if (ModLoader.TryGetMod("AlchemistNPCLite", out Mod alchemistNPCLite) && ShopConditions.TownNPCsCrossModSupport.IsMet())
+			{
+				if (alchemistNPCLite.TryFind<ModNPC>("Brewer", out ModNPC brewer) && shop.NpcType == brewer.Type && shop.Name == "MorePotions/Atheria")
+				{
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<SupportPotion>(), 4));
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<FerociousPotion>(), 4), Condition.DownedQueenBee);
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<FrenzyPotion>(), 4), Condition.Hardmode);
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<SoaringPotion>(), 4), Condition.Hardmode);
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<FuryPotion>(), 4), Condition.DownedMechBossAny);
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<ReefCola>(), 4), Condition.DownedDukeFishron);
+				}
+				if (alchemistNPCLite.TryFind<ModNPC>("YoungBrewer", out ModNPC youngBrewer) && shop.NpcType == youngBrewer.Type && shop.Name == "Flasks")
+				{
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<FlaskOfOil>(), 4), Condition.DownedQueenBee);
+					shop.Add(NPCHelper.ItemWithCustomPriceBasedOnItsValue(ModContent.ItemType<FlaskOfSulfuricAcid>(), 4), Condition.DownedQueenBee, Condition.Hardmode);
+				}
+				if (alchemistNPCLite.TryFind<ModNPC>("Jeweler", out ModNPC jewler) && shop.NpcType == jewler.Type && shop.Name == "Arena")
+				{
+					shop.Add(ModContent.ItemType<LifeFruitSanctuary>(), Condition.DownedMechBossAll);
 				}
 			}
 		}

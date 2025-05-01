@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		{
 			// DisplayName.SetDefault("Vicious Whip");
 			// Tooltip.SetDefault("8 summon tag damage\n{$CommonItemTooltip.Whips}");
-			GlobalItems.isWhip.Add(Item.type);
+			CustomItemIDSets.IsWhip[Type] = true;
 		}
 		public override void SetDefaults()
 		{

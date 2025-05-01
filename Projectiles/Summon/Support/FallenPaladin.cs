@@ -1,14 +1,69 @@
 using Microsoft.Xna.Framework;
 using System;
-using System.IO;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
-	public class FallenPaladin : ModProjectile
+	public class FallenPaladin : DefenseSupportSummonBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 4;
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 48;
+			Projectile.height = 48;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.FallenPaladinBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.Yellow;
+			numberOfDusts = 70;
+		}
+
+		public override bool LightingColor(ref Color lightColor, ref float multiplier)
+		{
+			lightColor = Color.Yellow;
+			multiplier = 0.5f;
+			return true;
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			if (Math.Abs(Projectile.velocity.X) < 1f)
+			{
+				Projectile.spriteDirection = Main.player[Projectile.owner].direction * -1;
+			}
+			else
+			{
+				Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
+			}
+
+			// This is a simple "loop through all frames from top to bottom" animation
+			int frameSpeed = 8;
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= frameSpeed)
+			{
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Projectile.type])
+				{
+					Projectile.frame = 0;
+				}
+			}
+		}
+
+		/*
 		public int additionalDefense = 0;
 		public float additionalDR = 0;
 		public int distRadius = 0;
@@ -188,5 +243,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 			additionalDR = reader.ReadSingle();
 			distRadius = reader.ReadInt32();
 		}
+		*/
 	}
 }

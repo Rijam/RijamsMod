@@ -57,7 +57,7 @@ namespace RijamsMod.Items.Armor.Vanity.IntTrav
 		{
 			if (!Main.dedServ)
 			{
-				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this);
+				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this, "PeacekeeperTrousers_FemaleLegs");
 			}
 		}
 		public override void SetStaticDefaults()

@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		{
 			// DisplayName.SetDefault("Supernova Whip");
 			// Tooltip.SetDefault("20 summon tag damage\n10% summon tag critical strike chance\nCauses Stardust Explosions on enemies\nCan hit enemies through tiles\n{$CommonItemTooltip.Whips}");
-			GlobalItems.isWhip.Add(Item.type);
+			CustomItemIDSets.IsWhip[Type] = true;
 		}
 		public override void SetDefaults()
 		{

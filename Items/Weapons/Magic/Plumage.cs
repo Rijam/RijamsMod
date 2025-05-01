@@ -1,9 +1,9 @@
-using RijamsMod.Projectiles.Magic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using RijamsMod.Projectiles.Magic;
 
 namespace RijamsMod.Items.Weapons.Magic
 {

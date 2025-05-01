@@ -28,10 +28,10 @@ namespace RijamsMod.Items
 			float runningPower = 0;
 			//runningPower += Math.Clamp(1f - ManaCostAdditive, -2, 2); // Smaller numbers are better
 			runningPower += Math.Clamp(IncreaseRadius, -2, 2);
-			runningPower += Math.Clamp(IncreaseDefense, -2, 2);
-			runningPower += Math.Clamp(IncreaseDamageReduction, -2, 2);
-			runningPower += Math.Clamp(IncreaseHealingAmount, -2, 2);
-			runningPower += Math.Clamp(DecreaseHealingTime, -2, 2);
+			runningPower += Math.Clamp(IncreaseDefense, -3, 3);
+			runningPower += Math.Clamp(IncreaseDamageReduction, -3, 3);
+			runningPower += Math.Clamp(IncreaseHealingAmount, -3, 3);
+			runningPower += Math.Clamp(DecreaseHealingTime / 60, -3, 3);
 			return runningPower;
 		}
 
@@ -222,6 +222,12 @@ namespace RijamsMod.Items
 		public override int IncreaseRadius => -5;
 	}
 
+	/// <summary> For all support minions </summary>
+	public class CudgelPrefixFree : CudgelPrefixBase
+	{
+		public override float ManaCostMultiplicitive => 0.0f;
+	}
+
 	/// <summary> For defense support minions </summary>
 	public class CudgelPrefixHampered : CudgelPrefixBase
 	{
@@ -245,6 +251,15 @@ namespace RijamsMod.Items
 		public override float IncreaseDamageReduction => 0.02f;
 	}
 
+	/// <summary> For defense support minions </summary>
+	public class CudgelPrefixDefensive : CudgelPrefixBase
+	{
+		public override float ManaCostMultiplicitive => 1.5f;
+		public override int IncreaseRadius => -3;
+		public override int IncreaseDefense => 8;
+		public override float IncreaseDamageReduction => 0.01f;
+	}
+
 	/// <summary> For healing support minions </summary>
 	public class CudgelPrefixNoxious : CudgelPrefixBase
 	{
@@ -266,5 +281,14 @@ namespace RijamsMod.Items
 		public override int IncreaseHealingAmount => 10;
 		public override int DecreaseHealingTime => 5 * 60; // The time is in ticks
 		public override int IncreaseRadius => 5;
+	}
+
+	/// <summary> For healing support minions </summary>
+	public class CudgelPrefixHealthy : CudgelPrefixBase
+	{
+		public override float ManaCostMultiplicitive => 1.5f;
+		public override int IncreaseHealingAmount => 30;
+		public override int DecreaseHealingTime => 2 * 60; // The time is in ticks
+		public override int IncreaseRadius => -3;
 	}
 }

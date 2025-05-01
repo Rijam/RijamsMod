@@ -1,17 +1,83 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.IO;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
-	public class CrystalCluster : ModProjectile
+	public class CrystalCluster : DefenseSupportSummonBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 1;
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 34;
+			Projectile.height = 44;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.CrystalClusterBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.Magenta;
+			numberOfDusts = 60;
+		}
+
+		public override bool LightingColor(ref Color lightColor, ref float multiplier)
+		{
+			lightColor = Color.Purple;
+			multiplier = 0.25f;
+			return true;
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			Projectile.spriteDirection = 1;
+		}
+
+		private int fadeInOrOut = 0;
+		private Color lerpColor = Color.White;
+		private readonly Asset<Texture2D> brightTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/CrystalClusterBright");
+
+		public override void PostDraw(Color lightColor)
+		{
+			Projectile.ai[1] += 1;
+
+			// Get the currently selected frame on the texture.
+			Rectangle sourceRectangle = brightTexture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+
+			if (fadeInOrOut == 0)
+			{
+				lerpColor = Color.Lerp(Color.White, new(0, 0, 0, 0), Projectile.ai[1] / 100f);
+			}
+			if (fadeInOrOut == 1)
+			{
+				lerpColor = Color.Lerp(new(0, 0, 0, 0), Color.White, Projectile.ai[1] / 100f);
+			}
+
+			Main.EntitySpriteDraw(brightTexture.Value, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				sourceRectangle, lerpColor, Projectile.rotation, sourceRectangle.Size() / 2f, Projectile.scale, SpriteEffects.None, 0);
+
+			if (Projectile.ai[1] > 100)
+			{
+				fadeInOrOut++;
+				Projectile.ai[1] = 0;
+				if (fadeInOrOut > 1)
+				{
+					fadeInOrOut = 0;
+				}
+			}
+		}
+		/*
 		public int additionalDefense = 0;
 		public float additionalDR = 0;
 		public int distRadius = 0;
@@ -205,5 +271,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 			additionalDR = reader.ReadSingle();
 			distRadius = reader.ReadInt32();
 		}
+		*/
 	}
 }

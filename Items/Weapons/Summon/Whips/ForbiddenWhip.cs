@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		{
 			// DisplayName.SetDefault("Forbidden Whip");
 			// Tooltip.SetDefault("Reduces enemy velocity by 20% when struck by a minion\n  Scales with Summon Knockback\n{$CommonItemTooltip.Whips}");
-			GlobalItems.isWhip.Add(Item.type);
+			CustomItemIDSets.IsWhip[Type] = true;
 		}
 		public override void SetDefaults()
 		{

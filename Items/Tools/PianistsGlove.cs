@@ -50,12 +50,15 @@ namespace RijamsMod.Items.Tools
 			RickClickInner(player, ModContent.ItemType<PianistsGloveHigh>());
 		}
 
+		public int HandsOnEquipTexture;
+		public int HandsOffEquipTexture;
+
 		public override void Load()
 		{
 			if (!Main.dedServ)
 			{
-				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace).Replace('.', '/') + "/PianistsGlove_HandsOn", EquipType.HandsOn, this, "PianistsGloveHandsOn");
-				EquipLoader.AddEquipTexture(Mod, (GetType().Namespace).Replace('.', '/') + "/PianistsGlove_HandsOff", EquipType.HandsOff, this, "PianistsGloveHandsOff");
+				HandsOnEquipTexture = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace).Replace('.', '/') + "/PianistsGlove_HandsOn", EquipType.HandsOn, this, "PianistsGlove_HandsOn");
+				HandsOffEquipTexture = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace).Replace('.', '/') + "/PianistsGlove_HandsOff", EquipType.HandsOff, this, "PianistsGlove_HandsOff");
 			}
 		}
 
@@ -72,8 +75,8 @@ namespace RijamsMod.Items.Tools
 		{
 			if (!Main.dedServ)
 			{
-				player.handon = EquipLoader.GetEquipTexture(Mod, "PianistsGloveHandsOn", EquipType.HandsOn).Slot;
-				player.handoff = EquipLoader.GetEquipTexture(Mod, "PianistsGloveHandsOff", EquipType.HandsOff).Slot;
+				player.handon = HandsOnEquipTexture;
+				player.handoff = HandsOffEquipTexture;
 			}
 			int note = CalcNote(player, out float _);
 			if (note > 0)
@@ -131,7 +134,7 @@ namespace RijamsMod.Items.Tools
 			int playerPosY = (int)player.Center.Y / 16;
 			Tile tile = Main.tile[playerPosX, playerPosY];
 			ModTile modTile = TileLoader.GetTile(tile.TileType);
-			if (WorldGen.InWorld(playerPosX, playerPosY) && tile != null && (Tiles.GlobalTiles.isPiano.Contains(tile.TileType) || (modTile != null && modTile.AdjTiles.Contains(TileID.Pianos))))
+			if (WorldGen.InWorld(playerPosX, playerPosY) && tile != null && (Tiles.CustomTileIDSets.IsPiano[tile.TileType] || (modTile != null && modTile.AdjTiles.Contains(TileID.Pianos))))
 			{
 				Vector2 vector6 = new(player.position.X + (float)player.width * 0.5f, player.position.Y + (float)player.height * 0.5f);
 				float mousePosX = (float)Main.mouseX + Main.screenPosition.X - vector6.X;
@@ -467,6 +470,10 @@ namespace RijamsMod.Items.Tools
 		{
 			// Empty so that it doesn't inherit the recipe from the parent class
 		}
+		public override void Load()
+		{
+			// Empty so that it doesn't load the equip textures from the parent class
+		}
 	}
 	public class PianistsGloveHigh : PianistsGlove
 	{
@@ -486,6 +493,10 @@ namespace RijamsMod.Items.Tools
 		public override void AddRecipes()
 		{
 			// Empty so that it doesn't inherit the recipe from the parent class
+		}
+		public override void Load()
+		{
+			// Empty so that it doesn't load the equip textures from the parent class
 		}
 	}
 }

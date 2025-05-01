@@ -60,8 +60,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			Projectile bullet = new();
-			bullet.SetDefaults(type);
+			Projectile bullet = ContentSamples.ProjectilesByType[type];
 			int ammoExtraUpdates = bullet.extraUpdates;
 			int penetrate = bullet.penetrate;
 			bool coldDamage = bullet.coldDamage;

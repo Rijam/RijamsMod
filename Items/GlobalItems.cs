@@ -17,20 +17,27 @@ namespace RijamsMod.Items
 	public class GlobalItems : GlobalItem
 	{
 		/// <summary> This set is a set of all whips. </summary>
-		public static List<int> isWhip = new() { ItemID.BlandWhip, ItemID.ThornWhip, ItemID.BoneWhip, ItemID.FireWhip,
-			ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip };
+		// public static List<int> isWhip = new() { ItemID.BlandWhip, ItemID.ThornWhip, ItemID.BoneWhip, ItemID.FireWhip,
+		// 	ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip };
 		/// <summary> This set is a set of all jousting lances and their projectiles. </summary>
-		public static Dictionary<int, int> isJoustingLance = new()
-		{
-				{ ItemID.JoustingLance, ProjectileID.JoustingLance},
-				{ ItemID.HallowJoustingLance, ProjectileID.HallowJoustingLance },
-				{ ItemID.ShadowJoustingLance, ProjectileID.ShadowJoustingLance}
-		};
+		// public static Dictionary<int, int> isJoustingLance = new()
+		// {
+		//		{ ItemID.JoustingLance, ProjectileID.JoustingLance},
+		//		{ ItemID.HallowJoustingLance, ProjectileID.HallowJoustingLance },
+		// 		{ ItemID.ShadowJoustingLance, ProjectileID.ShadowJoustingLance}
+		// };
+
 		/// <summary>
 		/// This set is a set of all lantern weapons (like the Nightglow, but does not include the Nightglow).
 		/// Items in this set will automatically be drawn behind the player's back hand.
 		/// </summary>
-		public static List<int> isLanternWeapon = new(); // Nightglow not included.
+		// public static List<int> isLanternWeapon = new(); // Nightglow not included.
+
+		/// <summary>
+		/// The set for the Combat Flare Pistol and Triple Barrel Flare Pistol
+		/// </summary>
+		// public static List<int> isCombatFlareGun = new();
+
 		/*/// <summary>
 		/// The front arm of the player will not animate correctly when the useStyle is set to RaiseLamp (14). Items in this set will be corrected with an IL Edit.
 		/// </summary>
@@ -260,7 +267,7 @@ namespace RijamsMod.Items
 				}
 			}
 			RijamsModConfigClient configClient = ModContent.GetInstance<RijamsModConfigClient>();
-			if (isWhip.Contains(item.type) && (isLeftShiftHeld && configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.HoldShift || configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.On))
+			if (CustomItemIDSets.IsWhip[item.type] && (isLeftShiftHeld && configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.HoldShift || configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.On))
 			{
 				if (item.type == ModContent.ItemType<Belt>())
 				{
@@ -391,6 +398,7 @@ namespace RijamsMod.Items
 		/// <param name="name">The name of the tooltip to find. See the docs for all of the names.</param>
 		/// <param name="mod">Which mod the tooltip line is from. "Terraria" for vanilla.</param>
 		/// <param name="index">Out: the index of the tooltip line. 0 if not found.</param>
+		/// <param name="silenceWarning">The function will print a warning if the tooltip was not found. Pass true to silence.</param>
 		/// <returns>True if found.</returns>
 		public static bool FindTooltipIndex(List<TooltipLine> tooltips, string name, string mod, out int index, bool silenceWarning = false)
 		{

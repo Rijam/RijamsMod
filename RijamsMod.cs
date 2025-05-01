@@ -18,6 +18,7 @@ namespace RijamsMod
 	public class RijamsMod : Mod
 	{
 		public static RijamsMod Instance;
+		/*
 		internal static RijamsModConfigClient ConfigClient;
 		internal static RijamsModConfigServer ConfigServer;
 		internal static RijamsModNPCs RijamsModNPCs;
@@ -26,6 +27,7 @@ namespace RijamsMod
 		internal static ArmorUseGlowBody ArmorUseGlowBody;
 		internal static ArmorUseGlowLegs ArmorUseGlowLegs;
 		internal static WeaponAttackFlash WeaponAttackFlash;
+		*/
 
 		public override void Load()
 		{
@@ -40,14 +42,16 @@ namespace RijamsMod
 		public override void Unload()
 		{
 			ItemOriginDesc.itemList = null;
-			Items.GlobalItems.isWhip = null;
-			Items.GlobalItems.isJoustingLance = null;
-			Items.GlobalItems.isLanternWeapon = null;
+			// Items.GlobalItems.isWhip = null;
+			// Items.GlobalItems.isJoustingLance = null;
+			// Items.GlobalItems.isLanternWeapon = null;
+			// Items.GlobalItems.isCombatFlareGun = null;
 			Items.SupportMinionCanUseCheck.SupportMinionsDefenseBuffs = null;
 			Items.SupportMinionCanUseCheck.SupportMinionsHealingBuffs = null;
-			Tiles.GlobalTiles.isPiano = null;
-			Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates = null;
+			// Tiles.GlobalTiles.isPiano = null;
+			// Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates = null;
 			Instance = null;
+			/*
 			ConfigClient = null;
 			ConfigServer = null;
 			RijamsModNPCs = null;
@@ -56,6 +60,7 @@ namespace RijamsMod
 			ArmorUseGlowBody = null;
 			ArmorUseGlowLegs = null;
 			WeaponAttackFlash = null;
+			*/
 		}
 
 		public override void PostSetupContent()
@@ -159,6 +164,8 @@ namespace RijamsMod
 					return ModContent.GetInstance<RijamsModConfigServer>().LoadDebugItems;
 				case "CatchNPCs":
 					return ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+				case "JoustingLanceStaticInvincibility":
+					return ModContent.GetInstance<RijamsModConfigServer>().JoustingLanceStaticInvincibility;
 				case "savedHarpy":
 					return RijamsModWorld.savedHarpy;
 				case "intTravArrived":
@@ -168,7 +175,7 @@ namespace RijamsMod
 				case "boughtSnuggetPet":
 					return RijamsModWorld.boughtSnuggetPet;
 				case "intTravQuest":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
+					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
 					return args[1].ToString() switch
 					{
 						"OddDevice" => RijamsModWorld.intTravQuestOddDevice,
@@ -180,37 +187,53 @@ namespace RijamsMod
 						_ => throw new ArgumentException($"Argument \"{args[1]}\" of Function \"{function}\" is not defined by Rijam's Mod"),
 					};
 				case "GetNearbyResidentNPCs":
-					CheckArgsLength(3, new string[] { args[0].ToString(), args[1].ToString(), args[2].ToString() });
+					CheckArgsLength(3, [args[0].ToString(), args[1].ToString(), args[2].ToString()]);
 					return NPCs.NPCHelper.GetNearbyResidentNPCs((NPC)args[1], (int)args[2], out List<int> _, out List<int> _, out List<int> _, out List<int> _);
 				case "GetStatusShop1":
 					return NPCs.NPCHelper.StatusShop1();
 				case "GetStatusShop2":
 					return NPCs.NPCHelper.StatusShop2();
 				case "AddItemToIsJoustingLance":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Item newItem = new((int)args[1]);
-					Items.GlobalItems.isJoustingLance.Add((int)args[1], newItem.shoot);
-					return Items.GlobalItems.isJoustingLance.ContainsKey((int)args[1]);
+					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
+					int projectileType = ContentSamples.ItemsByType[(int)args[1]]?.shoot ?? ProjectileID.None;
+					if (projectileType == ProjectileID.None)
+					{
+						Logger.WarnFormat("Call Warning: An item ({0} {1}) was added to the list of Jousting Lances but it has no associated projectile! The item needs to have Item.shoot defined.", (int)args[1], ContentSamples.ItemsByType[(int)args[1]].Name);
+					}
+					// Items.GlobalItems.isJoustingLance.Add((int)args[1], projectileType);
+					// return Items.GlobalItems.isJoustingLance.ContainsKey((int)args[1]);
+					Items.CustomItemIDSets.IsJoustingLance[(int)args[1]] = projectileType;
+					return Items.CustomItemIDSets.IsJoustingLance[(int)args[1]] > 0;
 				case "AddItemToIsLanternWeapon":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Items.GlobalItems.isLanternWeapon.Add((int)args[1]);
-					return Items.GlobalItems.isLanternWeapon.Contains((int)args[1]);
+					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
+					// Items.GlobalItems.isLanternWeapon.Add((int)args[1]);
+					// return Items.GlobalItems.isLanternWeapon.Contains((int)args[1]);
+					Items.CustomItemIDSets.IsLanternWeapon[(int)args[1]] = true;
+					return Items.CustomItemIDSets.IsLanternWeapon[(int)args[1]];
 				case "AddItemToIsWhip":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Items.GlobalItems.isWhip.Add((int)args[1]);
-					return Items.GlobalItems.isWhip.Contains((int)args[1]);
+					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
+					// Items.GlobalItems.isWhip.Add((int)args[1]);
+					// return Items.GlobalItems.isWhip.Contains((int)args[1]);
+					Items.CustomItemIDSets.IsWhip[(int)args[1]] = true;
+					return Items.CustomItemIDSets.IsWhip[(int)args[1]];
 				case "AddTileToPianos":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Tiles.GlobalTiles.isPiano.Add((int)args[1]);
-					return Tiles.GlobalTiles.isPiano.Contains((int)args[1]);
+					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
+					// Tiles.GlobalTiles.isPiano.Add((int)args[1]);
+					// return Tiles.GlobalTiles.isPiano.Contains((int)args[1]);
+					Tiles.CustomTileIDSets.IsPiano[(int)args[1]] = true;
+					return Tiles.CustomTileIDSets.IsPiano[(int)args[1]];
 				case "AddProjectileToRocketBoosterExtraUpdates":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add((int)args[1]);
-					return Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Contains((int)args[1]);
+					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
+					// Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add((int)args[1]);
+					// return Projectiles.RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Contains((int)args[1]);
+					Projectiles.CustomProjectileIDSets.RocketsAffectedByRocketBoosterExtraUpdates[(int)args[1]] = true;
+					return Projectiles.CustomProjectileIDSets.RocketsAffectedByRocketBoosterExtraUpdates[(int)args[1]];
 				case "AddProjectileToRocketBoosterExtraUpdatesBlackList":
-					CheckArgsLength(2, new string[] { args[0].ToString(), args[1].ToString() });
-					Projectiles.RijamsModProjectile.RocketBoosterExtraUpdatesBlackList.Add((int)args[1]);
-					return Projectiles.RijamsModProjectile.RocketBoosterExtraUpdatesBlackList.Contains((int)args[1]);
+					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
+					// Projectiles.RijamsModProjectile.RocketBoosterExtraUpdatesBlackList.Add((int)args[1]);
+					// return Projectiles.RijamsModProjectile.RocketBoosterExtraUpdatesBlackList.Contains((int)args[1]);
+					Projectiles.CustomProjectileIDSets.RocketBoosterExtraUpdatesBlackList[(int)args[1]] = true;
+					return Projectiles.CustomProjectileIDSets.RocketBoosterExtraUpdatesBlackList[(int)args[1]];
 				default:
 					throw new ArgumentException($"Function \"{function}\" is not defined by Rijam's Mod");
 			}

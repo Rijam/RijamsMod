@@ -18,6 +18,8 @@ using RijamsMod.Items.Pets;
 using RijamsMod.Buffs.Potions;
 using RijamsMod.NPCs;
 using RijamsMod.Items.Quest;
+using RijamsMod.Items.Placeable;
+using RijamsMod.Items;
 
 namespace RijamsMod
 {

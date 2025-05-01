@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 	{
 		public override void SetStaticDefaults()
 		{
-			GlobalItems.isWhip.Add(Item.type);
+			CustomItemIDSets.IsWhip[Type] = true;
 		}
 		public override void SetDefaults()
 		{

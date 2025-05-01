@@ -1,11 +1,10 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using RijamsMod.Projectiles.Magic;
-using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Magic
 {

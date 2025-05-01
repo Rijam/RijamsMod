@@ -317,7 +317,8 @@ namespace RijamsMod
 		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
 		{
 			// Move the lantern weapons to draw behind the back arm.
-			if (GlobalItems.isLanternWeapon.Contains(drawInfo.drawPlayer.HeldItem.type))
+			// if (GlobalItems.isLanternWeapon.Contains(drawInfo.drawPlayer.HeldItem.type))
+			if (CustomItemIDSets.IsLanternWeapon[drawInfo.drawPlayer.HeldItem.type])
 			{
 				drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
 			}

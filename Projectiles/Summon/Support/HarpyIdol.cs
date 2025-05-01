@@ -1,14 +1,63 @@
 using Microsoft.Xna.Framework;
-using System;
-using System.IO;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
-	public class HarpyIdol : ModProjectile
+	public class HarpyIdol : DefenseSupportSummonBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 6;
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 30;
+			Projectile.height = 28;
+
+			DrawOffsetX = -10;
+			DrawOriginOffsetY -= 10;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.HarpyIdolBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.Gold;
+			numberOfDusts = 20;
+		}
+
+		public override bool LightingColor(ref Color lightColor, ref float multiplier)
+		{
+			lightColor = Color.Gold;
+			multiplier = 0.05f;
+			return true;
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			Projectile.spriteDirection = 1;
+
+			// This is a simple "loop through all frames from top to bottom" animation
+			int frameSpeed = 5;
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= frameSpeed)
+			{
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Projectile.type])
+				{
+					Projectile.frame = 0;
+				}
+			}
+		}
+		/*
 		public int additionalDefense = 0;
 		public float additionalDR = 0;
 		public int distRadius = 0;
@@ -191,5 +240,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 			}
 			return false;
 		}
+		*/
 	}
 }

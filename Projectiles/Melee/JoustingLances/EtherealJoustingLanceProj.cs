@@ -30,7 +30,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 		{
 			scaleFactor = 145f;
 			widthMultiplier = 24f;
-			lanceHitboxBounds = new(0, 0, 300, 300);
+			lanceHitboxBounds = new(0, 0, 330, 330);
 		}
 
 		public override void ModifyDrawing(ref Color drawColor)

@@ -54,8 +54,8 @@ namespace RijamsMod.Items.Armor.Vanity.Harpy
 		{
 			if (!Main.dedServ)
 			{
-				LegEquipTextureMale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Legs", EquipType.Legs, this);
-				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this);
+				LegEquipTextureMale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Legs", EquipType.Legs, this, "Harpy_Shorts_Legs");
+				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this, "Harpy_Shorts_FemaleLegs");
 			}
 		}
 		public override void SetMatch(bool male, ref int equipSlot, ref bool robes)

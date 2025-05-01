@@ -2,10 +2,8 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Humanizer.In;
 
 namespace RijamsMod.Projectiles.Ranged
 {
@@ -13,7 +11,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add(Type);
+			CustomProjectileIDSets.RocketsAffectedByRocketBoosterExtraUpdates[Type] = true;
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true;
 			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true;
@@ -478,7 +476,7 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			RijamsModProjectile.RocketsAffectedByRocketBoosterExtraUpdates.Add(Type);
+			CustomProjectileIDSets.RocketsAffectedByRocketBoosterExtraUpdates[Type] = true;
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true;
 			ProjectileID.Sets.CultistIsResistantTo[Type] = true;
 			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;

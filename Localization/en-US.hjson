@@ -52,7 +52,7 @@ Mods: {
 			RedSkyware:
 				'''
 
-				Attacking enemies will shoot feathers at them
+				Attacking enemies will shoot homing feathers at them
 				Feathers have a base damage of 60
 				Damage scales with the respective damage type
 				One second cool down between shots
@@ -462,7 +462,27 @@ Mods: {
 			EtherealJoustingLanceProj.DisplayName: Ethereal Jousting Lance
 			TailoThreeCatsProj.DisplayName: Tail o' Three Cats
 			DarkJoustingLanceProj.DisplayName: Dark Jousting Lance
-			CandyCaneJoustingLanceProj.DisplayName: Candy Cane Jousting Lance Proj
+			CandyCaneJoustingLanceProj.DisplayName: Candy Cane Jousting Lance
+			IchorFlareProj.DisplayName: Ichor Flare
+			SulfurFlareProj.DisplayName: Sulfur Flare
+			RedSkywareJoustingLanceProj.DisplayName: Red Skyware Jousting Lance
+			SkywareJoustingLanceProj.DisplayName: Skyware Jousting Lance
+			ExplodingFlareProj.DisplayName: Exploding Flare
+			ExplodingFlarePop.DisplayName: Exploding Flare Pop
+			ExplodingBlueFlareProj.DisplayName: Exploding Blue Flare
+			ExplodingCursedFlareProj.DisplayName: Exploding Cursed Flare
+			ExplodingIchorFlareProj.DisplayName: Exploding Ichor Flare
+			ExplodingRainbowFlareProj.DisplayName: Exploding Rainbow Flare
+			ExplodingShimmerFlareProj.DisplayName: Exploding Shimmer Flare
+			ExplodingSpelunkerFlareProj.DisplayName: Exploding Spelunker Flare
+			ExplodingSulfurFlareProj.DisplayName: Exploding Sulfur Flare
+			ExplodingSolarFlareFlareProj.DisplayName: Exploding Solar Flare Flare
+			SolarFlareFlareProj.DisplayName: Solar Flare Flare
+			ExplodingGreekFireFlareProj.DisplayName: Exploding Greek Fire Flare
+			GreekFireFlareProj.DisplayName: Greek Fire Flare
+			FriendlyGreekFire1.DisplayName: Friendly Greek Fire
+			FriendlyGreekFire2.DisplayName: Friendly Greek Fire
+			FriendlyGreekFire3.DisplayName: Friendly Greek Fire
 		}
 
 		Tiles: {
@@ -491,6 +511,9 @@ Mods: {
 			CudgelPrefixReaching.DisplayName: Reaching
 			CudgelPrefixShort.DisplayName: Short
 			CudgelPrefixVigilant.DisplayName: Vigilant
+			CudgelPrefixFree.DisplayName: Free
+			CudgelPrefixHealthy.DisplayName: Healthy
+			CudgelPrefixDefensive.DisplayName: Defensive
 		}
 
 		Emotes: {

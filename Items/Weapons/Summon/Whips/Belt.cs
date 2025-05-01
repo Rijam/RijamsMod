@@ -13,7 +13,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 			// DisplayName.SetDefault("Belt");
 			// Tooltip.SetDefault("{$CommonItemTooltip.Whips}\n'Not responsible for triggering traumatic memories'");
 			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Found in Wooden Chests or Wooden Crates]" } );
-			GlobalItems.isWhip.Add(Item.type);
+			CustomItemIDSets.IsWhip[Type] = true;
 		}
 		public override void SetDefaults()
 		{

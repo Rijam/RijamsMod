@@ -1,28 +1,111 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
-using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
-	public class RadiantLantern : ModProjectile
+	public class RadiantLantern : HealingSupportSummonBase
 	{
-		public int healAmount = 0;
-		public int cooldownTime = 0;
-		public int distRadius = 0;
-		private int targetPlayer = -1;  // If there was no player found, it will be -1.
-		private int targetPlayer2 = -1;  // If there was no player found, it will be -1.
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 1;
+		}
 
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 22;
+			Projectile.height = 42;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.RadiantLanternBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.HotPink;
+			numberOfDusts = 70;
+		}
+
+		public override int HealingProjectile()
+		{
+			return ModContent.ProjectileType<Radiance>();
+		}
+
+		public override bool TargetTwoPlayers() => true;
+
+		public override SoundStyle LaunchSound() => SoundID.Item82 with { Pitch = 0.5f };
+
+		public override void AI()
+		{
+			base.AI();
+			#region Animation and visuals
+
+			if (Math.Abs(Projectile.velocity.X) < 1f)
+			{
+				Projectile.spriteDirection = Main.player[Projectile.owner].direction * -1;
+			}
+			else
+			{
+				Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
+			}
+
+			Projectile.position.Y += (float)Math.Sin(Projectile.ai[0] / 10f); // Slightly move up and down.
+			if (Projectile.ai[0] >= cooldownTime - (3 * 60)) // 27 seconds
+			{
+				Projectile.position.Y -= 5f; // Move up a lot when 3 seconds left
+			}
+
+			#endregion
+		}
+
+		private readonly Asset<Texture2D> lightTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/RadiantLanternShine");
+
+		public override void PostDraw(Color lightColor)
+		{
+			Player owner = Main.player[Projectile.owner];
+
+			// SpriteEffects change which direction the sprite is drawn.
+			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+			if (owner.gravDir == -1f)
+			{
+				spriteEffects |= SpriteEffects.FlipVertically;
+			}
+
+			// Get the currently selected frame on the texture.
+			Rectangle sourceRectangle = lightTexture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+
+			// The origin 
+			Vector2 origin = new(sourceRectangle.Size().X / 2f, sourceRectangle.Size().Y / 2f + DrawOriginOffsetY);
+
+			// The rotation of the projectile.
+			float rotation = Projectile.rotation;
+
+			// The position of the sprite. Subtracting Main.player[Projectile.owner].gfxOffY is not necessary here.
+			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y + 6);
+
+			Color drawColor = Color.Lime * LerpValue();
+			drawColor.A = 255;
+
+			Main.EntitySpriteDraw(lightTexture.Value,
+				position - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
+				sourceRectangle, drawColor, rotation, origin, LerpValue(), spriteEffects, 0);
+
+			Lighting.AddLight(Projectile.Center, Color.Green.ToVector3() * LerpValue());
+		}
+
+		/*
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Radiant Lantern");
@@ -141,6 +224,20 @@ namespace RijamsMod.Projectiles.Summon.Support
 				}
 			}
 
+			// Give passive regen for all players while within the radius.
+			for (int i = 0; i < Main.maxPlayers; i++)
+			{
+				Player searchPlayer = Main.player[i];
+				if (HarpyIdol.SearchPlayers(player, searchPlayer))
+				{
+					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
+					if (distance <= radius)
+					{
+						searchPlayer.lifeRegen += (healAmount / 10); // 1 = +0.5 HP per second
+					}
+				}
+			}
+
 			int delay = cooldownTime; // 30 seconds
 			// If the projectile was spawned without using the item, it'll have a cooldownTime of 0.
 			// That makes it spawn the projectile every tick.
@@ -198,10 +295,10 @@ namespace RijamsMod.Projectiles.Summon.Support
 					players.Clear(); // Clear the list just for good measure.
 				}
 
-				/*if (targetPlayer > 0)
-					ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer is " + targetPlayer + " Name " + Main.player[targetPlayer].name), Color.Red);
-				if (targetPlayer2 > 0)
-					ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer2 is " + targetPlayer2 + " Name " + Main.player[targetPlayer2].name), Color.Red);*/
+				//if (targetPlayer > 0)
+				//	ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer is " + targetPlayer + " Name " + Main.player[targetPlayer].name), Color.Red);
+				//if (targetPlayer2 > 0)
+				//	ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("targetPlayer2 is " + targetPlayer2 + " Name " + Main.player[targetPlayer2].name), Color.Red);
 
 				// Spawn the Radiance projectile with the player with the lowest HP as its target.
 				Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One, ModContent.ProjectileType<Radiance>(),
@@ -311,5 +408,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 			targetPlayer = reader.ReadInt32();
 			targetPlayer2 = reader.ReadInt32();
 		}
+		*/
 	}
 }

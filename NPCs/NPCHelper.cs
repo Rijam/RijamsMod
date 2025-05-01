@@ -414,6 +414,18 @@ namespace RijamsMod.NPCs
 			}
 			return counter;
 		}
+
+		/// <summary>
+		/// Returns an Item instance with shopCustomPrice set based on the item's value.
+		/// </summary>
+		/// <param name="item">Item ID.</param>
+		/// <param name="priceMulti">Number to multiply the item's value by to get the shopCustomPrice.</param>
+		/// <returns>Item with shopCustomPrice constructor.</returns>
+		public static Item ItemWithCustomPriceBasedOnItsValue(int item, float priceMulti)
+		{
+			int value = ContentSamples.ItemsByType[item]?.value ?? 0;
+			return new Item(item) { shopCustomPrice = (int)Math.Round(value * priceMulti) };
+		}
 	}
 	public static class ShopConditions
 	{

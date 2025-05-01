@@ -295,6 +295,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 				sourceRectangle, drawColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 
 			// The following is for debugging the size of the collision rectangle. Set this to the same size as the one you have in Colliding().
+			
 			/*
 			Rectangle lanceHitboxBounds = new(0, 0, 300, 300);
 			float dummy1 = 0;

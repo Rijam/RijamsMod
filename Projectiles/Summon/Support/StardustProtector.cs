@@ -2,27 +2,206 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
-using System.Xml.Linq;
 using Terraria;
-using Terraria.Chat;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
-	public class StardustProtector : ModProjectile
+	public class StardustProtector : DefenseSupportSummonBase
 	{
-		public int additionalDefense = 0;
-		public float additionalDR = 0;
-		public int distRadius = 0;
-
 		private bool attacking = false;
 		public int baseDamage = 20;
 		public int baseAttackSpeed = 420; // 7 seconds
+
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 8;
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 52;
+			Projectile.height = 48;
+			Projectile.alpha = 200;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.StardustProtectorBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.LightBlue;
+			numberOfDusts = 70;
+		}
+
+		public override bool LightingColor(ref Color lightColor, ref float multiplier)
+		{
+			lightColor = Color.Yellow;
+			multiplier = 0.5f;
+			return true;
+		}
+
+		public override void PositionOffset(ref Vector2 offset)
+		{
+			offset = new(0, -60f)
+			{
+				X = Main.player[Projectile.owner].direction == 1 ? -30f : 30f
+			};
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			Player player = Main.player[Projectile.owner];
+			if (Projectile.ai[0] > 0)
+			{
+				Projectile.ai[0]--;
+			}
+
+			#region Find target
+			// Starting search distance
+
+			// This code is required if your minion weapon has the targeting feature
+			if (player.HasMinionAttackTargetNPC)
+			{
+				NPC npc = Main.npc[player.MinionAttackTargetNPC];
+				float distance = Vector2.Distance(npc.Center, Projectile.Center);
+				if (distance <= GetRadius(player) && Projectile.ai[0] <= 0)
+				{
+					Projectile.frame = 4;
+					attacking = true;
+					int attackDamage = baseDamage;
+					if (player.setBonus == "Stardust" || player.setStardust) // Bonus damage if the player is wearing Stardust armor
+					{
+						attackDamage += 20;
+					}
+					Projectile.ai[0] = (int)(baseAttackSpeed * (1f / player.GetAttackSpeed(DamageClass.Summon)));
+
+					NPC.HitInfo hitInfo = new()
+					{
+						Damage = (int)(attackDamage * (player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative)),
+						HitDirection = npc.direction,
+						Knockback = 0f
+					};
+
+					if (Main.netMode == NetmodeID.SinglePlayer)
+					{
+						npc.StrikeNPC(hitInfo, fromNet: false, noPlayerInteraction: true);
+					}
+					else
+					{
+						npc.StrikeNPC(hitInfo, fromNet: false, noPlayerInteraction: true);
+						NetMessage.SendStrikeNPC(npc, hitInfo);
+						npc.netUpdate = true;
+					}
+					for (int j = 0; j < 20; j++)
+					{
+						Dust.NewDust(npc.Center, npc.width / 2, npc.height / 2, DustID.YellowStarDust, 0f, 0f, 200, Color.White, 1f);
+					}
+					ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.StardustPunch, new ParticleOrchestraSettings
+					{
+						//PositionInWorld = playerHandPos + new Vector2(player.width / 4 * player.direction, 0),
+						PositionInWorld = npc.Center,
+						MovementVector = new Vector2(0f, -1f)
+					});
+				}
+			}
+			#endregion
+
+			#region Animation and visuals
+
+			if (Math.Abs(Projectile.velocity.X) < 1f)
+			{
+				Projectile.spriteDirection = player.direction * -1;
+			}
+			else
+			{
+				Projectile.spriteDirection = (Projectile.velocity.X > 0).ToDirectionInt() * -1;
+			}
+
+			// This is a simple "loop through all frames from top to bottom" animation
+			int frameSpeed = 8;
+			Projectile.frameCounter++;
+			if (!attacking)
+			{
+				if (Projectile.frameCounter >= frameSpeed)
+				{
+					Projectile.frameCounter = 0;
+					Projectile.frame++;
+					if (Projectile.frame >= 4)
+					{
+						Projectile.frame = 0;
+					}
+				}
+			}
+			if (attacking)
+			{
+				if (Projectile.frameCounter >= frameSpeed)
+				{
+					Projectile.frameCounter = 0;
+					Projectile.frame++;
+					if (Projectile.frame >= Main.projFrames[Projectile.type])
+					{
+						Projectile.frame = 0;
+						attacking = false;
+					}
+				}
+			}
+			#endregion
+		}
+
+		public override Color? GetAlpha(Color lightColor) => new(255, 255, 255, 255 - Projectile.alpha);
+
+		public override bool PreDraw(ref Color lightColor)
+		{
+			// Get texture of projectile
+			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
+
+			SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+			// Get the currently selected frame on the texture.
+			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
+
+			//Redraw the projectile with the color not influenced by light
+
+			Vector2 drawOrigin = new(texture.Width * 0.5f, Projectile.height * 0.5f);
+			for (int k = 0; k < Projectile.oldPos.Length; k++)
+			{
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+				Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+				//Main.EntitySpriteDraw(texture, drawPos, sourceRectangle, color, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects, 0);
+			}
+			return true;
+		}
+
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			base.SendExtraAI(writer);
+
+			writer.Write(attacking);
+			writer.Write(baseDamage);
+			writer.Write(baseAttackSpeed);
+		}
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			base.ReceiveExtraAI(reader);
+
+			attacking = reader.ReadBoolean();
+			baseDamage = reader.ReadInt32();
+			baseAttackSpeed = reader.ReadInt32();
+		}
+
+		/*
+
+		public int additionalDefense = 0;
+		public float additionalDR = 0;
+		public int distRadius = 0;
 
 		public override void SetStaticDefaults()
 		{
@@ -301,5 +480,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 			baseDamage = reader.ReadInt32();
 			baseAttackSpeed = reader.ReadInt32();
 		}
+		*/
 	}
 }

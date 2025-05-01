@@ -67,6 +67,16 @@ namespace RijamsMod
 				.AddTile(TileID.WorkBenches)
 				.Register();
 
+			Recipe.Create(ItemID.Flare)
+				.AddIngredient(ItemID.BlueFlare)
+				.AddTile(TileID.DyeVat)
+				.Register();
+
+			Recipe.Create(ItemID.BlueFlare)
+				.AddIngredient(ItemID.Flare)
+				.AddTile(TileID.DyeVat)
+				.Register();
+
 			if (ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs && !ModLoader.TryGetMod("Fargowiltas", out Mod _))
 			{
 				Recipe.Create(ItemID.FleshBlock, 25)
@@ -100,6 +110,7 @@ namespace RijamsMod
 		public const string FartBalloons = "RijamsMod:FartBalloons";
 		public const string SharkronBalloons = "RijamsMod:SharkronBalloons";
 		public const string Counterweights = "RijamsMod:Counterweights";
+		public const string Flares = "RijamsMod:Flares";
 
 		public override void AddRecipeGroups()
 		{
@@ -117,72 +128,79 @@ namespace RijamsMod
 				ItemID.TinBar
 			});
 			RecipeGroup.RegisterGroup(CopperBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Silver Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Silver Bar",
+			[
 				ItemID.SilverBar,
 				ItemID.TungstenBar
-			});
+			]);
 			RecipeGroup.RegisterGroup(SilverBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gold Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gold Bar",
+			[
 				ItemID.GoldBar,
 				ItemID.PlatinumBar
-			});
+			]);
 			RecipeGroup.RegisterGroup(GoldBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Bar",
+			[
 				ItemID.DemoniteBar,
 				ItemID.CrimtaneBar
-			});
+			]);
 			RecipeGroup.RegisterGroup(EvilBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Cobalt Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Cobalt Bar",
+			[
 				ItemID.CobaltBar,
 				ItemID.PalladiumBar
-			});
+			]);
 			RecipeGroup.RegisterGroup(CobaltBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Mythril Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Mythril Bar",
+			[
 				ItemID.MythrilBar,
 				ItemID.OrichalcumBar
-			});
+			]);
 			RecipeGroup.RegisterGroup(MythrilBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Adamantite Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Adamantite Bar",
+			[
 				ItemID.AdamantiteBar,
 				ItemID.TitaniumBar
-			});
+			]);
 			RecipeGroup.RegisterGroup(AdamantiteBars, group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Honey Balloon", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Honey Balloon",
+			[
 				ItemID.HoneyBalloon,
 				ItemID.BalloonHorseshoeHoney
-			});
+			]);
 			RecipeGroup.RegisterGroup(HoneyBalloons, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Fart Balloon", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Fart Balloon",
+			[
 				ItemID.FartInABalloon,
 				ItemID.BalloonHorseshoeFart
-			});
+			]);
 			RecipeGroup.RegisterGroup(FartBalloons, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Sharkron Balloon", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Sharkron Balloon",
+			[
 				ItemID.SharkronBalloon,
 				ItemID.BalloonHorseshoeSharkron
-			});
+			]);
 			RecipeGroup.RegisterGroup(SharkronBalloons, group);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Counterweight", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Counterweight",
+			[
 				ItemID.BlackCounterweight,
 				ItemID.BlueCounterweight,
 				ItemID.GreenCounterweight,
 				ItemID.PurpleCounterweight,
 				ItemID.RedCounterweight,
 				ItemID.YellowCounterweight
-			});
+			]);
 			RecipeGroup.RegisterGroup(Counterweights, group);
+
+			group = new RecipeGroup(() => Language.GetTextValue("ItemName.Flare"),
+			[
+				ItemID.Flare,
+				ItemID.BlueFlare
+			]);
+			RecipeGroup.RegisterGroup(Flares, group);
 
 			if (RecipeGroup.recipeGroupIDs.TryGetValue("Fruit", out int fruitIndex))
 			{

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
 using System.Collections.Generic;
+using System;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -44,11 +45,11 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			Item.shoot = ModContent.ProjectileType<RadiantLantern>();
 		}
 
-		public override int HealingAmount => base.HealingAmount + 20; // 20 hp
-		public override int HealingTime => base.HealingTime + (30 * 60); // 30 seconds
+		public override int HealingAmount => base.HealingAmount + 30; // 30 hp
+		public override int HealingTime => base.HealingTime + (20 * 60); // 20 seconds
 		public override int Radius => base.Radius + 30; // 30 tile radius
 
-		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(HealingAmount, HealingTime / 60, Radius);
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(HealingAmount, HealingTime / 60, Radius, Math.Round(HealingAmount / 20f, 3)); // Regen is ((HealingAmount / 10f / 120f) * 60) HP per second
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{

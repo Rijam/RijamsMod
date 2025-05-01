@@ -1,15 +1,61 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
-using rail;
-using System;
-using System.IO;
-using System.Security.Cryptography;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Summon.Support
 {
+	public class CobaltProtector : DefenseSupportSummonBase
+	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			Main.projFrames[Projectile.type] = 8;
+		}
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 30;
+			Projectile.height = 28;
+		}
+
+		public override void BuffType(ref int buffType)
+		{
+			buffType = ModContent.BuffType<Buffs.Minions.CobaltProtectorBuff>();
+		}
+
+		public override void DustCustomization(ref Color color, ref int numberOfDusts)
+		{
+			color = Color.Blue;
+			numberOfDusts = 50;
+		}
+
+		public override bool LightingColor(ref Color lightColor, ref float multiplier)
+		{
+			lightColor = Color.Blue;
+			multiplier = 0.1f;
+			return true;
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			Projectile.spriteDirection = 1;
+
+			// This is a simple "loop through all frames from top to bottom" animation
+			int frameSpeed = 8;
+			Projectile.frameCounter++;
+			if (Projectile.frameCounter >= frameSpeed)
+			{
+				Projectile.frameCounter = 0;
+				Projectile.frame++;
+				if (Projectile.frame >= Main.projFrames[Projectile.type])
+				{
+					Projectile.frame = 0;
+				}
+			}
+		}
+	}
+	/*
 	public class CobaltProtector : ModProjectile
 	{
 		public int additionalDefense = 0;
@@ -131,20 +177,6 @@ namespace RijamsMod.Projectiles.Summon.Support
 						d.noGravity = true;
 						d.noLightEmittence = true;
 						// Messing around with mixing the tile light with the color.
-						/*Color lightingColor = Lighting.GetColor(d.position.ToTileCoordinates());
-						d.color = Color.Lerp(dustColor, lightingColor, 0.75f);
-						if (d.color.R < 100)
-						{
-							d.alpha += 50;
-						}
-						if (d.color.G < 100)
-						{
-							d.alpha += 50;
-						}
-						if (d.color.B < 100)
-						{
-							d.alpha += 50;
-						}*/
 					}
 				}
 			}
@@ -200,4 +232,5 @@ namespace RijamsMod.Projectiles.Summon.Support
 			distRadius = reader.ReadInt32();
 		}
 	}
+	*/
 }

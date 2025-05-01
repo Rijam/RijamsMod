@@ -127,6 +127,40 @@ namespace RijamsMod.NPCs
 				}
 			}
 		}
+
+		public override void Load()
+		{
+			// Terraria.On_Main.StartInvasion += DetourMainStartInvasion;
+		}
+
+		// WIP for the future. Might also need to Detour Main.FakeLoadInvasionStart().
+		private static void DetourMainStartInvasion(On_Main.orig_StartInvasion orig, int type = 1)
+		{
+			// type == 2 for Frost Legion
+			orig(type);
+
+			if (true)
+			{
+				int players = 0;
+				for (int i = 0; i < Main.maxPlayers; i++)
+				{
+					if (Main.player[i].active && Main.player[i].ConsumedLifeCrystals >= 5)
+						players++;
+				}
+				if (players > 0)
+				{
+					if (type == InvasionID.SnowLegion)
+					{
+						// Main.invasionType = type; // Should already be set.
+
+						// Original size is 80 + (40 * players) kills.
+						Main.invasionSize = 80 + 40 * players;
+						Main.invasionSizeStart = Main.invasionSize;
+						Main.invasionProgressMax = Main.invasionSizeStart;
+					}
+				}
+			}
+		}
 	}
 
 	public class SnowBallHostileGlobalProjectile : GlobalProjectile
