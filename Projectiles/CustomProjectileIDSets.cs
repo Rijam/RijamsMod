@@ -7,6 +7,8 @@ namespace RijamsMod.Projectiles
 	[ReinitializeDuringResizeArrays]
 	public class CustomProjectileIDSets
 	{
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+#pragma warning disable CA2211 // Non-constant fields should not be visible
 		public const string RocketsAffectedByRocketBoosterExtraUpdatesKey = "RocketsAffectedByRocketBoosterExtraUpdates";
 
 		/// <summary>
@@ -31,5 +33,17 @@ namespace RijamsMod.Projectiles
 		public static bool[] RocketBoosterExtraUpdatesBlackList = ProjectileID.Sets.Factory.CreateNamedSet(RocketBoosterExtraUpdatesBlackListKey)
 			.Description("Projectiles in this set will not be affected by the Rocket Booster accessory adding 1 extra update.")
 			.RegisterBoolSet(false);
+
+		public const string IsJoustingLanceProjectileKey = "IsJoustingLanceProjectile";
+		/// <summary> This set is a set of all jousting lance projectiles. </summary>
+		public static bool[] IsJoustingLanceProjectile = ItemID.Sets.Factory.CreateNamedSet(IsJoustingLanceProjectileKey)
+			.Description("Denotes which projectiles are jousting lances.")
+			.RegisterBoolSet(false,
+				ProjectileID.JoustingLance,
+				ProjectileID.HallowJoustingLance,
+				ProjectileID.ShadowJoustingLance
+			);
+#pragma warning restore CA2211 // Non-constant fields should not be visible
+#pragma warning restore IDE0079 // Remove unnecessary suppression
 	}
 }

@@ -202,8 +202,9 @@ namespace RijamsMod
 					}
 					// Items.GlobalItems.isJoustingLance.Add((int)args[1], projectileType);
 					// return Items.GlobalItems.isJoustingLance.ContainsKey((int)args[1]);
-					Items.CustomItemIDSets.IsJoustingLance[(int)args[1]] = projectileType;
-					return Items.CustomItemIDSets.IsJoustingLance[(int)args[1]] > 0;
+					Items.CustomItemIDSets.IsJoustingLance[(int)args[1]] = true;
+					Projectiles.CustomProjectileIDSets.IsJoustingLanceProjectile[projectileType] = true;
+					return Items.CustomItemIDSets.IsJoustingLance[(int)args[1]] == true;
 				case "AddItemToIsLanternWeapon":
 					CheckArgsLength(2, [args[0].ToString(), args[1].ToString()]);
 					// Items.GlobalItems.isLanternWeapon.Add((int)args[1]);

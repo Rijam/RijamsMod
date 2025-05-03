@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 	{
 		public override void SetStaticDefaults()
 		{
-			CustomItemIDSets.IsJoustingLance[Type] = Item.shoot;
+			CustomItemIDSets.IsJoustingLance[Type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.DarkLance;
 			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Shimmer transmute Dark Lance]"]);
 		}

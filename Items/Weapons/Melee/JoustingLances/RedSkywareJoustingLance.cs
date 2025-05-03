@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.Enums;
-using RijamsMod.Items.Armor.Skyware;
 using Terraria.ID;
 using RijamsMod.Projectiles.Misc;
 using System;
@@ -16,7 +14,7 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 	{
 		public override void SetStaticDefaults()
 		{
-			CustomItemIDSets.IsJoustingLance[Type] = Item.shoot;
+			CustomItemIDSets.IsJoustingLance[Type] = true;
 		}
 
 		public override void SetDefaults()

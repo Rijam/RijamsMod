@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using RijamsMod.Items;
+using System.Linq;
 
 namespace RijamsMod.Projectiles
 {
@@ -25,14 +26,36 @@ namespace RijamsMod.Projectiles
 		{
 			if (ModContent.GetInstance<RijamsModConfigServer>().JoustingLanceStaticInvincibility)
 			{
+				/*
 				foreach (int itemType in CustomItemIDSets.IsJoustingLance)
 				{
-					if (itemType > 0 && ContentSamples.ItemsByType[itemType].shoot == projectile.type)
+					if (itemType > 0 && itemType < ItemLoader.ItemCount)
+					{
+						if (ContentSamples.ItemsByType[itemType].shoot == projectile.type)
+						{
+							projectile.usesIDStaticNPCImmunity = true;
+							projectile.idStaticNPCHitCooldown = 10;
+						}
+					}
+					else
+					{
+						Mod.Logger.WarnFormat("Warning: Item Type {0} exceeded ItemLoader.ItemCount", itemType);
+					}
+				}
+				*/
+				try
+				{
+					if (CustomProjectileIDSets.IsJoustingLanceProjectile[projectile.type])
 					{
 						projectile.usesIDStaticNPCImmunity = true;
 						projectile.idStaticNPCHitCooldown = 10;
 					}
 				}
+				catch
+				{
+					Mod.Logger.WarnFormat("Warning: OOB error for {0} when trying to set the static immunity for CustomProjectileIDSets.IsJoustingLanceProjectile", projectile.type);
+				}
+				
 				/*
 				if (GlobalItems.isJoustingLance.ContainsValue(projectile.type))
 				{

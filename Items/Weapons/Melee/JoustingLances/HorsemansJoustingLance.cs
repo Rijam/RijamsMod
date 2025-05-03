@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.Enums;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace RijamsMod.Items.Weapons.Melee.JoustingLances
@@ -14,8 +13,8 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 			// DisplayName.SetDefault("Horseman's Jousting Lance");
 			// The (English) text shown below your weapon's name. "ItemTooltip.HallowJoustingLance" will automatically be translated to "Build momentum to increase attack power".
 			// Tooltip.SetDefault(Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\nOccasionally summons Pumpkin heads to attack your enemies");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Headless Horseman]" });
-			CustomItemIDSets.IsJoustingLance[Type] = Item.shoot;
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Headless Horseman]"]);
+			CustomItemIDSets.IsJoustingLance[Type] = true;
 			//CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1; // The number of sacrifices that is required to research the item in Journey Mode.
 		}
 

@@ -9,7 +9,7 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 	{
 		public override void SetStaticDefaults()
 		{
-			CustomItemIDSets.IsJoustingLance[Type] = Item.shoot;
+			CustomItemIDSets.IsJoustingLance[Type] = true;
 		}
 
 		public override void SetDefaults()

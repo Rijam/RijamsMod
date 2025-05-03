@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.Enums;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -11,8 +10,8 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Empress of Light]" });
-			CustomItemIDSets.IsJoustingLance[Type] = Item.shoot;
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Empress of Light]"]);
+			CustomItemIDSets.IsJoustingLance[Type] = true;
 		}
 
 		public override void SetDefaults()

@@ -1,5 +1,4 @@
 using RijamsMod.Projectiles.Summon.Whips;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,7 +11,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		{
 			// DisplayName.SetDefault("Belt");
 			// Tooltip.SetDefault("{$CommonItemTooltip.Whips}\n'Not responsible for triggering traumatic memories'");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Found in Wooden Chests or Wooden Crates]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Found in Wooden Chests or Wooden Crates]"] );
 			CustomItemIDSets.IsWhip[Type] = true;
 		}
 		public override void SetDefaults()

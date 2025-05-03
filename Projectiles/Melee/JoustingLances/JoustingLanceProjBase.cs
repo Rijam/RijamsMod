@@ -24,6 +24,9 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 			// Since the velocity of the projectile affects how far out the jousting lance will spawn, we want the
 			// velocity to always be the same even if the player has increased attack speed.
 			ProjectileID.Sets.NoMeleeSpeedVelocityScaling[Type] = true;
+
+			// This marks all jousting lance projectiles. This is for the static immunity frame config.
+			CustomProjectileIDSets.IsJoustingLanceProjectile[Type] = true;
 		}
 
 		public override void SetDefaults()

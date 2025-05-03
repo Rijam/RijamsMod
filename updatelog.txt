@@ -331,3 +331,6 @@
 	* Buffed many of the vanilla flares' damage just ever so slightly.
 	* Added Greek Fire Flare
 	* Added Flare Submachine Gun
+
+1.2.9.1 - (May 2, 2025)
+	* Changed and added safety checks for applying static immunity to jousting lances to mitigate issues with "The given key 'X' was not present in the dictionary."
