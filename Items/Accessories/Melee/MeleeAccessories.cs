@@ -91,7 +91,7 @@ namespace RijamsMod.Items.Accessories.Melee
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Type, new System.Collections.Generic.List<string> { "[c/474747:Sold by Traveling Merchant]", "[c/474747:after defeating any early game boss]" });
+			ItemOriginDesc.itemList.Add(Type, ["[c/474747:Sold by Traveling Merchant]", "[c/474747:after defeating any early game boss]"]);
 		}
 		public override void SetDefaults()
 		{

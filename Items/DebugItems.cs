@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using static Terraria.ModLoader.PlayerDrawLayer;
 using System;
 using Terraria.GameContent.Drawing;
+using System.Reflection;
 
 namespace RijamsMod.Items
 {
@@ -372,7 +373,7 @@ namespace RijamsMod.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			Main.NewText("Main.player[Main.myPlayer].lastCreatureHit is currenty: " + Main.player[Main.myPlayer].lastCreatureHit);
+			Main.NewText("Main.LocalPlayer.lastCreatureHit is currenty: " + Main.LocalPlayer.lastCreatureHit);
 			Main.NewText("NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] is currenty: " + NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)]);
 			Main.NewText("TallyCounter is currenty: " + Main.LocalPlayer.HasItem(ItemID.TallyCounter));
 			Main.NewText("REK is currenty: " + Main.LocalPlayer.HasItem(ItemID.REK));
@@ -415,7 +416,7 @@ namespace RijamsMod.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			Main.player[Main.myPlayer].anglerQuestsFinished++;
+			Main.LocalPlayer.anglerQuestsFinished++;
 			return true;
 		}
 		public override bool CanRightClick()
@@ -425,14 +426,14 @@ namespace RijamsMod.Items
 		public override void RightClick(Player player)
 		{
 			//Don't allow the number to become negative.
-			if (Main.player[Main.myPlayer].anglerQuestsFinished > 0)
+			if (Main.LocalPlayer.anglerQuestsFinished > 0)
 			{
-				Main.player[Main.myPlayer].anglerQuestsFinished--;
+				Main.LocalPlayer.anglerQuestsFinished--;
 			}
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			string anglerQuestsCompleted = Main.player[Main.myPlayer].anglerQuestsFinished.ToString();
+			string anglerQuestsCompleted = Main.LocalPlayer.anglerQuestsFinished.ToString();
 			tooltips.Add(new TooltipLine(Mod, "AnglerQuestsCompleted", "You have completed " + anglerQuestsCompleted + " Angler quests"));
 		}
 	}
@@ -497,10 +498,19 @@ namespace RijamsMod.Items
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			GetShimmered(target);
+			// GetShimmered(target);
+			Invoke_GetShimmered(target);
 		}
+
+		private static readonly MethodInfo methodInfo_NPC_GetShimmered = typeof(NPC).GetMethod("GetShimmered", BindingFlags.NonPublic | BindingFlags.Instance);
+
+		private static void Invoke_GetShimmered(NPC self)
+		{
+			methodInfo_NPC_GetShimmered.Invoke(self, null);
+		}
+
 		// Copied from NPC.cs
-		public static void GetShimmered(NPC target)
+		/*public static void GetShimmered(NPC target)
 		{
 			if (target.SpawnedFromStatue)
 			{
@@ -536,7 +546,7 @@ namespace RijamsMod.Items
 				Main.item[num].wet = true;
 				Main.item[num].velocity *= 0.1f;
 				Main.item[num].playerIndexTheItemIsReservedFor = Main.myPlayer;
-				NetMessage.SendData(145, -1, -1, null, num, 1f);
+				NetMessage.SendData(MessageID.SyncItemsWithShimmer, -1, -1, null, num, 1f);
 				if (Main.netMode == NetmodeID.SinglePlayer)
 					Item.ShimmerEffect(target.Center);
 				else
@@ -559,11 +569,11 @@ namespace RijamsMod.Items
 				target.ai[3] = 0f;
 				target.netUpdate = true;
 				target.shimmerTransparency = 0.89f;
-				int num2 = target.FindBuffIndex(353);
+				int num2 = target.FindBuffIndex(BuffID.Shimmer);
 				if (num2 != -1)
 					target.DelBuff(num2);
 			}
-		}
+		}*/
 	}
 
 	public class DebugParticleOrchestra : ModItem
@@ -644,7 +654,8 @@ namespace RijamsMod.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			NPC.NewNPC(Item.GetSource_ReleaseEntity(), (int)Main.MouseWorld.X, (int)Main.MouseWorld.Y, ModContent.NPCType<DebugSuperDummyNPC>());
+			int whoAmI = NPC.NewNPC(Item.GetSource_ReleaseEntity(), (int)Main.MouseWorld.X, (int)Main.MouseWorld.Y, ModContent.NPCType<DebugSuperDummyNPC>());
+			NetMessage.SendData(MessageID.SyncNPC, number: whoAmI);
 			return true;
 		}
 		public override bool CanRightClick()
@@ -679,6 +690,7 @@ namespace RijamsMod.Items
 				Hide = true // Hides this NPC from the bestiary
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, bestiaryData);
+			NPCID.Sets.MPAllowedEnemies[Type] = true;
 		}
 
 		public override void SetDefaults()

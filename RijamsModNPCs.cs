@@ -194,7 +194,7 @@ namespace RijamsMod
 				npcLoot.Add(notExpertRule);
 			}
 			// EoW and BoC will drop the Odd Device if the Interstellar Traveling has not moved in ever. But, don't show it in the Bestiary.
-			if (Array.IndexOf(new int[] { NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail }, npc.type) > -1)
+			if (Array.IndexOf([NPCID.EaterofWorldsBody, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsTail], npc.type) > -1)
 			{
 				LeadingConditionRule leadingConditionRule = new(new Conditions.LegacyHack_IsABoss());
 				leadingConditionRule.OnSuccess(ItemDropRule.ByCondition(ShopConditions.NotIntTravMovedIn.ToDropCondition(ShowItemDropInUI.Never), ModContent.ItemType<OddDevice>()));
@@ -203,6 +203,22 @@ namespace RijamsMod
 			if (npc.type == NPCID.BrainofCthulhu)
 			{
 				npcLoot.Add(ItemDropRule.ByCondition(ShopConditions.NotIntTravMovedIn.ToDropCondition(ShowItemDropInUI.Never), ModContent.ItemType<OddDevice>()));
+			}
+			if (npc.type == NPCID.BloodEelHead)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BabyBloodEelStaff>(), 4));
+			}
+			if (npc.type == NPCID.BloodSquid)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<BabyBloodEelStaff>(), 8));
+			}
+			if (npc.type == NPCID.BoneSerpentHead)
+			{
+				npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<BabyBoneSerpentStaff>(), 16, 8));
+			}
+			if (npc.type == NPCID.GiantWormHead)
+			{
+				npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<GiantWormStaff>(), 10, 5));
 			}
 		}
 

@@ -84,17 +84,45 @@ RijamsModConfigClient: {
 
 WhipMultihitPenalty: {
 	Tooltip: ""
-	On.Label: On
-	HoldShift.Label: Hold Shift
-	Off.Label: Off
+
+	On: {
+		Label: On
+		Tooltip: ""
+	}
+
+	HoldShift: {
+		Label: Hold Shift
+		Tooltip: ""
+	}
+
+	Off: {
+		Label: Off
+		Tooltip: ""
+	}
 }
 
 SupportSummonsAura: {
 	Tooltip: ""
-	Opaque.Label: Opaque
-	Normal.Label: Normal
-	Faded.Label: Faded
-	Off.Label: Off
+
+	Opaque: {
+		Label: Opaque
+		Tooltip: ""
+	}
+
+	Normal: {
+		Label: Normal
+		Tooltip: ""
+	}
+
+	Faded: {
+		Label: Faded
+		Tooltip: ""
+	}
+
+	Off: {
+		Label: Off
+		Tooltip: ""
+	}
 }
 
 RijamsModConfigServer: {
@@ -130,6 +158,26 @@ RijamsModConfigServer: {
 			static invincibility or global invincibility.
 			  When On: Jousting Lances use static invincibility.
 			  When Off: Jousting Lances use global invincibility.
+			    Turn Off for vanilla behavior.
+			Default value: On
+
+			Global Invincibility means damaged entities will be temporarily
+			  invulnerable to all sources of piercing damage from the same player.
+			  This type of invincibility will block other types of attacks from the player.
+			Static Invincibility means damaged entities will only be
+			  invulnerable to damage from that specific projectile type.
+			  This type of invincibility allows other attacks to still deal damage.
+			'''
+	}
+
+	YoyoStaticInvincibility: {
+		Label: "[i:3278]   Yoyos use Static Invincibility"
+		Tooltip:
+			'''
+			This option toggles if Yoyos use 
+			static invincibility or global invincibility.
+			  When On: Yoyos use static invincibility.
+			  When Off: Yoyos use global invincibility.
 			    Turn Off for vanilla behavior.
 			Default value: On
 
@@ -200,15 +248,43 @@ RijamsModConfigServer: {
 
 ArmorOptions: {
 	Tooltip: ""
-	All.Label: All
-	VanityOnly.Label: Vanity Only
-	ArmorOnly.Label: Armor Only
-	Off.Label: Off
+
+	All: {
+		Label: All
+		Tooltip: ""
+	}
+
+	VanityOnly: {
+		Label: Vanity Only
+		Tooltip: ""
+	}
+
+	ArmorOnly: {
+		Label: Armor Only
+		Tooltip: ""
+	}
+
+	Off: {
+		Label: Off
+		Tooltip: ""
+	}
 }
 
 SnowBallaGriefingOptions: {
 	Tooltip: ""
-	On.Label: On
-	DropAsItem.Label: Drop as Item
-	Off.Label: Off
+
+	On: {
+		Label: On
+		Tooltip: ""
+	}
+
+	DropAsItem: {
+		Label: Drop as Item
+		Tooltip: ""
+	}
+
+	Off: {
+		Label: Off
+		Tooltip: ""
+	}
 }

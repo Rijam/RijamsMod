@@ -208,6 +208,13 @@ namespace RijamsMod.Items
 					tooltips.Add(new TooltipLine(Mod, "SInfo", "Hold Left Shift for more information"));
 				}
 			}
+			if (item.type == ItemID.HoneyCandle)
+			{
+				if (FindTooltipIndex(tooltips, "Placeable", "Terraria", out int index))
+				{
+					tooltips.Insert(index + 1, new TooltipLine(Mod, "Buff", "Provides the Honey buff when placed nearby"));
+				}
+			}
 			if (item.type == ItemID.AncientArmorHat && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
 			{
 				if (FindTooltipIndex(tooltips, "Defense", "Terraria", out int index))
@@ -524,11 +531,11 @@ namespace RijamsMod.Items
 			if (item.type == ItemID.LockBox)
 			{
 				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Summon.Cudgels.CobaltProtectorCudgel>(), 7));
-				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Other.StumbleCard>(), 10));
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Magic.StumbleCard>(), 10));
 			}
 			if (item.type == ItemID.ObsidianLockbox)
 			{
-				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Other.StumbleCard>(), 7));
+				itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Weapons.Magic.StumbleCard>(), 7));
 			}
 			if (item.type == ItemID.QueenSlimeBossBag)
 			{

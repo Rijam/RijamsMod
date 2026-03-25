@@ -14,7 +14,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 {
 	public class CombatFlarePistol : ModItem
 	{
-		internal static readonly Dictionary<int, int> ExplodingFlareTypeMatching = new()
+		public static readonly Dictionary<int, int> ExplodingFlareTypeMatching = new()
 		{
 			{ ItemID.Flare, ModContent.ProjectileType<ExplodingFlareProj>() },
 			{ ItemID.BlueFlare, ModContent.ProjectileType<ExplodingBlueFlareProj>() },
@@ -89,7 +89,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/FlareFly") { MaxInstances = 5, Volume = 0.75f }, position);
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, default, default, Main.rand.NextFloat(0.75f, 1.5f));
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, default, default, Main.rand.NextFloat(0.75f, 1.5f));
 			return false;
 		}
 
@@ -173,9 +173,9 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/FlareFly") { MaxInstances = 5, Volume = 0.75f }, position);
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, default, default, Main.rand.NextFloat(0.75f, 1.5f));
-			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, Main.myPlayer, default, default, Main.rand.NextFloat(0.75f, 1.5f));
-			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, Main.myPlayer, default, default, Main.rand.NextFloat(0.75f, 1.5f));
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, default, default, Main.rand.NextFloat(0.75f, 1.5f));
+			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, player.whoAmI, default, default, Main.rand.NextFloat(0.75f, 1.5f));
+			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, player.whoAmI, default, default, Main.rand.NextFloat(0.75f, 1.5f));
 			return false;
 		}
 
@@ -259,9 +259,9 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			SoundEngine.PlaySound(new(Mod.Name + "/Sounds/Custom/FlareFly") { MaxInstances = 5, Volume = 0.75f }, position);
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, default, default, Main.rand.NextFloat(0.75f, 1.5f));
-			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, Main.myPlayer, default, default, Main.rand.NextFloat(0.75f, 1.5f));
-			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, Main.myPlayer, default, default, Main.rand.NextFloat(0.75f, 1.5f));
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, default, default, Main.rand.NextFloat(0.75f, 1.5f));
+			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, player.whoAmI, default, default, Main.rand.NextFloat(0.75f, 1.5f));
+			Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(10)) * Main.rand.NextFloat(0.9f, 1.1f), type, damage, knockback, player.whoAmI, default, default, Main.rand.NextFloat(0.75f, 1.5f));
 			return false;
 		}
 

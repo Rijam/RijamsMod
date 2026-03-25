@@ -334,3 +334,18 @@
 
 1.2.9.1 - (May 2, 2025)
 	* Changed and added safety checks for applying static immunity to jousting lances to mitigate issues with "The given key 'X' was not present in the dictionary."
+
+1.2.9.2 - (? ?, ?)
+	* Added a config option to make Yoyos use static immunity frames instead of global.
+	* Added Flask of Daybroken.
+	* Added Baby Blood Eel Staff and minion. (After it being unfinished in the mod for over three years!)
+	* Fixed exploding flares detonating at different times in multiplayer.
+	* Fixed Stockade Crossbow playing it's flash animation on every shot for other players in multiplayer instead of only every 10th shot.
+	* Added Baby Bone Serpent Staff and minion.
+	* Added Red Sunplate Block, Blue Skyware Block, Red Skyware Block, Sunplate Column, Sunplate Beam, Blue Skyware Wall, Red Skyware Wall, and Sunplate Column Wall.
+	* Updated the Hell Trader sprites to match the new 1.4.5 Fire Imp sprite.
+	* Removed mana cost for summon weapons.
+	* Stumble card is no longer summon + magic damage and is now just magic damage.
+	* Honey Candles now provide the Honey buff when placed nearby.
+	* Antlion Biter minion local immunity reduced from 30 to 13. This will increase the DPS of the minion.
+	* Added Giant Worm Staff and minion.

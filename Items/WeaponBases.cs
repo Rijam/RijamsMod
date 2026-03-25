@@ -102,15 +102,14 @@ namespace RijamsMod.Items
 		public virtual float DamageReduction => 0 + AdditionalDamageReduction;
 		public virtual int Radius => 0 + AdditionalRadius;
 
-		internal static readonly int[] allowedPrefixes = new int[] { PrefixID.Adept, PrefixID.Inept, ModContent.PrefixType<CudgelPrefixReaching>(),
-			ModContent.PrefixType<CudgelPrefixShort>(), ModContent.PrefixType<CudgelPrefixHampered>(), ModContent.PrefixType<CudgelPrefixProtective>(),
-			ModContent.PrefixType<CudgelPrefixSupportive>(), ModContent.PrefixType<CudgelPrefixFree>(), ModContent.PrefixType<CudgelPrefixDefensive>() };
+		internal static readonly int[] allowedPrefixes = [ ModContent.PrefixType<CudgelPrefixReaching>(), ModContent.PrefixType<CudgelPrefixShort>(),
+			ModContent.PrefixType<CudgelPrefixHasty>(), ModContent.PrefixType<CudgelPrefixHampered>(), ModContent.PrefixType<CudgelPrefixProtective>(),
+			ModContent.PrefixType<CudgelPrefixSupportive>(), ModContent.PrefixType<CudgelPrefixDefensive>() ];
 
 		public override int ChoosePrefix(UnifiedRandom rand)
 		{
 			return rand.Next(allowedPrefixes);
 		}
-
 	}
 	public class CudgelHealingItem : ModItem
 	{
@@ -140,9 +139,9 @@ namespace RijamsMod.Items
 		public virtual int HealingTime => 0 + DecreasedHealingTime;
 		public virtual int Radius => 0 + AdditionalRadius;
 
-		internal static readonly int[] allowedPrefixes = new int[] { PrefixID.Adept, PrefixID.Inept, ModContent.PrefixType<CudgelPrefixReaching>(),
-			ModContent.PrefixType<CudgelPrefixShort>(), ModContent.PrefixType<CudgelPrefixNoxious>(), ModContent.PrefixType<CudgelPrefixVigilant>(),
-			ModContent.PrefixType<CudgelPrefixCurative>(), ModContent.PrefixType<CudgelPrefixFree>(), ModContent.PrefixType<CudgelPrefixHealthy>() };
+		internal static readonly int[] allowedPrefixes = [ ModContent.PrefixType<CudgelPrefixReaching>(), ModContent.PrefixType<CudgelPrefixShort>(),
+			ModContent.PrefixType<CudgelPrefixHasty>(), ModContent.PrefixType<CudgelPrefixNoxious>(), ModContent.PrefixType<CudgelPrefixVigilant>(),
+			ModContent.PrefixType<CudgelPrefixCurative>(), ModContent.PrefixType<CudgelPrefixHealthy>() ];
 
 		public override int ChoosePrefix(UnifiedRandom rand)
 		{

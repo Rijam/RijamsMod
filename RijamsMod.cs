@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using RijamsMod.Items.Consumables;
 using RijamsMod.Items.Weapons;
 using RijamsMod.NPCs;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -37,6 +39,8 @@ namespace RijamsMod
 			// {
 			// 	fargosMutantMod.Call("AddCaughtNPC", "InterstellarTraveler", ModContent.NPCType<InterstellarTraveler>(), "'I'm pretty far from home, but this place is pretty cool.'", "RijamsMod");
 			// }
+			Asset<Effect> inlineShader = this.Assets.Request<Effect>("Effects/Inline");
+			GameShaders.Misc["RijamsMod:Inline"] = new MiscShaderData(inlineShader, "InlinePass");
 		}
 		
 		public override void Unload()
@@ -93,6 +97,7 @@ namespace RijamsMod
 				bossesAsNPCs.Call("AddToShop", "WithDiv", "Pumpking", ModContent.ItemType<Items.Weapons.Melee.JoustingLances.HorsemansJoustingLance>(), new List<Condition>() { }, 0.1f);
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Materials.FestivePlating>(), new List<Condition>() { Condition.DownedSantaNK1 });
 				bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), new List<Condition>() { Condition.DownedSantaNK1 }, 0.1f);
+				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Dreadnautilus", ModContent.ItemType<Items.Weapons.Summon.Minions.BabyBloodEelStaff>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "DownedDreadnautilus") });
 			}
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
 			{

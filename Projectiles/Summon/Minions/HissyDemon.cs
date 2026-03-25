@@ -169,37 +169,6 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				Vector2 vector5 = vector - Projectile.Center;
 				float num15 = vector5.Length();
 				vector5.Normalize();
-				if (Projectile.type == 423)
-				{
-					vector5 = vector - Vector2.UnitY * 80f;
-					int num16 = (int)vector5.Y / 16;
-					if (num16 < 0)
-					{
-						num16 = 0;
-					}
-					Tile tile = Main.tile[(int)vector5.X / 16, num16];
-					if (tile != null && tile.HasTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType])
-					{
-						vector5 += Vector2.UnitY * 16f;
-						tile = Main.tile[(int)vector5.X / 16, (int)vector5.Y / 16];
-						if (tile != null && tile.HasTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType])
-						{
-							vector5 += Vector2.UnitY * 16f;
-						}
-					}
-					vector5 -= Projectile.Center;
-					num15 = vector5.Length();
-					vector5.Normalize();
-					if (num15 > 300f && num15 <= 800f && Projectile.localAI[0] == 0f)
-					{
-						Projectile.ai[0] = 2f;
-						Projectile.ai[1] = (int)(num15 / 10f);
-						Projectile.extraUpdates = (int)Projectile.ai[1];
-						Projectile.velocity = vector5 * 10f;
-						Projectile.localAI[0] = 60f;
-						return;
-					}
-				}
 				if (num15 > 200f)
 				{
 					float num19 = 6f;
@@ -207,7 +176,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 					Projectile.velocity.X = (Projectile.velocity.X * 40f + vector5.X) / 41f;
 					Projectile.velocity.Y = (Projectile.velocity.Y * 40f + vector5.Y) / 41f;
 				}
-				else if ((Projectile.type == 375 || true))
+				else if ((Projectile.type == ProjectileID.FlyingImp || true))
 				{
 					if (num15 < 150f)
 					{
@@ -239,32 +208,26 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				}
 				Vector2 center2 = Projectile.Center;
 				Vector2 vector7;
-				if (((Projectile.type == 375 || true) || true))
+				Projectile.ai[1] = 3600f;
+				Projectile.netUpdate = true;
+				vector7 = player.Center - center2;
+				int num23 = 1;
+				for (int num24 = 0; num24 < Projectile.whoAmI; num24++)
 				{
-					Projectile.ai[1] = 3600f;
-					Projectile.netUpdate = true;
-					vector7 = player.Center - center2;
-					int num23 = 1;
-					for (int num24 = 0; num24 < Projectile.whoAmI; num24++)
+					if (Main.projectile[num24].active && Main.projectile[num24].owner == Projectile.owner && Main.projectile[num24].type == Projectile.type)
 					{
-						if (Main.projectile[num24].active && Main.projectile[num24].owner == Projectile.owner && Main.projectile[num24].type == Projectile.type)
-						{
-							num23++;
-						}
+						num23++;
 					}
-					vector7.X -= 15 * Main.player[Projectile.owner].direction;
-					vector7.X -= num23 * 41 * Main.player[Projectile.owner].direction;
-					vector7.Y -= 15f;
 				}
+				vector7.X -= 15 * Main.player[Projectile.owner].direction;
+				vector7.X -= num23 * 41 * Main.player[Projectile.owner].direction;
+				vector7.Y -= 15f;
 				float num25 = vector7.Length();
 				if (num25 > 200f && num22 < 9f)
 				{
 					num22 = 9f;
 				}
-				if ((Projectile.type == 375 || true))
-				{
-					num22 = (int)((double)num22 * 0.75);
-				}
+				num22 = (int)((double)num22 * 0.75);
 				if (num25 < 100f && Projectile.ai[0] == 1f && !Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
 				{
 					Projectile.ai[0] = 0f;
@@ -275,24 +238,23 @@ namespace RijamsMod.Projectiles.Summon.Minions
 					Projectile.position.X = Main.player[Projectile.owner].Center.X - (float)(Projectile.width / 2);
 					Projectile.position.Y = Main.player[Projectile.owner].Center.Y - (float)(Projectile.width / 2);
 				}
-				if ((Projectile.type == 375 || true))
+
+				if (num25 > 10f)
 				{
-					if (num25 > 10f)
+					vector7.Normalize();
+					if (num25 < 50f)
 					{
-						vector7.Normalize();
-						if (num25 < 50f)
-						{
-							num22 /= 2f;
-						}
-						vector7 *= num22;
-						Projectile.velocity = (Projectile.velocity * 20f + vector7) / 21f;
+						num22 /= 2f;
 					}
-					else
-					{
-						Projectile.direction = Main.player[Projectile.owner].direction;
-						Projectile.velocity *= 0.9f;
-					}
+					vector7 *= num22;
+					Projectile.velocity = (Projectile.velocity * 20f + vector7) / 21f;
 				}
+				else
+				{
+					Projectile.direction = Main.player[Projectile.owner].direction;
+					Projectile.velocity *= 0.9f;
+				}
+				/*
 				else if (num25 > 70f)
 				{
 					vector7.Normalize();
@@ -308,6 +270,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 					}
 					Projectile.velocity *= 1.01f;
 				}
+				*/
 			}
 			Projectile.rotation = Projectile.velocity.X * 0.05f;
 

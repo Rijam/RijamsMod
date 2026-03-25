@@ -9,6 +9,7 @@ namespace RijamsMod.Buffs.Potions
 		public const int None = 0;
 		public const int SulfuricAcid = 1;
 		public const int Oiled = 2;
+		public const int Daybroken = 3;
 	}
 	public class ImbueSulfuricAcid : ModBuff
 	{
@@ -42,6 +43,23 @@ namespace RijamsMod.Buffs.Potions
 		public override void Update(Player player, ref int buffIndex)
 		{
 			player.GetModPlayer<RijamsModPlayer>().flaskBuff = FlaskIDs.Oiled;
+			// We set this to a value not used by existing imbues simply to indicate to other mods that a weapon imbue is active. The real flag is exampleWeaponImbue above.
+			player.meleeEnchant = 255;
+		}
+	}
+
+	public class ImbueDaybroken : ModBuff
+	{
+		public override void SetStaticDefaults()
+		{
+			BuffID.Sets.IsAFlaskBuff[Type] = true;
+			Main.meleeBuff[Type] = true;
+			Main.persistentBuff[Type] = true;
+		}
+
+		public override void Update(Player player, ref int buffIndex)
+		{
+			player.GetModPlayer<RijamsModPlayer>().flaskBuff = FlaskIDs.Daybroken;
 			// We set this to a value not used by existing imbues simply to indicate to other mods that a weapon imbue is active. The real flag is exampleWeaponImbue above.
 			player.meleeEnchant = 255;
 		}

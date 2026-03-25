@@ -64,6 +64,21 @@ namespace RijamsMod.Projectiles
 				}
 				*/
 			}
+			if (ModContent.GetInstance<RijamsModConfigServer>().YoyoStaticInvincibility)
+			{
+				try
+				{
+					if (ProjectileID.Sets.YoyosLifeTimeMultiplier[projectile.type] != -1 || projectile.aiStyle == ProjAIStyleID.Yoyo)
+					{
+						projectile.usesIDStaticNPCImmunity = true;
+						projectile.idStaticNPCHitCooldown = 10;
+					}
+				}
+				catch
+				{
+					Mod.Logger.WarnFormat("Warning: Error for {0} when trying to set the static immunity for Yoyo AI projectile", projectile.type);
+				}
+			}
 		}
 
 		public override void PostAI(Projectile projectile)
@@ -132,12 +147,12 @@ namespace RijamsMod.Projectiles
 					}
 				}
 				// Yoyo related things
-				if (owner.active && projectile.aiStyle == 99)
+				if (owner.active && projectile.aiStyle == ProjAIStyleID.Yoyo)
 				{
 					if (owner.GetModPlayer<RijamsModPlayer>().yoyoBackpack && projectile.counterweight)
 					{
-						projectile.scale = 1.5f;
-						projectile.Resize(15, 15);
+						projectile.scale *= 1.5f;
+						projectile.Resize((int)(projectile.width * 1.5f), (int)(projectile.height * 1.5f));
 					}
 					if (owner.GetModPlayer<RijamsModPlayer>().loopingOil)
 					{

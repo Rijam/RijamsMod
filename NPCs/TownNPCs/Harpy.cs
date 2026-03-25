@@ -103,12 +103,12 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-			{
+			bestiaryEntry.Info.AddRange(
+			[
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
 				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
 				new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name))
-			});
+			]);
 		}
 
 		public override void HitEffect(NPC.HitInfo hit)
@@ -205,10 +205,10 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override List<string> SetNPCNameList()
 		{
-			return new List<string>()
-			{
+			return
+			[
 				"Pinnia", "Anisoa", "Remexa", "Lyre", "Ornitha", "Talia", "Mythia", "Aera", "Allegora", "Faybli", "Chimerica", "Whimsica", "Disparate", "Ourana", "Aetha", "Eria"
-			};
+			];
 		}
 
 		public override string GetChat()
@@ -272,7 +272,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chat.Add("That's so cool! You made a banner just for me?", 5.0);
 			}
-			if (Main.LocalPlayer.accJarOfSouls && Main.player[Main.myPlayer].lastCreatureHit == Item.NPCtoBanner(NPCID.Harpy))
+			if (Main.LocalPlayer.accJarOfSouls && Main.LocalPlayer.lastCreatureHit == Item.NPCtoBanner(NPCID.Harpy))
 			// The player has the Tally Counter, R.E.K. 3000, PDA, Cellphone, or Shellphone in their inventory. The last enemy they hit was a Harpy and the kill count for Harpies is more than 0.
 			// Item.NPCtoBanner(NPCID.Harpy) == 44
 			{
@@ -408,6 +408,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (ModLoader.TryGetMod("OrchidMod", out Mod orchidMod) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Orchid Mod
 			{
 				NPCHelper.SafelySetCrossModItem(orchidMod, "HarpyTalon", npcShop, 1f, 2f, Condition.DownedEyeOfCthulhu);
+				NPCHelper.SafelySetCrossModItem(orchidMod, "VultureTalon", npcShop, 1f, 2f, Condition.DownedEyeOfCthulhu);
 			}
 			if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && ShopConditions.TownNPCsCrossModSupport.IsMet()) //Thorium
 			{

@@ -1,13 +1,12 @@
-using Microsoft.Xna.Framework;
-using RijamsMod.Buffs.Potions;
-using RijamsMod.Items;
-using RijamsMod.Items.Accessories.Misc;
 using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Buffs.Potions;
+using RijamsMod.Items;
 
 namespace RijamsMod
 {
@@ -330,8 +329,8 @@ namespace RijamsMod
 		}
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers)
 		{
-			MathHelper.Clamp(knockbackSusceptibility, 0, 10);
-			modifiers.Knockback *= knockbackSusceptibility;
+			float clampedKnockbackSusceptibility = MathHelper.Clamp(knockbackSusceptibility, 0, 10);
+			modifiers.Knockback *= clampedKnockbackSusceptibility;
 		}
 
 		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
@@ -383,6 +382,10 @@ namespace RijamsMod
 			{
 				target.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
 			}
+			if (flaskBuff == FlaskIDs.Daybroken)
+			{
+				target.AddBuff(BuffID.Daybreak, 150 + Main.rand.Next(0, 120));
+			}
 		}
 
 		public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
@@ -396,6 +399,10 @@ namespace RijamsMod
 				if (flaskBuff == FlaskIDs.Oiled)
 				{
 					target.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
+				}
+				if (flaskBuff == FlaskIDs.Daybroken)
+				{
+					target.AddBuff(BuffID.Daybreak, 150 + Main.rand.Next(0, 120));
 				}
 				if (daybreakStone)
 				{
@@ -464,6 +471,11 @@ namespace RijamsMod
 					{
 						dustType = DustID.Asphalt;
 					}
+					if (flaskBuff == FlaskIDs.Daybroken)
+					{
+						dustType = DustID.SolarFlare;
+						Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.LightGoldenrodYellow.ToVector3() * 0.1f);
+					}
 					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, dustType, Player.velocity.X * 0.2f + (Player.direction * 3), Player.velocity.Y * 0.2f, 100, default, 1f);
 					Main.dust[dust].noGravity = true;
 					Main.dust[dust].velocity *= 0.7f;
@@ -509,6 +521,11 @@ namespace RijamsMod
 					if (flaskBuff == FlaskIDs.Oiled)
 					{
 						dustType = DustID.Asphalt;
+					}
+					if (flaskBuff == FlaskIDs.Daybroken)
+					{
+						dustType = DustID.SolarFlare;
+						Lighting.AddLight(projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 0.1f);
 					}
 					int dust = Dust.NewDust(projectile.position, projectile.width, projectile.height, dustType, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default, 1f);
 					Main.dust[dust].noGravity = true;

@@ -9,6 +9,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 	{
 		public override void SetStaticDefaults()
 		{
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Deerclops]"]);
 			CustomItemIDSets.IsWhip[Type] = true;
 		}
 		public override void SetDefaults()

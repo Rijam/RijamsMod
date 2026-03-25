@@ -75,7 +75,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					{
 						if (npcTypeListVillage4.Contains(ModContent.NPCType<InterstellarTraveler>()))
 						{
-							if (Main.bloodMoon || Main.moonPhase == 0)
+							if (npc.ShouldBestiaryGirlBeLycantrope())
 							{
 								chat = Main.npc[interTravel].GivenName + " exciting! Want to CHAT!";
 							}
@@ -87,7 +87,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					if (Main.rand.NextBool(4) && npcTypeListVillage4.Contains(ModContent.NPCType<Harpy>()))
 					{
-						if (Main.bloodMoon || Main.moonPhase == 0)
+						if (npc.ShouldBestiaryGirlBeLycantrope())
 						{
 							chat = "Friendly " + Main.npc[harpy].GivenName + "! LEARN about them!";
 						}

@@ -24,7 +24,6 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 		{
 			Item.damage = 1; // Token amount of damage so it can be reforged and so it shows up in summon weapon filters.
 			Item.knockBack = 0f;
-			Item.mana = 20;
 			Item.width = 22;
 			Item.height = 48;
 			Item.useTime = 30;
@@ -57,7 +56,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			player.AddBuff(Item.buffType, 2);
 
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
-			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
+			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 			projectile.originalDamage = Item.damage;
 
 			if (projectile.ModProjectile is FallenPaladin modProjectile)

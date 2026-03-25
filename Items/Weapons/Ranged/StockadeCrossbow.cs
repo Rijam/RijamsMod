@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -13,11 +12,12 @@ namespace RijamsMod.Items.Weapons.Ranged
 	public class StockadeCrossbow : ModItem
 	{
 		public uint numTimesShot = 0;
+		public bool flashCondition = false;
 
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Shoots a Water Stream every 10 shots");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Skeleton Crossbower]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Skeleton Crossbower]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.Handgun; // Shimmer transforms the item.
 		}
 
@@ -53,7 +53,8 @@ namespace RijamsMod.Items.Weapons.Ranged
 				flash.frameRate = 5;
 				flash.colorNoAlpha = new(255, 255, 255);
 				flash.alpha = 0;
-				flash.flashCondition = () => numTimesShot % 10 == 0;
+				// flash.flashCondition = () => numTimesShot % 10 == 0;
+				flash.flashCondition = () => flashCondition;
 				flash.forceFirstFrame = true;
 				flash.animationLoop = false;
 			}
@@ -74,11 +75,17 @@ namespace RijamsMod.Items.Weapons.Ranged
 			// Main.NewText(numTimesShot);
 			var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 			flash.flashCondition = () => false;
-			//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("numTimesShot % 10 " + numTimesShot % 10), Color.White);
+			flashCondition = false;
+			Item.NetStateChanged(); // Sync
+
+			// ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("numTimesShot % 10 " + numTimesShot % 10), Color.White);
+			// ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"numTimesShot % 10 {numTimesShot % 10}; flashCondition {flashCondition}"), Color.White);
 			if (numTimesShot % 10 == 0) // Every 10th shot.
 			{
 				flash.flashCondition = () => true;
-				Projectile aqua = Projectile.NewProjectileDirect(source, position, velocity * 1.4f, ProjectileID.WaterStream, damage, knockback, Main.myPlayer);
+				flashCondition = true;
+				Item.NetStateChanged(); // Sync
+				Projectile aqua = Projectile.NewProjectileDirect(source, position, velocity * 1.4f, ProjectileID.WaterStream, damage, knockback, player.whoAmI);
 				aqua.DamageType = DamageClass.Ranged;
 				SoundEngine.PlaySound(SoundID.Item21 with { Pitch = 0.5f }, aqua.position);
 
@@ -97,6 +104,19 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(0, -4);
+		}
+
+		// Sync the numberOfShots var
+		public override void NetSend(BinaryWriter writer)
+		{
+			writer.Write(numTimesShot);
+			writer.Write(flashCondition);
+		}
+
+		public override void NetReceive(BinaryReader reader)
+		{
+			numTimesShot = reader.ReadUInt32();
+			flashCondition = reader.ReadBoolean();
 		}
 	}
 }

@@ -21,7 +21,6 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 		{
 			Item.damage = 25;
 			Item.knockBack = 0f;
-			Item.mana = 10;
 			Item.width = 32;
 			Item.height = 32;
 			Item.useTime = 30;

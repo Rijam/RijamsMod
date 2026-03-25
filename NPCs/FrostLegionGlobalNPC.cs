@@ -47,7 +47,7 @@ namespace RijamsMod.NPCs
 
 			Vector2 scaledSize = Main.Camera.ScaledSize;
 			Vector2 scaledPosition = Main.Camera.ScaledPosition;
-			if (Main.gamePaused /* || Main.SceneMetrics.SnowTileCount <= 0 */ || (!((double)Main.player[Main.myPlayer].position.Y < Main.worldSurface * 16.0) && (!Main.remixWorld || !((double)Main.player[Main.myPlayer].position.Y > Main.worldSurface * 16.0))))
+			if (Main.gamePaused /* || Main.SceneMetrics.SnowTileCount <= 0 */ || (!((double)Main.LocalPlayer.position.Y < Main.worldSurface * 16.0) && (!Main.remixWorld || !((double)Main.player[Main.myPlayer].position.Y > Main.worldSurface * 16.0))))
 			{
 				return;
 			}
@@ -78,9 +78,9 @@ namespace RijamsMod.NPCs
 
 					int dustPosX = Main.rand.Next((int)scaledSize.X + 1500) - 750;
 					int dustPosY = (int)scaledPosition.Y - Main.rand.Next(50);
-					if (Main.player[Main.myPlayer].velocity.Y > 0f)
+					if (Main.LocalPlayer.velocity.Y > 0f)
 					{
-						dustPosY -= (int)Main.player[Main.myPlayer].velocity.Y;
+						dustPosY -= (int)Main.LocalPlayer.velocity.Y;
 					}
 					if (Main.rand.NextBool(5))
 					{

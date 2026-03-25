@@ -11,7 +11,9 @@ namespace RijamsMod.Items
 	public class CudgelPrefixBase : ModPrefix
 	{
 		/// <summary> Smaller numbers are better </summary>
-		public virtual float ManaCostMultiplicitive => 0;
+		// public virtual float ManaCostMultiplicitive => 0;
+		/// <summary> Smaller numbers are better </summary>
+		public virtual float UseSpeedMultiplicitive => 1f;
 		/// <summary> Bigger numbers are better </summary>
 		public virtual int IncreaseRadius => 0;
 		/// <summary> Bigger numbers are better </summary>
@@ -27,9 +29,9 @@ namespace RijamsMod.Items
 		{
 			float runningPower = 0;
 			//runningPower += Math.Clamp(1f - ManaCostAdditive, -2, 2); // Smaller numbers are better
-			runningPower += Math.Clamp(IncreaseRadius, -2, 2);
+			runningPower += Math.Clamp(IncreaseRadius / 3, -2, 2);
 			runningPower += Math.Clamp(IncreaseDefense, -3, 3);
-			runningPower += Math.Clamp(IncreaseDamageReduction, -3, 3);
+			runningPower += Math.Clamp(IncreaseDamageReduction * 10, -3, 3);
 			runningPower += Math.Clamp(IncreaseHealingAmount, -3, 3);
 			runningPower += Math.Clamp(DecreaseHealingTime / 60, -3, 3);
 			return runningPower;
@@ -61,7 +63,8 @@ namespace RijamsMod.Items
 		// Damage Multiplier, Knockback Multiplier, Use Time Multiplier, Scale Multiplier (Size), Shoot Speed Multiplier, Mana Multiplier (Mana cost), Crit Bonus.
 		public override void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult, ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus)
 		{
-			manaMult *= ManaCostMultiplicitive;
+			// manaMult *= ManaCostMultiplicitive;
+			useTimeMult *= UseSpeedMultiplicitive;
 		}
 
 		// Modify the cost of items with this modifier with this function.
@@ -189,7 +192,7 @@ namespace RijamsMod.Items
 		}
 
 		// PowerTooltip is shared between ExamplePrefix and ExampleDerivedPrefix. 
-		public static LocalizedText ManaCostAdditiveTooltip { get; private set; }
+		// public static LocalizedText ManaCostAdditiveTooltip { get; private set; }
 		public static LocalizedText IncreaseRadiusTooltip { get; private set; }
 		public static LocalizedText IncreaseDefenseTooltip { get; private set; }
 		public static LocalizedText IncreaseDamageReductionTooltip { get; private set; }
@@ -200,7 +203,7 @@ namespace RijamsMod.Items
 		public override void SetStaticDefaults()
 		{
 			// this.GetLocalization is not used here because we want to use a shared key
-			ManaCostAdditiveTooltip = Language.GetOrRegister(Mod.GetLocalizationKey($"{LocalizationCategory}.{nameof(ManaCostAdditiveTooltip)}"));
+			// ManaCostAdditiveTooltip = Language.GetOrRegister(Mod.GetLocalizationKey($"{LocalizationCategory}.{nameof(ManaCostAdditiveTooltip)}"));
 			IncreaseRadiusTooltip = Language.GetOrRegister(Mod.GetLocalizationKey($"{LocalizationCategory}.{nameof(IncreaseRadiusTooltip)}"));
 			IncreaseDefenseTooltip = Language.GetOrRegister(Mod.GetLocalizationKey($"{LocalizationCategory}.{nameof(IncreaseDefenseTooltip)}"));
 			IncreaseDamageReductionTooltip = Language.GetOrRegister(Mod.GetLocalizationKey($"{LocalizationCategory}.{nameof(IncreaseDamageReductionTooltip)}"));
@@ -212,26 +215,32 @@ namespace RijamsMod.Items
 	/// <summary> For all support minions </summary>
 	public class CudgelPrefixReaching : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 1f;
+		// public override float ManaCostMultiplicitive => 1f;
 		public override int IncreaseRadius => 10;
 	}
 	/// <summary> For all support minions </summary>
 	public class CudgelPrefixShort : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 1f;
+		// public override float ManaCostMultiplicitive => 1f;
 		public override int IncreaseRadius => -5;
 	}
 
 	/// <summary> For all support minions </summary>
-	public class CudgelPrefixFree : CudgelPrefixBase
+	// public class CudgelPrefixFree : CudgelPrefixBase
+	// {
+	//	public override float ManaCostMultiplicitive => 0.0f;
+	// }
+
+	/// <summary> For all support minions </summary>
+	public class CudgelPrefixHasty : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 0.0f;
+		public override float UseSpeedMultiplicitive => 0.5f;
 	}
 
 	/// <summary> For defense support minions </summary>
 	public class CudgelPrefixHampered : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 1.4f;
+		// public override float ManaCostMultiplicitive => 1.4f;
 		public override int IncreaseRadius => -5;
 		public override int IncreaseDefense => -3;
 		public override float IncreaseDamageReduction => -0.05f;
@@ -239,13 +248,13 @@ namespace RijamsMod.Items
 	/// <summary> For defense support minions </summary>
 	public class CudgelPrefixProtective : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 0.75f;
+		// public override float ManaCostMultiplicitive => 0.75f;
 		public override float IncreaseDamageReduction => 0.05f;
 	}
 	/// <summary> For defense support minions </summary>
 	public class CudgelPrefixSupportive : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 0.85f;
+		// public override float ManaCostMultiplicitive => 0.85f;
 		public override int IncreaseRadius => 5;
 		public override int IncreaseDefense => 3;
 		public override float IncreaseDamageReduction => 0.02f;
@@ -254,7 +263,7 @@ namespace RijamsMod.Items
 	/// <summary> For defense support minions </summary>
 	public class CudgelPrefixDefensive : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 1.5f;
+		// public override float ManaCostMultiplicitive => 1.5f;
 		public override int IncreaseRadius => -3;
 		public override int IncreaseDefense => 8;
 		public override float IncreaseDamageReduction => 0.01f;
@@ -263,7 +272,7 @@ namespace RijamsMod.Items
 	/// <summary> For healing support minions </summary>
 	public class CudgelPrefixNoxious : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 1.2f;
+		// public override float ManaCostMultiplicitive => 1.2f;
 		public override int IncreaseHealingAmount => -10;
 		public override int DecreaseHealingTime => -10 * 60; // The time is in ticks
 		public override int IncreaseRadius => -5;
@@ -271,13 +280,13 @@ namespace RijamsMod.Items
 	/// <summary> For healing support minions </summary>
 	public class CudgelPrefixVigilant : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 0.8f;
+		// public override float ManaCostMultiplicitive => 0.8f;
 		public override int DecreaseHealingTime => 10 * 60; // The time is in ticks
 	}
 	/// <summary> For healing support minions </summary>
 	public class CudgelPrefixCurative : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 0.85f;
+		// public override float ManaCostMultiplicitive => 0.85f;
 		public override int IncreaseHealingAmount => 10;
 		public override int DecreaseHealingTime => 5 * 60; // The time is in ticks
 		public override int IncreaseRadius => 5;
@@ -286,7 +295,7 @@ namespace RijamsMod.Items
 	/// <summary> For healing support minions </summary>
 	public class CudgelPrefixHealthy : CudgelPrefixBase
 	{
-		public override float ManaCostMultiplicitive => 1.5f;
+		// public override float ManaCostMultiplicitive => 1.5f;
 		public override int IncreaseHealingAmount => 30;
 		public override int DecreaseHealingTime => 2 * 60; // The time is in ticks
 		public override int IncreaseRadius => -3;

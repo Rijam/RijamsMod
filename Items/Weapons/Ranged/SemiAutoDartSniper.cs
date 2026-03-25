@@ -68,7 +68,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 			if (Main.rand.NextBool(4)) //1 in 4 chance
 			{
 				// Here we manually spawn the 2nd projectile, manually specifying the projectile type that we wish to shoot.
-				Projectile.NewProjectile(source, position, velocity, ProjectileID.VortexBeaterRocket, damage, knockback, Main.myPlayer); //or could try PhantasmArrow
+				Projectile.NewProjectile(source, position, velocity, ProjectileID.VortexBeaterRocket, damage, knockback, player.whoAmI); //or could try PhantasmArrow
 				 // By returning true, the vanilla behavior will take place, which will shoot the 1st projectile, the one determined by the ammo.
 				return true;
 			}

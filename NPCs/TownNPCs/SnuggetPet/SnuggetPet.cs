@@ -83,7 +83,7 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			NPC.friendly = true;
 			NPC.width = 30;
 			NPC.height = 30;
-			NPC.aiStyle = 7;
+			NPC.aiStyle = NPCAIStyleID.Passive;
 			NPC.damage = 10;
 			NPC.defense = 15;
 			NPC.lifeMax = 250;
@@ -98,11 +98,11 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-			{
+			bestiaryEntry.Info.AddRange(
+			[
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
 				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name))
-			});
+			]);
 		}
 
 		public override void PostAI()
@@ -191,26 +191,26 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			return NPCProfile;
 		}
 
-		public readonly List<string> NameList0 = new()
-		{
+		public readonly List<string> NameList0 =
+		[
 			"Petty", "Fluffles", "Fluffy"
-		};
-		public readonly List<string> NameList1 = new()
-		{
+		];
+		public readonly List<string> NameList1 =
+		[
 			"Floofy", "Puffy", "Shiny"
-		};
-		public readonly List<string> NameList2 = new()
-		{
+		];
+		public readonly List<string> NameList2 =
+		[
 			"Nugget", "Snuggly", "Vibrant"
-		};
-		public readonly List<string> NameList3 = new()
-		{
+		];
+		public readonly List<string> NameList3 =
+		[
 			"Snuggles", "Glowy", "Cuddles"
-		};
-		public readonly List<string> NameList4 = new()
-		{
+		];
+		public readonly List<string> NameList4 =
+		[
 			"Rainbow", "Disco", "Illuminant"
-		};
+		];
 
 		public override List<string> SetNPCNameList()
 		{

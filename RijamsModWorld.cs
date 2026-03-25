@@ -240,7 +240,7 @@ namespace RijamsMod
 								if (chest.item[inventoryIndex].IsAir)
 								{
 									// Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Gold Chest.");
-									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Other.StumbleCard>());
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Magic.StumbleCard>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
 								}
@@ -256,7 +256,7 @@ namespace RijamsMod
 								if (chest.item[inventoryIndex].IsAir)
 								{
 									// Mod.Logger.Debug("RijamsMod: Stumble Card added in Locked Shadow Chest.");
-									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Other.StumbleCard>());
+									chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<Items.Weapons.Magic.StumbleCard>());
 									chest.item[inventoryIndex].stack = 1;
 									break;
 								}

@@ -8,7 +8,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			//Tooltip.SetDefault("This is a modded dart ammo.");
 			AmmoID.Sets.IsSpecialist[Type] = true;
 		}
 
@@ -28,13 +27,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 			Item.ammo = AmmoID.Dart;			  //The ammo class this ammo belongs to.
 		}
 
-		// Give each bullet consumed a 20% chance of granting the Wrath buff for 5 seconds
-		/*public override void OnConsumeAmmo(Player player) {
-			if (Main.rand.NextBool(5)) {
-				player.AddBuff(BuffID.Wrath, 300);
-			}
-		}*/
-
 		public override void AddRecipes()
 		{
 			CreateRecipe(100)
@@ -47,7 +39,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 	{
 		public override void SetStaticDefaults()
 		{
-			//Tooltip.SetDefault("Dart Monke");
 			AmmoID.Sets.IsSpecialist[Type] = true;
 		}
 
@@ -101,6 +92,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			CreateRecipe(100)
 				.AddIngredient(ModContent.ItemType<Materials.Sulfur>(), 1)
+				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}
 	}

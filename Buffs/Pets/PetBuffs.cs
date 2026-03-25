@@ -15,13 +15,8 @@ namespace RijamsMod.Buffs.Pets
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.buffTime[buffIndex] = 18000;
-			player.GetModPlayer<RijamsModPlayer>().dwarfStarPet = true;
-			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.DwarfStar>()] <= 0;
-			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
-			{
-				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.DwarfStar>(), 0, 0f, player.whoAmI, 0f, 0f);
-			}
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.dwarfStarPet, ModContent.ProjectileType<Projectiles.Pets.DwarfStar>());
 		}
 	}
 	public class LumothBuff : ModBuff
@@ -36,13 +31,8 @@ namespace RijamsMod.Buffs.Pets
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.buffTime[buffIndex] = 18000;
-			player.GetModPlayer<RijamsModPlayer>().lumothPet = true;
-			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.Lumoth>()] <= 0;
-			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
-			{
-				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Lumoth>(), 0, 0f, player.whoAmI, 0f, 0f);
-			}
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.lumothPet, ModContent.ProjectileType<Projectiles.Pets.Lumoth>());
 		}
 	}
 	public class LEDLumothBuff : ModBuff
@@ -57,13 +47,8 @@ namespace RijamsMod.Buffs.Pets
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.buffTime[buffIndex] = 18000;
-			player.GetModPlayer<RijamsModPlayer>().lEDLumothPet = true;
-			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>()] <= 0;
-			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
-			{
-				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>(), 0, 0f, player.whoAmI, 0f, 0f);
-			}
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.lEDLumothPet, ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>());
 		}
 	}
 	public class SnuggetBuff : ModBuff
@@ -78,13 +63,8 @@ namespace RijamsMod.Buffs.Pets
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.buffTime[buffIndex] = 18000;
-			player.GetModPlayer<RijamsModPlayer>().snuggetPet = true;
-			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.Snugget>()] <= 0;
-			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
-			{
-				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Snugget>(), 0, 0f, player.whoAmI, 0f, 0f);
-			}
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.snuggetPet, ModContent.ProjectileType<Projectiles.Pets.Snugget>());
 		}
 	}
 	public class FluffaloBuff : ModBuff
@@ -99,13 +79,8 @@ namespace RijamsMod.Buffs.Pets
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.buffTime[buffIndex] = 18000;
-			player.GetModPlayer<RijamsModPlayer>().fluffaloPet = true;
-			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.Fluffalo>()] <= 0;
-			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
-			{
-				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.Fluffalo>(), 0, 0f, player.whoAmI, 0f, 0f);
-			}
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.fluffaloPet, ModContent.ProjectileType<Projectiles.Pets.Fluffalo>());
 		}
 	}
 	public class BabyStardustDragonBuff : ModBuff
@@ -118,13 +93,8 @@ namespace RijamsMod.Buffs.Pets
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.buffTime[buffIndex] = 18000;
-			player.GetModPlayer<RijamsModPlayer>().babyStardustDragonPet = true;
-			bool petProjectileNotSpawned = player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.Pets.BabyStardustDragon>()] <= 0;
-			if (petProjectileNotSpawned && player.whoAmI == Main.myPlayer)
-			{
-				Projectile.NewProjectile(Entity.GetSource_None(), player.position.X + (float)(player.width / 2), player.position.Y + (float)(player.height / 2), 0f, 0f, ModContent.ProjectileType<Projectiles.Pets.BabyStardustDragon>(), 0, 0f, player.whoAmI, 0f, 0f);
-			}
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.babyStardustDragonPet, ModContent.ProjectileType<Projectiles.Pets.BabyStardustDragon>());
 		}
 	}
 }

@@ -112,7 +112,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates;
 
 			//Solar Eruption source
-			target.AddBuff(BuffID.StardustMinionBleed, 300);
+			target.AddBuff(BuffID.StardustMinionBleed, 300); // Stardust Cell debuff
 			if (Projectile.owner == Main.myPlayer)
 			{
 				if (Projectile.damage > Projectile.originalDamage * 0.5f)

@@ -135,7 +135,7 @@ namespace RijamsMod.Projectiles.Ranged
 		/// <summary>
 		/// The duration of the debuff when applied to players.
 		/// </summary>
-		/// <returns>300 by default</returns>
+		/// <returns>150 by default</returns>
 		public virtual int PlayerDebuffDuration()
 		{
 			return 150;
@@ -189,6 +189,7 @@ namespace RijamsMod.Projectiles.Ranged
 		public override void OnSpawn(IEntitySource source)
 		{
 			Projectile.timeLeft = (int)(Projectile.timeLeft * Projectile.ai[2]);
+			Projectile.netUpdate = true;
 		}
 
 		public override void AI()
@@ -267,7 +268,7 @@ namespace RijamsMod.Projectiles.Ranged
 					if (SpelunkerEffect() && Main.netMode != NetmodeID.Server)
 					{
 						int num287 = 30;
-						if ((Projectile.Center - Main.player[Main.myPlayer].Center).Length() < (float)(Main.screenWidth + num287 * 16))
+						if ((Projectile.Center - Main.LocalPlayer.Center).Length() < (float)(Main.screenWidth + num287 * 16))
 						{
 							Main.instance.SpelunkerProjectileHelper.AddSpotToCheck(Projectile.Center);
 						}
@@ -359,11 +360,21 @@ namespace RijamsMod.Projectiles.Ranged
 
 			if (SpitGreekFire())
 			{
-				for (int k = 0; k < 3 + Main.rand.Next(3); k++) // 3-5 projectiles
+				for (int k = 0; k < 1 + Main.rand.Next(3); k++) // 1-3 projectiles
 				{
 					Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.Center, Main.rand.NextVector2Circular(8f, 8f), ModContent.ProjectileType<FriendlyGreekFire1>() + Main.rand.Next(3), Projectile.damage / 2, 0, Projectile.owner);
 				}
 			}
+		}
+
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(Projectile.timeLeft);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			Projectile.timeLeft = reader.ReadInt32();
 		}
 	}
 

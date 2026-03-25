@@ -127,8 +127,8 @@ namespace RijamsMod.Projectiles.Magic
 
 			if (attacking && Projectile.soundDelay == 0)
 			{
-				ModContent.GetInstance<RijamsMod>().PlayNetworkSound(SoundID.Item45 with { Pitch = -1f }, Projectile.Center, Main.player[Main.myPlayer]);
-				ModContent.GetInstance<RijamsMod>().PlayNetworkSound("Terraria/Sounds/Custom/dd2_dark_mage_attack_0", volume: 1f, pitch: -1f, Projectile.Center, Main.player[Main.myPlayer]);
+				ModContent.GetInstance<RijamsMod>().PlayNetworkSound(SoundID.Item45 with { Pitch = -1f }, Projectile.Center, Main.LocalPlayer);
+				ModContent.GetInstance<RijamsMod>().PlayNetworkSound("Terraria/Sounds/Custom/dd2_dark_mage_attack_0", volume: 1f, pitch: -1f, Projectile.Center, Main.LocalPlayer);
 			}
 
 			Projectile.soundDelay = (attacking ? 2 : 0);

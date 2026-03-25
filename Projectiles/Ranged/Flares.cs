@@ -133,7 +133,7 @@ namespace RijamsMod.Projectiles.Ranged
 				if (SpelunkerEffect() && Main.netMode != NetmodeID.Server)
 				{
 					int num287 = 30;
-					if ((Projectile.Center - Main.player[Main.myPlayer].Center).Length() < (float)(Main.screenWidth + num287 * 16))
+					if ((Projectile.Center - Main.LocalPlayer.Center).Length() < (float)(Main.screenWidth + num287 * 16))
 					{
 						Main.instance.SpelunkerProjectileHelper.AddSpotToCheck(Projectile.Center);
 					}

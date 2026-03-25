@@ -1,22 +1,22 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using RijamsMod.EmoteBubbles;
+using RijamsMod.Items;
+using RijamsMod.Items.Quest;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Personalities;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Terraria.GameContent.Personalities;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.UI;
-using RijamsMod.EmoteBubbles;
-using RijamsMod.Items;
-using RijamsMod.Items.Quest;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -32,7 +32,11 @@ namespace RijamsMod.NPCs.TownNPCs
 		}
 
 		public const string ShopName = "Shop";
+		internal static int TownHeadIndex;
+		internal static int TownAltHeadIndex;
 		internal static int ShimmerHeadIndex;
+		internal static int ShimmerTownHeadIndex;
+		internal static int ShimmerTownAltHeadIndex;
 		private static ITownNPCProfile NPCProfile;
 
 		// Fake custom currency for the limited stock
@@ -42,7 +46,11 @@ namespace RijamsMod.NPCs.TownNPCs
 		public override void Load()
 		{
 			// Adds our Shimmer Head to the NPCHeadLoader.
-			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, GetType().Namespace.Replace('.', '/') + "/Shimmered/" + Name + "_Head");
+			TownHeadIndex = Mod.AddNPCHeadTexture(Type, $"{GetType().Namespace.Replace('.', '/')}/{Name}Town_Head");
+			TownAltHeadIndex = Mod.AddNPCHeadTexture(Type, $"{GetType().Namespace.Replace('.', '/')}/{Name}Town_Alt_Head");
+			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, $"{GetType().Namespace.Replace('.', '/')}/Shimmered/{Name}_Head");
+			ShimmerTownHeadIndex = Mod.AddNPCHeadTexture(Type, $"{GetType().Namespace.Replace('.', '/')}/Shimmered/{Name}Town_Head");
+			ShimmerTownAltHeadIndex = Mod.AddNPCHeadTexture(Type, $"{GetType().Namespace.Replace('.', '/')}/Shimmered/{Name}Town_Alt_Head");
 
 			HellTraderMissingItemCurrencySystem = new HellTraderMissingItemCurrency(ModContent.ItemType<LimitedStockMissingItem>(), 999);
 			HellTraderMissingItemCurrencyID = CustomCurrencyManager.RegisterCurrency(HellTraderMissingItemCurrencySystem);
@@ -110,7 +118,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.friendly = true;
 			NPC.width = 18;
 			NPC.height = 40;
-			NPC.aiStyle = 7;
+			NPC.aiStyle = NPCAIStyleID.Passive;
 			NPC.damage = 10;
 			NPC.defense = 30; // default: 15
 			NPC.lifeMax = 250;
@@ -135,12 +143,12 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-			{
+			bestiaryEntry.Info.AddRange(
+			[
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld,
 				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
 				new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name))
-			});
+			]);
 		}
 
 		public override void HitEffect(NPC.HitInfo hit)
@@ -211,10 +219,10 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public override List<string> SetNPCNameList()
 		{
-			return new List<string>()
-			{
+			return
+			[
 				"Mixi", "Brima", "Sulfura", "Leh", "Inferna", "Purgator", "Haidess", "Blaiz", "Agoni", "Flaima", "Nethi", "Perdition", "Do\'om", "Braz", "Grihmos", "Da\'nur"
-			};
+			];
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -395,7 +403,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					chat.Add("I've never tasted food so sweet!");
 					chat.Add("What? Surprised to see me without my hood on?");
 				}
-				Player player = Main.player[Main.myPlayer];
+				Player player = Main.LocalPlayer;
 				if (player.ZoneSkyHeight || player.ZoneSnow)
 				{
 					chat.Add("Brr! I'm not used to it being so cold!");
@@ -435,11 +443,11 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 				if (player.ZoneBeach)
 				{
-					chat.Add("The ocean is huge! I'd never seen so much water in one spot before!");
+					chat.Add("The ocean is huge! I've never seen so much water in one spot before!");
 				}
 				if (player.HasBuff(BuffID.ImpMinion))
 				{
-					chat.Add("I'm honestly surprised you were able to control those Imps. It's not easy getting hell spawn to do what you want, I should know!");
+					chat.Add("I'm honestly surprised you were able to control those Imps. It's not easy getting hell spawn to do what you want; I should know!");
 				}
 				if (player.HasItem(ModContent.ItemType<Items.Weapons.Magic.PlasmaRifle>()))
 				{
@@ -612,7 +620,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		/// <br>int: chance of being disabled (reciprocal, 1/x) </br>
 		/// <br>bool: enabled/disabled</br>
 		/// </summary>
-		private static List<HellTraderShopDataStruct> ItemsEnabled = new();
+		private static List<HellTraderShopDataStruct> ItemsEnabled = [];
 
 		/*
 		public override void OnSpawn(IEntitySource source) // OnSpawn isn't synced, so this doesn't work in multiplayer.
@@ -738,7 +746,7 @@ namespace RijamsMod.NPCs.TownNPCs
 	{
 		private string Namespace => GetType().Namespace.Replace('.', '/');
 		private string NPCName => (GetType().Name.Split("Profile")[0]).Replace('.', '/');
-		private string Path => (Namespace + "/" + NPCName);
+		private string Path => ($"{Namespace}/{NPCName}");
 
 		public int RollVariation() => 0;
 
@@ -766,23 +774,23 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				if (npc.IsShimmerVariant)
 				{
-					return shimmeredTownParty ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town_Alt");
+					return shimmeredTownParty ??= ModContent.Request<Texture2D>($"{Namespace}/Shimmered/{NPCName}Town_Alt");
 				}
-				return townParty ??= ModContent.Request<Texture2D>(Path + "Town_Alt");
+				return townParty ??= ModContent.Request<Texture2D>($"{Path}Town_Alt");
 			}
 
 			if (RijamsModWorld.hellTraderArrivable && !(npc.homeless || NPCHelper.IsFarFromHome(npc)))
 			{
 				if (npc.IsShimmerVariant)
 				{
-					return shimmeredTown ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName + "Town");
+					return shimmeredTown ??= ModContent.Request<Texture2D>($"{Namespace}/Shimmered/{NPCName}Town");
 				}
-				return town ??= ModContent.Request<Texture2D>(Path + "Town");
+				return town ??= ModContent.Request<Texture2D>($"{Path}Town");
 			}
 
 			if (npc.IsShimmerVariant)
 			{
-				return shimmered ??= ModContent.Request<Texture2D>(Namespace + "/Shimmered/" + NPCName);
+				return shimmered ??= ModContent.Request<Texture2D>($"{Namespace}/Shimmered/{NPCName}");
 			}
 
 			return normal ??= ModContent.Request<Texture2D>(Path);
@@ -790,11 +798,30 @@ namespace RijamsMod.NPCs.TownNPCs
 
 		public int GetHeadTextureIndex(NPC npc)
 		{
+			if (RijamsModWorld.hellTraderArrivable && npc.altTexture == 1)
+			{
+				if (npc.IsShimmerVariant)
+				{
+					return HellTrader.ShimmerTownAltHeadIndex;
+				}
+				return HellTrader.TownAltHeadIndex;
+			}
+
+			if (RijamsModWorld.hellTraderArrivable && !(npc.homeless || NPCHelper.IsFarFromHome(npc)))
+			{
+				if (npc.IsShimmerVariant)
+				{
+					return HellTrader.ShimmerTownHeadIndex;
+				}
+				return HellTrader.TownHeadIndex;
+			}
+
 			if (npc.IsShimmerVariant)
 			{
 				return HellTrader.ShimmerHeadIndex;
 			}
-			return ModContent.GetModHeadSlot(Path + "_Head");
+
+			return ModContent.GetModHeadSlot($"{Path}_Head");
 		}
 	}
 

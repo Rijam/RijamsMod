@@ -1,7 +1,7 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
@@ -10,10 +10,11 @@ using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Melee
 {
-    //Adapted from Whips & More
+    // Adapted from 1.3 Whips & More
     public class GranitizationProj : ModProjectile
     {
         public Vector2 chainHeadPosition;
+		// These are set from the item when it spawns the projectile.
         public float firingSpeed;
         public float firingAnimation;
         public float firingTime;
@@ -25,13 +26,13 @@ namespace RijamsMod.Projectiles.Melee
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.penetrate = -1;
+            Projectile.penetrate = -1; // Infinite penetration
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
             Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
-            Projectile.noEnchantmentVisuals = true;
+            Projectile.noEnchantmentVisuals = true; // The flask effects are spawned manually.
         }
         public override void AI()
         {
@@ -45,8 +46,7 @@ namespace RijamsMod.Projectiles.Melee
             Projectile.timeLeft = 2;
             player.ChangeDir(Projectile.direction);
             player.heldProj = Projectile.whoAmI;
-            player.itemTime = 2;
-            player.itemAnimation = 2;
+            player.SetDummyItemTime(2);
             player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
 
             // Makes some dust and light.

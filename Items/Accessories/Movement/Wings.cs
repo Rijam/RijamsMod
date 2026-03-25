@@ -1,12 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.DataStructures;
-using System.Linq;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using Terraria.Audio;
 

@@ -46,6 +46,10 @@ namespace RijamsMod
 				.AddIngredient(ModContent.ItemType<Items.Placeable.SunplatePillarBlock>(), 1)
 				.Register();
 
+			Recipe.Create(ItemID.SunplateBlock)
+				.AddIngredient(ModContent.ItemType<Items.Placeable.RedSunplateBlock>(), 1)
+				.Register();
+
 			Recipe.Create(ItemID.WandofSparking)
 				.AddIngredient(ModContent.ItemType<Items.Weapons.Magic.HotStick>(), 1)
 				.AddIngredient(ItemID.Torch, 99)
@@ -114,19 +118,19 @@ namespace RijamsMod
 
 		public override void AddRecipeGroups()
 		{
-			RecipeGroup group = new(() => Language.GetTextValue("LegacyMisc.37") + " OOA Sentry accessories", new int[]
-			{
+			RecipeGroup group = new(() => Language.GetTextValue("LegacyMisc.37") + " OOA Sentry accessories",
+			[
 				ItemID.ApprenticeScarf,
 				ItemID.MonkBelt,
 				ItemID.HuntressBuckler,
 				ItemID.SquireShield
-			});
+			]);
 			RecipeGroup.RegisterGroup(DefendersGear, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Bar", new int[]
-			{
+			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Bar",
+			[
 				ItemID.CopperBar,
 				ItemID.TinBar
-			});
+			]);
 			RecipeGroup.RegisterGroup(CopperBars, group);
 			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Silver Bar",
 			[

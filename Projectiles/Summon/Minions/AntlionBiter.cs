@@ -56,7 +56,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 
 			// Using local NPC immunity allows each to strike independently from one another.
 			Projectile.usesLocalNPCImmunity = true;
-			Projectile.localNPCHitCooldown = 30;
+			Projectile.localNPCHitCooldown = 13;
 
 			DrawOffsetX = -12;
 			DrawOriginOffsetY -= 14;
@@ -100,45 +100,36 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				Projectile.active = false;
 				return;
 			}
-			bool flag26 = true;
-			Vector2 vector62 = player.Center;
-			if (flag26)
-			{
-				vector62.X -= (15 + player.width / 2) * player.direction;
-				vector62.X -= Projectile.minionPos * 40 * player.direction;
-			}
-			bool flag27 = true;
-			int num672 = -1;
-			float num673 = 450f;
-			if (flag26)
-			{
-				num673 = 800f;
-			}
+			Vector2 followPlayerDistance = player.Center;
+			followPlayerDistance.X -= (15 + player.width / 2) * player.direction;
+			followPlayerDistance.X -= Projectile.minionPos * 40 * player.direction;
+			int targetWhoAmI = -1;
+			float maxDistToTarget = 800f;
 			int num674 = 15;
-			if (Projectile.ai[0] == 0f && flag27)
+			if (Projectile.ai[0] == 0f)
 			{
 				NPC ownerMinionAttackTargetNPC4 = Projectile.OwnerMinionAttackTargetNPC;
 				if (ownerMinionAttackTargetNPC4 != null && ownerMinionAttackTargetNPC4.CanBeChasedBy(Projectile))
 				{
-					float num675 = (ownerMinionAttackTargetNPC4.Center - Projectile.Center).Length();
-					if (num675 < num673)
+					float distToTarget = (ownerMinionAttackTargetNPC4.Center - Projectile.Center).Length();
+					if (distToTarget < maxDistToTarget)
 					{
-						num672 = ownerMinionAttackTargetNPC4.whoAmI;
-						num673 = num675;
+						targetWhoAmI = ownerMinionAttackTargetNPC4.whoAmI;
+						maxDistToTarget = distToTarget;
 					}
 				}
-				if (num672 < 0)
+				if (targetWhoAmI < 0)
 				{
-					for (int num676 = 0; num676 < 200; num676++)
+					for (int i = 0; i < Main.maxNPCs; i++)
 					{
-						NPC nPC3 = Main.npc[num676];
+						NPC nPC3 = Main.npc[i];
 						if (nPC3.CanBeChasedBy(Projectile))
 						{
-							float num677 = (nPC3.Center - Projectile.Center).Length();
-							if (num677 < num673)
+							float distToTarget = (nPC3.Center - Projectile.Center).Length();
+							if (distToTarget < maxDistToTarget)
 							{
-								num672 = num676;
-								num673 = num677;
+								targetWhoAmI = i;
+								maxDistToTarget = distToTarget;
 							}
 						}
 					}
@@ -154,13 +145,13 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				{
 					num679 = Math.Abs(player.velocity.X) + Math.Abs(player.velocity.Y);
 				}
-				Vector2 vector66 = player.Center - Projectile.Center;
-				float num681 = vector66.Length();
-				if (num681 > 2000f)
+				Vector2 distToPlayer = player.Center - Projectile.Center;
+				float distToPlayerLength = distToPlayer.Length();
+				if (distToPlayerLength > 2000f)
 				{
 					Projectile.position = player.Center - new Vector2(Projectile.width, Projectile.height) / 2f;
 				}
-				if (num681 < (float)num680 && player.velocity.Y == 0f && Projectile.position.Y + (float)Projectile.height <= player.position.Y + (float)player.height && !Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
+				if (distToPlayerLength < (float)num680 && player.velocity.Y == 0f && Projectile.position.Y + (float)Projectile.height <= player.position.Y + (float)player.height && !Collision.SolidCollision(Projectile.position, Projectile.width, Projectile.height))
 				{
 					Projectile.ai[0] = 0f;
 					Projectile.netUpdate = true;
@@ -169,11 +160,11 @@ namespace RijamsMod.Projectiles.Summon.Minions
 						Projectile.velocity.Y = -6f;
 					}
 				}
-				if (!(num681 < 60f))
+				if (!(distToPlayerLength < 60f))
 				{
-					vector66.Normalize();
-					vector66 *= num679;
-					if (Projectile.velocity.X < vector66.X)
+					distToPlayer.Normalize();
+					distToPlayer *= num679;
+					if (Projectile.velocity.X < distToPlayer.X)
 					{
 						Projectile.velocity.X += num678;
 						if (Projectile.velocity.X < 0f)
@@ -181,7 +172,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 							Projectile.velocity.X += num678 * 1.5f;
 						}
 					}
-					if (Projectile.velocity.X > vector66.X)
+					if (Projectile.velocity.X > distToPlayer.X)
 					{
 						Projectile.velocity.X -= num678;
 						if (Projectile.velocity.X > 0f)
@@ -189,7 +180,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 							Projectile.velocity.X -= num678 * 1.5f;
 						}
 					}
-					if (Projectile.velocity.Y < vector66.Y)
+					if (Projectile.velocity.Y < distToPlayer.Y)
 					{
 						Projectile.velocity.Y += num678;
 						if (Projectile.velocity.Y < 0f)
@@ -197,7 +188,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 							Projectile.velocity.Y += num678 * 1.5f;
 						}
 					}
-					if (Projectile.velocity.Y > vector66.Y)
+					if (Projectile.velocity.Y > distToPlayer.Y)
 					{
 						Projectile.velocity.Y -= num678;
 						if (Projectile.velocity.Y > 0f)
@@ -210,20 +201,17 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				{
 					Projectile.spriteDirection = Math.Sign(Projectile.velocity.X);
 				}
-				if (flag26)
+				Projectile.frameCounter++;
+				if (Projectile.frameCounter > 3)
 				{
-					Projectile.frameCounter++;
-					if (Projectile.frameCounter > 3)
-					{
-						Projectile.frame++;
-						Projectile.frameCounter = 0;
-					}
-					if ((Projectile.frame < 10) | (Projectile.frame > 13))
-					{
-						Projectile.frame = 10;
-					}
-					Projectile.rotation = Projectile.velocity.X * 0.1f;
+					Projectile.frame++;
+					Projectile.frameCounter = 0;
 				}
+				if ((Projectile.frame < 10) | (Projectile.frame > 13))
+				{
+					Projectile.frame = 10;
+				}
+				Projectile.rotation = Projectile.velocity.X * 0.1f;
 			}
 			if (Projectile.ai[0] == 2f)
 			{
@@ -250,86 +238,74 @@ namespace RijamsMod.Projectiles.Summon.Minions
 					return;
 				}
 			}
-			if (num672 >= 0)
+			if (targetWhoAmI >= 0)
 			{
-				float num682 = 400f;
+				float num682 = 700f;
 				float num683 = 20f;
-				if (flag26)
-				{
-					num682 = 700f;
-				}
 				if ((double)Projectile.position.Y > Main.worldSurface * 16.0)
 				{
 					num682 *= 0.7f;
 				}
-				NPC nPC4 = Main.npc[num672];
-				Vector2 center5 = nPC4.Center;
-				float num684 = (center5 - Projectile.Center).Length();
-				if (num684 < num682)
+				NPC nPC4 = Main.npc[targetWhoAmI];
+				Vector2 targetCenter = nPC4.Center;
+				float distToTarget = (targetCenter - Projectile.Center).Length();
+				if (distToTarget < num682)
 				{
-					vector62 = center5;
-					if (center5.Y < Projectile.Center.Y - 30f && Projectile.velocity.Y == 0f)
+					followPlayerDistance = targetCenter;
+					if (targetCenter.Y < Projectile.Center.Y - 30f && Projectile.velocity.Y == 0f)
 					{
-						float num685 = Math.Abs(center5.Y - Projectile.Center.Y);
-						if (num685 < 120f)
+						float absDistToTarget = Math.Abs(targetCenter.Y - Projectile.Center.Y);
+						if (absDistToTarget < 120f)
 						{
 							Projectile.velocity.Y = -10f;
 						}
-						else if (num685 < 210f)
+						else if (absDistToTarget < 210f)
 						{
 							Projectile.velocity.Y = -13f;
 						}
-						else if (num685 < 270f)
+						else if (absDistToTarget < 270f)
 						{
 							Projectile.velocity.Y = -15f;
 						}
-						else if (num685 < 310f)
+						else if (absDistToTarget < 310f)
 						{
 							Projectile.velocity.Y = -17f;
 						}
-						else if (num685 < 380f)
+						else if (absDistToTarget < 380f)
 						{
 							Projectile.velocity.Y = -18f;
 						}
 					}
 				}
-				if (num684 < num683)
+				if (distToTarget < num683)
 				{
 					Projectile.ai[0] = 2f;
 					Projectile.ai[1] = num674;
 					Projectile.netUpdate = true;
 				}
 			}
-			if (Projectile.ai[0] == 0f && num672 < 0)
+			if (Projectile.ai[0] == 0f && targetWhoAmI < 0)
 			{
 				float num686 = 500f;
-				if (Projectile.type == 500)
-				{
-					num686 = 200f;
-				}
-				if (Projectile.type == 653)
-				{
-					num686 = 170f;
-				}
 				if (Main.player[Projectile.owner].rocketDelay2 > 0)
 				{
 					Projectile.ai[0] = 1f;
 					Projectile.netUpdate = true;
 				}
-				Vector2 vector67 = player.Center - Projectile.Center;
-				if (vector67.Length() > 2000f)
+				Vector2 distToPlayer = player.Center - Projectile.Center;
+				if (distToPlayer.Length() > 2000f)
 				{
 					Projectile.position = player.Center - new Vector2(Projectile.width, Projectile.height) / 2f;
 				}
-				else if (vector67.Length() > num686 || Math.Abs(vector67.Y) > 300f)
+				else if (distToPlayer.Length() > num686 || Math.Abs(distToPlayer.Y) > 300f)
 				{
 					Projectile.ai[0] = 1f;
 					Projectile.netUpdate = true;
-					if (Projectile.velocity.Y > 0f && vector67.Y < 0f)
+					if (Projectile.velocity.Y > 0f && distToPlayer.Y < 0f)
 					{
 						Projectile.velocity.Y = 0f;
 					}
-					if (Projectile.velocity.Y < 0f && vector67.Y > 0f)
+					if (Projectile.velocity.Y < 0f && distToPlayer.Y > 0f)
 					{
 						Projectile.velocity.Y = 0f;
 					}
@@ -338,26 +314,26 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			if (Projectile.ai[0] == 0f)
 			{
 				Projectile.tileCollide = true;
-				float num687 = 0.5f;
+				float numIs05f = 0.5f;
 				float num688 = 4f;
 				float num689 = 4f;
 				float num690 = 0.1f;
 				if (num689 < Math.Abs(player.velocity.X) + Math.Abs(player.velocity.Y))
 				{
 					num689 = Math.Abs(player.velocity.X) + Math.Abs(player.velocity.Y);
-					num687 = 0.7f;
+					numIs05f = 0.7f;
 				}
-				int num691 = 0;
-				bool flag29 = false;
-				float num692 = vector62.X - Projectile.Center.X;
-				if (Math.Abs(num692) > 5f)
+				int directionToChangeTo = 0;
+				bool solidTile = false;
+				float distToFollowPlayerDistance = followPlayerDistance.X - Projectile.Center.X;
+				if (Math.Abs(distToFollowPlayerDistance) > 5f)
 				{
-					if (num692 < 0f)
+					if (distToFollowPlayerDistance < 0f)
 					{
-						num691 = -1;
+						directionToChangeTo = -1;
 						if (Projectile.velocity.X > 0f - num688)
 						{
-							Projectile.velocity.X -= num687;
+							Projectile.velocity.X -= numIs05f;
 						}
 						else
 						{
@@ -366,10 +342,10 @@ namespace RijamsMod.Projectiles.Summon.Minions
 					}
 					else
 					{
-						num691 = 1;
+						directionToChangeTo = 1;
 						if (Projectile.velocity.X < num688)
 						{
-							Projectile.velocity.X += num687;
+							Projectile.velocity.X += numIs05f;
 						}
 						else
 						{
@@ -380,63 +356,63 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				else
 				{
 					Projectile.velocity.X *= 0.9f;
-					if (Math.Abs(Projectile.velocity.X) < num687 * 2f)
+					if (Math.Abs(Projectile.velocity.X) < numIs05f * 2f)
 					{
 						Projectile.velocity.X = 0f;
 					}
 				}
-				if (num691 != 0)
+				if (directionToChangeTo != 0)
 				{
-					int num693 = (int)(Projectile.position.X + (float)(Projectile.width / 2)) / 16;
-					int num694 = (int)Projectile.position.Y / 16;
-					num693 += num691;
-					num693 += (int)Projectile.velocity.X;
-					for (int num695 = num694; num695 < num694 + Projectile.height / 16 + 1; num695++)
+					int tilePosX = (int)(Projectile.position.X + (float)(Projectile.width / 2)) / 16;
+					int tilePosY = (int)Projectile.position.Y / 16;
+					tilePosX += directionToChangeTo;
+					tilePosX += (int)Projectile.velocity.X;
+					for (int i = tilePosY; i < tilePosY + Projectile.height / 16 + 1; i++)
 					{
-						if (WorldGen.SolidTile(num693, num695))
+						if (WorldGen.SolidTile(tilePosX, i))
 						{
-							flag29 = true;
+							solidTile = true;
 						}
 					}
 				}
 				Collision.StepUp(ref Projectile.position, ref Projectile.velocity, Projectile.width, Projectile.height, ref Projectile.stepSpeed, ref Projectile.gfxOffY);
-				if (Projectile.velocity.Y == 0f && flag29)
+				if (Projectile.velocity.Y == 0f && solidTile)
 				{
-					for (int num696 = 0; num696 < 3; num696++)
+					for (int i = 0; i < 3; i++)
 					{
-						int num697 = (int)(Projectile.position.X + (float)(Projectile.width / 2)) / 16;
-						if (num696 == 0)
+						int tilePosX = (int)(Projectile.position.X + (float)(Projectile.width / 2)) / 16;
+						if (i == 0)
 						{
-							num697 = (int)Projectile.position.X / 16;
+							tilePosX = (int)Projectile.position.X / 16;
 						}
-						if (num696 == 2)
+						if (i == 2)
 						{
-							num697 = (int)(Projectile.position.X + (float)Projectile.width) / 16;
+							tilePosX = (int)(Projectile.position.X + (float)Projectile.width) / 16;
 						}
-						int num698 = (int)(Projectile.position.Y + (float)Projectile.height) / 16;
-						if (!WorldGen.SolidTile(num697, num698) && !Main.tile[num697, num698].IsHalfBlock && Main.tile[num697, num698].Slope <= 0 && (!TileID.Sets.Platforms[Main.tile[num697, num698].TileType] || !Main.tile[num697, num698].HasTile || Main.tile[num697, num698].IsActuated))
+						int tilePosY = (int)(Projectile.position.Y + (float)Projectile.height) / 16;
+						if (!WorldGen.SolidTile(tilePosX, tilePosY) && !Main.tile[tilePosX, tilePosY].IsHalfBlock && Main.tile[tilePosX, tilePosY].Slope <= 0 && (!TileID.Sets.Platforms[Main.tile[tilePosX, tilePosY].TileType] || !Main.tile[tilePosX, tilePosY].HasTile || Main.tile[tilePosX, tilePosY].IsActuated))
 						{
 							continue;
 						}
 						try
 						{
-							num697 = (int)(Projectile.position.X + (float)(Projectile.width / 2)) / 16;
-							num698 = (int)(Projectile.position.Y + (float)(Projectile.height / 2)) / 16;
-							num697 += num691;
-							num697 += (int)Projectile.velocity.X;
-							if (!WorldGen.SolidTile(num697, num698 - 1) && !WorldGen.SolidTile(num697, num698 - 2))
+							tilePosX = (int)(Projectile.position.X + (float)(Projectile.width / 2)) / 16;
+							tilePosY = (int)(Projectile.position.Y + (float)(Projectile.height / 2)) / 16;
+							tilePosX += directionToChangeTo;
+							tilePosX += (int)Projectile.velocity.X;
+							if (!WorldGen.SolidTile(tilePosX, tilePosY - 1) && !WorldGen.SolidTile(tilePosX, tilePosY - 2))
 							{
 								Projectile.velocity.Y = -5.1f;
 							}
-							else if (!WorldGen.SolidTile(num697, num698 - 2))
+							else if (!WorldGen.SolidTile(tilePosX, tilePosY - 2))
 							{
 								Projectile.velocity.Y = -7.1f;
 							}
-							else if (WorldGen.SolidTile(num697, num698 - 5))
+							else if (WorldGen.SolidTile(tilePosX, tilePosY - 5))
 							{
 								Projectile.velocity.Y = -11.1f;
 							}
-							else if (WorldGen.SolidTile(num697, num698 - 4))
+							else if (WorldGen.SolidTile(tilePosX, tilePosY - 4))
 							{
 								Projectile.velocity.Y = -10.1f;
 							}
@@ -467,50 +443,51 @@ namespace RijamsMod.Projectiles.Summon.Minions
 				{
 					Projectile.direction = 1;
 				}
-				if (Projectile.velocity.X > num687 && num691 == 1)
+				if (Projectile.velocity.X > numIs05f && directionToChangeTo == 1)
 				{
 					Projectile.direction = 1;
 				}
-				if (Projectile.velocity.X < 0f - num687 && num691 == -1)
+				if (Projectile.velocity.X < 0f - numIs05f && directionToChangeTo == -1)
 				{
 					Projectile.direction = -1;
 				}
-				Projectile.spriteDirection = Projectile.direction;
-				if (flag26)
+				if (Projectile.velocity.X == 0f && targetWhoAmI == -1)
 				{
-					Projectile.rotation = 0f;
-					if (Projectile.velocity.Y == 0f)
+					Projectile.direction = player.direction;
+				}
+				Projectile.spriteDirection = Projectile.direction;
+				Projectile.rotation = 0f;
+				if (Projectile.velocity.Y == 0f)
+				{
+					if (Projectile.velocity.X == 0f)
 					{
-						if (Projectile.velocity.X == 0f)
-						{
-							Projectile.frame = 0;
-							Projectile.frameCounter = 0;
-						}
-						else if (Math.Abs(Projectile.velocity.X) >= 0.5f)
-						{
-							Projectile.frameCounter += (int)Math.Abs(Projectile.velocity.X);
-							Projectile.frameCounter++;
-							if (Projectile.frameCounter > 10)
-							{
-								Projectile.frame++;
-								Projectile.frameCounter = 0;
-							}
-							if (Projectile.frame >= 4)
-							{
-								Projectile.frame = 0;
-							}
-						}
-						else
-						{
-							Projectile.frame = 0;
-							Projectile.frameCounter = 0;
-						}
-					}
-					else if (Projectile.velocity.Y != 0f)
-					{
+						Projectile.frame = 0;
 						Projectile.frameCounter = 0;
-						Projectile.frame = 14;
 					}
+					else if (Math.Abs(Projectile.velocity.X) >= 0.5f)
+					{
+						Projectile.frameCounter += (int)Math.Abs(Projectile.velocity.X);
+						Projectile.frameCounter++;
+						if (Projectile.frameCounter > 10)
+						{
+							Projectile.frame++;
+							Projectile.frameCounter = 0;
+						}
+						if (Projectile.frame >= 4)
+						{
+							Projectile.frame = 0;
+						}
+					}
+					else
+					{
+						Projectile.frame = 0;
+						Projectile.frameCounter = 0;
+					}
+				}
+				else if (Projectile.velocity.Y != 0f)
+				{
+					Projectile.frameCounter = 0;
+					Projectile.frame = 14;
 				}
 				Projectile.velocity.Y += 0.4f;
 				if (Projectile.velocity.Y > 10f)

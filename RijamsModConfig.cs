@@ -26,6 +26,9 @@ namespace RijamsMod
 		public bool JoustingLanceStaticInvincibility { get; set; }
 
 		[DefaultValue(true)]
+		public bool YoyoStaticInvincibility { get; set; }
+
+		[DefaultValue(true)]
 		public bool TownNPCsCrossModSupport { get; set; }
 
 		[ReloadRequired]

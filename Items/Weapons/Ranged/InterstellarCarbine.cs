@@ -86,7 +86,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 				position += muzzleOffset;
 			}
 
-			Projectile laser = Projectile.NewProjectileDirect(source, position + new Vector2(0, -4), velocity * new Vector2(velocityMultiplier, velocityMultiplier), Item.shoot, damage, knockback, Main.myPlayer, tileCollide.ToInt());
+			Projectile laser = Projectile.NewProjectileDirect(source, position + new Vector2(0, -4), velocity * new Vector2(velocityMultiplier, velocityMultiplier), Item.shoot, damage, knockback, player.whoAmI, tileCollide.ToInt());
 			laser.penetrate = penetrate; // Seems to be 1 less than the normal bullet?
 			laser.coldDamage = coldDamage;
 			laser.tileCollide = tileCollide;

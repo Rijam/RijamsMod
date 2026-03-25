@@ -53,6 +53,8 @@ namespace RijamsMod.Items.Weapons
 		public bool onlyDrawInUse = true;
 		/// <summary> If true, overrides colorNoAlpha to use Main.DiscoColor.<br>Default: false</br> </summary>
 		public bool discoColor = false;
+		/// <summary> If true, the flash will only play if player.altFunctionUse != 2<br>Default: false</br></summary>
+		public bool onlyUseOnPrimaryFire = false;
 
 		public override bool InstancePerEntity => true;
 		public override GlobalItem Clone(Item item, Item itemClone)
@@ -125,6 +127,11 @@ namespace RijamsMod.Items.Weapons
 				float angleAdd = result.angleAdd;
 				float scale = result.scale;
 				int frameCount = result.frameCount;
+
+				if (result.onlyUseOnPrimaryFire && drawPlayer.altFunctionUse == 2)
+				{
+					return;
+				}
 
 				if (flashTexture != null && result.flashCondition.Invoke()) // If a flash texture for the weapon exists and the flashCondition is true
 				{

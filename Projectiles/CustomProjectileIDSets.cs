@@ -36,7 +36,7 @@ namespace RijamsMod.Projectiles
 
 		public const string IsJoustingLanceProjectileKey = "IsJoustingLanceProjectile";
 		/// <summary> This set is a set of all jousting lance projectiles. </summary>
-		public static bool[] IsJoustingLanceProjectile = ItemID.Sets.Factory.CreateNamedSet(IsJoustingLanceProjectileKey)
+		public static bool[] IsJoustingLanceProjectile = ProjectileID.Sets.Factory.CreateNamedSet(IsJoustingLanceProjectileKey)
 			.Description("Denotes which projectiles are jousting lances.")
 			.RegisterBoolSet(false,
 				ProjectileID.JoustingLance,

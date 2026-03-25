@@ -943,6 +943,11 @@ FlaskOfSulfuricAcid: {
 	Tooltip: Melee attacks inflict enemies with Sulfuric Acid
 }
 
+FlaskOfDaybroken: {
+	DisplayName: Flask of Daybroken
+	Tooltip: Melee attacks inflict enemies with Daybroken
+}
+
 FreshBlueberry: {
 	DisplayName: Fresh Blueberry
 	Tooltip: "{$Common.MinusculeStats}"
@@ -1042,6 +1047,11 @@ OrangeBeamDye: {
 YellaDye: {
 	Tooltip: "'It may or may not be a color'"
 	DisplayName: Yella Dye
+}
+
+OutlineDye: {
+	DisplayName: Outline Dye
+	Tooltip: ""
 }
 
 # Items/Fishing
@@ -1220,6 +1230,46 @@ LivingSulfurFireBlock: {
 
 SunplatePillarBlock: {
 	DisplayName: Sunplate Pillar Block
+	Tooltip: ""
+}
+
+BlueSkywareBlock: {
+	DisplayName: Blue Skyware Block
+	Tooltip: ""
+}
+
+BlueSkywareWall: {
+	DisplayName: Blue Skyware Wall
+	Tooltip: ""
+}
+
+RedSkywareBlock: {
+	DisplayName: Red Skyware Block
+	Tooltip: ""
+}
+
+RedSkywareWall: {
+	DisplayName: Red Skyware Wall
+	Tooltip: ""
+}
+
+RedSunplateBlock: {
+	DisplayName: Red Sunplate Block
+	Tooltip: ""
+}
+
+SunplateBeamBlock: {
+	DisplayName: Sunplate Beam
+	Tooltip: ""
+}
+
+SunplateColumnBlock: {
+	DisplayName: Sunplate Column
+	Tooltip: ""
+}
+
+SunplateColumnWall: {
+	DisplayName: Sunplate Column Wall
 	Tooltip: ""
 }
 
@@ -1937,6 +1987,25 @@ FlareSubmachineGun: {
 		'''
 }
 
+TAG: {
+	DisplayName: TAG
+	Tooltip:
+		'''
+		Tacticle Awareness Grenade
+		Highlights enemies when it explodes
+		Highlighted enemies take 10% extra damage
+		'''
+}
+
+Slugger: {
+	DisplayName: Slugger
+	Tooltip:
+		'''
+		Shoots two high powered bullets
+		<right> to load up to 10 bullets
+		'''
+}
+
 # Items/Weapons/Ranged/Ammo
 
 BloodyArrow: {
@@ -2215,7 +2284,29 @@ ShadowflameStaff: {
 
 BabyBloodEelStaff: {
 	DisplayName: Baby Blood Eel Staff
-	Tooltip: ""
+	Tooltip:
+		'''
+		Summons a Baby Blood Eel to fight for you
+		Additional summons add 75% of the weapon's damage 
+		'''
+}
+
+BabyBoneSerpentStaff: {
+	DisplayName: Baby Bone Serpent Staff
+	Tooltip:
+		'''
+		Summons a Baby Bone Serpent to fight for you
+		Additional summons add 75% of the weapon's damage 
+		'''
+}
+
+GiantWormStaff: {
+	DisplayName: Giant Worm Staff
+	Tooltip:
+		'''
+		Summons a Giant Worm to fight for you
+		Additional summons add 75% of the weapon's damage 
+		'''
 }
 
 # Items/Weapons/Summon/Sentries

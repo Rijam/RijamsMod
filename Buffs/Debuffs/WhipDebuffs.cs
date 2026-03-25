@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace RijamsMod.Buffs.Debuffs
 {
@@ -163,13 +164,14 @@ namespace RijamsMod.Buffs.Debuffs
 			if (markedByTailoThreeCats)
 			{
 				modifiers.FlatBonusDamage += TailoThreeCatsDebuff.TagDamage * projTagMultiplier;
-				npc.AddBuff(BuffID.Confused, 240);
+				// npc.AddBuff(BuffID.Confused, 240);
 			}
 			if (markedBySulfuricWhip)
 			{
 				modifiers.FlatBonusDamage += SulfuricWhipDebuff.TagDamage * projTagMultiplier;
-				Dust.NewDust(npc.Center, npc.width, npc.height, ModContent.DustType<Dusts.SulfurDust>(), modifiers.HitDirection, modifiers.HitDirection, 150, default, 1f);
+				// Dust.NewDust(npc.Center, npc.width, npc.height, ModContent.DustType<Dusts.SulfurDust>(), modifiers.HitDirection, modifiers.HitDirection, 150, default, 1f);
 			}
+			/*
 			if (markedByForbiddenWhip)
 			{
 				// Player owner = Main.player[projectile.owner];
@@ -189,14 +191,17 @@ namespace RijamsMod.Buffs.Debuffs
 				// Main.NewText("damage " + damage + " knockback " + knockback + " crit " + crit + " multiplier " + multiplier);
 				Dust.NewDust(npc.Center, npc.width, npc.height, DustID.GemAmber, modifiers.HitDirection, modifiers.HitDirection, 150, default, 1f);
 			}
+			*/
 			if (markedByFestiveWhip)
 			{
 				modifiers.FlatBonusDamage += FestiveWhipDebuff.TagDamage * projTagMultiplier;
+				/*
 				for (int i = 0; i < 5; i++)
 				{
 					int selectRand = Utils.SelectRandom(Main.rand, DustID.GreenTorch, DustID.RedTorch);
 					Dust.NewDust(npc.position, npc.width, npc.height, selectRand, modifiers.HitDirection, modifiers.HitDirection, 0, Color.White, 1f);
 				}
+				*/
 			}
 			if (markedBySupernovaWhip)
 			{
@@ -205,14 +210,70 @@ namespace RijamsMod.Buffs.Debuffs
 				{
 					modifiers.SetCrit();
 				}
+				/*
 				for (int i = 0; i < 10; i++)
 				{
 					int selectRand = Utils.SelectRandom(Main.rand, DustID.YellowTorch, DustID.BlueTorch);
 					int dust = Dust.NewDust(npc.position, npc.width, npc.height, selectRand, modifiers.HitDirection, modifiers.HitDirection, 0, Color.White, 2.0f);
 					Main.dust[dust].noGravity = true;
 				}
+				*/
 			}
 		}
+		public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
+		{
+			// Only player attacks should benefit from this buff, hence the NPC and trap checks.
+			if (projectile.npcProj || projectile.trap || !projectile.IsMinionOrSentryRelated)
+			{
+				return;
+			}
+
+			if (markedByTailoThreeCats)
+			{
+				npc.AddBuff(BuffID.Confused, 240);
+			}
+			if (markedBySulfuricWhip)
+			{
+				Dust.NewDust(npc.Center, npc.width, npc.height, ModContent.DustType<Dusts.SulfurDust>(), hit.HitDirection, hit.HitDirection, 150, default, 1f);
+			}
+			if (markedByForbiddenWhip)
+			{
+				// Player owner = Main.player[projectile.owner];
+				// float ownerSummonKB = owner.GetTotalKnockback(DamageClass.Summon).Additive * owner.GetTotalKnockback(DamageClass.Summon).Multiplicative;
+				// float ownerSummonKB2 = owner.GetTotalKnockback(DamageClass.Summon).Base; // Vanilla uses .Base instead of the others
+
+				// Oddly, the projectile doesn't update it's knockback dynamically like it does with damage.
+
+				float multiplier = 0.8f;
+				if (projectile.knockBack != 0)
+				{
+					multiplier -= (projectile.knockBack / 50f); // multiplier becomes less with more knockback
+				}
+				npc.velocity *= multiplier;
+				npc.netUpdate = true;
+				// Main.NewText("ownerSummonKB " + ownerSummonKB + " ownerSummonKB2 " + ownerSummonKB2 + " knockback " + knockback + " multiplier " + multiplier);
+				// Main.NewText("damage " + damage + " knockback " + knockback + " crit " + crit + " multiplier " + multiplier);
+				Dust.NewDust(npc.Center, npc.width, npc.height, DustID.GemAmber, hit.HitDirection, hit.HitDirection, 150, default, 1f);
+			}
+			if (markedByFestiveWhip)
+			{
+				for (int i = 0; i < 5; i++)
+				{
+					int selectRand = Utils.SelectRandom(Main.rand, DustID.GreenTorch, DustID.RedTorch);
+					Dust.NewDust(npc.position, npc.width, npc.height, selectRand, hit.HitDirection, hit.HitDirection, 0, Color.White, 1f);
+				}
+			}
+			if (markedBySupernovaWhip)
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					int selectRand = Utils.SelectRandom(Main.rand, DustID.YellowTorch, DustID.BlueTorch);
+					int dust = Dust.NewDust(npc.position, npc.width, npc.height, selectRand, hit.HitDirection, hit.HitDirection, 0, Color.White, 2.0f);
+					Main.dust[dust].noGravity = true;
+				}
+			}
+		}
+
 		public override void DrawEffects(NPC npc, ref Color drawColor)
 		{
 			if (markedByForbiddenWhip && npc.active)

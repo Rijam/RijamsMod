@@ -1,16 +1,12 @@
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using System.Collections.Generic;
 
 namespace RijamsMod.Tiles
 {
     public class GlobalTiles : GlobalTile
     {
-		/// <summary> This set is a set of all pianos for the Pianist's Glove. </summary>
-		// public static List<int> isPiano = new() { TileID.Pianos };
-
 		public override void Drop(int i, int j, int type)
 		{
             if (type == TileID.Pots)
@@ -33,5 +29,16 @@ namespace RijamsMod.Tiles
 				}
 			}
         }
+
+		public override void NearbyEffects(int i, int j, int type, bool closer)
+		{
+			if (type == TileID.Candles)
+			{
+				if (Main.tile[i, j].TileFrameX == 0 && Main.tile[i, j].TileFrameY == 22 * 22) // Lit Honey Candle
+				{
+					Main.LocalPlayer.AddBuff(BuffID.Honey, 5);
+				}
+			}
+		}
 	}
 }

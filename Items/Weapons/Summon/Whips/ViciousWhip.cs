@@ -1,11 +1,7 @@
-using RijamsMod.Projectiles.Summon.Whips;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using System;
-using Terraria.DataStructures;
+using RijamsMod.Projectiles.Summon.Whips;
 
 namespace RijamsMod.Items.Weapons.Summon.Whips
 {

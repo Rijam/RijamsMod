@@ -9,12 +9,12 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
-			{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
 				new(255, 255, 0),
 				new(193, 43, 43),
 				new(181, 115, 20)
-			};
+			];
 		}
 
 		public override void SetDefaults()
@@ -48,12 +48,12 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Flask of Oil");
 			// Tooltip.SetDefault("Melee attacks inflict enemies with Oiled");
-			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
-			{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
 				new(176, 177, 57),
 				new(59, 48, 32),
 				new(10, 9, 9)
-			};
+			];
 		}
 
 		public override void SetDefaults()
@@ -77,6 +77,44 @@ namespace RijamsMod.Items.Consumables
 			CreateRecipe()
 				.AddIngredient(ItemID.BottledWater, 1)
 				.AddIngredient(ItemID.Sunflower, 5)
+				.AddTile(TileID.ImbuingStation)
+				.Register();
+		}
+	}
+
+	public class FlaskOfDaybroken : ModItem
+	{
+		public override void SetStaticDefaults()
+		{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
+				new(255, 240, 168),
+				new(253, 221, 3),
+				new(249, 75, 7)
+			];
+		}
+
+		public override void SetDefaults()
+		{
+			Item.width = 22;
+			Item.height = 28;
+			Item.useStyle = ItemUseStyleID.DrinkLiquid;
+			Item.useAnimation = 15;
+			Item.useTime = 15;
+			Item.useTurn = true;
+			Item.UseSound = SoundID.Item3;
+			Item.maxStack = Item.CommonMaxStack;
+			Item.consumable = true;
+			Item.rare = ItemRarityID.Red;
+			Item.value = Item.sellPrice(silver: 5);
+			Item.buffType = ModContent.BuffType<Buffs.Potions.ImbueDaybroken>();
+			Item.buffTime = Item.flaskTime; //20 minutes
+		}
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.BottledWater, 1)
+				.AddIngredient(ItemID.FragmentSolar, 3)
 				.AddTile(TileID.ImbuingStation)
 				.Register();
 		}

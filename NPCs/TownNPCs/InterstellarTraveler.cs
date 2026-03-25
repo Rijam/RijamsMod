@@ -122,12 +122,12 @@ namespace RijamsMod.NPCs.TownNPCs
 		#region Bestiary, Gore, Spawn, Names
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
-			{
+			bestiaryEntry.Info.AddRange(
+			[
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
 				new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name))
-			});
+			]);
 		}
 
 		public override void HitEffect(NPC.HitInfo hit)
@@ -206,10 +206,10 @@ namespace RijamsMod.NPCs.TownNPCs
 				RijamsModWorld.UpdateWorldBool();
 			}
 
-			return new List<string>()
-			{
+			return
+			[
 				"Tlani", "Cuia", "Cuemal", "Teztlal", "Nezal", "Zelelli", "Matlin", "Xoco", "Zillin", "Centia", "Citzil", "Malxoc", "Izta", "Xical", "Mazalch", "Tlazoh", "Checa", "Acnopan", "Uetlac", "Illi", "Zina"
-			};
+			];
 		}
 		#endregion
 
@@ -872,7 +872,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			else
 			{
-				List<string> lines = new();
+				List<string> lines = [];
 				if (!RijamsModWorld.intTravQuestBreadAndJelly)
 				{
 					lines.Add("I'd be happy to take a look at other items, too; if you think I could use them for something.");

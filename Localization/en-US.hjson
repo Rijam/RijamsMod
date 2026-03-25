@@ -222,6 +222,21 @@ Mods: {
 				Description: "{$Items.GleamingFungusCudgel.Tooltip}"
 			}
 
+			BabyBloodEelBuff: {
+				DisplayName: Baby Blood Eel
+				Description: The Baby Blood Eel will fight for you
+			}
+
+			BabyBoneSerpentBuff: {
+				DisplayName: Baby Bone Serpent Buff
+				Description: The Baby Bone Serpent will fight for you
+			}
+
+			GiantWormBuff: {
+				DisplayName: Giant Worm Buff
+				Description: The Giant Worm will fight for you
+			}
+
 			# Buffs/Other
 			
 			LifeFruitSanctuaryBuff: {
@@ -267,6 +282,11 @@ Mods: {
 				Description: Enemies are lit ablaze upon contact
 			}
 
+			BabyStardustDragonBuff: {
+				DisplayName: Baby Stardust Dragon
+				Description: The Baby Stardust Dragon will comfort you
+			}
+
 			# Buffs/Potions
 			
 			ExceptionalFeast: {
@@ -287,6 +307,11 @@ Mods: {
 			ImbueSulfuricAcid: {
 				DisplayName: Weapon Imbue: Sulfuric Acid
 				Description: Melee attacks inflict Sulfuric Acid
+			}
+
+			ImbueDaybroken: {
+				DisplayName: Weapon Imbue: Daybroken
+				Description: Melee attacks inflict Daybroken
 			}
 
 			Satiated: {
@@ -319,16 +344,6 @@ Mods: {
 				Description: +10% Critical Hit Damage
 			}
 
-			BabyStardustDragonBuff: {
-				DisplayName: Baby Stardust Dragon
-				Description: The Baby Stardust Dragon will comfort you
-			}
-
-			BabyBloodEelBuff: {
-				DisplayName: Baby Blood Eel
-				Description: WIP
-			}
-
 			DistortionSphereBuff: {
 				DisplayName: Distortion Sphere
 				Description: "{$Mods.RijamsMod.Items.DistortionSphereItem.Tooltip}"
@@ -337,6 +352,11 @@ Mods: {
 			SwiftSphereBuff: {
 				DisplayName: Swift Sphere
 				Description: "{$Mods.RijamsMod.Items.SwiftSphereItem.Tooltip}"
+			}
+
+			Tagged: {
+				DisplayName: Tagged
+				Description: Highlighted enemies take +10% damage
 			}
 		}
 
@@ -483,6 +503,9 @@ Mods: {
 			FriendlyGreekFire1.DisplayName: Friendly Greek Fire
 			FriendlyGreekFire2.DisplayName: Friendly Greek Fire
 			FriendlyGreekFire3.DisplayName: Friendly Greek Fire
+			TAGProj.DisplayName: Tacticle Awareness Grenade
+			BabyBoneSerpent.DisplayName: Baby Bone Serpent
+			GiantWorm.DisplayName: Giant Worm
 		}
 
 		Tiles: {
@@ -511,9 +534,10 @@ Mods: {
 			CudgelPrefixReaching.DisplayName: Reaching
 			CudgelPrefixShort.DisplayName: Short
 			CudgelPrefixVigilant.DisplayName: Vigilant
-			CudgelPrefixFree.DisplayName: Free
+			// CudgelPrefixFree.DisplayName: Free
 			CudgelPrefixHealthy.DisplayName: Healthy
 			CudgelPrefixDefensive.DisplayName: Defensive
+			CudgelPrefixHasty.DisplayName: Hasty
 		}
 
 		Emotes: {
