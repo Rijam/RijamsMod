@@ -516,7 +516,7 @@ namespace RijamsMod.NPCs.Enemies
 			float spawnChance = 0f;
 			if (spawnInfo.Player.ZoneUnderworldHeight) //Underworld
 			{
-				spawnChance += 0.3f;
+				spawnChance += 0.25f;
 			}
 			if (spawnInfo.Player.ZoneRockLayerHeight && // Player in the caverns layer
 				spawnInfo.SpawnTileY <= Main.maxTilesY - 200 && // Above the underworld

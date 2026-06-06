@@ -128,7 +128,7 @@ namespace RijamsMod.NPCs.Enemies
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
 					NPC.localAI[1]++;
-					if (NPC.localAI[1] == 1f && Collision.CanHitLine(NPC.Center, 16, 16, target.Center, 16, 16))
+					if (NPC.localAI[1] == 1f && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1))
 					{
 						NPC.ai[1] = 1f;
 						Vector2 velocity = targetPos;
@@ -144,7 +144,8 @@ namespace RijamsMod.NPCs.Enemies
 					{
 						NPC.ai[1] = 0f;
 					}
-					if (NPC.localAI[1] >= 60f)
+					float attackDelay = Main.expertMode ? 60f : 90f;
+					if (NPC.localAI[1] >= attackDelay)
 					{
 						NPC.localAI[1] = 0f;
 						NPC.ai[1] = 0f;
@@ -238,11 +239,20 @@ namespace RijamsMod.NPCs.Enemies
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (NPC.CountNPCS(Type) > 3)
+			if (Main.tile[spawnInfo.SpawnTileX, spawnInfo.SpawnTileY].WallType > WallID.None)
+			{
+				return 0f;
+			}
+			if (!(spawnInfo.Player.ZoneOverworldHeight || spawnInfo.Player.ZoneSkyHeight))
 			{
 				return 0f;
 			}
 			if (spawnInfo.Player.position.Y > Main.worldSurface * 16) // Below the surface. * 16 because Player.position is in pixels while Main.worldSurface is in tiles.
+			{
+				return 0f;
+			}
+			int aliveCount = NPC.CountNPCS(Type);
+			if (aliveCount > 3)
 			{
 				return 0f;
 			}
@@ -251,7 +261,7 @@ namespace RijamsMod.NPCs.Enemies
 
 			if (spawnInfo.Sky)
 			{
-				spawnChance += 0.25f;
+				spawnChance += 0.2f;
 			}
 			if (Main.IsItAHappyWindyDay)
 			{
@@ -261,7 +271,7 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				spawnChance += 0.02f;
 			}
-			if (Condition.InRain.IsMet())
+			if (Main.raining)
 			{
 				spawnChance += 0.1f;
 			}
@@ -269,6 +279,11 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				spawnChance -= 0.1f;
 			}
+			if (!Condition.DownedEarlygameBoss.IsMet())
+			{
+				spawnChance -= 0.1f;
+			}
+			spawnChance -= aliveCount / 20f;
 
 			return Math.Clamp(spawnChance, 0f, 1f);
 		}
