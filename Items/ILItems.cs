@@ -1,3 +1,4 @@
+/*
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
@@ -20,7 +21,6 @@ namespace RijamsMod.Items
 			//IL_Player.PlayerFrame -= LanternEdit;
 		}
 
-		/*
 		/// <summary>
 		/// <br>This IL Edit is used to correct the front arm animation when using items with ItemUseStyleID.RaiseLamp.</br>
 		/// <br>See also <seealso cref="GlobalItems.fixItemUseStyleIDRaiseLampFrontArmAnimation"/></br>
@@ -65,6 +65,6 @@ namespace RijamsMod.Items
 				return returnValue;
 			});
 		}
-		*/
 	}
 }
+*/

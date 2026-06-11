@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -72,7 +69,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		private readonly Asset<Texture2D> lightTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/RadiantLanternShine");
 
-		public override void PostDraw(Color lightColor)
+		public override void PostDraw(Player player, Color lightColor)
 		{
 			Player owner = Main.player[Projectile.owner];
 

@@ -103,8 +103,9 @@ namespace RijamsMod.Items.Tools
 			{
 				if (line.Mod == "Terraria" && line.Name == "ItemName")
 				{
-					line.OverrideColor = Color.Lerp(Color.OrangeRed, Color.Yellow, 0.5f + ((float)Math.Sin(Main.GlobalTimeWrappedHourly * 5)) / 2f);
+					line.Color = Color.Lerp(Color.OrangeRed, Color.Yellow, 0.5f + ((float)Math.Sin(Main.GlobalTimeWrappedHourly * 5)) / 2f);
 				}
+				break;
 			}
 		}
 	}

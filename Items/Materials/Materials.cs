@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,7 +8,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults() 
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Harpy or]", "[c/474747:dropped by Firmament Harpies]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Harpy or]", "[c/474747:dropped by Firmament Harpies]"] );
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.GiantHarpyFeather; // Shimmer transforms the item.
 		}
 
@@ -26,7 +25,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Harpy or]", "[c/474747:dropped by Firmament Harpies]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Harpy or]", "[c/474747:dropped by Firmament Harpies]"] );
 		}
 
 		public override void SetDefaults()
@@ -42,7 +41,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Blood Crawlers]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Blood Crawlers]"] );
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.WormTooth; // Shimmer transforms the item.
 		}
 
@@ -59,7 +58,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Eye of Cthulhu]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Eye of Cthulhu]"] );
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.Silk; // Shimmer transforms the item.
 		}
 
@@ -76,7 +75,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:In Hardmode]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Hell Trader]", "[c/474747:In Hardmode]"] );
 		}
 
 		public override void SetDefaults()
@@ -92,7 +91,7 @@ namespace RijamsMod.Items.Materials
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Santa NK1]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Santa NK1]"] );
 		}
 
 		public override void SetDefaults()

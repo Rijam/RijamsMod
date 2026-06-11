@@ -27,7 +27,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup(RecipeGroupID.IronBar, 10)
+				.AddRecipeGroup(RecipeGroups.IronBar, 10)
 				.AddIngredient(ItemID.Obsidian, 25)
 				.AddIngredient(ItemID.FrostCore, 1)
 				.AddTile(TileID.WorkBenches)

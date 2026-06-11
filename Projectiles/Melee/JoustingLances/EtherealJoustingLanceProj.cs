@@ -91,8 +91,8 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 		{
 			Vector2 targetCenter = Main.npc[targetIndex].Center;
 			Vector2 position = player.Center;
-			int screenOffsetX = Main.rand.Next((Main.LogicCheckScreenWidth / 2) + screenFluff, Main.LogicCheckScreenWidth + screenFluff);
-			int screenOffsetY = Main.rand.Next((Main.LogicCheckScreenHeight / 2) + screenFluff, Main.LogicCheckScreenHeight + screenFluff);
+			int screenOffsetX = Main.rand.Next((Main.MaxWorldViewSize.X / 2) + screenFluff, Main.MaxWorldViewSize.X + screenFluff);
+			int screenOffsetY = Main.rand.Next((Main.MaxWorldViewSize.Y / 2) + screenFluff, Main.MaxWorldViewSize.Y + screenFluff);
 			if (Main.rand.NextBool())
 			{
 				screenOffsetX *= -1;
@@ -110,7 +110,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 
 		Asset<Texture2D> glowTexture;
 
-		public override void PostDraw(Color lightColor)
+		public override void PostDraw(Player player, Color lightColor)
 		{
 			Player owner = Main.player[Projectile.owner];
 			float movementInLanceDirection = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.UnitX * owner.direction), owner.velocity.SafeNormalize(Vector2.UnitX * owner.direction));

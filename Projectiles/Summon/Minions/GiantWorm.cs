@@ -30,7 +30,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
         {
 			Main.projFrames[Projectile.type] = 3;
 			Main.projPet[Projectile.type] = true;
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargetingFeature[Projectile.type] = true;
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = false;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 			ProjectileID.Sets.TrailCacheLength[Type] = 96; // 24 slots before it breaks in multiplayer
@@ -287,7 +287,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			return result;
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			// Draw the oldPos
 			// for (int i = 0; i < Projectile.oldPos.Length; i++)

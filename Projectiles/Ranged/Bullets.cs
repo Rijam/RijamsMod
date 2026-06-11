@@ -64,7 +64,7 @@ namespace RijamsMod.Projectiles.Ranged
 				}
 			}
 		}
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			//Redraw the projectile with the color not influenced by light
 			Vector2 drawOrigin = new(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);

@@ -11,6 +11,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
 using RijamsMod.EmoteBubbles;
+using System;
 
 namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 {
@@ -75,6 +76,21 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 
 			NPCID.Sets.IsPetSmallForPetting[Type] = true;
 			NPCID.Sets.PlayerDistanceWhilePetting[Type] = 34;
+
+			// Here we define which portrait to use for the Town NPC when the portrait style setting is set to detailed.
+			NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
+				.With(NPCID.Sets.VariantPortraitCondition(0), NPCID.Sets.BasicPortrait($"{Texture}_Portrait")) // Each variant of Example Town Pet gets its own portrait.
+				.With(NPCID.Sets.VariantPortraitCondition(1), NPCID.Sets.BasicPortrait($"{Texture}_1_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(2), NPCID.Sets.BasicPortrait($"{Texture}_2_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(3), NPCID.Sets.BasicPortrait($"{Texture}_3_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(4), NPCID.Sets.BasicPortrait($"{Texture}_4_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(5), NPCID.Sets.BasicPortrait($"{Texture}_5_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(6), NPCID.Sets.BasicPortrait($"{Texture}_6_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(7), NPCID.Sets.BasicPortrait($"{Texture}_7_Portrait"))
+				.With(NPCID.Sets.VariantPortraitCondition(8), NPCID.Sets.BasicPortrait($"{Texture}_8_Portrait"))
+				.Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // The default portrait to use.
+			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-24f, 8f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
+			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults()
@@ -239,11 +255,6 @@ namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 			chat.Add("Mew.");
 
 			return chat;
-		}
-
-		public override void SetChatButtons(ref string button, ref string button2)
-		{
-			button = Language.GetTextValue("UI.PetTheAnimal"); // Pet
 		}
 
 		public override bool CanGoToStatue(bool toKingStatue)

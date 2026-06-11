@@ -8,10 +8,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using RijamsMod.Buffs.Debuffs;
 using RijamsMod.Dusts;
-using System.Reflection.Emit;
+using Terraria.GameContent.Drawing;
 
 namespace RijamsMod.Projectiles.Ranged
 {
+	/* Replaced by the CustomParticleOrchestra
 	public class ExplodingFlarePop : ModProjectile
 	{
 		// Exploding Flare Pop texture taken from Venturous 1.6.1 by Pixelfox
@@ -78,6 +79,7 @@ namespace RijamsMod.Projectiles.Ranged
 			}
 		}
 	}
+	*/
 
 	public class ExplodingFlareBase : ModProjectile
 	{
@@ -311,7 +313,7 @@ namespace RijamsMod.Projectiles.Ranged
 		}
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
-			target.AddBuff(DebuffType(), PlayerDebuffDuration(), quiet: false);
+			target.AddBuff(DebuffType(), PlayerDebuffDuration());
 		}
 
 		public override void PrepareBombToBlow()
@@ -337,11 +339,19 @@ namespace RijamsMod.Projectiles.Ranged
 			Projectile.Resize(6, 6);
 			Color popColor = PopColor();
 			float popScale = PopScale();
-			Projectile popProj = Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<ExplodingFlarePop>(), 0, 0, Projectile.owner, popScale);
-			if (popProj.ModProjectile is ExplodingFlarePop flarePop)
+			// Replaced with the CustomParticleOrchestra
+			// Projectile popProj = Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.position, Vector2.Zero, ModContent.ProjectileType<ExplodingFlarePop>(), 0, 0, Projectile.owner, popScale);
+			// if (popProj.ModProjectile is ExplodingFlarePop flarePop)
+			// {
+			// 	flarePop.packedColor = popColor.PackedValue;
+			// }
+			
+			CustomParticleOrchestra.RequestParticleSpawn(clientOnly: true, CustomParticleOrchestraType.ExplosiveFlarePop, new ParticleOrchestraSettings()
 			{
-				flarePop.packedColor = popColor.PackedValue;
-			}
+				UniqueInfoPiece = (int)popColor.PackedValue,
+				PositionInWorld = Projectile.position,
+				MovementVector = new Vector2(popScale, popScale)
+			});
 
 			float dustScale = 1f;
 			for (int j = 0; j < 20; j++)

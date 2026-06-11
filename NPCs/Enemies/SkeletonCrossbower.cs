@@ -32,7 +32,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.defense = 9;
 			NPC.lifeMax = 100;
 			NPC.value = 150f;
-			NPC.aiStyle = 3;
+			NPC.aiStyle = NPCAIStyleID.Fighter;
 			NPC.knockBackResist = 0.4f;
 			AIType = NPCID.GoblinArcher;
 			AnimationType = NPCID.GoblinArcher;
@@ -72,9 +72,9 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Ranged.StockadeCrossbow>(), 15)); //6.67% chance
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
+		public override float SpawnChance(NPC.Spawner spawner) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
 		{
-			return (spawnInfo.Player.ZoneDungeon) ? 0.02f : 0f;
+			return (spawner.Player.ZoneDungeon) ? 0.02f : 0f;
 		}
 	}
 }

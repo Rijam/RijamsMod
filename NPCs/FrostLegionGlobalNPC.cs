@@ -97,7 +97,7 @@ namespace RijamsMod.NPCs
 					dustPosX += (int)scaledPosition.X;
 					int dustPosXWorld = dustPosX / 16;
 					int dustPosYWorld = dustPosY / 16;
-					if (WorldGen.InWorld(dustPosXWorld, dustPosYWorld) && Main.tile[dustPosXWorld, dustPosYWorld] != null && !Main.tile[dustPosXWorld, dustPosYWorld].HasUnactuatedTile && Main.tile[dustPosXWorld, dustPosYWorld].WallType == 0)
+					if (WorldGen.InWorld(dustPosXWorld, dustPosYWorld) && Main.tile[dustPosXWorld, dustPosYWorld] != null && !Main.tile[dustPosXWorld, dustPosYWorld].HasUnactuatedTile && Main.tile[dustPosXWorld, dustPosYWorld].WallType == WallID.None)
 					{
 						int dustIndex = Dust.NewDust(new Vector2(dustPosX, dustPosY), 10, 10, DustID.Snow);
 						Main.dust[dustIndex].scale += Main.cloudAlpha * 0.2f;

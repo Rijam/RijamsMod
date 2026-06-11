@@ -25,7 +25,9 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
-			Projectile.hide = false;
+			// Projectile.hide = false;
+			// Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
+			Projectile.usesOwnerLight = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.ignoreWater = true;
 			Projectile.ownerHitCheck = true;
@@ -75,7 +77,7 @@ namespace RijamsMod.Projectiles.Magic
 		public Asset<Texture2D> Flakes = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Flakes");
 		public Asset<Texture2D> Shine = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/WindGust_Shine");
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = SpriteEffects.FlipHorizontally;

@@ -160,7 +160,7 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 		public override void HoldItem(Player player)
 		{
 			// Don't add the light or dust if the player is on a rope or is petting a town pet. This is because the item is hidden when doing those actions.
-			if (player.pulley || player.isPettingAnimal)
+			if (player.pulley || player.petting.isPetting)
 			{
 				return;
 			}
@@ -177,13 +177,13 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 					dust.velocity = playerPos.DirectionTo(dust.position) * 0.2f;
 				}
 				dust.fadeIn = 0.3f;
-				dust.noLightEmittence = true;
+				dust.noLightEmittance = true;
 				dust.customData = this;
 			}
 		}
-		public override void PostUpdate()
+		public override void PostUpdate(WorldItem item)
 		{
-			Lighting.AddLight(Item.Center, LightColor().ToVector3());
+			Lighting.AddLight(item.Center, LightColor().ToVector3());
 		}
 	}
 }

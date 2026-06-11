@@ -269,7 +269,7 @@ namespace RijamsMod.Projectiles.Magic
 						dust12.scale /= 2f;
 						dust12.fadeIn *= 0.85f;
 						dust12.color = new Color(255, 255, 255, 255);
-						dust12.noLightEmittence = true;
+						dust12.noLightEmittance = true;
 					}
 				}
 			}
@@ -279,7 +279,7 @@ namespace RijamsMod.Projectiles.Magic
 			return Color.White * Projectile.Opacity;
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
@@ -335,7 +335,7 @@ namespace RijamsMod.Projectiles.Magic
 
 			Vector2 shinyPos = Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
 			Main.EntitySpriteDraw(texture, shinyPos, sourceRect, fairyQueenWeaponColor, Projectile.rotation, projOrigin, Projectile.scale * 0.9f, spriteEffects);
-			Texture2D textureExtra98 = TextureAssets.Extra[98].Value;
+			Texture2D textureExtra98 = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			Vector2 shinyOrigin = textureExtra98.Size() / 2f;
 			Color colorTopBot = fairyQueenWeaponColor * 0.5f;
 			Color ColorLeftRight = fairyQueenWeaponColor;

@@ -87,7 +87,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup(RecipeGroupID.IronBar, 2)
+				.AddRecipeGroup(RecipeGroups.IronBar, 2)
 				.AddIngredient(ItemID.Silk)
 				.AddCondition(Condition.AnglerQuestsFinishedOver(1))
 				.AddTile(TileID.WorkBenches)

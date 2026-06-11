@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using RijamsMod.Items;
-using System.Linq;
 
 namespace RijamsMod.Projectiles
 {
@@ -180,6 +180,34 @@ namespace RijamsMod.Projectiles
 			if (projectile.type == ProjectileID.ShadowJoustingLance)
 			{
 				target.AddBuff(BuffID.ShadowFlame, info.Damage * 2);
+			}
+		}
+
+		public static void DrawLineForWhips(List<Vector2> controlPoints, Color lineColor, bool decrementCount = false)
+		{
+			Texture2D texture = TextureAssets.FishingLine.Value;
+			Rectangle frame = texture.Frame();
+			Vector2 origin = new(frame.Width / 2, 2);
+
+			Vector2 pos = controlPoints[0];
+			int maxCount = controlPoints.Count - 1;
+			if (decrementCount)
+			{
+				maxCount--;
+			}
+			// If you whip has a long range and this line is poking out of the front, use list.Count - 2 instead of list.Count - 1.
+			for (int i = 0; i < maxCount; i++)
+			{
+				Vector2 element = controlPoints[i];
+				Vector2 diff = controlPoints[i + 1] - element;
+
+				float rotation = diff.ToRotation() - MathHelper.PiOver2;
+				Color color = Lighting.GetColor(element.ToTileCoordinates(), lineColor);
+				Vector2 scale = new(1, (diff.Length() + 2) / frame.Height);
+
+				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);
+
+				pos += diff;
 			}
 		}
 	}

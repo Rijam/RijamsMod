@@ -123,7 +123,7 @@ namespace RijamsMod.Projectiles.Pets
 				if (distance < 10f)
 				{
 					Player player2 = player;
-					if (Math.Abs(player2.velocity.X) + Math.Abs(player2.velocity.Y) < num50 && (player2.velocity.Y == 0f || (player2.mount.Active && player2.mount.CanFly())))
+					if (Math.Abs(player2.velocity.X) + Math.Abs(player2.velocity.Y) < num50 && (player2.velocity.Y == 0f || (player2.mount.Active && player2.mount.CanFly(player2))))
 						Projectile.localAI[0] = 0f;
 				}
 
@@ -244,7 +244,7 @@ namespace RijamsMod.Projectiles.Pets
 		private readonly Asset<Texture2D> top = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Pets/DwarfStar");
 		private readonly Asset<Texture2D> middle = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Pets/DwarfStar2");
 		private readonly Asset<Texture2D> bottom = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Pets/DwarfStar3");
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			SpriteEffects spriteEffects = Projectile.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
@@ -258,7 +258,7 @@ namespace RijamsMod.Projectiles.Pets
 			float rotation = Projectile.rotation;
 
 			// The position of the sprite. Not subtracting Main.player[Projectile.owner].gfxOffY will cause the sprite to bounce when walking up blocks.
-			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Main.player[Projectile.owner].gfxOffY);
+			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - player.gfxOffY);
 
 			Color dayTime = new(255, 255, 255, 0); // White
 			Color duskTime = new(255, 165, 0, 0); // Orange

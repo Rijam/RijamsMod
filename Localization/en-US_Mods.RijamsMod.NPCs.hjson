@@ -9,16 +9,36 @@ Harpy: {
 		FarFromHome: I'm lost, need to get back to my nest!
 		DislikeCrowded: This nest is starting to get crowded!
 		HateCrowded: So many people around! Makes me scared!
-		LikeBiome: The {BiomeName} is a good place to live.
 		LoveBiome: I love {BiomeName}! So open air!
+		LikeBiome: The {BiomeName} is a good place to live.
 		DislikeBiome: There isn't much room to fly in {BiomeName}.
 		HateBiome: I need to leave now! {BiomeName} is very bad!
+		LoveNPC: "{NPCName} is the best person ever!"
 		LikeNPC: "{NPCName} is fun to be around."
 		LikeNPC_Princess: "{NPCName} is so nice to me."
-		LoveNPC: "{NPCName} is the best person ever!"
 		DislikeNPC: "{NPCName} makes me uncomfortable."
 		HateNPC: "{NPCName} is so mean to me!"
 		Princess_LovesNPC: Using a Jetpack, I was able to go flying with {NPCName}!
+		# Specific
+		LoveNPC_RijamsMod/InterstellarTraveler: I love living with {NPCName}. She is very nice to me!
+		LoveNPC_FishermanNPC/Fisherman: Me and {NPCName} go on fishing trips sometimes! They let me 'scout ahead', whatever that means!
+		LoveNPC_LivingWorldMod/HarpyVillager: Harpies like me! I love {NPCName}!
+		LikeNPC_RijamsMod/HellTrader: I don't get why some people are scared of {NPCName}. She is kind to me!
+		LikeNPC_WitchDoctor: I like {NPCName}. I wonder if he remembers where he came from?
+		LikeNPC_Guide: I like talking to {NPCName}. I don't understand all of his questions, though!
+		LikeNPC_PartyGirl: Dancing with {NPCName} is so much fun!
+		LikeNPC_Mechanic: "{NPCName} builds cool things!"
+		LikeNPC_Steampunker: "{NPCName} builds cool things!"
+		DislikeNPC_TaxCollector: "{NPCName} doesn't want to talk to me. He just keeps asking me for money."
+		HateNPC_Angler: "{NPCName} is so mean! He keeps calling me names like 'Chicken Legs' or 'Bird Brain'!"
+		# Other NPC's dialogue
+		BestiaryGirl_LovesNPC: We could learn so much about harpy society from {NPCName}
+		Transformed.BestiaryGirl_LovesNPC: Friendly {NPCName} LEARN about them!
+		Guide_LikesNPC: I wonder how {NPCName} became so friendly.
+		Stylist_LikesNPC: "{NPCName} is so easy to talk to when I'm braiding her hair!"
+		WitchDoctor_LikesNPC: "{NPCName} left their society, too. I faced a similar dilema."
+		ArmsDealer_DislikeNPC: With {NPCName} around, it a almost makes me feel bad for using harpies as targets. Almost.
+		Angler_DislikeNPC: "{NPCName} definitely fits the definition for Bird-Brain! Ha-ha!"
 	}
 
 	Census.SpawnCondition: Rescue her in space
@@ -28,7 +48,7 @@ Harpy: {
 
 		Happiness: {
 			# These are automatically translated from other localization. Leave as is.
-			Love: "{$Mods.RijamsMod.NPCs.InterstellarTraveler.DisplayName}"
+			Love: "{$Mods.RijamsMod.NPCs.InterstellarTraveler.DisplayName}, {$NPCName.BestiaryGirl}"
 			Like: "{$Mods.RijamsMod.Common.Forest}, {$Mods.RijamsMod.NPCs.HellTrader.DisplayName}, {$NPCName.Guide}, {$NPCName.Dryad}, {$NPCName.Pirate}, {$NPCName.Stylist}, {$NPCName.Steampunker}, {$NPCName.Golfer}, {$NPCName.Painter}, {$NPCName.WitchDoctor}, {$NPCName.PartyGirl}, {$NPCName.Mechanic}"
 			Dislike: "{$Mods.RijamsMod.Common.Caverns}, {$NPCName.TaxCollector}"
 			Hate: "{$NPCName.Angler}"
@@ -46,16 +66,37 @@ InterstellarTraveler: {
 		FarFromHome: I am far from my home. Both of my homes!
 		DislikeCrowded: I'm used to sharing rooms with others, but I will still like my own area.
 		HateCrowded: What is the maximum capacity in this building because we have surely surpassed it.
-		LikeBiome: A familiar looking biome; I like {BiomeName}.
 		LoveBiome: I love {BiomeName}. So much room for adventure!
+		LikeBiome: A familiar looking biome; I like {BiomeName}.
 		DislikeBiome: I was never one who enjoyed {BiomeName}. I much prefer space.
 		HateBiome: Wow, {BiomeName} now ranks as one of the worse places I've visited.
+		LoveNPC: I love {NPCName}. You can make new best friends wherever you go!
 		LikeNPC: "{NPCName} offers me great company!"
 		LikeNPC_Princess: "{NPCName} calls me her 'friendly alien'. Heh, well I guess it's true!"
-		LoveNPC: I love {NPCName}. You can make new best friends wherever you go!
 		DislikeNPC: "{NPCName} is not a person I enjoy being around."
 		HateNPC: "{NPCName} is so prejudice and close minded."
 		Princess_LovesNPC: A friendly alien! {NPCName} is so interesting!
+		# Specific
+		LoveNPC_RijamsMod/Harpy: I really enjoy {NPCName}'s presence. Some of the things she says makes me laugh!
+		LovenPC_ThoriumMod/Cook: The food {NPCName} makes is amazing!
+		LikeNPC_Guide: I like {NPCName}. He is always offering to teach me about this world.
+		LikeNPC_BossesAsNPCs/MartianSauser: "{NPCName} is stranded on this planet, too? I can relate."
+		LikeNPC_MagicStorage/Golem: I like {NPCName}. They are very informative.
+		DislikeNPC_Demolitionist: "{NPCName} just lobs those grenades around without a care in the universe! He could seriously hurt somebody!"
+		DislikeNPC_Painter: I recognize {NPCName}'s talent. That is all I have to say.
+		DislikeNPC_TaxCollector: "{NPCName} refuses to accept my currency. Doesn't he know it's the way of the future?"
+		HateNPC_Merchant: "{NPCName} refuses to sell me anything. I don't need the primitive items he has on offer, anyway."
+		# Other NPC's dialogue
+		Mechanic_LikesNPC: "{NPCName} has some interesting technology!"
+		GoblinTinkerer_LikesNPC: "{NPCName} has some interesting technology!"
+		Cyborg_LikesNPC: "{NPCName} has some interesting technology!"
+		Steampunker_LikesNPC: I like {NPCName}'s suit. Do you think it comes in brass?
+		BossesAsNPCs/MartianSauser: "{NPCName} is another extra terrestrial? I must befriend them."
+		BestiaryGirl_LovesNPC: Wow {NPCName} is like, such an exciting person! We should totally get to know each other!
+		Transformed.BestiaryGirl_LovesNPC: "{NPCName} exciting! Want to CHAT!"
+		Stylist_DislikesNPC: I'm not sure what to do with {NPCName}. Feathers are not the same as hair!
+		Merchant_HatesNPC: Next time you speak with {NPCName}, tell them that their business is not welcomed.
+		TaxCollector_HatesNPC: That alien {NPCName} keeps giving me this weird currency. I refuse to accept it! What am I supposed to do with it?
 	}
 
 	Census_SpawnCondition: Defeat EoW or BoW and have [i:RijamsMod/OddDevice] Odd Device in your inventory
@@ -83,19 +124,39 @@ HellTrader: {
 		FarFromHome: I'm far away from my home and I didn't bring my supplies!
 		DislikeCrowded: I'm not used to living near so many people!
 		HateCrowded: It is so crowded here! I don't like having so many people around me!
-		LikeBiome: The heat in {BiomeName} reminds me of where I'm from.
-		LoveBiome: I will always love {BiomeName}!
-		DislikeBiome: Brr! It's so cold in {BiomeName}.
+		LoveBiome: The love living in {BiomeName}.
+		LikeBiome: The like {BiomeName}. It's a pleasant place to live.
+		DislikeBiome: I don't particularly enjoy living in {BiomeName}.
 		HateBiome: I hate {BiomeName}! Why would anyone like living here?
+		LoveNPC: "{NPCName} is an amazing person to be around!"
 		LikeNPC: "{NPCName} accepts me for who I am."
 		LikeNPC_Princess: Is {NPCName} always so friendly? She is so nice to me!
-		LoveNPC: "{NPCName}'s magic is so amazing! I hope to be that powerful someday."
 		DislikeNPC: "{NPCName} is the kind of person I want to avoid."
 		HateNPC: I don't understand {NPCName}. How and why are they like that?
 		Princess_LovesNPC: Just because {NPCName} is a demon doesn't mean she can't be friendly!
+		# Specific
+		LoveBiome_Underground: I nostalgic for {BiomeName}. It's where I grew up after all.
+		LikeBiome_Desert: The heat in {BiomeName} reminds me of where I'm from.
+		DislikeBiome_Snow: Brr! It's so cold in {BiomeName}.
+		LoveNPC_Wizard: "{NPCName}'s magic is so amazing! I hope to be that powerful someday."
+		LoveNPC_ThoriumMod/WeaponMaster: I get so nervous talking {NPCName}! He is so dreamy!
+		LoveNPC_CalamityMod/WITCH: "{NPCName} is so powerful! I wish my magic were as good as hers!"
+		LikeNPC_CalamityMod/DILF: I'm more into fire magic, but {NPCNames}'s ice magic is still super impressive!
+		LikeNPC_RijamsMod/Harpy: I get along with {NPCName} quite well even though we are from opposing heights of the world.
+		LikeNPC_DD2Bartender: The drinks that {NPCName} serves burns my mouth in a different way than fire. I like it!
+		LikeNPC_FishermanNPC/Fisherman: "{NPCName} values my lava fishing expertise."
+		# Other NPC's dialogue
+		DD2Bartender_LikesNPC: "{NPCName} sure can down several drinks! You cannot always judge a person by their origins."
+		GoblinTinkerer_LikesNPC: I sympathize with {NPCName}. I know what it's like to be an outcast from your people.
+		Demolitionist_DislikesNPC: My people are constantly battling {NPCName}'s people. I don't think I can trust them.
 	}
 
 	Census.SpawnCondition: Found in Hell. Can move in in Hardmode
+	NPCDialog.MoveIn:
+		'''
+		You want me to move into one of the homes you built? Other humans live there right? What would they think of me?
+		Well, to be honest, it is lonely living down here. Sure! Why the hell not! I'd love to see what else this world has to offer.
+		'''
 
 	Bestiary: {
 		Description: A fire imp who spent their life studying the remains of the cities in the Underworld. She has acquired many goods to trade.
@@ -167,6 +228,7 @@ UnconsciousHarpy: {
 SnuggetPet: {
 	DisplayName: Snugget
 	Census.SpawnCondition: License sold after 60% Bestiary completion and Interstellar Traveler is present.
+	TownNPCMood.NoHome: Mew?
 	Bestiary.Description: Ahh! An alien! Fortunately, this one is super fluffy and just wants to snuggle with you.
 }
 

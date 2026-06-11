@@ -19,7 +19,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.arrow = false;
 			Projectile.width = 10;
 			Projectile.height = 10;
-			Projectile.aiStyle = 1;
+			Projectile.aiStyle = ProjAIStyleID.Arrow;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
 			AIType = ProjectileID.Bullet;
@@ -33,7 +33,7 @@ namespace RijamsMod.Projectiles.Magic
 			}
 			Projectile.usesIDStaticNPCImmunity = true;
 			Projectile.idStaticNPCHitCooldown = 10;
-			Projectile.timeLeft = 600;
+			Projectile.timeLeft = 300;
 		}
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
@@ -53,7 +53,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.arrow = false;
 			Projectile.width = 10;
 			Projectile.height = 10;
-			Projectile.aiStyle = 1;
+			Projectile.aiStyle = ProjAIStyleID.Arrow;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.light = 0.1f;            //How much light emit around the projectile
@@ -133,7 +133,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.arrow = false;
 			Projectile.width = 10;
 			Projectile.height = 10;
-			Projectile.aiStyle = 1;
+			Projectile.aiStyle = ProjAIStyleID.Arrow;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.light = 0.5f;            //How much light emit around the projectile
@@ -161,7 +161,7 @@ namespace RijamsMod.Projectiles.Magic
 			if (Projectile.ai[0] >= 20f)
 			{
 				Projectile.ai[0] = 20f;
-				if (Projectile.type != 477)
+				if (Projectile.type != ProjectileID.CrystalDart)
 				{
 					Projectile.velocity.Y += 0.05f;
 				}

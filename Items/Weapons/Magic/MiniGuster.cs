@@ -40,8 +40,12 @@ namespace RijamsMod.Items.Weapons.Magic
 		{
 			// Makes it so the item doesn't cost any mana to use if it didn't target anything.
 			// Has the side effect of stating that the item uses 0 mana in the tooltip. That is corrected below.
-			if (player.itemAnimation == 0)
+			
+			// Main.NewText($"{player.itemAnimation} {player.itemAnimationMax}");
+			if (player.itemAnimation == player.itemAnimationMax)
 			{
+				// Main.NewText("true");
+				// mult = 0;
 				reduce -= Item.mana;
 			}
 		}
@@ -52,6 +56,20 @@ namespace RijamsMod.Items.Weapons.Magic
 			{
 				tooltips[index].Text = Language.GetTextValue("CommonItemTooltip.UsesMana", (int)(Item.mana * Main.LocalPlayer.manaCost));
 			}
+		}
+
+		public override void Load()
+		{
+			On_Player.ItemCheck_PayMana_ShouldSkipManaUse += Detour_Player_ItemCheck_PayMana_ShouldSkipManaUse;
+		}
+
+		private bool Detour_Player_ItemCheck_PayMana_ShouldSkipManaUse(On_Player.orig_ItemCheck_PayMana_ShouldSkipManaUse orig, Player self, Item sItem, bool altFire)
+		{
+			if (sItem.type == ModContent.ItemType<MiniGuster>() || sItem.type == ModContent.ItemType<FrostyGuster>())
+			{
+				return true;
+			}
+			return orig(self, sItem, altFire);
 		}
 	}
 }

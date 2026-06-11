@@ -1,8 +1,5 @@
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -66,9 +63,9 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ItemID.Bone, 5)); //20% chance
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
+		public override float SpawnChance(NPC.Spawner spawner) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
 		{
-			return (spawnInfo.Player.ZoneDungeon) ? 0.03f : 0f;
+			return (spawner.Player.ZoneDungeon) ? 0.03f : 0f;
 		}
 	}
 }

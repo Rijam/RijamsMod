@@ -108,7 +108,8 @@ namespace RijamsMod
 				fishermanNPC.Call("AddToShop", "DefaultPrice", "Extra", ModContent.ItemType<Items.Accessories.Misc.TrapBobber>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(1) });
 				fishermanNPC.Call("AddToShop", "DefaultPrice", "Extra", ModContent.ItemType<Items.Accessories.Misc.SpinnerBobber>(), new List<Condition>() { Condition.AnglerQuestsFinishedOver(1) });
 			}
-
+			
+			/*
 			if (ModLoader.TryGetMod("DialogueTweak", out Mod dialogueTweak))
 			{
 				Func<Rectangle> frame = () => new(0, 0, 44, 44);
@@ -143,6 +144,7 @@ namespace RijamsMod
 					() => NPCHelper.NumberOfQuestsCompleted() >= NPCHelper.NUMBEROFQUESTS && InterstellarTraveler.showingQuestChecklistButton,
 					frame);
 			}
+			*/
 		}
 
 		//Adapted from absoluteAquarian's GraphicsLib
@@ -452,7 +454,7 @@ namespace RijamsMod
 			}
 		}
 	}
-	internal enum RijamsModMessageType : byte
+	public enum RijamsModMessageType : byte
 	{
 		DummyPacket, //I'm not sure why, but the first packet gets triggered when entering the world (in multiplayer)
 		SetQuestOddDevice,

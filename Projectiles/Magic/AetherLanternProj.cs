@@ -93,13 +93,11 @@ namespace RijamsMod.Projectiles.Magic
 		private readonly Asset<Texture2D> textureGlass = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/AetherLanternProj_Glass");
 		private readonly Asset<Texture2D> textureFlashBack = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Magic/AetherLanternProj_FlashBack");
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
-			Player owner = Main.player[Projectile.owner];
-
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-			if (owner.gravDir == -1f)
+			if (player.gravDir == -1f)
 			{
 				spriteEffects |= SpriteEffects.FlipVertically;
 			}
@@ -205,14 +203,11 @@ namespace RijamsMod.Projectiles.Magic
 			Main.EntitySpriteDraw(texture, projCenter, sourceRectFlash0, colorFlash, rotation, origin, scale * scaleMulti, SpriteEffects.None, 0f);
 		}
 
-
-		public override void PostDraw(Color lightColor)
+		public override void PostDraw(Player player, Color lightColor)
 		{
-			Player owner = Main.player[Projectile.owner];
-
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-			if (owner.gravDir == -1f)
+			if (player.gravDir == -1f)
 			{
 				spriteEffects |= SpriteEffects.FlipVertically;
 			}
@@ -228,7 +223,7 @@ namespace RijamsMod.Projectiles.Magic
 			float rotation = Projectile.rotation;
 
 			// The position of the sprite. Not subtracting Main.player[Projectile.owner].gfxOffY will cause the sprite to bounce when walking up blocks.
-			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Main.player[Projectile.owner].gfxOffY);
+			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - player.gfxOffY);
 
 			if (Projectile.timeLeft > 10)
 			{

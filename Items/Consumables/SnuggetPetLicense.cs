@@ -1,15 +1,11 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using RijamsMod.NPCs.TownNPCs;
-using RijamsMod.NPCs.TownNPCs.SnuggetPet;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Chat;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using RijamsMod.NPCs.TownNPCs.SnuggetPet;
 
 namespace RijamsMod.Items.Consumables
 {
@@ -17,7 +13,7 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Zoologist]", "[c/474747:after 60% Bestiary completion]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Zoologist]", "[c/474747:after 60% Bestiary completion]"]);
 		}
 
 		public override void SetDefaults()
@@ -33,6 +29,7 @@ namespace RijamsMod.Items.Consumables
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(0, 5));
 		}
 
+		/*
 		public override void OnConsumeItem(Player player)
 		{
 			int npcType = ModContent.NPCType<SnuggetPet>(); // The NPC Type for the Town Pet.
@@ -46,6 +43,7 @@ namespace RijamsMod.Items.Consumables
 				}
 			}
 		}
+		*/
 		public override bool? UseItem(Player player)
 		{
 			// Only do something if the License hasn't been used before or the Town Pet exists in the world.
@@ -54,7 +52,7 @@ namespace RijamsMod.Items.Consumables
 			{
 				if (player.whoAmI == Main.myPlayer)
 				{
-					player.ApplyItemTime(Item); // Make it so the player uses the item for the useAnimation.
+					// player.ApplyItemTime(Item); // Make it so the player uses the item for the useAnimation.
 					SnuggetUnlockOrExchangePet(ref RijamsModWorld.boughtSnuggetPet, npcType, "Mods.RijamsMod.UI.LicenseSnuggetUse"); // Modified NPC.UnlockOrExchangePet method.
 				}
 				return true;

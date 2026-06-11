@@ -158,7 +158,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		public override Color? GetAlpha(Color lightColor) => new(255, 255, 255, 255 - Projectile.alpha);
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			// Get texture of projectile
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;

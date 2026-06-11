@@ -65,17 +65,17 @@ namespace RijamsMod.Buffs
 			Main.debuff[BuffID.Oiled] = true;
 			Main.pvpBuff[BuffID.Oiled] = true;
 			Main.buffNoSave[BuffID.Oiled] = true;
-			BuffID.Sets.LongerExpertDebuff[BuffID.Oiled] = true;
+			BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty[BuffID.Oiled] = true;
 
 			Main.debuff[BuffID.ShadowFlame] = true;
 			Main.pvpBuff[BuffID.ShadowFlame] = true;
 			Main.buffNoSave[BuffID.ShadowFlame] = true;
-			BuffID.Sets.LongerExpertDebuff[BuffID.ShadowFlame] = true;
+			BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty[BuffID.ShadowFlame] = true;
 
 			Main.debuff[BuffID.BetsysCurse] = true;
 			Main.pvpBuff[BuffID.BetsysCurse] = true;
 			Main.buffNoSave[BuffID.BetsysCurse] = true;
-			BuffID.Sets.LongerExpertDebuff[BuffID.BetsysCurse] = true;
+			BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty[BuffID.BetsysCurse] = true;
 			
 			Main.debuff[BuffID.DryadsWardDebuff] = true;
 			Main.pvpBuff[BuffID.DryadsWardDebuff] = true;
@@ -184,7 +184,8 @@ namespace RijamsMod.Buffs
 					additiveDamage += 0.15f;
 
 				if (Main.expertMode)
-					additiveDamage *= Main.GameModeInfo.TownNPCDamageMultiplier;
+					// additiveDamage *= Main.GameModeInfo.TownNPCDamageMultiplier;
+					additiveDamage *= GameDifficultyData.TownNPCDamageMultiplier.Sample(Main.Difficulty);
 
 				baseDamage = (int)(baseDamage * additiveDamage);
 				Player.lifeRegen -= 2 * baseDamage;

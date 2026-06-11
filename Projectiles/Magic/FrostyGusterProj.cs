@@ -18,7 +18,7 @@ namespace RijamsMod.Projectiles.Magic
 		public override void SetStaticDefaults()
 		{
 			Main.projFrames[Type] = 8;
-			ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+			// #145 ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY/* tModPorter Note: Removed. AI() should use master.RotatedRelativePoint(master.MountedCenter + ...) to position held projectiles */[Type] = true;
 			ProjectileID.Sets.CultistIsResistantTo[Type] = true;
 		}
 		public override void SetDefaults()
@@ -29,7 +29,9 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
-			Projectile.hide = true;
+			// Projectile.hide = true;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;
+			Projectile.usesOwnerLight = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.ignoreWater = true;
 		}
@@ -251,11 +253,11 @@ namespace RijamsMod.Projectiles.Magic
 			mouseDirection = reader.ReadSByte();
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			if (Main.player[Projectile.owner].gravDir == -1f)
+			if (player.gravDir == -1f)
 			{
 				spriteEffects |= SpriteEffects.FlipVertically;
 			}

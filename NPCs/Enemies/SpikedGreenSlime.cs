@@ -224,11 +224,11 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ItemID.Gel, 2, 1, 4));
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
-			if (Main.slimeRain && Main.hardMode && spawnInfo.Player.ZoneOverworldHeight)
+			if (Main.slimeRain && Main.hardMode && spawner.Player.ZoneOverworldHeight)
 			{
-				if (spawnInfo.PlayerInTown)
+				if (spawner.spawnFriendly)
 				{
 					return 1.25f;
 				}

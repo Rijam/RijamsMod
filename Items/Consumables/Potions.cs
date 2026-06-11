@@ -13,12 +13,12 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Fury Potion");
 			// Tooltip.SetDefault("+10% attack speed");
-			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
-			{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
 				new(255, 181, 229),
 				new(159, 36, 159),
 				new(168, 24, 24)
-			};
+			];
 		}
 
 		public override void SetDefaults()
@@ -54,12 +54,12 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Support Potion");
 			// Tooltip.SetDefault("+1 sentry capacity");
-			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
-			{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
 				new(252, 98, 100),
 				new(223, 17, 20),
 				new(132, 17, 19)
-			};
+			];
 		}
 
 		public override void SetDefaults()
@@ -94,12 +94,12 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Soaring Potion");
 			// Tooltip.SetDefault("+0.5 seconds wing flight");
-			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
-			{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
 				new(139, 235, 239),
 				new(15, 167, 211),
 				new(1, 70, 161)
-			};
+			];
 		}
 
 		public override void SetDefaults()
@@ -135,12 +135,12 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Ferocious Potion");
 			// Tooltip.SetDefault("+10 armor penetration");
-			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
-			{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
 				new(251, 194, 29),
 				new(209, 127, 147),
 				new(140, 85, 10)
-			};
+			];
 		}
 
 		public override void SetDefaults()
@@ -194,12 +194,12 @@ namespace RijamsMod.Items.Consumables
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemID.Sets.DrinkParticleColors[Item.type] = new Color[3]
-			{
+			ItemID.Sets.DrinkParticleColors[Item.type] =
+			[
 				new(96, 211, 255),
 				new(24, 168, 168),
 				new(44, 47, 176)
-			};
+			];
 		}
 
 		public override void SetDefaults()

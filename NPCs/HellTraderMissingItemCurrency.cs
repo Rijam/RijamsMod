@@ -3,12 +3,8 @@ using Terraria.GameContent.UI;
 
 namespace RijamsMod.NPCs
 {
-	public class HellTraderMissingItemCurrency : CustomCurrencySingleCoin
+	public class HellTraderMissingItemCurrency(int coinItemID, long currencyCap) : CustomCurrencySingleCoin(coinItemID, currencyCap)
 	{
-		public HellTraderMissingItemCurrency(int coinItemID, long currencyCap) : base(coinItemID, currencyCap)
-		{
-
-		}
 		public override bool Accepts(Item item)
 		{
 			return false;

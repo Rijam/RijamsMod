@@ -101,7 +101,7 @@ namespace RijamsMod.Projectiles.Ranged
 			return Color.Transparent;
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			ulong seed4 = Main.TileFrameSeed;
 			for (int i = 0; i < 4; i++)

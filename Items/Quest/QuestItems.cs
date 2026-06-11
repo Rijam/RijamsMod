@@ -103,14 +103,14 @@ namespace RijamsMod.Items.Quest
 		public override void AddRecipes() 
 		{
 			CreateRecipe()
-				.AddRecipeGroup("IronBar", 5)
+				.AddRecipeGroup(RecipeGroups.IronBar, 5)
 				.AddIngredient(ItemID.ShadowScale, 2)
 				.AddIngredient(ItemID.Glass, 1)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 			
 			CreateRecipe()
-				.AddRecipeGroup("IronBar", 5)
+				.AddRecipeGroup(RecipeGroups.IronBar, 5)
 				.AddIngredient(ItemID.TissueSample, 2)
 				.AddIngredient(ItemID.Glass, 1)
 				.AddTile(TileID.WorkBenches)

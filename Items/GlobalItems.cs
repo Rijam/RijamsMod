@@ -1,16 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.Localization;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using RijamsMod.Items.Materials;
+using RijamsMod.Items.Weapons.Melee.JoustingLances;
+using RijamsMod.Items.Weapons.Ranged;
 using RijamsMod.Items.Weapons.Ranged.Ammo;
 using RijamsMod.Items.Weapons.Summon.Whips;
-using RijamsMod.Items.Materials;
-using RijamsMod.Items.Weapons.Ranged;
 using static RijamsMod.RijamsModConfigServer;
-using RijamsMod.Items.Weapons.Melee.JoustingLances;
 
 namespace RijamsMod.Items
 {
@@ -251,27 +252,18 @@ namespace RijamsMod.Items
 			if (item.type == ItemID.JoustingLance)
 			{
 				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
-				if (line != null)
-				{
-					line.Text = Language.GetTextValue("ItemTooltip.JoustingLance").Split("\n")[0] + "\n7.65 tile reach";
-				}
+				line?.Text = Language.GetTextValue("ItemTooltip.JoustingLance").Split("\n")[0] + "\n7.65 tile reach";
 				TooltipLine line2 = tooltips.FirstOrDefault(x => x.Name == "Tooltip3" && x.Mod == "Terraria");
 			}
 			if (item.type == ItemID.HallowJoustingLance)
 			{
 				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
-				if (line != null)
-				{
-					line.Text = Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\n7.65 tile reach";
-				}
+				line?.Text = Language.GetTextValue("ItemTooltip.HallowJoustingLance") + "\n7.65 tile reach";
 			}
 			if (item.type == ItemID.ShadowJoustingLance)
 			{
 				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
-				if (line != null)
-				{
-					line.Text = Language.GetTextValue("ItemTooltip.ShadowJoustingLance") + "\n7.65 tile reach\nInflicts Shadowflame";
-				}
+				line?.Text = Language.GetTextValue("ItemTooltip.ShadowJoustingLance") + "\n7.65 tile reach\nInflicts Shadowflame";
 			}
 			RijamsModConfigClient configClient = ModContent.GetInstance<RijamsModConfigClient>();
 			if (CustomItemIDSets.IsWhip[item.type] && (isLeftShiftHeld && configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.HoldShift || configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.On))
@@ -283,6 +275,20 @@ namespace RijamsMod.Items
 						tooltips.Insert(index + 1, new TooltipLine(Mod, "ModWhipDamageReduction", "50% damage penalty per enemy pierced"));
 					}
 				}
+				if (item.type == ItemID.CobWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "60% damage penalty per enemy pierced"));
+					}
+				}
+				if (item.type == ItemID.SlimeWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "60% damage penalty per enemy pierced"));
+					}
+				}
 				if (item.type == ItemID.BlandWhip)
 				{
 					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
@@ -291,6 +297,20 @@ namespace RijamsMod.Items
 					}
 				}
 				if (item.type == ItemID.ThornWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "40% damage penalty per enemy pierced"));
+					}
+				}
+				if (item.type == ItemID.CorruptWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "40% damage penalty per enemy pierced"));
+					}
+				}
+				if (item.type == ItemID.CrimsonWhip)
 				{
 					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
 					{
@@ -309,6 +329,13 @@ namespace RijamsMod.Items
 					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
 					{
 						tooltips.Insert(index + 1, new TooltipLine(Mod, "ModWhipDamageReduction", "30% damage penalty per enemy pierced"));
+					}
+				}
+				if (item.type == ItemID.MeteorWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "40% damage penalty per enemy pierced"));
 					}
 				}
 				if (item.type == ItemID.BoneWhip)
@@ -360,6 +387,13 @@ namespace RijamsMod.Items
 						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "20% damage penalty per enemy pierced"));
 					}
 				}
+				if (item.type == ItemID.FlowerWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "15% damage penalty per enemy pierced"));
+					}
+				}
 				if (item.type == ItemID.MaceWhip)
 				{
 					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
@@ -381,11 +415,32 @@ namespace RijamsMod.Items
 						tooltips.Insert(index + 1, new TooltipLine(Mod, "ModWhipDamageReduction", "20% damage penalty per enemy pierced"));
 					}
 				}
+				if (item.type == ItemID.EelWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "5% damage penalty per enemy pierced"));
+					}
+				}
 				if (item.type == ItemID.RainbowWhip)
 				{
 					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
 					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "20% damage penalty per enemy pierced"));
+					}
+				}
+				if (item.type == ItemID.ConstellationWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
 						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "10% damage penalty per enemy pierced"));
+					}
+				}
+				if (item.type == ItemID.MoonLordWhip)
+				{
+					if (FindTooltipIndex(tooltips, "Knockback", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "VanillaWhipDamageReduction", "5% damage penalty per enemy pierced"));
 					}
 				}
 				if (item.type == ModContent.ItemType<SupernovaWhip>())

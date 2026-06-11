@@ -32,7 +32,7 @@ namespace RijamsMod.Items.Accessories.Movement
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetModPlayer<RijamsModPlayer>().hailfireBootsBoost = true;
-			player.rocketBoots = 2;
+			player.rocketBoots = player.vanityRocketBoots = 2;
 			player.accRunSpeed = 8f; // The player's maximum run speed with accessories
 			player.moveSpeed += 0.1f; // The acceleration multiplier of the player's movement speed
 			player.iceSkate = true;

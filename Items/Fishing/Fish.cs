@@ -1,7 +1,4 @@
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,7 +9,8 @@ namespace RijamsMod.Items.Fishing
 		public override void SetStaticDefaults()
 		{
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true;
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Fished in Honey underground]" });
+			ItemID.Sets.IsBasicFish[Type] = true;
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Fished in Honey underground]"]);
 			Item.ResearchUnlockCount = 3;
 		}
 		public override void SetDefaults()
@@ -29,7 +27,8 @@ namespace RijamsMod.Items.Fishing
 		public override void SetStaticDefaults()
 		{
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true;
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Fished in underground Glowing Mushroom]" });
+			ItemID.Sets.IsBasicFish[Type] = true;
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Fished in underground Glowing Mushroom]"]);
 			Item.ResearchUnlockCount = 3;
 		}
 		public override void SetDefaults()

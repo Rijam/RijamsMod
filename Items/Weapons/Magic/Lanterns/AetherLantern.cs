@@ -101,7 +101,7 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 		{
 			base.HoldItem(player);
 			// Don't add the light or dust if the player is on a rope or is petting a town pet. This is because the item is hidden when doing those actions.
-			if (player.pulley || player.isPettingAnimal)
+			if (player.pulley || player.petting.isPetting)
 			{
 				return;
 			}
@@ -131,7 +131,7 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 		public override void HoldStyle(Player player, Rectangle heldItemFrame)
 		{
 			// Don't add the light or dust if the player is on a rope or is petting a town pet. This is because the item is hidden when doing those actions.
-			if (player.pulley || player.isPettingAnimal)
+			if (player.pulley || player.petting.isPetting)
 			{
 				return;
 			}
@@ -163,9 +163,10 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 		public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
 			// SpriteEffects change which direction the sprite is drawn.
-			SpriteEffects spriteEffects = ((Item.direction <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+			// SpriteEffects spriteEffects = ((Item.direction <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+			SpriteEffects spriteEffects = SpriteEffects.None;
 
-			DrawNPCDirect_Faeling(Item, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, 0f, position, false);
+			DrawNPCDirect_Faeling(null, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, 0f, position, false);
 
 			spriteBatch.Draw(TextureGlass.Value,
 				position,
@@ -174,10 +175,10 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 			return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
 		}
 
-		public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+		public override bool PreDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
 		{
 			// SpriteEffects change which direction the sprite is drawn.
-			SpriteEffects spriteEffects = ((Item.direction <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+			SpriteEffects spriteEffects = ((item.direction <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
 
 			Texture2D textureLantern = TextureAssets.Item[Type].Value;
 
@@ -186,23 +187,27 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 
 			Vector2 origin = sourceRectangleSingle.Size() / 2f;
 
-			DrawNPCDirect_Faeling(Item, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, rotation, Vector2.Zero, true);
+			DrawNPCDirect_Faeling(item, ref Main.screenPosition, TextureAssets.Npc[NPCID.Shimmerfly].Value, spriteEffects, rotation, Vector2.Zero, true);
 
 			spriteBatch.Draw(TextureGlass.Value,
-				Item.Center - Main.screenPosition,
+				item.Center - new Vector2(0, 14) - Main.screenPosition,
 				sourceRectangleSingle, new(lightColor.R, lightColor.G, lightColor.B, 100), rotation, origin, scale, spriteEffects, 0);
 
-			return base.PreDrawInWorld(spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
+			return base.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
 		}
 
 		// Copied from vanilla. Modified for items.
-		private static void DrawNPCDirect_Faeling(Item rCurrentItem, ref Vector2 screenPos, Texture2D texture, SpriteEffects itemSpriteEffect, float rotation, Vector2 inventoryPos, bool inWorld)
+		private static void DrawNPCDirect_Faeling(WorldItem rCurrentItem, ref Vector2 screenPos, Texture2D texture, SpriteEffects itemSpriteEffect, float rotation, Vector2 inventoryPos, bool inWorld)
 		{
 			Vector2 itemCenter;
+			int rWorldItemWhoAmI = 1;
+			float rWorldItemScale = 1f;
 			if (inWorld)
 			{
 				itemCenter = rCurrentItem.Center - screenPos;
-				itemCenter.Y += 5f;
+				itemCenter.Y -= 10f;
+				rWorldItemWhoAmI = rCurrentItem.whoAmI;
+				rWorldItemScale= rCurrentItem.scale;
 			}
 			else
 			{
@@ -212,12 +217,12 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 			int verticalFrames = 5;
 			int horizontalFrames = 4;
 			int currentFrame = (int)Main.GameUpdateCount % 30 / 6;
-			float colorPulseWings = (rCurrentItem.whoAmI * 0.11f + (float)Main.timeForVisualEffects / 360f) % 1f;
+			float colorPulseWings = (rWorldItemWhoAmI * 0.11f + (float)Main.timeForVisualEffects / 360f) % 1f;
 			Color colorWings = Main.hslToRgb(colorPulseWings, 1f, 0.65f);
 			colorWings.A /= 2;
 			Rectangle sourceRectBody = texture.Frame(horizontalFrames, verticalFrames, 0, currentFrame);
 			Vector2 origin = sourceRectBody.Size() / 2f;
-			float scale = rCurrentItem.scale;
+			float scale = rWorldItemScale;
 			if (inWorld)
 			{
 				scale *= 1.5f; // Slightly scaled up in the world.
@@ -236,7 +241,7 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 			float colorPulse = MathHelper.Clamp((float)Math.Sin(Main.timeForVisualEffects / 60.0) * 0.3f + 0.3f, 0f, 1f);
 			float scaleMulti = 0.8f + (float)Math.Sin(Main.timeForVisualEffects / 15.0 * MathHelper.TwoPi) * 0.3f;
 			Color colorFlash = Color.Lerp(colorWings, new Color(255, 255, 255, 0), 0.5f) * colorPulse;
-			Rectangle sourceRectFlash = texture.Frame(horizontalFrames, verticalFrames, 3, rCurrentItem.whoAmI % verticalFrames);
+			Rectangle sourceRectFlash = texture.Frame(horizontalFrames, verticalFrames, 3, rWorldItemWhoAmI % verticalFrames);
 			Rectangle sourceRectFlash0 = texture.Frame(horizontalFrames, verticalFrames, 3, 1);
 			Main.EntitySpriteDraw(texture, itemCenter, sourceRectFlash, colorFlash, rotation, origin, scale * scaleMulti, SpriteEffects.None, 0f);
 			Main.EntitySpriteDraw(texture, itemCenter, sourceRectFlash0, colorFlash, rotation, origin, scale * scaleMulti, SpriteEffects.None, 0f);

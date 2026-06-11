@@ -164,7 +164,7 @@ namespace RijamsMod.Projectiles.Melee
 			info.HitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			Vector2 position = Projectile.Center - Main.screenPosition;
 			//Asset<Texture2D> asset = TextureAssets.Projectile[ProjectileID.NightsEdge];
@@ -209,7 +209,7 @@ namespace RijamsMod.Projectiles.Melee
 
 		private static void DrawPrettyStarSparkle(float opacity, SpriteEffects dir, Vector2 drawpos, Color drawColor, Color shineColor, float flareCounter, float fadeInStart, float fadeInEnd, float fadeOutStart, float fadeOutEnd, float rotation, Vector2 scale, Vector2 fatness)
 		{
-			Texture2D sparkleTexture = TextureAssets.Extra[98].Value;
+			Texture2D sparkleTexture = TextureAssets.Extra[ExtrasID.SharpTears].Value;
 			Color color = shineColor * opacity * 0.5f;
 			color.A = 0;
 			Vector2 origin = sparkleTexture.Size() / 2f;

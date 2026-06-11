@@ -12,7 +12,7 @@ namespace RijamsMod.Items.Placeable
 		{
 			// DisplayName.SetDefault("Interface Anchor");
 			// Tooltip.SetDefault("Purely for decoration");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler when the]", "[c/474747:Information Interface is in the player's inventory]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler when the]", "[c/474747:Information Interface is in the player's inventory]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InformationInterface>(); // Shimmer transforms the item.
 		}
 

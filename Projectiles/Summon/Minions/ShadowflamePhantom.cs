@@ -20,7 +20,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 6;
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargetingFeature[Projectile.type] = true;
 
 			// These below are needed for a minion
 			// Denotes that this projectile is a pet or minion

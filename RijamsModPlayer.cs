@@ -12,55 +12,63 @@ namespace RijamsMod
 {
 	public class RijamsModPlayer : ModPlayer
 	{
+		// Accessories
 		public bool guideToProperFlightTechniques;
 		public bool controlGlove;
 		public bool summonersGlove;
 		public bool daybreakStone;
 		public bool breathingPack;
 		public int breathingPackTimer;
-		public bool lumothPet;
-		public bool lEDLumothPet;
 		public bool burglarsRing;
 		public bool rocketBooster;
 		public bool gamutApparatus;
 		public bool frostburnStone;
-		public bool sulfuricAcid;
-		public bool ancientSet;
 		public bool frostyRose;
 		public bool yoyoBackpack;
-		public bool snuggetPet;
-		public bool fluffaloPet;
 		public bool hailfireBootsBoost;
-		public int flaskBuff = FlaskIDs.None;
-		public int skywareArmorSetBonus = 0;
-		public int skywareArmorSetBonusTimer = 0;
-		public bool bleedingOut = false;
-		public bool soaringPotion;
 		public bool warriorRing;
 		public bool lifeSapperRing;
 		public bool manaSapperRing;
 		public bool terraStepStool;
-		public bool dwarfStarPet;
-		public bool redSkywareLeggings;
-		public bool babyStardustDragonPet;
 		public bool loopingOil;
 		public bool sideEffects;
 		public bool curiosityLure;
 		public bool trapBobber;
 		public bool spinnerBobber;
+		public bool peakPerformanceRing;
+
+		// Pets
+		public bool lumothPet;
+		public bool lEDLumothPet;
+		public bool snuggetPet;
+		public bool fluffaloPet;
+		public bool dwarfStarPet;
+		public bool babyStardustDragonPet;
+
+		// Buffs
+		public bool sulfuricAcid;
+		public int flaskBuff = FlaskIDs.None;
+		public bool bleedingOut = false;
+		public bool soaringPotion;
 		public bool oiled;
 		public bool onShadowflame;
 		public bool betsysCurse;
 		public bool dryadsBane;
 		public bool onDaybroken;
-		public bool peakPerformanceRing;
 
+		// Stats
 		public int supportMinionRadiusIncrease = 0;
 		public float criticalHitAdditionalDamage = 0f;
 		public float knockbackSusceptibility = 1f;
 		public int bonusYoyosAndCounterweights = 0;
 		public int bonusCounterweights = 0;
 		public float moveSpeedDamageReductionMax = 0f;
+
+		// Armor
+		public bool ancientSet;
+		public int skywareArmorSetBonus = 0;
+		public int skywareArmorSetBonusTimer = 0;
+		public bool redSkywareLeggings;
 
 		public override void ResetEffects()
 		{
@@ -219,7 +227,13 @@ namespace RijamsMod
 			}
 			if (yoyoBackpack)
 			{
-				Player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6);
+				if (Player.counterWeight == 0)
+				{
+					if (Main.rand.NextBool(7))
+						Player.counterWeight = ProjectileID.PinkCounterweight;
+					else
+						Player.counterWeight = ProjectileID.BlackCounterweight + Main.rand.Next(6);
+				}
 				Player.yoyoGlove = true;
 				Player.yoyoString = true;
 				Player.stringColor = 27;

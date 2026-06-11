@@ -107,75 +107,70 @@ namespace RijamsMod.Items
 			{
 				yield return new TooltipLine(Mod, "IncreaseRadiusTooltip", IncreaseRadiusTooltip.Format(IncreaseRadius))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
+					Color = Colors.PrefixGood // Sets the color to the positive modifier color.
 				};
 			}
 			if (IncreaseRadius < 0)
 			{
 				yield return new TooltipLine(Mod, "IncreaseRadiusTooltip", IncreaseRadiusTooltip.Format(IncreaseRadius))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
-					IsModifierBad = true
+					Color = Colors.PrefixBad
 				};
 			}
 			if (IncreaseDefense > 0)
 			{
 				yield return new TooltipLine(Mod, "IncreaseDefenseTooltip", IncreaseDefenseTooltip.Format(IncreaseDefense))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
+					Color = Colors.PrefixGood
 				};
 			}
 			if (IncreaseDefense < 0)
 			{
 				yield return new TooltipLine(Mod, "IncreaseDefenseTooltip", IncreaseDefenseTooltip.Format(IncreaseDefense))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
-					IsModifierBad = true
+					Color = Colors.PrefixBad
 				};
 			}
 			if (IncreaseDamageReduction > 0)
 			{
 				yield return new TooltipLine(Mod, "IncreaseDamageReductionTooltip", IncreaseDamageReductionTooltip.Format(IncreaseDamageReduction * 100f))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
+					Color = Colors.PrefixGood
 				};
 			}
 			if (IncreaseDamageReduction < 0)
 			{
 				yield return new TooltipLine(Mod, "IncreaseDamageReductionTooltip", IncreaseDamageReductionTooltip.Format(IncreaseDamageReduction * 100f))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
-					IsModifierBad = true
+					Color = Colors.PrefixBad
 				};
 			}
 			if (IncreaseHealingAmount > 0)
 			{
 				yield return new TooltipLine(Mod, "IncreaseHealingAmountTooltip", IncreaseHealingAmountTooltip.Format(IncreaseHealingAmount))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
+					Color = Colors.PrefixGood
 				};
 			}
 			if (IncreaseHealingAmount < 0)
 			{
 				yield return new TooltipLine(Mod, "IncreaseHealingAmountTooltip", IncreaseHealingAmountTooltip.Format(IncreaseHealingAmount))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
-					IsModifierBad = true
+					Color = Colors.PrefixBad
 				};
 			}
 			if (DecreaseHealingTime > 0)
 			{
 				yield return new TooltipLine(Mod, "DecreaseHealingTimeTooltip", DecreaseHealingTimeTooltip.Format(DecreaseHealingTime / 60))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
+					Color = Colors.PrefixGood
 				};
 			}
 			if (DecreaseHealingTime < 0)
 			{
 				yield return new TooltipLine(Mod, "DecreaseHealingTimeTooltip", DecreaseHealingTimeTooltip.Format(DecreaseHealingTime / 60))
 				{
-					IsModifier = true, // Sets the color to the positive modifier color.
-					IsModifierBad = true
+					Color = Colors.PrefixBad
 				};
 			}
 

@@ -15,8 +15,9 @@ namespace RijamsMod.Items
 		public static bool[] IsWhip = ItemID.Sets.Factory.CreateNamedSet(IsWhipKey)
 
 			.Description("Denotes items that are whip weapons.")
-			.RegisterBoolSet(false, ItemID.BlandWhip, ItemID.ThornWhip, ItemID.BoneWhip, ItemID.FireWhip,
-			ItemID.CoolWhip, ItemID.SwordWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip);
+			.RegisterBoolSet(false, ItemID.CobWhip, ItemID.SlimeWhip, ItemID.BlandWhip, ItemID.ThornWhip, ItemID.CorruptWhip, ItemID.CrimsonWhip, ItemID.MeteorWhip, ItemID.BoneWhip,
+				ItemID.FireWhip, ItemID.CoolWhip, ItemID.SwordWhip, ItemID.FlowerWhip, ItemID.MaceWhip, ItemID.ScytheWhip, ItemID.RainbowWhip, ItemID.EelWhip, ItemID.ConstellationWhip,
+				ItemID.MoonLordWhip);
 
 		public const string IsJoustingLanceKey = "IsJoustingLance";
 		/*
@@ -58,7 +59,7 @@ namespace RijamsMod.Items
 
 		public const string IsCombatFlareGunKey = "IsCombatFlareGun";
 		public static bool[] IsCombatFlareGun = ItemID.Sets.Factory.CreateNamedSet(IsCombatFlareGunKey)
-			.Description("The set for the Combat Flare Pistol and Triple Barrel Flare Pistol")
+			.Description("The set for the Combat Flare Pistol, Triple Barrel Flare Pistol, and Flare Submachine Gun")
 			.RegisterBoolSet(false);
 #pragma warning restore CA2211 // Non-constant fields should not be visible
 #pragma warning restore IDE0079 // Remove unnecessary suppression

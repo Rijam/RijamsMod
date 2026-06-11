@@ -1,12 +1,9 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using RijamsMod.EmoteBubbles;
-using RijamsMod.Items;
-using RijamsMod.Items.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -16,7 +13,9 @@ using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
+using RijamsMod.EmoteBubbles;
+using RijamsMod.Items;
+using RijamsMod.Items.Quest;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -38,6 +37,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		internal static int ShimmerTownHeadIndex;
 		internal static int ShimmerTownAltHeadIndex;
 		private static ITownNPCProfile NPCProfile;
+		internal ChatWithPortrait chatEmotion;
 
 		// Fake custom currency for the limited stock
 		public static HellTraderMissingItemCurrency HellTraderMissingItemCurrencySystem;
@@ -56,18 +56,22 @@ namespace RijamsMod.NPCs.TownNPCs
 			HellTraderMissingItemCurrencyID = CustomCurrencyManager.RegisterCurrency(HellTraderMissingItemCurrencySystem);
 		}
 
+		public override void Unload()
+		{
+			chatEmotion = null;
+		}
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Hell Trader");
-			Main.npcFrameCount[NPC.type] = 23;
-			NPCID.Sets.ExtraFramesCount[NPC.type] = 7;
-			NPCID.Sets.AttackFrameCount[NPC.type] = 2;
-			NPCID.Sets.DangerDetectRange[NPC.type] = 1000;
-			NPCID.Sets.AttackType[NPC.type] = 2;
-			NPCID.Sets.AttackTime[NPC.type] = 40;
-			NPCID.Sets.AttackAverageChance[NPC.type] = 8;
-			NPCID.Sets.HatOffsetY[NPC.type] = 4;
-			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
+			Main.npcFrameCount[Type] = 23;
+			NPCID.Sets.ExtraFramesCount[Type] = 7;
+			NPCID.Sets.AttackFrameCount[Type] = 2;
+			NPCID.Sets.DangerDetectRange[Type] = 1000;
+			NPCID.Sets.AttackType[Type] = 2;
+			NPCID.Sets.AttackTime[Type] = 40;
+			NPCID.Sets.AttackAverageChance[Type] = 8;
+			NPCID.Sets.HatOffsetY[Type] = 4;
+			NPCID.Sets.ShimmerTownTransform[Type] = true;
 
 			NPCID.Sets.MagicAuraColor[Type] = Color.Yellow;
 
@@ -110,6 +114,124 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>()] = true;
 
 			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<HellTraderEmote>();
+
+			// Here we define which portrait to use for the Town NPC when the portrait style setting is set to detailed.
+			NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
+				// .With(() => NPCID.Sets.ShimmeredPortraitCondition() && NPCHelper.NPCChatTextPortraitCondition(Language.GetTextValue($"{NPCHelper.DialogPath("HellTrader")}MoveIn")), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Shocked"))
+				// .With(() => NPCHelper.NPCChatTextPortraitCondition(Language.GetTextValue($"{NPCHelper.DialogPath("HellTrader")}MoveIn")), ChatWithPortrait.BasicPortrait(this, "Default", "Shocked"))
+				// .With(() => NPCID.Sets.ShimmeredPortraitCondition() && NPCHelper.HellTraderArrivable() && NPCHelper.PartyPortraitCondition(), NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait_Town_Alt"))
+				// .With(() => NPCHelper.HellTraderArrivable() && NPCHelper.PartyPortraitCondition(), NPCID.Sets.BasicPortrait($"{Texture}_Portrait_Town_Alt"))
+				// .With(() => NPCID.Sets.ShimmeredPortraitCondition() && NPCHelper.HellTraderArrivable() && NotHomelessOrFarFromHome(NPC), NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait_Town"))
+				// .With(() => NPCHelper.HellTraderArrivable() && NotHomelessOrFarFromHome(NPC), NPCID.Sets.BasicPortrait($"{Texture}_Portrait_Town"))
+				// .With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
+				// .Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // Default portrait to use (not shimmered).
+
+				// Happiness button
+				.With(() => ArrivableShowingHappinessText(0f, 0.82f) && NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition(),	ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "VeryHappy"))
+				.With(() => ArrivableShowingHappinessText(0f, 0.82f) && NPCHelper.PartyPortraitCondition(),												ChatWithPortrait.BasicPortrait(this, "Town_Alt", "VeryHappy"))
+				.With(() => ArrivableShowingHappinessText(0f, 0.82f) && NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition(),			ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "VeryHappy"))
+				.With(() => ArrivableShowingHappinessText(0f, 0.82f) && NotHomelessOrFarFromHome(),														ChatWithPortrait.BasicPortrait(this, "Town", "VeryHappy"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(0f, 0.82f) && NPCID.Sets.ShimmeredPortraitCondition(),								ChatWithPortrait.BasicPortrait(this, "Shimmer", "VeryHappy"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(0f, 0.82f),																			ChatWithPortrait.BasicPortrait(this, "Default", "VeryHappy"))
+				
+				.With(() => ArrivableShowingHappinessText(0.82f, 1f) && NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition(),	ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Happy"))
+				.With(() => ArrivableShowingHappinessText(0.82f, 1f) && NPCHelper.PartyPortraitCondition(),												ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Happy"))
+				.With(() => ArrivableShowingHappinessText(0.82f, 1f) && NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition(),			ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Happy"))
+				.With(() => ArrivableShowingHappinessText(0.82f, 1f) && NotHomelessOrFarFromHome(),														ChatWithPortrait.BasicPortrait(this, "Town", "Happy"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(0.82f, 1f) && NPCID.Sets.ShimmeredPortraitCondition(),								ChatWithPortrait.BasicPortrait(this, "Shimmer", "Happy"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(0.82f, 1f),																			ChatWithPortrait.BasicPortrait(this, "Default", "Happy"))
+
+				.With(() => ArrivableShowingHappinessText(1f, 1.1f) && NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition(),	ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Neutral"))
+				.With(() => ArrivableShowingHappinessText(1f, 1.1f) && NPCHelper.PartyPortraitCondition(),												ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Neutral"))
+				.With(() => ArrivableShowingHappinessText(1f, 1.1f) && NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition(),			ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Neutral"))
+				.With(() => ArrivableShowingHappinessText(1f, 1.1f) && NotHomelessOrFarFromHome(),														ChatWithPortrait.BasicPortrait(this, "Town", "Neutral"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(1f, 1.1f) && NPCID.Sets.ShimmeredPortraitCondition(),									ChatWithPortrait.BasicPortrait(this, "Shimmer", "Neutral"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(1f, 1.1f),																			ChatWithPortrait.BasicPortrait(this, "Default", "Neutral"))
+
+				.With(() => ArrivableShowingHappinessText(1.1f, float.MaxValue) && NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition(),	ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Sad"))
+				.With(() => ArrivableShowingHappinessText(1.1f, float.MaxValue) && NPCHelper.PartyPortraitCondition(),												ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Sad"))
+				.With(() => ArrivableShowingHappinessText(1.1f, float.MaxValue) && NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition(),			ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Sad"))
+				.With(() => ArrivableShowingHappinessText(1.1f, float.MaxValue) && NotHomelessOrFarFromHome(),														ChatWithPortrait.BasicPortrait(this, "Town", "Sad"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(1.1f, float.MaxValue) && NPCID.Sets.ShimmeredPortraitCondition(),									ChatWithPortrait.BasicPortrait(this, "Shimmer", "Sad"))
+				.With(() => ChatWithPortrait.ShowingHappinessText(1.1f, float.MaxValue),																			ChatWithPortrait.BasicPortrait(this, "Default", "Sad"))
+
+				// Housing button
+				.With(() => ArrivableShowingHousingText() && NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition(),	ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Sad"))
+				.With(() => ArrivableShowingHousingText() && NPCHelper.PartyPortraitCondition(),											ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Sad"))
+				.With(() => ArrivableShowingHousingText() && NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition(),			ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Sad"))
+				.With(() => ArrivableShowingHousingText() && NotHomelessOrFarFromHome(),													ChatWithPortrait.BasicPortrait(this, "Town", "Sad"))
+				.With(() => ChatWithPortrait.ShowingHousingText() && NPCID.Sets.ShimmeredPortraitCondition(),								ChatWithPortrait.BasicPortrait(this, "Shimmer", "Sad"))
+				.With(() => ChatWithPortrait.ShowingHousingText(),																			ChatWithPortrait.BasicPortrait(this, "Default", "Sad"))
+
+				// Shimmer Party Town
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Angry), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Angry"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Blushing), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Blushing"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Happy), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Happy"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Sad), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Sad"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Shocked), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Shocked"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Smirk), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Smirk"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Thinking), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Thinking"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.VeryHappy), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "VeryHappy"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Worried), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Worried"))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCID.Sets.ShimmeredPortraitCondition(), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town_Alt", "Neutral"))
+				// Party Town
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Angry), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Angry"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Blushing), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Blushing"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Happy), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Happy"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Sad), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Sad"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Shocked), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Shocked"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Smirk), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Smirk"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Thinking), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Thinking"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.VeryHappy), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "VeryHappy"))
+				.With(() => NPCHelper.PartyPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Worried), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Worried"))
+				.With(() => NPCHelper.PartyPortraitCondition(), ChatWithPortrait.BasicPortrait(this, "Town_Alt", "Neutral"))
+				// Shimmer Town
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Angry), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Angry"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Blushing), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Blushing"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Happy), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Happy"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Sad), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Sad"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Shocked), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Shocked"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Smirk), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Smirk"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Thinking), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Thinking"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.VeryHappy), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "VeryHappy"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Worried), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Worried"))
+				.With(() => NotHomelessOrFarFromHome() && NPCID.Sets.ShimmeredPortraitCondition(), ChatWithPortrait.BasicPortrait(this, "Shimmer_Town", "Neutral"))
+				// Town
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Angry), ChatWithPortrait.BasicPortrait(this, "Town", "Angry"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Blushing), ChatWithPortrait.BasicPortrait(this, "Town", "Blushing"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Happy), ChatWithPortrait.BasicPortrait(this, "Town", "Happy"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Sad), ChatWithPortrait.BasicPortrait(this, "Town", "Sad"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Shocked), ChatWithPortrait.BasicPortrait(this, "Town", "Shocked"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Smirk), ChatWithPortrait.BasicPortrait(this, "Town", "Smirk"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Thinking), ChatWithPortrait.BasicPortrait(this, "Town", "Thinking"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.VeryHappy), ChatWithPortrait.BasicPortrait(this, "Town", "VeryHappy"))
+				.With(() => NotHomelessOrFarFromHome() && ArrivablePortraitEmotionCondtion(PortraitEmotion.Worried), ChatWithPortrait.BasicPortrait(this, "Town", "Worried"))
+				.With(() => NotHomelessOrFarFromHome(), ChatWithPortrait.BasicPortrait(this, "Town", "Neutral"))
+				// Shimmer
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Angry), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Angry"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Blushing), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Blushing"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Happy), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Happy"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Sad), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Sad"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Shocked), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Shocked"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Smirk), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Smirk"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Thinking), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Thinking"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.VeryHappy), ChatWithPortrait.BasicPortrait(this, "Shimmer", "VeryHappy"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Worried), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Worried"))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition(), ChatWithPortrait.BasicPortrait(this, "Shimmer", "Neutral"))
+				// Default
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Angry), ChatWithPortrait.BasicPortrait(this, "Default", "Angry"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Blushing), ChatWithPortrait.BasicPortrait(this, "Default", "Blushing"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Happy), ChatWithPortrait.BasicPortrait(this, "Default", "Happy"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Sad), ChatWithPortrait.BasicPortrait(this, "Default", "Sad"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Shocked), ChatWithPortrait.BasicPortrait(this, "Default", "Shocked"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Smirk), ChatWithPortrait.BasicPortrait(this, "Default", "Smirk"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Thinking), ChatWithPortrait.BasicPortrait(this, "Default", "Thinking"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.VeryHappy), ChatWithPortrait.BasicPortrait(this, "Default", "VeryHappy"))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Worried), ChatWithPortrait.BasicPortrait(this, "Default", "Worried"))
+				.Default(ChatWithPortrait.BasicPortrait(this, "Default", "Neutral"))); // Default portrait to use (not shimmered).
+
+			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-2f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
+			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults()
@@ -128,7 +250,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			AnimationType = NPCID.Guide;
 			NPC.lavaImmune = true;
 			NPC.homeless = true;
-			Main.npcCatchable[NPC.type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
+			Main.npcCatchable[Type] = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs;
 			NPC.catchItem = ModContent.GetInstance<RijamsModConfigServer>().CatchNPCs ? ModContent.ItemType<CaughtHellTrader>() : -1;
 			NPC.rarity = RijamsModWorld.hellTraderArrivable ? 0 : 1;
 			NPC.npcSlots = RijamsModWorld.hellTraderArrivable ? 1 : 0.25f;
@@ -147,8 +269,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			[
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheUnderworld,
 				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
-				new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name))
+				// new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name))
 			]);
+			if (NPCHelper.ShouldAddHappinessInfoBox())
+			{
+				bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name)));
+			}
 		}
 
 		public override void HitEffect(NPC.HitInfo hit)
@@ -225,11 +351,11 @@ namespace RijamsMod.NPCs.TownNPCs
 			];
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
-			if (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(NPC.type) && spawnInfo.Player.ZoneUnderworldHeight)
+			if (!RijamsModWorld.hellTraderArrivable && !NPC.AnyNPCs(NPC.type) && spawner.Player.ZoneUnderworldHeight)
 			{
-				if (spawnInfo.SpawnTileType == TileID.ObsidianBrick || spawnInfo.SpawnTileType == TileID.HellstoneBrick || spawnInfo.SpawnTileType == TileID.Platforms || spawnInfo.SpawnTileType == TileID.AshGrass)
+				if (spawner.SpawnTileType == TileID.ObsidianBrick || spawner.SpawnTileType == TileID.HellstoneBrick || spawner.SpawnTileType == TileID.Platforms || spawner.SpawnTileType == TileID.AshGrass)
 				{
 					if (!NPC.downedBoss1) // Haven't killed EoC
 					{
@@ -262,7 +388,6 @@ namespace RijamsMod.NPCs.TownNPCs
 					if (distance >= 4000f && NPC.homeless)
 					{
 						NPC.active = false;
-						NPC.netSkip = -1;
 						NPC.life = 0;
 					}
 				}
@@ -282,8 +407,7 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			Asset<Texture2D> drawTexture = glowmask;
 			SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-			Color color = new(255, 255, 255, 255);
-			Vector2 verticalOffset = new(0, 4 - NPC.gfxOffY - Main.NPCAddHeight(NPC));
+			Color color = NPCHelper.GlowColor(NPC, Color.White);
 
 			if (NPC.IsShimmerVariant)
 			{
@@ -297,80 +421,87 @@ namespace RijamsMod.NPCs.TownNPCs
 				}
 			}
 
-			spriteBatch.Draw(drawTexture.Value, NPC.Center - screenPos - verticalOffset, NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
+			spriteBatch.Draw(drawTexture.Value, NPC.Center - screenPos + NPCHelper.DrawingOffsets(NPC), NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 		}
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
 			if (NPC.IsShimmerVariant)
 			{
 				SpriteEffects spriteEffects = NPC.spriteDirection > 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-				Vector2 verticalOffset = new(8, 4 - NPC.gfxOffY - Main.NPCAddHeight(NPC));
-				spriteBatch.Draw(shimmerWings.Value, NPC.Center - screenPos - verticalOffset, new Rectangle(NPC.frame.X, NPC.frame.Y, shimmerWings.Width(), NPC.frame.Height), drawColor, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
+				Vector2 offset = new(-8, 0);
+				if (NPC.IsAPortraitDummy)
+				{
+					// The Profile dummy will have a scale of 3f. The Retro portrait will have a scale of 2f.
+					offset.X += NPC.scale == 2f ? -8 : -16; // Move our drawing up.
+				}
+				offset += NPCHelper.DrawingOffsets(NPC);
+				spriteBatch.Draw(shimmerWings.Value, NPC.Center - screenPos + offset, new Rectangle(NPC.frame.X, NPC.frame.Y, shimmerWings.Width(), NPC.frame.Height), drawColor, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 			}
 			return true;
 		}
 
 		public override string GetChat()
 		{
-			WeightedRandom<string> chat = new();
-
 			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
 
 			NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.whoAmI], 1, out List<int> _, out List<int> _, out List<int> npcTypeListVillage, out List<int> _);
+
+			chatEmotion = new();
 
 			if (!RijamsModWorld.hellTraderArrivable)
 			{
 				Main.LocalPlayer.currentShoppingSettings.HappinessReport = ""; // Removes the Happiness chat option.
 
-				chat.Add("Hello, human. An unexpected confrontation, for sure.");
-				chat.Add("My robes are made from a special fabric. They are fire proof, just like me.");
-				chat.Add("You shall know me by " + Main.npc[NPC.whoAmI].GivenName + ". I look forward to trading with you, " + Main.LocalPlayer.name + ".");
-				chat.Add("I have some fine goods to trade with you if you have the money.");
-				chat.Add("Are you here to trade? Good, I have something that might interest you.");
-				chat.Add("The Underworld is a dangerous place. You are brave to venture down here.");
-				chat.Add("The most dangerous demons are not the ones who fight, but who speak.");
-				chat.Add("I can only carry a limited amount of items to sell to you right now. Seek me out another time and I will have other items for offer.");
-				chat.Add("Being constantly on the move means I can't bring everything I have own with me all of the time. If we are to meet again, I may have other things for sale.");
-				chat.Add("I was just moving to one of my other item stashes, but you can browse what items I have on me at this moment.");
-				chat.Add("Who is this \"Slayer\" that you speak of?", 0.1);
+				chatEmotion.Add("Hello, human. An unexpected confrontation, for sure.", emotion: PortraitEmotion.Thinking);
+				chatEmotion.Add("My robes are made from a special fabric. They are fire proof, just like me.");
+				chatEmotion.Add($"You shall know me by {Main.npc[NPC.whoAmI].GivenName}. I look forward to trading with you, {Main.LocalPlayer.name}.");
+				chatEmotion.Add("I have some fine goods to trade with you if you have the money.");
+				chatEmotion.Add("Are you here to trade? Good, I have something that might interest you.");
+				chatEmotion.Add("The Underworld is a dangerous place. You are brave to venture down here.", emotion: PortraitEmotion.Thinking);
+				chatEmotion.Add("The most dangerous demons are not the ones who fight, but who speak.", emotion: PortraitEmotion.Smirk);
+				chatEmotion.Add("I can only carry a limited amount of items to sell to you right now. Seek me out another time and I will have other items for offer.");
+				chatEmotion.Add("Being constantly on the move means I can't bring everything I have own with me all of the time. If we are to meet again, I may have other things for sale.");
+				chatEmotion.Add("I was just moving to one of my other item stashes, but you can browse what items I have on me at this moment.");
+				chatEmotion.Add("Who is this \"Slayer\" that you speak of?", 0.1, emotion: PortraitEmotion.Worried);
 				if (!Main.hardMode)
 				{
-					chat.Add("I see some of the greaters carrying around a small human figure. It must have some sort of significance...");
+					chatEmotion.Add("I see some of the greaters carrying around a small human figure. It must have some sort of significance...", emotion: PortraitEmotion.Thinking);
 				}
 			}
 
+
 			if (RijamsModWorld.hellTraderArrivable)
 			{
-				chat.Add("Hey, human! Good to see you again.");
-				chat.Add("I've got plenty of that special fabric if you want to purchase more of it!");
-				chat.Add("I'm starting to get used to living with others. It's fun!");
-				chat.Add("Ever notice how all of the other Imps wear chokers around their neck?");
-				chat.Add("Interesting fact: Imps have blueish skin color as an adolescent. Yes, Imps have to grow up, too!");
-				chat.Add("That Wall of Flesh was the biggest demon I'd ever seen! How does something like that even move forward?");
-				chat.Add("Do you not like the smell of sulfur? It smells fine to me.");
-				chat.Add("Who is this \"Slayer\" that you speak of?", 0.2);
+				chatEmotion.Add("Hey, human! Good to see you again.", emotion: PortraitEmotion.Happy);
+				chatEmotion.Add("I've got plenty of that special fabric if you want to purchase more of it!", emotion: PortraitEmotion.Happy);
+				chatEmotion.Add("I'm starting to get used to living with others. It's fun!", emotion: PortraitEmotion.Happy);
+				chatEmotion.Add("Ever notice how all of the other Imps wear chokers around their neck?", emotion: PortraitEmotion.Thinking);
+				chatEmotion.Add("Interesting fact: Imps have blueish skin color as an adolescent. Yes, Imps have to grow up, too!", emotion: PortraitEmotion.Happy);
+				chatEmotion.Add("That Wall of Flesh was the biggest demon I'd ever seen! How does something like that even move forward?", emotion: PortraitEmotion.Shocked);
+				chatEmotion.Add("Do you not like the smell of sulfur? It smells fine to me.", emotion: PortraitEmotion.Thinking);
+				chatEmotion.Add("Who is this \"Slayer\" that you speak of?", 0.2, emotion: PortraitEmotion.Worried);
 
 				if (NPC.life < NPC.lifeMax * 0.2)
 				{
-					chat.Add("Wait! Help! I'm not just another expendable Imp am I?", 10.0);
+					chatEmotion.Add("Wait! Help! I'm not just another expendable Imp am I?", 10.0, emotion: PortraitEmotion.Sad);
 				}
 
 				if (NPC.homeless)
 				{
-					chat.Add("I accepted your request to move in expecting to receive and actual home! Can you deliver on your promise?");
+					chatEmotion.Add("I accepted your request to move in expecting to receive and actual home! Can you deliver on your promise?", emotion: PortraitEmotion.Angry);
 				}
 				else
 				{
-					chat.Add("Thanks again, " + Main.LocalPlayer.name + ", for asking me to live in your town. Much better than living alone in the Underworld!");
+					chatEmotion.Add($"Thanks again, {Main.LocalPlayer.name}, for asking me to live in your town. Much better than living alone in the Underworld!", emotion: PortraitEmotion.Happy);
 				}
 
-				if (Main.LocalPlayer.accJarOfSouls && Main.LocalPlayer.lastCreatureHit == Item.NPCtoBanner(NPCID.FireImp))
+				if (Main.LocalPlayer.accJarOfSouls && Main.LocalPlayer.lastCreatureHit == BannerSystem.NPCtoBanner(NPCID.FireImp))
 				// The player has the Tally Counter, R.E.K. 3000, PDA, Cellphone, or Shellphone in their inventory. The last enemy they hit was a Fire Imp and the kill count for Fire Imps is more than 0.
 				// Item.NPCtoBanner(NPCID.FireImp) == 24
 				{
-					if (NPC.killCount[Item.NPCtoBanner(NPCID.FireImp)] > 0)
+					if (BannerSystem.killCount[BannerSystem.NPCtoBanner(NPCID.FireImp)] > 0)
 					{
-						chat.Add("You've slain " + NPC.killCount[Item.NPCtoBanner(NPCID.FireImp)] + " Fire Imps, hm? Interesting.", 20.0);
+						chatEmotion.Add($"You've slain {BannerSystem.killCount[BannerSystem.NPCtoBanner(NPCID.FireImp)]} Fire Imps, hm? Interesting.", 20.0, emotion: PortraitEmotion.Angry);
 					}
 				}
 
@@ -378,80 +509,87 @@ namespace RijamsMod.NPCs.TownNPCs
 				int interTravel = NPC.FindFirstNPC(ModContent.NPCType<InterstellarTraveler>());
 				if (harpy >= 0)
 				{
-					chat.Add("I've always wanted to fly like " + Main.npc[harpy].GivenName + " or like one of the greaters.", 0.5);
+					chatEmotion.Add($"I've always wanted to fly like {Main.npc[harpy].GivenName} or like one of the greaters.", 0.5);
 				}
 				if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
 				{
 					int fisherman = NPC.FindFirstNPC(fishermanNPC.Find<ModNPC>("Fisherman").Type);
 					if (fisherman >= 0)
 					{
-						chat.Add(Main.npc[fisherman].GivenName + " let me eat some other kinds of fish. I was getting tired of eating Flarefin Koi and Obsidifish all of the time!", 0.5);
+						chatEmotion.Add($"{Main.npc[fisherman].GivenName} let me eat some other kinds of fish. I was getting tired of eating Flarefin Koi and Obsidifish all of the time!", 0.5, emotion: PortraitEmotion.Happy);
 					}
 				}
 				if (interTravel >= 0)
 				{
-					chat.Add("So, " + Main.npc[interTravel].GivenName + " is from a different planet? I have a lot to learn...", 0.5);
+					chatEmotion.Add($"So, {Main.npc[interTravel].GivenName} is from a different planet? I have a lot to learn...", 0.5, emotion: PortraitEmotion.Thinking);
 				}
 				int taxCollector = NPC.FindFirstNPC(NPCID.TaxCollector);
 				if (taxCollector >= 0 && npcTypeListVillage.Contains(NPCID.TaxCollector))
 				{
-					chat.Add("Uh yeah, I see why " + Main.npc[taxCollector].GivenName + " was banished to the Underworld.");
+					chatEmotion.Add($"Uh yeah, I see why {Main.npc[taxCollector].GivenName} was banished to the Underworld.");
 				}
 
 				if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
 				{
-					chat.Add("I've never tasted food so sweet!");
-					chat.Add("What? Surprised to see me without my hood on?");
+					chatEmotion.Add("I've never tasted food so sweet!", emotion: PortraitEmotion.VeryHappy);
+					chatEmotion.Add("What? Surprised to see me without my hood on?", emotion: PortraitEmotion.VeryHappy);
 				}
 				Player player = Main.LocalPlayer;
 				if (player.ZoneSkyHeight || player.ZoneSnow)
 				{
-					chat.Add("Brr! I'm not used to it being so cold!");
+					chatEmotion.Add("Brr! I'm not used to it being so cold!", emotion: PortraitEmotion.Sad);
 				}
 				if (!player.ZoneSkyHeight && !player.ZoneDirtLayerHeight && !player.ZoneRockLayerHeight && !player.ZoneUnderworldHeight)
 				{
-					chat.Add("It's so vibrant on the surface! I'm used to nothing but reds and grays.");
+					chatEmotion.Add("It's so vibrant on the surface! I'm used to nothing but reds and grays.", emotion: PortraitEmotion.Happy);
 					if (Main.dayTime)
 					{
-						chat.Add(Main.raining ? "Water is falling from the sky? How does that even work?" : "I had read about the sun! It's a lot brighter than I expected! Brighter than magma!");
+						if (Main.raining)
+						{
+							chatEmotion.Add("Water is falling from the sky? How does that even work?", emotion: PortraitEmotion.Thinking);
+						}
+						else
+						{
+							chatEmotion.Add("I had read about the sun! It's a lot brighter than I expected! Brighter than magma!", emotion: PortraitEmotion.Happy);
+						}
 					}
 					if (!Main.dayTime)
 					{
-						chat.Add("It gets a little chilly at night. Luckily, my robes keep me warm.");
+						chatEmotion.Add("It gets a little chilly at night. Luckily, my robes keep me warm.");
 					}
 					if (Main.bloodMoon)
 					{
-						chat.Add("Woah. What's going on tonight? Why is the moon red?", 2.0);
+						chatEmotion.Add("Woah. What's going on tonight? Why is the moon red?", 2.0, emotion: PortraitEmotion.Shocked);
 					}
 					if (Main.eclipse)
 					{
-						chat.Add("Wait, where did the sun go?", 2.0);
+						chatEmotion.Add("Wait, where did the sun go?", 2.0, emotion: PortraitEmotion.Shocked);
 					}
 				}
 				if (player.ZoneDirtLayerHeight || player.ZoneRockLayerHeight)
 				{
-					chat.Add("The Underground is the perfect place for me.");
+					chatEmotion.Add("The Underground is the perfect place for me.", emotion: PortraitEmotion.Happy);
 				}
 				if (player.ZoneUnderworldHeight)
 				{
-					chat.Add("Y'know, the Underworld isn't that friendly of a place. I still like it from nostalgia, though.");
-					chat.Add("I read that there was once a great civilization down here. They are the ones who built all of these buildings. I never did figure out what happened to them, though.");
+					chatEmotion.Add("Y'know, the Underworld isn't that friendly of a place. I still like it from nostalgia, though.", emotion: PortraitEmotion.Happy);
+					chatEmotion.Add("I read that there was once a great civilization down here. They are the ones who built all of these buildings. I never did figure out what happened to them, though.", emotion: PortraitEmotion.Thinking);
 				}
 				if (player.ZoneDesert || player.ZoneJungle || player.ZoneUnderworldHeight)
 				{
-					chat.Add("I enjoy the heat from this environment.");
+					chatEmotion.Add("I enjoy the heat from this environment.", emotion: PortraitEmotion.Happy);
 				}
 				if (player.ZoneBeach)
 				{
-					chat.Add("The ocean is huge! I've never seen so much water in one spot before!");
+					chatEmotion.Add("The ocean is huge! I've never seen so much water in one spot before!", emotion: PortraitEmotion.Shocked);
 				}
 				if (player.HasBuff(BuffID.ImpMinion))
 				{
-					chat.Add("I'm honestly surprised you were able to control those Imps. It's not easy getting hell spawn to do what you want; I should know!");
+					chatEmotion.Add("I'm honestly surprised you were able to control those Imps. It's not easy getting hell spawn to do what you want; I should know!", emotion: PortraitEmotion.Smirk);
 				}
 				if (player.HasItem(ModContent.ItemType<Items.Weapons.Magic.PlasmaRifle>()))
 				{
-					chat.Add("I feel like I've seen that energy gun you have, but I'm not sure where.", 0.5);
+					chatEmotion.Add("I feel like I've seen that energy gun you have, but I'm not sure where.", 0.5, emotion: PortraitEmotion.Thinking);
 				}
 				if (ModLoader.TryGetMod("ThoriumMod", out Mod thorium) && townNPCsCrossModSupport) //Thorium
 				{
@@ -460,16 +598,16 @@ namespace RijamsMod.NPCs.TownNPCs
 						int weaponMaster = NPC.FindFirstNPC(weaponMasterModNPC.Type);
 						if (weaponMaster >= 0 && npcTypeListVillage.Contains(weaponMasterModNPC.Type))
 						{
-							chat.Add("Hmm...\nHuh? No, I wasn't staring at " + Main.npc[weaponMaster].GivenName + "!");
-							chat.Add("So... heard anything new about " + Main.npc[weaponMaster].GivenName + "? I'm just asking...");
-							chat.Add(Main.npc[weaponMaster].GivenName + "'s helmet is very nice.\nNothing! It's just a casual observation.");
+							chatEmotion.Add($"Hmm...\nHuh? No, I wasn't staring at {Main.npc[weaponMaster].GivenName}!", emotion: PortraitEmotion.Blushing);
+							chatEmotion.Add($"So... heard anything new about {Main.npc[weaponMaster].GivenName}? I'm just asking...", emotion: PortraitEmotion.Blushing);
+							chatEmotion.Add($"{Main.npc[weaponMaster].GivenName}'s helmet is very nice.\nNothing! It's just a casual observation.", emotion: PortraitEmotion.Blushing);
 						}
 					}
 					if (thorium.TryFind<ModItem>("PLG", out ModItem plg)) // P.L.G. 8999
 					{
 						if (player.HasItem(plg.Type))
 						{
-							chat.Add("That big gun you have scares me! I don't even know why!", 0.5);
+							chatEmotion.Add("That big gun you have scares me! I don't even know why!", 0.5, emotion: PortraitEmotion.Shocked);
 						}
 					}
 				}
@@ -480,7 +618,7 @@ namespace RijamsMod.NPCs.TownNPCs
 						int brimstoneWitch = NPC.FindFirstNPC(brimstoneWitchModNPC.Type); //Brimstone Witch
 						if (brimstoneWitch >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("WITCH").Type))
 						{
-							chat.Add("Calamitas is so powerful! I wish my magic were as good as hers!");
+							chatEmotion.Add("Calamitas is so powerful! I wish my magic were as good as hers!", emotion: PortraitEmotion.Shocked);
 						}
 					}
 					if (calamity.TryFind<ModNPC>("DILF", out ModNPC archmageModNPC))
@@ -488,56 +626,88 @@ namespace RijamsMod.NPCs.TownNPCs
 						int archmage = NPC.FindFirstNPC(archmageModNPC.Type); //Archmage
 						if (archmage >= 0 && npcTypeListVillage.Contains(calamity.Find<ModNPC>("DILF").Type))
 						{
-							chat.Add("I'm more into fire magic, but Permafrost's ice magic is still super impressive!");
+							chatEmotion.Add("I'm more into fire magic, but Permafrost's ice magic is still super impressive!", emotion: PortraitEmotion.Happy);
 						}
 					}
 				}
 			}
-			
-			return chat;
+
+			return chatEmotion.GetRandomChat();
 		}
 
-		public override void SetChatButtons(ref string button, ref string button2)
+		public override void RegisterChatButtons(NPCInteractionList interactions)
 		{
-			button = Language.GetTextValue("LegacyInterface.28"); // Shop
+			interactions.Disable(NPCInteractionDatabase.HousingButton);
+			interactions.Prepend(NPCInteractions.Shop(ShopName));
+			interactions.InsertAfter(new MoveInButton(this), NPCInteractionDatabase.CloseButton);
+			interactions.InsertAfter(new FalseHousingButton(this), NPCInteractionDatabase.CloseButton);
+			interactions.Append(new HousingButtonOnlyAfterMovingIn());
+		}
+
+		public class MoveInButton(HellTrader instance) : NPCInteraction
+		{
+			public override string GetText() => "Ask to move in";
+			public override bool Condition()
+			{
+				return Main.hardMode && !RijamsModWorld.hellTraderArrivable;
+			}
+			public override void Interact()
+			{
+				HellTrader.MoveIn(instance);
+				Main.DoNPCPortraitHop();
+			}
+			public override bool ShowExcalmation => true;
+		}
+		public class FalseHousingButton(HellTrader instance) : NPCInteractions.Actions.RequestHome
+		{
+			public override bool Condition() => base.Condition() && !RijamsModWorld.hellTraderArrivable;
+
+			public override void Interact()
+			{
+				Main.npcChatCornerItem = -1;
+				SoundEngine.PlaySound(SoundID.MenuTick);
+				ChatWithPortrait lines = new();
+				lines.Add("I can only carry a limited amount of items to sell to you right now. Seek me out another time and I will have other items for offer.");
+				lines.Add("Being constantly on the move means I can't bring everything I have own with me all of the time. If we are to meet again, I may have other things for sale.");
+				lines.Add("I was just moving to one of my other item stashes, but you can browse what items I have on me at this moment.", emotion: PortraitEmotion.Smirk);
+				lines.Add("I've never had a permanent place to live. In a place like this, nothing is permanent.", emotion: PortraitEmotion.Sad);
+				lines.Add("There's too much danger to be a sitting magma snail. I'm constantly on the move.", emotion: PortraitEmotion.Thinking);
+				lines.Add("I have many stashes in several of these buildings. You can't just stay in one place when there are so many things trying to kill each other.", emotion: PortraitEmotion.Smirk);
+				ChatWithPortrait.DialogWithEmotion chosenLine = lines.ChatDB.Get();
+				Main.npcChatText = chosenLine.Chat;
+				Main.npcChatPortrait = ChooseTheCorrectVariantPortrait(instance, chosenLine.Emotion.ToString());
+				Main.DoNPCPortraitHop();
+			}
+			public override bool ShowExcalmation => false;
+		}
+		public class HousingButtonOnlyAfterMovingIn : NPCInteractions.Actions.RequestHome
+		{
+			public override bool Condition() => base.Condition() && RijamsModWorld.hellTraderArrivable;
+		}
+
+		public static void MoveIn(HellTrader instance)
+		{
+			NPC npc = instance.NPC;
+			Mod mod = ModContent.GetInstance<RijamsMod>();
 			if (Main.hardMode && !RijamsModWorld.hellTraderArrivable)
 			{
-				button2 = "Ask to move in";
-			}
-		}
-
-		public override void OnChatButtonClicked(bool firstButton, ref string shop)
-		{
-			if (firstButton)
-			{
-				shop = ShopName;
-			}
-			if (!firstButton)
-			{
-				MoveIn();
-			}
-		}
-
-		public void MoveIn()
-		{
-			if (Main.hardMode && !RijamsModWorld.hellTraderArrivable)
-			{
-				Main.npcChatText = "You want me to move into one of the homes you built? Other humans live there right? What would they think of me?\nWell, to be honest, it is lonely living down here. Sure! Why the hell not! I'd love to see what else this world has to offer.";
+				Main.npcChatText = Language.GetTextValue($"{NPCHelper.DialogPath("HellTrader")}MoveIn");
+				Main.npcChatPortrait = ChooseTheCorrectVariantPortrait(instance, "Shocked");
 				RijamsModWorld.hellTraderArrivable = true;
 				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
 				{
 					NetMessage.SendData(MessageID.WorldData);
-					ModPacket packet = Mod.GetPacket();
+					ModPacket packet = mod.GetPacket();
 					packet.Write((byte)RijamsModMessageType.SetHellTraderArrivable);
 					packet.Send();
 				}
-				NPC.rarity = 0;
-				NPC.netUpdate = true;
-				Mod.Logger.Debug("RijamsMod: Hell Trader Arrivable.");
+				npc.rarity = 0;
+				npc.netUpdate = true;
+				mod.Logger.Debug("RijamsMod: Hell Trader Arrivable.");
 
 				for (int i = 0; i < 10; i++)
 				{ 
-					Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Confetti + Main.rand.Next(5), 0, -5);
+					Dust.NewDust(npc.position, npc.width, npc.height, DustID.Confetti + Main.rand.Next(5), 0, -5);
 				}
 				return;
 			}
@@ -559,11 +729,11 @@ namespace RijamsMod.NPCs.TownNPCs
 				.Add(ModContent.ItemType<Items.Weapons.Melee.HammerOfRetribution>(), Condition.Hardmode, Condition.DownedMechBossAny)
 				.Add(ModContent.ItemType<Items.Weapons.Melee.Quietus>(), Condition.Hardmode, Condition.DownedGolem)
 				.Add(new Item(ItemID.AshBlock) { shopCustomPrice = 70 })
-				.Add(new Item(ItemID.ObsidianBrick) { shopCustomPrice = 100 })
+				.Add(new Item(ItemID.ObsidianBrick) { shopCustomPrice = 500 })
 				.Add(ItemID.Hellstone, Condition.Hardmode)
-				.Add(new Item(ItemID.HellstoneBrick) { shopCustomPrice = 1000 }, Condition.Hardmode)
+				.Add(new Item(ItemID.HellstoneBrick) { shopCustomPrice = 1250 }, Condition.Hardmode) // Match the price of Hellstone.
 				.Add(new Item(ItemID.LivingFireBlock) { shopCustomPrice = 50 }, Condition.Hardmode)
-				.Add(new Item(ItemID.DemonTorch) { shopCustomPrice = 10 })
+				.Add(ItemID.DemonTorch)
 				.Add(new Item(ItemID.Fireblossom) { shopCustomPrice = 10000 })
 				.Add(new Item(ItemID.Hellforge) { shopCustomPrice = 75000 }, Condition.DownedEowOrBoc);
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))
@@ -740,6 +910,67 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			multiplier = 6f;
 			randomOffset = 0.15f;
+		}
+
+
+		public static bool NotHomelessOrFarFromHome()
+		{
+			return !(NPCHelper.HomelessPortraitCondition() || NPCHelper.IsFarFromHomePortraitCondition());
+		}
+
+		private static bool ArrivablePortraitEmotionCondtion(PortraitEmotion emotion)
+		{
+			if (NPCHelper.HellTraderArrivable())
+			{
+				return ChatWithPortrait.PortraitEmotionCondtion(emotion);
+			}
+			return false;
+		}
+
+		private static bool ArrivableShowingHappinessText(float minHappiness, float maxHappiness)
+		{
+			if (NPCHelper.HellTraderArrivable())
+			{
+				return ChatWithPortrait.ShowingHappinessText(minHappiness, maxHappiness);
+			}
+			return false;
+		}
+
+		private static bool ArrivableShowingHousingText()
+		{
+			if (NPCHelper.HellTraderArrivable())
+			{
+				return ChatWithPortrait.ShowingHousingText();
+			}
+			return false;
+		}
+
+		public static NPCID.Sets.BasicNPCPortrait ChooseTheCorrectVariantPortrait(HellTrader instance, string mood)
+		{
+			if (NPCHelper.HellTraderArrivable() && NPCHelper.PartyPortraitCondition())
+			{
+				if (NPCID.Sets.ShimmeredPortraitCondition())
+				{
+					return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(instance, "Shimmer_Town_Alt", mood));
+				}
+				return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(instance, "Town_Alt", mood));
+			}
+
+			if (NPCHelper.HellTraderArrivable() && !(NPCHelper.HomelessPortraitCondition() || NPCHelper.IsFarFromHome(Main.LocalPlayer.TalkNPC)))
+			{
+				if (NPCID.Sets.ShimmeredPortraitCondition())
+				{
+					return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(instance, "Shimmer_Town", mood));
+				}
+				return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(instance, "Town", mood));
+			}
+
+			if (NPCID.Sets.ShimmeredPortraitCondition())
+			{
+				return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(instance, "Shimmer", mood));
+			}
+
+			return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(instance, "Default", mood));
 		}
 	}
 	public class HellTraderProfile : ITownNPCProfile

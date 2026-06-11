@@ -53,7 +53,7 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.Chain)
-				.AddRecipeGroup(RecipeGroupID.IronBar, 3)
+				.AddRecipeGroup(RecipeGroups.IronBar, 3)
 				.AddIngredient(ItemID.Torch, 3)
 				.AddTile(TileID.WorkBenches)
 				.Register();

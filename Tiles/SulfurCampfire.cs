@@ -29,8 +29,8 @@ namespace RijamsMod.Tiles
 			Main.tileWaterDeath[Type] = false;
 			Main.tileLavaDeath[Type] = false;
 			TileID.Sets.HasOutlines[Type] = true;
-			TileID.Sets.InteractibleByNPCs[Type] = true;
-			TileID.Sets.Campfire[Type] = true;
+			TileID.Sets.InteractableByNPCs[Type] = true;
+			TileID.Sets.Campfires[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x2);
 			TileObjectData.newTile.StyleWrapLimit = 16;

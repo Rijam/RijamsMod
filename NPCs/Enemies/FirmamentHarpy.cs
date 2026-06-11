@@ -289,9 +289,9 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Materials.SunEssence>(), 1, 1, 4));
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
-			if (spawnInfo.Sky && NPC.downedGolemBoss) // Sky & Golem defeated
+			if (spawner.skyMob && NPC.downedGolemBoss) // Sky & Golem defeated
 			{
 				return 0.3f;
 			}

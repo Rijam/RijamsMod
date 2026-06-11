@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace RijamsMod.Items.Placeable
@@ -11,7 +10,7 @@ namespace RijamsMod.Items.Placeable
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Paints will affect the color of the light\n Deep paints are brighter\n Actuators halve the light\n Illuminant Coating doubles the light");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Goblin Tinkerer]", "[c/474747:when the Interstellar Traveler is present]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Goblin Tinkerer]", "[c/474747:when the Interstellar Traveler is present]"]);
 		}
 		public override void SetDefaults()
 		{
@@ -28,9 +27,9 @@ namespace RijamsMod.Items.Placeable
 			Item.createTile = ModContent.TileType<Tiles.StripLight>();
 			Item.value = 100;
 		}
-		public override void PostUpdate()
+		public override void PostUpdate(WorldItem item)
 		{
-			Lighting.AddLight(Item.Center, Color.White.ToVector3());
+			Lighting.AddLight(item.Center, Color.White.ToVector3());
 		}
 	}
 }

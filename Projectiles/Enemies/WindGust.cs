@@ -80,7 +80,7 @@ namespace RijamsMod.Projectiles.Enemies
 			return false;
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = SpriteEffects.FlipHorizontally;

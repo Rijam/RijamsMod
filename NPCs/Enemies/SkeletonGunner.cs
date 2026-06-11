@@ -33,7 +33,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.defense = 9;
 			NPC.lifeMax = 120;
 			NPC.value = 500f;
-			NPC.aiStyle = 3;
+			NPC.aiStyle = NPCAIStyleID.Fighter;
 			NPC.knockBackResist = 0.4f;
 			AIType = NPCID.PirateDeadeye;
 			AnimationType = NPCID.PirateDeadeye;
@@ -73,9 +73,9 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ItemID.Handgun, 50)); //2% chance
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
+		public override float SpawnChance(NPC.Spawner spawner) // would be Deeper Dungeons, but for now have it spawn in the normal Dungeon.
 		{
-			return (spawnInfo.Player.ZoneDungeon) ? 0.01f : 0f;
+			return (spawner.Player.ZoneDungeon) ? 0.01f : 0f;
 		}
 	}
 }

@@ -282,7 +282,7 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 		}
 
 		// We need to draw the projectile manually. If you don't include this, the Jousting Lance will not be aligned with the player.
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			bool drawExtra = false;
 

@@ -184,13 +184,11 @@ namespace RijamsMod.Projectiles.Ranged
 
 		private readonly Asset<Texture2D> projTextureOpaque = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Ranged/InterstellarLaser_Opaque");
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
-			Player owner = Main.player[Projectile.owner];
-
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-			if (owner.gravDir == -1f)
+			if (player.gravDir == -1f)
 			{
 				spriteEffects |= SpriteEffects.FlipVertically;
 			}
@@ -208,7 +206,7 @@ namespace RijamsMod.Projectiles.Ranged
 			float rotation = Projectile.rotation;
 
 			// The position of the sprite. Not subtracting Main.player[Projectile.owner].gfxOffY will cause the sprite to bounce when walking up blocks.
-			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Main.player[Projectile.owner].gfxOffY);
+			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - player.gfxOffY);
 
 			/*
 			//Redraw the projectile with the color not influenced by light

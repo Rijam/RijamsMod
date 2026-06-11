@@ -31,7 +31,6 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.penetrate = 1;
 			AIType = -1;
 			Projectile.timeLeft = 600;
-			DrawOffsetX = -12;
 			Projectile.netImportant = true;
 		}
 
@@ -67,21 +66,7 @@ namespace RijamsMod.Projectiles.Magic
 			// projectile.direction is automatically set correctly in Projectile.Update, but we need to set it here or the textures will draw incorrectly on the 1st frame.
 			Projectile.spriteDirection = Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
 			// Adding Pi to rotation if facing left corrects the drawing
-			Projectile.rotation = Projectile.velocity.ToRotation() + (Projectile.spriteDirection == 1 ? 0f : MathHelper.Pi);
-			if (Projectile.spriteDirection == 1) // facing right
-			{
-				DrawOffsetX = -12; // These values match the values in SetDefaults
-				DrawOriginOffsetY = 0;
-				DrawOriginOffsetX = 6;
-			}
-			else
-			{
-				// Facing left.
-				// You can figure these values out if you flip the sprite in your drawing program.
-				DrawOffsetX = 0; // 0 since now the top left corner of the hitbox is on the far left pixel.
-				DrawOriginOffsetY = 0; // doesn't change
-				DrawOriginOffsetX = -6; // Math works out that this is negative of the other value.
-			}
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
 			// This is a simple "loop through all frames from top to bottom" animation
 			int frameSpeed = 4;
@@ -110,7 +95,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.Kill();
 			return false;
 		}
-		//Copied from vanila (1.4) Projectiles.cs
+		//Copied from vanilla (1.4) Projectiles.cs
 		public int FindTargetWithLineOfSight(float maxRange = 800f)
 		{
 			float newMaxRange = maxRange;
@@ -135,19 +120,19 @@ namespace RijamsMod.Projectiles.Magic
 			}
 			return result;
 		}
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
-			//This isn't perfect (especially when the projectile is going any way but straight right or left), but I can't figure out how to fix it.
 			Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
 			Vector2 drawOrigin = new(texture.Width * 0.5f, Projectile.height * 0.5f);
 			for (int k = 0; k < Projectile.oldPos.Length; k++)
 			{
-				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(Projectile.direction >= 0 ? -12f : 0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length)* 0.5f;
+				Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length) * 0.5f;
 				Rectangle frame = texture.Frame(1, Main.projFrames[Projectile.type], 0, Projectile.frame);
 				SpriteEffects spriteEffects = Projectile.direction < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 				Main.EntitySpriteDraw(texture, drawPos, frame, color, Projectile.rotation, drawOrigin, Projectile.scale, spriteEffects, 0);
 			}
+
 			return true;
 		}
 		public override void OnKill(int timeLeft)

@@ -19,8 +19,6 @@ namespace RijamsMod
 		public static bool hellTraderArrivable = false;
 		public static bool boughtSnuggetPet = false;
 
-		public static int harpyJustRescued = 0; // Not important for saving.
-
 		public override void OnWorldLoad()
 		{
 			savedHarpy = false;
@@ -33,8 +31,6 @@ namespace RijamsMod
 			intTravQuestPrimeThruster = false;
 			hellTraderArrivable = false;
 			boughtSnuggetPet = false;
-
-			harpyJustRescued = 0;
 		}
 
 		public override void OnWorldUnload()
@@ -49,8 +45,6 @@ namespace RijamsMod
 			intTravQuestPrimeThruster = false;
 			hellTraderArrivable = false;
 			boughtSnuggetPet = false;
-
-			harpyJustRescued = 0;
 		}
 
 		public override void SaveWorldData(TagCompound tag)
@@ -146,7 +140,7 @@ namespace RijamsMod
 			boughtSnuggetPet = flags2[1];
 		}
 
-		public static void UpdateWorldBool() // from Calamity's Vanities
+		public static void NetMessageSendWorldData()
 		{
 			if (Main.netMode == NetmodeID.Server)
 			{
@@ -175,7 +169,7 @@ namespace RijamsMod
 						// Expect about half the number of chests in a small world.
 						if (WorldGen.genRand.NextBool(4)) 
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -188,7 +182,7 @@ namespace RijamsMod
 						}
 						if (WorldGen.genRand.NextBool(8))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -209,7 +203,7 @@ namespace RijamsMod
 						// If there are 20 Locked Golden Chests in a large world, only 4 of them have the item.
 						if (WorldGen.genRand.NextBool(5))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -222,7 +216,7 @@ namespace RijamsMod
 						}
 						if (chest.item[0].type == ItemID.Handgun) // If the first slot of the chest is a Handgun, add the StockadeCrossbow.
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -235,7 +229,7 @@ namespace RijamsMod
 						}
 						if (WorldGen.genRand.NextBool(9))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -251,7 +245,7 @@ namespace RijamsMod
 					{
 						if (WorldGen.genRand.NextBool(7))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -267,7 +261,7 @@ namespace RijamsMod
 					{
 						if (WorldGen.genRand.NextBool(6))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -280,7 +274,7 @@ namespace RijamsMod
 						}
 						if (WorldGen.genRand.NextBool(15))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{
@@ -293,7 +287,7 @@ namespace RijamsMod
 						}
 						if (WorldGen.genRand.NextBool(15))
 						{
-							for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+							for (int inventoryIndex = 0; inventoryIndex < Chest.DefaultMaxItems; inventoryIndex++)
 							{
 								if (chest.item[inventoryIndex].IsAir)
 								{

@@ -236,23 +236,22 @@ namespace RijamsMod.Projectiles.Tools
 			player.itemRotation = MathHelper.WrapAngle((float)Math.Atan2(Projectile.velocity.Y * (float)Projectile.direction, Projectile.velocity.X * (float)Projectile.direction) + num23);
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
-			Player owner = Main.player[Projectile.owner];
 			SpriteEffects spriteEffects = SpriteEffects.None;
 			if (Projectile.spriteDirection == -1)
 			{
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 
-			if (owner.gravDir == -1f)
+			if (player.gravDir == -1f)
 			{
 				spriteEffects |= SpriteEffects.FlipVertically;
 			}
 			Vector2 projPos = Projectile.position + new Vector2(Projectile.width, Projectile.height) / 2f + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition;
 			Texture2D projTexture = TextureAssets.Projectile[Projectile.type].Value;
 			//Color projAlpha = Projectile.GetAlpha(lightColor);
-			Vector2 playerPos = owner.RotatedRelativePoint(owner.MountedCenter) + Vector2.UnitY;// * owner.gfxOffY;
+			Vector2 playerPos = player.RotatedRelativePoint(player.MountedCenter) + Vector2.UnitY;// * owner.gfxOffY;
 			Vector2 worldPos = projPos + Main.screenPosition - playerPos;
 			Vector2 normalWorldPos = Vector2.Normalize(worldPos);
 			float worldPosLength = worldPos.Length();
@@ -320,10 +319,10 @@ namespace RijamsMod.Projectiles.Tools
 			Color color94 = Lighting.GetColor((int)playerPos.X / 16, (int)playerPos.Y / 16);
 			Main.EntitySpriteDraw(itemTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null,
 				color94, Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f),
-				new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? itemTexture.Width : 0, (float)itemTexture.Height / 2f) + Vector2.UnitY * 1f, owner.inventory[owner.selectedItem].scale, spriteEffects, 0);
+				new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? itemTexture.Width : 0, (float)itemTexture.Height / 2f) + Vector2.UnitY * 1f, player.inventory[player.selectedItem].scale, spriteEffects, 0);
 			Main.EntitySpriteDraw(glowTexture, playerPos - Main.screenPosition + normalWorldPos * numIsNeg5f, null,
 				new Color(255, 255, 255, 0), Projectile.rotation + (float)Math.PI / 2f + ((spriteEffects == SpriteEffects.None || spriteEffects == SpriteEffects.FlipVertically) ? ((float)Math.PI) : 0f),
-				new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? glowTexture.Width : 0, (float)glowTexture.Height / 2f) + Vector2.UnitY * 1f, owner.inventory[owner.selectedItem].scale, spriteEffects, 0);
+				new Vector2((spriteEffects != 0 && spriteEffects != SpriteEffects.FlipVertically) ? glowTexture.Width : 0, (float)glowTexture.Height / 2f) + Vector2.UnitY * 1f, player.inventory[player.selectedItem].scale, spriteEffects, 0);
 			/*if (worldPosLength > tipInset)
 			{
 				for (int j = 2; j < 4; j++)

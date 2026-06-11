@@ -1,12 +1,6 @@
-using System.Linq;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.Bestiary;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -28,7 +22,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPC.npcSlots = 5f;
 			NPC.width = 72;
 			NPC.height = 22;
-			NPC.aiStyle = 0;
+			NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer;
 			NPC.damage = 0;
 			NPC.defense = 15;
 			NPC.lifeMax = 250;
@@ -61,7 +55,7 @@ namespace RijamsMod.NPCs.TownNPCs
 						Main.BestiaryTracker.Chats.RegisterChatStartWith(NPC); // Unlock the Town NPC in the Bestiary.																  
 						Main.player[i].SetTalkNPC(NPC.whoAmI);  // Change who the player is talking to to the new Town NPC. 
 						RijamsModWorld.savedHarpy = true; // Set our rescue bool to true.
-						RijamsModWorld.harpyJustRescued = 120;
+						Harpy.harpyJustRescued = 120;
 						Mod.Logger.Debug("RijamsMod: Harpy NPC rescued.");
 
 						// We need to sync these changes in multiplayer.
@@ -85,11 +79,11 @@ namespace RijamsMod.NPCs.TownNPCs
 			return false;
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
-			if (spawnInfo.Player.ZoneSkyHeight && !RijamsModWorld.savedHarpy && !NPC.AnyNPCs(ModContent.NPCType<UnconsciousHarpy>()) && !NPC.AnyNPCs(ModContent.NPCType<Harpy>()))
+			if (spawner.Player.ZoneSkyHeight && !RijamsModWorld.savedHarpy && !NPC.AnyNPCs(ModContent.NPCType<UnconsciousHarpy>()) && !NPC.AnyNPCs(ModContent.NPCType<Harpy>()))
 			{
-				if (spawnInfo.SpawnTileType == TileID.Cloud || spawnInfo.SpawnTileType == TileID.RainCloud || spawnInfo.SpawnTileType == TileID.Grass || spawnInfo.SpawnTileType == TileID.Sunplate || spawnInfo.SpawnTileType == TileID.SnowCloud || spawnInfo.SpawnTileType == TileID.Dirt)
+				if (spawner.SpawnTileType == TileID.Cloud || spawner.SpawnTileType == TileID.RainCloud || spawner.SpawnTileType == TileID.Grass || spawner.SpawnTileType == TileID.Sunplate || spawner.SpawnTileType == TileID.SnowCloud || spawner.SpawnTileType == TileID.Dirt)
 				{
 					return 0.75f;
 				}				

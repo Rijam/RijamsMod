@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
@@ -8,6 +9,7 @@ using static Terraria.ModLoader.PlayerDrawLayer;
 using System;
 using Terraria.GameContent.Drawing;
 using System.Reflection;
+using RijamsMod.NPCs.TownNPCs;
 
 namespace RijamsMod.Items
 {
@@ -49,7 +51,7 @@ namespace RijamsMod.Items
 			Main.NewText("savedHarpy is currenty: " + RijamsModWorld.savedHarpy);
 			Main.NewText("intTravArived is currenty: " + RijamsModWorld.intTravArrived);
 			Main.NewText("hellTraderArrivable is currenty: " + RijamsModWorld.hellTraderArrivable);
-			Main.NewText("harpyJustRescued is currenty: " + RijamsModWorld.harpyJustRescued);
+			Main.NewText("harpyJustRescued is currenty: " + Harpy.harpyJustRescued);
 			Main.NewText("boughtTestPet is currenty: " + RijamsModWorld.boughtSnuggetPet);
 			return true;
 		}
@@ -85,7 +87,7 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestOddDevice = false;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 			return true;
 		}
 		public override bool CanRightClick()
@@ -95,7 +97,7 @@ namespace RijamsMod.Items
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.intTravQuestOddDevice = true;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -114,13 +116,13 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestBlankDisplay = false;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.intTravQuestBlankDisplay = true;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -139,13 +141,13 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestTPCore = false;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.intTravQuestTPCore = true;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -164,13 +166,13 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestBreadAndJelly = false;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.intTravQuestBreadAndJelly = true;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -189,13 +191,13 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestMagicOxygenizer = false;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.intTravQuestMagicOxygenizer = true;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -214,13 +216,13 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.intTravQuestPrimeThruster = false;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 			return true;
 		}
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.intTravQuestPrimeThruster = true;
-			RijamsModWorld.UpdateWorldBool();
+			RijamsModWorld.NetMessageSendWorldData();
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
@@ -269,22 +271,24 @@ namespace RijamsMod.Items
 			base.SetDefaults();
 			Item.color = Color.Red;
 		}
+
 		public override bool? UseItem(Player player)
 		{
 			RijamsModWorld.savedHarpy = false;
-			RijamsModWorld.harpyJustRescued = 120;
+			Harpy.harpyJustRescued = 0;
 			return true;
 		}
+
 		public override void RightClick(Player player)
 		{
 			RijamsModWorld.savedHarpy = true;
-			RijamsModWorld.harpyJustRescued = 0;
+			Harpy.harpyJustRescued = 120;
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
 			string currentState = RijamsModWorld.savedHarpy.ToString();
 			tooltips.Add(new TooltipLine(Mod, "CurrentState", "savedHarpy == " + currentState));
-			tooltips.Add(new TooltipLine(Mod, "CurrentState", "harpyJustRescued == " + RijamsModWorld.harpyJustRescued.ToString()));
+			tooltips.Add(new TooltipLine(Mod, "CurrentState", "harpyJustRescued == " + Harpy.harpyJustRescued.ToString()));
 		}
 	}
 	public class DebugHellTraderArrivable : DebugIntTravQuestOddDevice
@@ -374,7 +378,7 @@ namespace RijamsMod.Items
 		public override bool? UseItem(Player player)
 		{
 			Main.NewText("Main.LocalPlayer.lastCreatureHit is currenty: " + Main.LocalPlayer.lastCreatureHit);
-			Main.NewText("NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] is currenty: " + NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)]);
+			Main.NewText("NPC.killCount[Item.NPCtoBanner(NPCID.Harpy)] is currenty: " + BannerSystem.killCount[BannerSystem.NPCtoBanner(NPCID.Harpy)]);
 			Main.NewText("TallyCounter is currenty: " + Main.LocalPlayer.HasItem(ItemID.TallyCounter));
 			Main.NewText("REK is currenty: " + Main.LocalPlayer.HasItem(ItemID.REK));
 			Main.NewText("PDA is currenty: " + Main.LocalPlayer.HasItem(ItemID.PDA));
@@ -383,6 +387,15 @@ namespace RijamsMod.Items
 			Main.NewText("player.GetModPlayer<RijamsModPlayer>().breathingPack is currenty: " + player.GetModPlayer<RijamsModPlayer>().breathingPack);
 			Main.NewText("GetType().Namespace.ToString(): " + GetType().Namespace.ToString());
 			//Main.NewText("player.GetModPlayer<RijamsModPlayer>().breathingPackUsed is currenty: " + player.GetModPlayer<RijamsModPlayer>().breathingPackUsed);
+
+			NPC talkNPC = Main.LocalPlayer.TalkNPC;
+			if (talkNPC != null)
+			{
+				if (talkNPC.ModNPC is HellTrader hellTrader)
+				{
+					HellTrader.MoveIn(hellTrader);
+				}
+			}
 			return true;
 		}
 	}
@@ -607,19 +620,28 @@ namespace RijamsMod.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			ParticleOrchestraType particleType = ParticleOrchestraType.NightsEdge;
+			ParticleOrchestraType particleType = ParticleOrchestraType.PaladinsShieldHit;
+			//ParticleOrchestraType particleType = ParticleOrchestraType.BlueLightningSmallLong;
+
+			//Projectile projectile1 = Projectile.NewProjectileDirect(null, new Vector2(player.Center.X - 216, player.position.Y - 224), Vector2.Zero, ProjectileID.CultistRitual, 1, 1);
+			//Projectile projectile2 = Projectile.NewProjectileDirect(null, new Vector2(player.Center.X + 216, player.position.Y - 224), Vector2.Zero, ProjectileID.CultistRitual, 1, 1);
 
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, particleType, new ParticleOrchestraSettings
 			{
-				PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224),
+				//PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224),
+				PositionInWorld = new Vector2(player.whoAmI, player.whoAmI),
+				//MovementVector = new Vector2(100, 100),
 				MovementVector = Vector2.One,
-				UniqueInfoPiece = 0
+				UniqueInfoPiece = 1
 			});
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, particleType, new ParticleOrchestraSettings
 			{
-				PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 224),
+				//PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 224),
+				//MovementVector = new Vector2(player.Center.X + 216  *2, player.position.Y),
+				//PositionInWorld = new Vector2(player.whoAmI, player.whoAmI),
+				//MovementVector = new Vector2(100, 100),
 				MovementVector = Vector2.One,
-				UniqueInfoPiece = 0
+				UniqueInfoPiece = 1
 			});
 			return true;
 		}
@@ -654,7 +676,7 @@ namespace RijamsMod.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			int whoAmI = NPC.NewNPC(Item.GetSource_ReleaseEntity(), (int)Main.MouseWorld.X, (int)Main.MouseWorld.Y, ModContent.NPCType<DebugSuperDummyNPC>());
+			int whoAmI = NPC.NewNPC(player.GetSource_ReleaseEntity(), (int)Main.MouseWorld.X, (int)Main.MouseWorld.Y, ModContent.NPCType<DebugSuperDummyNPC>());
 			NetMessage.SendData(MessageID.SyncNPC, number: whoAmI);
 			return true;
 		}

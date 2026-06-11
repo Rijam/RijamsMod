@@ -1,9 +1,6 @@
-using RijamsMod.Dusts;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using RijamsMod.Items.Information;
 
 namespace RijamsMod.Items.Placeable
 {
@@ -32,7 +29,7 @@ namespace RijamsMod.Items.Placeable
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup(RecipeGroupID.Wood, 10)
+				.AddRecipeGroup(RecipeGroups.Wood, 10)
 				.AddIngredient(ModContent.ItemType<SulfurTorch>(), 5)
 				.Register();
 		}

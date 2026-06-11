@@ -44,7 +44,8 @@ namespace RijamsMod
 		{
 			return base.Clone(item, itemClone);
 		}
-		public override void PostDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+
+		public override void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
 			if (glowTexture != null && drawOnGround)
 			{
@@ -149,7 +150,7 @@ namespace RijamsMod
 			{
 				return;
 			}
-			if (drawInfo.drawPlayer.heldProj >= 0 && drawInfo.shadow == 0f && !drawInfo.heldProjOverHand)
+			if (drawInfo.drawPlayer.heldProj >= 0 && drawInfo.shadow == 0f)// && !drawInfo.heldProjOverHand)
 			{
 				drawInfo.projectileDrawPosition = drawInfo.DrawDataCache.Count;
 			}

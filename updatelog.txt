@@ -335,7 +335,7 @@
 1.2.9.1 - (May 2, 2025)
 	* Changed and added safety checks for applying static immunity to jousting lances to mitigate issues with "The given key 'X' was not present in the dictionary."
 
-1.2.9.2 - (? ?, ?)
+1.3.0.0 - (? ?, ?)
 	* Added a config option to make Yoyos use static immunity frames instead of global.
 	* Added Flask of Daybroken.
 	* Added Baby Blood Eel Staff and minion. (After it being unfinished in the mod for over three years!)
@@ -349,3 +349,7 @@
 	* Honey Candles now provide the Honey buff when placed nearby.
 	* Antlion Biter minion local immunity reduced from 30 to 13. This will increase the DPS of the minion.
 	* Added Giant Worm Staff and minion.
+	* Added portraits for the Town NPCs.
+	* Further limited the Angry Guster spawning conditions to surface and sky heights. 
+	* Updated all of the whips with the new tag damage system and added some more visual effects for a few of them.
+	* Fixed the Cresceptre projectile's after images being misaligned.

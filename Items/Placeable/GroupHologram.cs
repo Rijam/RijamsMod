@@ -5,7 +5,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using RijamsMod.NPCs.TownNPCs;
 using RijamsMod.NPCs;
-using ReLogic.Content;
 
 namespace RijamsMod.Items.Placeable
 {

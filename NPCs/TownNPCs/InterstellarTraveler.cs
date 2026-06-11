@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Drawing;
+using Terraria.GameContent.Personalities;
+using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Utilities;
-using Terraria.GameContent.Personalities;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.UI;
-using Terraria.GameContent.Drawing;
 using RijamsMod.EmoteBubbles;
-using RijamsMod.Items.Accessories.Summoner;
-using RijamsMod.Items.Accessories.Ranger;
 using RijamsMod.Items.Accessories.Misc;
+using RijamsMod.Items.Accessories.Ranger;
+using RijamsMod.Items.Accessories.Summoner;
 using RijamsMod.Items.Information;
 using RijamsMod.Items.Quest;
 using RijamsMod.Items.Tools;
@@ -32,7 +32,9 @@ namespace RijamsMod.NPCs.TownNPCs
 	public class InterstellarTraveler : ModNPC
 	{
 		private bool usedMicronWrap = false;
-		private int usedMicronWrapTime = 0;
+		private short usedMicronWrapTime = 0;
+		internal ChatWithPortrait chatEmotion;
+		internal List<ChatWithPortrait.DialogWithEmotion> questChatEmotion = new();
 
 		private uint questExclamationTimer = 0;
 
@@ -50,18 +52,23 @@ namespace RijamsMod.NPCs.TownNPCs
 			HelmetHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Helmet_Head");
 		}
 
+		public override void Unload()
+		{
+			chatEmotion = null;
+			questChatEmotion = null;
+		}
+
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Interstellar Traveler");
-			Main.npcFrameCount[NPC.type] = 26;
-			NPCID.Sets.ExtraFramesCount[NPC.type] = 10;
-			NPCID.Sets.AttackFrameCount[NPC.type] = 5;
-			NPCID.Sets.DangerDetectRange[NPC.type] = 1000;
-			NPCID.Sets.AttackType[NPC.type] = 1;
-			NPCID.Sets.AttackTime[NPC.type] = 30; 
-			NPCID.Sets.AttackAverageChance[NPC.type] = 1; // Lower numbers actually make the NPC more likely to attack
-			NPCID.Sets.HatOffsetY[NPC.type] = 4;
-			NPCID.Sets.ShimmerTownTransform[NPC.type] = true;
+			Main.npcFrameCount[Type] = 26;
+			NPCID.Sets.ExtraFramesCount[Type] = 10;
+			NPCID.Sets.AttackFrameCount[Type] = 5;
+			NPCID.Sets.DangerDetectRange[Type] = 1000;
+			NPCID.Sets.AttackType[Type] = 1;
+			NPCID.Sets.AttackTime[Type] = 30; 
+			NPCID.Sets.AttackAverageChance[Type] = 1; // Lower numbers actually make the NPC more likely to attack
+			NPCID.Sets.HatOffsetY[Type] = 4;
+			NPCID.Sets.ShimmerTownTransform[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
@@ -98,6 +105,85 @@ namespace RijamsMod.NPCs.TownNPCs
 			NPCProfile = new InterstellarTravelerProfile();
 
 			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<InterstellarTravelerEmote>();
+
+			// Here we define which portrait to use for the Town NPC when the portrait style setting is set to detailed.
+			NPCID.Sets.NPCPortraits.Add(Type, NPCID.Sets.PrioritizedPortrait()
+				.With(() => ModContent.GetInstance<RijamsModConfigClient>().Ornithophobia, NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Helmet", ""))) // This is the portrait to use while the Town NPC is shimmered.
+
+				// .With(() => NPCHelper.PartyPortraitCondition() && NPCHelper.AllQuestsCompleted(), NPCID.Sets.BasicPortrait($"{Texture}_Casual_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
+				// .With(() => NPCID.Sets.ShimmeredPortraitCondition() && NPCHelper.PartyPortraitCondition(), NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Alt_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
+				// .With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
+
+				// Happiness button
+				.With(() => CasualShowingHappinessText(0f, 0.82f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "VeryHappy")))
+				.With(() => ChatWithPortrait.ShimmerPartyShowingHappinessText(0f, 0.82f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "VeryHappy")))
+				.With(() => ChatWithPortrait.ShimmerShowingHappinessText(0f, 0.82f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "VeryHappy")))
+				.With(() => ChatWithPortrait.ShowingHappinessText(0f, 0.82f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "VeryHappy")))
+				.With(() => CasualShowingHappinessText(0.82f, 1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Happy")))
+				.With(() => ChatWithPortrait.ShimmerPartyShowingHappinessText(0.82f, 1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Happy")))
+				.With(() => ChatWithPortrait.ShimmerShowingHappinessText(0.82f, 1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Happy")))
+				.With(() => ChatWithPortrait.ShowingHappinessText(0.82f, 1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Happy")))
+				.With(() => CasualShowingHappinessText(1f, 1.1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Neutral")))
+				.With(() => ChatWithPortrait.ShimmerPartyShowingHappinessText(1f, 1.1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Neutral")))
+				.With(() => ChatWithPortrait.ShimmerShowingHappinessText(1f, 1.1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Neutral")))
+				.With(() => ChatWithPortrait.ShowingHappinessText(1f, 1.1f), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Neutral")))
+				.With(() => CasualShowingHappinessText(1.1f, float.MaxValue), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Sad")))
+				.With(() => ChatWithPortrait.ShimmerPartyShowingHappinessText(1.1f, float.MaxValue), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Sad")))
+				.With(() => ChatWithPortrait.ShimmerShowingHappinessText(1.1f, float.MaxValue), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Sad")))
+				.With(() => ChatWithPortrait.ShowingHappinessText(1.1f, float.MaxValue), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Sad")))
+				// Housing button
+				.With(CasualShowingHousingText, NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Sad")))
+				.With(ChatWithPortrait.ShimmerPartyShowingHousingText, NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Sad")))
+				.With(ChatWithPortrait.ShimmerShowingHousingText, NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Sad")))
+				.With(ChatWithPortrait.ShowingHousingText, NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Sad")))
+
+				// Normal Chat
+				// Casual outfit during a party after completing all quests
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Angry), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Angry")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Blushing), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Blushing")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Happy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Happy")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Sad), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Sad")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Shocked), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Shocked")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Smirk), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Smirk")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Thinking), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Thinking")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.VeryHappy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "VeryHappy")))
+				.With(() => CasualPortraitEmotionCondtion(PortraitEmotion.Worried), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Worried")))
+				.With(() => NPCHelper.PartyPortraitCondition() && NPCHelper.AllQuestsCompleted(), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Casual", "Neutral")))
+				// Shimmered Party
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Angry), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Angry")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Blushing), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Blushing")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Happy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Happy")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Sad), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Sad")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Shocked), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Shocked")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Smirk), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Smirk")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Thinking), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Thinking")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.VeryHappy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "VeryHappy")))
+				.With(() => ChatWithPortrait.ShimmerPartyPortraitEmotionCondtion(PortraitEmotion.Worried), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Worried")))
+				.With(() => NPCID.Sets.ShimmeredPortraitCondition() && NPCHelper.PartyPortraitCondition(), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer_Hatless", "Neutral")))
+				// Shimmer
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Angry), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Angry")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Blushing), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Blushing")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Happy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Happy")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Sad), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Sad")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Shocked), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Shocked")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Smirk), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Smirk")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Thinking), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Thinking")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.VeryHappy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "VeryHappy")))
+				.With(() => ChatWithPortrait.ShimmerPortraitEmotionCondtion(PortraitEmotion.Worried), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Worried")))
+				.With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Shimmer", "Neutral")))
+				// Default
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Angry), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Angry")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Blushing), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Blushing")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Happy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Happy")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Sad), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Sad")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Shocked), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Shocked")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Smirk), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Smirk")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Thinking), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Thinking")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.VeryHappy), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "VeryHappy")))
+				.With(() => ChatWithPortrait.PortraitEmotionCondtion(PortraitEmotion.Worried), NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Worried")))
+				.Default(NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath(this, "Default", "Neutral")))); // Default portrait to use (not shimmered).
+			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-2f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
+			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults()
@@ -126,8 +212,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			[
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
 				new FlavorTextBestiaryInfoElement(NPCHelper.BestiaryPath(Name)),
-				new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name))
+				// new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name))
 			]);
+			if (NPCHelper.ShouldAddHappinessInfoBox())
+			{
+				bestiaryEntry.Info.Add(new FlavorTextBestiaryInfoElement(NPCHelper.LoveText(Name) + NPCHelper.LikeText(Name) + NPCHelper.DislikeText(Name) + NPCHelper.HateText(Name)));
+			}
 		}
 
 		public override void HitEffect(NPC.HitInfo hit)
@@ -203,7 +293,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			else
 			{
 				RijamsModWorld.intTravArrived = true;
-				RijamsModWorld.UpdateWorldBool();
+				RijamsModWorld.NetMessageSendWorldData();
 			}
 
 			return
@@ -239,7 +329,12 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (usedMicronWrap && usedMicronWrapTime == 3600) // Wait exactly one second before healing
 			{
 				NPC.AddBuff(BuffID.Lovestruck, 60);
-				NPC.life += 150;
+				int healAmount = Math.Clamp(150, 0, NPC.lifeMax);
+				NPC.life += healAmount;
+				if (Main.netMode != NetmodeID.MultiplayerClient)
+				{
+					NPC.HealEffect(healAmount);
+				}
 				NPC.netUpdate = true;
 			}
 			if (usedMicronWrapTime == 0) // If the cool down hits 0, set the bool to false.
@@ -252,6 +347,18 @@ namespace RijamsMod.NPCs.TownNPCs
 				questExclamationTimer = 0;
 			}
 		}
+
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(usedMicronWrap);
+			writer.Write(usedMicronWrapTime);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			usedMicronWrap = reader.ReadBoolean();
+			usedMicronWrapTime = reader.ReadInt16();
+		}
 		#endregion
 
 		#region PostDraw
@@ -261,7 +368,6 @@ namespace RijamsMod.NPCs.TownNPCs
 		private readonly Asset<Texture2D> textureShimmeredArm = ModContent.Request<Texture2D>("RijamsMod/NPCs/TownNPCs/Shimmered/InterstellarTraveler_Arm");
 		private readonly Asset<Texture2D> questIcons = ModContent.Request<Texture2D>("RijamsMod/Items/Quest/QuestIcons");
 		private readonly Asset<Texture2D> questQuestion = ModContent.Request<Texture2D>("RijamsMod/Items/Quest/Question");
-
 
 		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
@@ -281,11 +387,11 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (NPC.frame.Y > 20 * NPC.frame.Height) //Only draw while attacking
 			{
-				spriteBatch.Draw(drawTexture.Value, NPC.Center - screenPos - new Vector2(0, 4), NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
+				spriteBatch.Draw(drawTexture.Value, NPC.Center - screenPos + NPCHelper.DrawingOffsets(NPC), NPC.frame, color, NPC.rotation, NPC.frame.Size() / 2f, NPC.scale, spriteEffects, 1f);
 			}
 
 			// Inspired by Magic Storage
-			if (CheckIfQuestIsAvailableToTurnIn(out int which, out bool secret))
+			if (!Main.hideUI && CheckIfQuestIsAvailableToTurnIn(out int which, out bool secret))
 			{
 				questExclamationTimer++;
 
@@ -326,63 +432,77 @@ namespace RijamsMod.NPCs.TownNPCs
 		#region Chat
 		public override string GetChat()
 		{
-			WeightedRandom<string> chat = new();
-
 			bool townNPCsCrossModSupport = ModContent.GetInstance<RijamsModConfigServer>().TownNPCsCrossModSupport;
 
 			NPCHelper.GetNearbyResidentNPCs(Main.npc[NPC.whoAmI], 1, out List<int> npcTypeListHouse, out List<int> npcTypeListNearBy, out List<int> npcTypeListVillage, out List<int> _);
 
-			chat.Add("I'm pretty far from home, but this place is pretty cool.");
-			chat.Add("Nice to meet you!");
-			chat.Add("I'm pretty lucky to have ended up on this planet. Not only is it inhabitable, but it also contains intelligent life!");
-			chat.Add("I have a few things that I can sell you if you want to take a look.");
-			chat.Add("Hi there! My name is " + Main.npc[NPC.whoAmI].GivenName + ".");
-			chat.Add("Hey, do you know where I could get some food?", 0.5);
+			chatEmotion = new();
+
+			chatEmotion.Add("I'm pretty far from home, but this place is pretty cool.", emotion: PortraitEmotion.Happy);
+			chatEmotion.Add("Nice to meet you!", emotion: PortraitEmotion.Happy);
+			chatEmotion.Add("I'm pretty lucky to have ended up on this planet. Not only is it inhabitable, but it also contains intelligent life!", emotion: PortraitEmotion.Happy);
+			chatEmotion.Add("I have a few things that I can sell you if you want to take a look.");
+			chatEmotion.Add($"Hi there! My name is {Main.npc[NPC.whoAmI].GivenName}.", emotion: PortraitEmotion.VeryHappy);
+			chatEmotion.Add("Hey, do you know where I could get some food?", 0.5, emotion: PortraitEmotion.Thinking);
 
 			if (usedMicronWrap)
 			{
-				chat.Add("That was a close call. I had to use a micronwrap to heal myself!", 10.0);
+				chatEmotion.Add("That was a close call. I had to use a micronwrap to heal myself!", 10.0);
 			}
 			else if (NPC.life < NPC.lifeMax * 0.5)
 			{
-				chat.Add("Ouch! I better apply some micronwraps...", 10.0);
+				chatEmotion.Add("Ouch! I better apply some micronwraps...", 10.0, emotion: PortraitEmotion.Shocked);
 			}
 			if (Main.dayTime)
 			{
-				chat.Add(Main.raining ? "The rain is pleasant to watch; maybe not to stand in, though." : "Nice day today, isn't it?");
-				chat.Add("This planet is very interesting.");
+				if (Main.raining)
+				{
+					chatEmotion.Add("The rain is pleasant to watch; maybe not to stand in, though.");
+				}
+				else
+				{
+					chatEmotion.Add("Nice day today, isn't it?", emotion: PortraitEmotion.Happy);
+				}
+				chatEmotion.Add("This planet is very interesting.", emotion: PortraitEmotion.Happy);
 			}
 			else
 			{
-				chat.Add(Main.bloodMoon ? "You better take shelter. There are some very strange creatures tonight." : "You better take shelter. I've seen strange creatures at night.");
-				chat.Add("Well, time to relax inside.");
-				chat.Add("I hope you have a weapon to defend yourself with.");
+				if (Main.bloodMoon)
+				{
+					chatEmotion.Add("You better take shelter. There are some very strange creatures tonight.");
+				}
+				else
+				{
+					chatEmotion.Add("You better take shelter. I've seen strange creatures at night.");
+				}
+				chatEmotion.Add("Well, time to relax inside.", emotion: PortraitEmotion.Happy);
+				chatEmotion.Add("I hope you have a weapon to defend yourself with.");
 			}
 			if (NPC.homeless)
 			{
-				chat.Add("It's dangerous out here. Do you have a place where I could stay?");
+				chatEmotion.Add("It's dangerous out here. Do you have a place where I could stay?", emotion: PortraitEmotion.Worried);
 			}
 			else
 			{
-				chat.Add("Thanks for letting me stay here.");
+				chatEmotion.Add("Thanks for letting me stay here.", emotion: PortraitEmotion.Happy);
 			}
 			if (Main.LocalPlayer.wingTimeMax > 0)
 			{
-				chat.Add("Woah! You have wings? And they work - like function? How did you get those? Are they heavy? How exhausting are they to use? Could I get a pair for myself? ...");
+				chatEmotion.Add("Woah! You have wings? And they work - like function? How did you get those? Are they heavy? How exhausting are they to use? Could I get a pair for myself? ...", emotion: PortraitEmotion.Shocked);
 			}
 			if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
 			{
-				chat.Add("Don't mind me, I'm just waiting for my next slice of cake.", 2.0);
-				chat.Add("What's the occasion? Ah, it doesn't matter. Parties are fun!", 2.0);
+				chatEmotion.Add("Don't mind me, I'm just waiting for my next slice of cake.", 2.0, emotion: PortraitEmotion.VeryHappy);
+				chatEmotion.Add("What's the occasion? Ah, it doesn't matter. Parties are fun!", 2.0, emotion: PortraitEmotion.VeryHappy);
 			}
 
 			if (NPC.CountNPCS(ModContent.NPCType<InterstellarTraveler>()) > 1) //more than one Interstellar Traveler
 			{
-				chat.Add("What? There two of me!? I have a lot of questions now. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 5.0);
+				chatEmotion.Add("What? There two of me!? I have a lot of questions now. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 5.0, emotion: PortraitEmotion.Angry);
 			}
 			if (!NPC.downedBoss2 || !RijamsModWorld.intTravArrived) //spawn in the Interstellar Traveler before meeting the requirements
 			{
-				chat.Add("I'm not supposed to be here, yet. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 2.0);
+				chatEmotion.Add("I'm not supposed to be here, yet. Is this your doing? Do you have some sort of divine powers that I wasn't aware of?", 2.0, emotion: PortraitEmotion.Angry);
 			}
 
 			int harpy = NPC.FindFirstNPC(ModContent.NPCType<Harpy>());
@@ -390,182 +510,182 @@ namespace RijamsMod.NPCs.TownNPCs
 			int angler = NPC.FindFirstNPC(NPCID.Angler);
 			if (harpy >= 0)
 			{
-				chat.Add(Main.npc[harpy].GivenName + " and I have surprisingly similar biology. Yet, we are different in many ways.", npcTypeListVillage.Contains(ModContent.NPCType<Harpy>()) ? 1 : 0.5);
-				chat.Add(Main.npc[harpy].GivenName + "'s wings intrigue me. How much lift can she generate with them? How much energy does it take to continuously flap her wings? ...", npcTypeListVillage.Contains(ModContent.NPCType<Harpy>()) ? 1 : 0.5);
-				chat.Add("I really enjoy " + Main.npc[harpy].GivenName + "'s presence. Some of the things she says makes me laugh!", npcTypeListVillage.Contains(ModContent.NPCType<Harpy>()) ? 1 : 0.5);
+				chatEmotion.Add($"{Main.npc[harpy].GivenName} and I have surprisingly similar biology. Yet, we are different in many ways.", npcTypeListVillage.Contains(ModContent.NPCType<Harpy>()) ? 1 : 0.5, emotion: PortraitEmotion.Thinking);
+				chatEmotion.Add($"{Main.npc[harpy].GivenName}'s wings intrigue me. How much lift can she generate with them? How much energy does it take to continuously flap her wings? ...", npcTypeListVillage.Contains(ModContent.NPCType<Harpy>()) ? 1 : 0.5, emotion: PortraitEmotion.Thinking);
+				chatEmotion.Add($"I really enjoy {Main.npc[harpy].GivenName}'s presence. Some of the things she says makes me laugh!", npcTypeListVillage.Contains(ModContent.NPCType<Harpy>()) ? 1 : 0.5, emotion: PortraitEmotion.VeryHappy);
 			}
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC) && townNPCsCrossModSupport)
 			{
 				int fisherman = NPC.FindFirstNPC(fishermanNPC.Find<ModNPC>("Fisherman").Type);
 				if (fisherman >= 0)
 				{
-					chat.Add("Do you think you could convince " + Main.npc[fisherman].GivenName + " to give me some fish?", npcTypeListVillage.Contains(fishermanNPC.Find<ModNPC>("Fisherman").Type) ? 1 : 0.5);
+					chatEmotion.Add($"Do you think you could convince {Main.npc[fisherman].GivenName} to give me some fish?", npcTypeListVillage.Contains(fishermanNPC.Find<ModNPC>("Fisherman").Type) ? 1 : 0.5, emotion: PortraitEmotion.Thinking);
 				}
 				if (hellTrader >= 0 && RijamsModWorld.hellTraderArrivable && fisherman >= 0)
 				{
-					chat.Add("So, " + Main.npc[fisherman].GivenName + " gives " + Main.npc[hellTrader].GivenName + " a bunch of fish, but not me?", npcTypeListVillage.Contains(fishermanNPC.Find<ModNPC>("Fisherman").Type) ? 1 : 0.5);
+					chatEmotion.Add($"So, {Main.npc[fisherman].GivenName} gives {Main.npc[hellTrader].GivenName} a bunch of fish, but not me?", npcTypeListVillage.Contains(fishermanNPC.Find<ModNPC>("Fisherman").Type) ? 1 : 0.5, emotion: PortraitEmotion.Angry);
 				}
 				/*if (angler >= 0 && fisherman >= 0)
 				{
-					chat.Add("Looking for these: [i:3120] , [i:3037] , [i:3096] ? Sorry, you're going to have to get them from " + Main.npc[angler].GivenName + " or " + Main.npc[fisherman].GivenName + ".", 0.75);
+					chatEmotion.Add("Looking for these: [i:3120] , [i:3037] , [i:3096] ? Sorry, you're going to have to get them from " + Main.npc[angler].GivenName + " or " + Main.npc[fisherman].GivenName + ".", 0.75);
 				}*/
 			}
 			int guide = NPC.FindFirstNPC(NPCID.Guide);
 			if (guide >= 0 && npcTypeListVillage.Contains(NPCID.Guide))
 			{
-				chat.Add(Main.npc[guide].GivenName + " seems to know a lot. Perhaps I could learn more about this planet from him.");
+				chatEmotion.Add($"{Main.npc[guide].GivenName} seems to know a lot. Perhaps I could learn more about this planet from him.", emotion: PortraitEmotion.Thinking);
 				if (Main.npc[guide].GivenName == "Andrew")
 				{
-					chat.Add("Why would " + Main.npc[guide].GivenName + " carry that hat around if he never wears it?", 0.5);
+					chatEmotion.Add($"Why would {Main.npc[guide].GivenName} carry that hat around if he never wears it?", 0.5);
 				}
 			}
 			int merchant = NPC.FindFirstNPC(NPCID.Merchant);
 			if (merchant >= 0 && npcTypeListVillage.Contains(NPCID.Merchant))
 			{
-				chat.Add(Main.npc[merchant].GivenName + " refuses to sell me anything. That's fine by me, I don't need the primitive items he has on offer...");
+				chatEmotion.Add($"{Main.npc[merchant].GivenName} refuses to sell me anything. That's fine by me, I don't need the primitive items he has on offer...", emotion: PortraitEmotion.Angry);
 			}
 			int nurse = NPC.FindFirstNPC(NPCID.Nurse);
 			if (nurse >= 0 && npcTypeListHouse.Contains(NPCID.Nurse))
 			{
-				chat.Add(Main.npc[nurse].GivenName + " is very experienced in her field. It's like she operates on somebody everyday!");
+				chatEmotion.Add($"{Main.npc[nurse].GivenName} is very experienced in her field. It's like she operates on somebody everyday!", emotion: PortraitEmotion.Smirk);
 			}
 			int demolitionist = NPC.FindFirstNPC(NPCID.Demolitionist);
 			if (demolitionist >= 0 && npcTypeListVillage.Contains(NPCID.Demolitionist))
 			{
-				chat.Add(Main.npc[demolitionist].GivenName + " just lobs those grenades around without a care in the universe! He could seriously hurt somebody!");
+				chatEmotion.Add($"{Main.npc[demolitionist].GivenName} just lobs those grenades around without a care in the universe! He could seriously hurt somebody!", emotion: PortraitEmotion.Angry);
 			}
 			int dyeTrader = NPC.FindFirstNPC(NPCID.DyeTrader);
 			if (dyeTrader >= 0 && npcTypeListHouse.Contains(NPCID.DyeTrader))
 			{
-				chat.Add(Main.npc[dyeTrader].GivenName + " has some really strange dyes. How does he make them?");
+				chatEmotion.Add($"{Main.npc[dyeTrader].GivenName} has some really strange dyes. How does he make them?", emotion: PortraitEmotion.Thinking);
 			}
 			if (angler >= 0 && npcTypeListNearBy.Contains(NPCID.Angler))
 			{
-				chat.Add(Main.npc[angler].GivenName + " keeps calling me names like 'Chicken Legs' or 'Bird Brain'. I hope he realizes I don't take offense to those phrases.");
-				chat.Add("Do you know who " + Main.npc[angler].GivenName + "'s parents are? Where are they?");
+				chatEmotion.Add($"{Main.npc[angler].GivenName} keeps calling me names like 'Chicken Legs' or 'Bird Brain'. I hope he realizes I don't take offense to those phrases.");
+				chatEmotion.Add($"Do you know who {Main.npc[angler].GivenName}'s parents are? Where are they?");
 			}
 			int zoologist = NPC.FindFirstNPC(NPCID.BestiaryGirl);
 			if (zoologist >= 0 && npcTypeListVillage.Contains(NPCID.BestiaryGirl))
 			{
-				if (Main.bloodMoon || Main.moonPhase == 0) //Blood Moon or Full Moon
+				if (NPC.ShouldBestiaryGirlBeLycantrope()) //Blood Moon or Full Moon
 				{
-					chat.Add("WOAH! Have you seen " + Main.npc[zoologist].GivenName + "? Is she aware of this?");
+					chatEmotion.Add($"WOAH! Have you seen {Main.npc[zoologist].GivenName}? Is she aware of this?", emotion: PortraitEmotion.Shocked);
 				}
 				else
 				{
-					chat.Add(Main.npc[zoologist].GivenName + " really likes me for some reason. Do you know why?");
+					chatEmotion.Add($"{Main.npc[zoologist].GivenName} really likes me for some reason. Do you know why?", emotion: PortraitEmotion.Thinking);
 				}
 			}
 			int dryad = NPC.FindFirstNPC(NPCID.Dryad);
 			if (dryad >= 0 && npcTypeListVillage.Contains(NPCID.Dryad))
 			{
-				chat.Add("How are you? I'm doing good myself. " + Main.npc[dryad].GivenName + " is very nice to me.");
-				chat.Add(Main.npc[dryad].GivenName + " has some sort of connection with nature — fascinating!");
+				chatEmotion.Add($"How are you? I'm doing good myself. {Main.npc[dryad].GivenName} is very nice to me.", emotion: PortraitEmotion.Happy);
+				chatEmotion.Add($"{Main.npc[dryad].GivenName} has some sort of connection with nature — fascinating!", emotion: PortraitEmotion.Thinking);
 			}
 			int painter = NPC.FindFirstNPC(NPCID.Painter);
 			if (painter >= 0 && npcTypeListVillage.Contains(NPCID.Painter))
 			{
-				chat.Add("I recognize " + Main.npc[painter].GivenName + "'s talent. That is all I have to say.");
+				chatEmotion.Add($"I recognize {Main.npc[painter].GivenName}'s talent. That is all I have to say.");
 				if (Main.npc[painter].GivenName == "Victor") //impossible in vanilla because Victor is not a name for the Painter
 				{
-					chat.Add("Sorry, not now. " + Main.npc[painter].GivenName + " and I are in an argument about whether something is a mouth or nose...", 0.5);
+					chatEmotion.Add($"Sorry, not now. {Main.npc[painter].GivenName} and I are in an argument about whether something is a mouth or nose...", 0.5, emotion: PortraitEmotion.Angry);
 				}
 			}
 			int golfer = NPC.FindFirstNPC(NPCID.Golfer);
 			if (golfer >= 0 && npcTypeListHouse.Contains(NPCID.Golfer))
 			{
-				chat.Add(Main.npc[golfer].GivenName + " challenged me to get a par score on all eighteen holes. Now the question is: do I play fair?");
+				chatEmotion.Add($"{Main.npc[golfer].GivenName} challenged me to get a par score on all eighteen holes. Now the question is: do I play fair?", emotion: PortraitEmotion.Thinking);
 			}
 			int armsDealer = NPC.FindFirstNPC(NPCID.ArmsDealer);
 			if (armsDealer >= 0 && npcTypeListHouse.Contains(NPCID.ArmsDealer))
 			{
-				chat.Add(Main.npc[armsDealer].GivenName + " took me to the range to show off his gun collection. He was very surprised to see how great of a shot I am.");
+				chatEmotion.Add($"{Main.npc[armsDealer].GivenName} took me to the range to show off his gun collection. He was very surprised to see how great of a shot I am.", emotion: PortraitEmotion.VeryHappy);
 			}
 			int tavernkeep = NPC.FindFirstNPC(NPCID.DD2Bartender);
 			if (tavernkeep >= 0 && npcTypeListNearBy.Contains(NPCID.DD2Bartender))
 			{
-				chat.Add("So, " + Main.npc[tavernkeep].GivenName + " is from another land you say? Portals? Hm... I'm going to have to make a note of that...");
+				chatEmotion.Add($"So, {Main.npc[tavernkeep].GivenName} is from another land you say? Portals? Hm... I'm going to have to make a note of that...", emotion: PortraitEmotion.Thinking);
 			}
 			int stylist = NPC.FindFirstNPC(NPCID.Stylist);
 			if (stylist >= 0 && npcTypeListHouse.Contains(NPCID.Stylist))
 			{
-				chat.Add("I don't have any hair for " + Main.npc[stylist].GivenName + " to style, but she is always welcome to preen the feathers on my head.");
+				chatEmotion.Add($"I don't have any hair for {Main.npc[stylist].GivenName} to style, but she is always welcome to preen the feathers on my head.", emotion: PortraitEmotion.Happy);
 			}
 			int goblinTinkerer = NPC.FindFirstNPC(NPCID.GoblinTinkerer);
 			if (goblinTinkerer >= 0 && npcTypeListHouse.Contains(NPCID.GoblinTinkerer))
 			{
-				chat.Add(Main.npc[goblinTinkerer].GivenName + " has some crazy weird gadgets. I might have to try some out myself.");
+				chatEmotion.Add($"{Main.npc[goblinTinkerer].GivenName} has some crazy weird gadgets. I might have to try some out myself.", emotion: PortraitEmotion.Happy);
 			}
 			int witchDoctor = NPC.FindFirstNPC(NPCID.WitchDoctor);
 			if (witchDoctor >= 0 && npcTypeListNearBy.Contains(NPCID.WitchDoctor))
 			{
-				chat.Add(Main.npc[witchDoctor].GivenName + " is of Lihzahrd species? Fascinating, another intelligent species.");
+				chatEmotion.Add($"{Main.npc[witchDoctor].GivenName} is of Lihzahrd species? Fascinating, another intelligent species.", emotion: PortraitEmotion.Thinking);
 			}
 			int clothier = NPC.FindFirstNPC(NPCID.Clothier);
 			if (clothier >= 0 && npcTypeListHouse.Contains(NPCID.Clothier))
 			{
-				chat.Add(Main.npc[clothier].GivenName + " had some sort of curse? Well I'm glad he is feeling better now...");
+				chatEmotion.Add($"{Main.npc[clothier].GivenName} had some sort of curse? Well I'm glad he is feeling better now...", emotion: PortraitEmotion.Thinking);
 				if (Main.npc[clothier].GivenName == "James")
 				{
-					chat.Add(Main.npc[clothier].GivenName + " has a very interesting couch; one that I have never seen before.", 0.5);
+					chatEmotion.Add($"{Main.npc[clothier].GivenName} has a very interesting couch; one that I have never seen before.", 0.5, emotion: PortraitEmotion.Thinking);
 				}
 			}
 			int mechanic = NPC.FindFirstNPC(NPCID.Mechanic);
 			if (mechanic >= 0 && npcTypeListVillage.Contains(NPCID.Mechanic))
 			{
-				chat.Add(Main.npc[mechanic].GivenName + " is fascinated with the technology that I have. I would be, too!");
+				chatEmotion.Add($"{Main.npc[mechanic].GivenName} is fascinated with the technology that I have. I would be, too!", emotion: PortraitEmotion.Happy);
 			}
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
 			if (partyGirl >= 0 && npcTypeListVillage.Contains(NPCID.PartyGirl))
 			{
-				chat.Add(Main.npc[partyGirl].GivenName + "'s dance moves are out of this world!");
+				chatEmotion.Add($"{Main.npc[partyGirl].GivenName}'s dance moves are out of this world!", emotion: PortraitEmotion.Shocked);
 			}
 			int wizard = NPC.FindFirstNPC(NPCID.Wizard);
 			if (wizard >= 0 && npcTypeListVillage.Contains(NPCID.Wizard))
 			{
-				chat.Add(Main.npc[wizard].GivenName + " keeps mistaking me for somebody else. The thing is, though, I look nothing like the other villagers here...");
+				chatEmotion.Add($"{Main.npc[wizard].GivenName} keeps mistaking me for somebody else. The thing is, though, I look nothing like the other villagers here...");
 			}
 			int taxCollector = NPC.FindFirstNPC(NPCID.TaxCollector);
 			if (taxCollector >= 0 && npcTypeListVillage.Contains(NPCID.TaxCollector))
 			{
-				chat.Add(Main.npc[taxCollector].GivenName + " refuses to accept my currency. Doesn't he know it's the way of the future?");
+				chatEmotion.Add($"{Main.npc[taxCollector].GivenName} refuses to accept my currency. Doesn't he know it's the way of the future?", emotion: PortraitEmotion.Angry);
 			}
 			int truffle = NPC.FindFirstNPC(NPCID.Truffle);
 			if (truffle >= 0 && npcTypeListHouse.Contains(NPCID.Truffle))
 			{
-				chat.Add(Main.npc[truffle].GivenName + " is proof that life is mysterious.");
+				chatEmotion.Add($"{Main.npc[truffle].GivenName} is proof that life is mysterious.", emotion: PortraitEmotion.Thinking);
 			}
 			int pirate = NPC.FindFirstNPC(NPCID.Pirate);
 			if (pirate >= 0 && npcTypeListNearBy.Contains(NPCID.Pirate))
 			{
-				chat.Add(Main.npc[pirate].GivenName + " keeps offering me crackers. I'm not going to refuse.");
+				chatEmotion.Add($"{Main.npc[pirate].GivenName} keeps offering me crackers. I'm not going to refuse.", emotion: PortraitEmotion.Smirk);
 			}
 			int steampunker = NPC.FindFirstNPC(NPCID.Steampunker);
 			if (steampunker >= 0 && npcTypeListVillage.Contains(NPCID.Steampunker))
 			{
-				chat.Add("The Clentaminator that " + Main.npc[steampunker].GivenName + " invented is very powerful. I wonder if it has other uses...");
+				chatEmotion.Add($"The Clentaminator that {Main.npc[steampunker].GivenName} invented is very powerful. I wonder if it has other uses...", emotion: PortraitEmotion.Thinking);
 				if (Main.npc[steampunker].GivenName == "Whitney")
 				{
-					chat.Add("The guitar that " + Main.npc[steampunker].GivenName + " owns is nice to listen to. It reminds me of simpler times.", 0.5);
+					chatEmotion.Add($"The guitar that {Main.npc[steampunker].GivenName} owns is nice to listen to. It reminds me of simpler times.", 0.5, emotion: PortraitEmotion.Happy);
 				}
 			}
 			int cyborg = NPC.FindFirstNPC(NPCID.Cyborg);
 			if (cyborg >= 0 && npcTypeListVillage.Contains(NPCID.Cyborg))
 			{
-				chat.Add("I heard " + Main.npc[cyborg].GivenName + " has an invisible building material and I'm really interested in such a material. Do you know when he will sell them?");
+				chatEmotion.Add($"I heard {Main.npc[cyborg].GivenName} has an invisible building material and I'm really interested in such a material. Do you know when he will sell them?", emotion: PortraitEmotion.Thinking);
 			}
 			int santa = NPC.FindFirstNPC(NPCID.SantaClaus);
 			if (santa >= 0 && npcTypeListHouse.Contains(NPCID.SantaClaus))
 			{
-				chat.Add(Main.npc[santa].GivenName + " is such a jolly fellow. No wonder humans enjoy this holiday!");
+				chatEmotion.Add($"{Main.npc[santa].GivenName} is such a jolly fellow. No wonder humans enjoy this holiday!", emotion: PortraitEmotion.VeryHappy);
 			}
 			int princess = NPC.FindFirstNPC(NPCID.Princess);
 			if (princess >= 0 && npcTypeListVillage.Contains(NPCID.Princess))
 			{
-				chat.Add(Main.npc[princess].GivenName + " is so ecstatic! She calls me her 'friendly alien' some times. Heh, well I guess it's true!");
+				chatEmotion.Add($"{Main.npc[princess].GivenName} is so ecstatic! She calls me her 'friendly alien' some times. Heh, well I guess it's true!", emotion: PortraitEmotion.VeryHappy);
 				if (Main.npc[princess].GivenName == "Yorai")
 				{
-					chat.Add(Main.npc[princess].GivenName + " seems to know a lot about technology. They claim to have 'created' most of things on this planet which doesn't make sense to me.", 0.5);
+					chatEmotion.Add($"{Main.npc[princess].GivenName} seems to know a lot about technology. They claim to have 'created' most of things on this planet which doesn't make sense to me.", 0.5, emotion: PortraitEmotion.Worried);
 				}
 			}
 
@@ -576,7 +696,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					int draken = NPC.FindFirstNPC(drakenModNPC.Type);
 					if (draken >= 0 && npcTypeListVillage.Contains(sgamod.Find<ModNPC>("Dergon").Type))
 					{
-						chat.Add("That Draken has a lot going through his head. He's a nice guy once you get to know him, though.");
+						chatEmotion.Add("That Draken has a lot going through his head. He's a nice guy once you get to know him, though.", emotion: PortraitEmotion.Worried);
 					}
 				}
 			}
@@ -587,7 +707,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					int seaKing = NPC.FindFirstNPC(seaKingModNPC.Type); //Sea King
 					if (seaKing >= 0 && npcTypeListNearBy.Contains(calamity.Find<ModNPC>("SEAHOE").Type))
 					{
-						chat.Add("I didn't expect to see somebody like Amidias! This planet is full of surprises!");
+						chatEmotion.Add("I didn't expect to see somebody like Amidias! This planet is full of surprises!", emotion: PortraitEmotion.Shocked);
 					}
 				}
 			}
@@ -598,10 +718,10 @@ namespace RijamsMod.NPCs.TownNPCs
 					int cook = NPC.FindFirstNPC(cookModNPC.Type);
 					if (cook >= 0 && npcTypeListVillage.Contains(thorium.Find<ModNPC>("Cook").Type))
 					{
-						chat.Add("I am thankful to see somebody like " + Main.npc[cook].GivenName + "!");
+						chatEmotion.Add($"I am thankful to see somebody like {Main.npc[cook].GivenName}!", emotion: PortraitEmotion.Happy);
 						if (Terraria.GameContent.Events.BirthdayParty.PartyIsUp)
 						{
-							chat.Add("Whatever " + Main.npc[cook].GivenName + " is cooking smells wonderful!");
+							chatEmotion.Add($"Whatever {Main.npc[cook].GivenName} is cooking smells wonderful!", emotion: PortraitEmotion.VeryHappy);
 						}
 					}
 				}
@@ -610,7 +730,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					int blacksmith = NPC.FindFirstNPC(blacksmithModNPC.Type);
 					if (blacksmith >= 0 && npcTypeListNearBy.Contains(thorium.Find<ModNPC>("Blacksmith").Type))
 					{
-						chat.Add("I'm not sure what kind of Durasteel " + Main.npc[blacksmith].GivenName + " is working with, but it's certainly not the one I'm familiar with.");
+						chatEmotion.Add($"I'm not sure what kind of Durasteel {Main.npc[blacksmith].GivenName} is working with, but it's certainly not the one I'm familiar with.");
 					}
 				}
 			}
@@ -621,7 +741,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					int brewer = NPC.FindFirstNPC(brewerModNPC.Type);
 					if (brewer >= 0 && npcTypeListNearBy.Contains(alchemistNPC.Find<ModNPC>("Brewer").Type))
 					{
-						chat.Add(Main.npc[brewer].GivenName + " has all sorts of interesting potions. I might have to try some for myself.");
+						chatEmotion.Add($"{Main.npc[brewer].GivenName} has all sorts of interesting potions. I might have to try some for myself.");
 					}
 				}
 			}
@@ -632,7 +752,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					int brewer2 = NPC.FindFirstNPC(brewer2ModNPC.Type);
 					if (brewer2 >= 0 && npcTypeListNearBy.Contains(alchemistNPCLite.Find<ModNPC>("Brewer").Type))
 					{
-						chat.Add(Main.npc[brewer2].GivenName + " has all sorts of interesting potions. I might have to try some for myself.");
+						chatEmotion.Add($"{Main.npc[brewer2].GivenName} has all sorts of interesting potions. I might have to try some for myself.");
 					}
 				}
 			}
@@ -643,17 +763,17 @@ namespace RijamsMod.NPCs.TownNPCs
 					int examplePerson = NPC.FindFirstNPC(examplePersonModNPC.Type);
 					if (examplePerson >= 0 && npcTypeListNearBy.Contains(exampleMod.Find<ModNPC>("ExamplePerson").Type))
 					{
-						chat.Add("I feel like I'm not supposed to see " + Main.npc[examplePerson].GivenName + ".");
+						chatEmotion.Add($"I feel like I'm not supposed to see {Main.npc[examplePerson].GivenName}.", emotion: PortraitEmotion.Worried);
 					}
 				}
 			}
-			if (ModLoader.TryGetMod("HappinessRemoval", out Mod _) && townNPCsCrossModSupport) //Happiness Removal
+			if (ModLoader.TryGetMod("NoNPCHappinessReborn", out Mod _) && townNPCsCrossModSupport) // Happiness Removal Reborn
 			{
-				chat.Add("Thanks for removing happiness. Now, I am eternally unhappy.", 2.0);
+				chatEmotion.Add("Thanks for removing happiness. Now, I am eternally unhappy.", 2.0, emotion: PortraitEmotion.Sad);
 			}
 			if (ModLoader.TryGetMod("StarlightRiver", out Mod starlightRiver) && townNPCsCrossModSupport) // Starlight River
 			{
-				// Only add this chat message if the player has unlocked Starlight, which is unlocked after the Crow (Alican) cut scene happens.
+				// Only add this chatEmotion message if the player has unlocked Starlight, which is unlocked after the Crow (Alican) cut scene happens.
 				if (starlightRiver.TryFind<ModPlayer>("AbilityHandler", out ModPlayer abilityHandler))
 				{
 					// Try to get the value of the AnyUnlocked which is true if the player has unlocked the abilities.
@@ -663,267 +783,222 @@ namespace RijamsMod.NPCs.TownNPCs
 					object anyUnlocks = anyUnlocked?.GetValue(Main.LocalPlayer.GetModPlayer(abilityHandler));
 					if (anyUnlocks?.ToString() == "True")
 					{
-						chat.Add("Did you see that Starlight person who came through that portal? You mentioned their name was Alican? I'm very interested in who they are; if only I were able to meet them before they went back through that portal.");
+						chatEmotion.Add("Did you see that Starlight person who came through that portal? You mentioned their name was Alican? I'm very interested in who they are; if only I were able to meet them before they went back through that portal.", emotion: PortraitEmotion.Shocked);
 					}
 				}
 			}
-			return chat;
+			return chatEmotion.GetRandomChat();
 		}
 		#endregion
 
 		#region Buttons
 
-		public static bool showingQuestChecklistButton = false;
-
-		public override void SetChatButtons(ref string button, ref string button2)
+		public override void RegisterChatButtons(NPCInteractionList interactions)
 		{
-			button = Language.GetTextValue("LegacyInterface.28"); //Shop
-			button2 = Language.GetTextValue("LegacyInterface.64"); //Quest
-			showingQuestChecklistButton = false;
-			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
+			interactions.Prepend(NPCInteractions.Shop(ShopName));
+			NPCInteractionList.Entry questButton = interactions.InsertAfter(new QuestButton(), NPCInteractionDatabase.CloseButton);
+			interactions.InsertAfter(new QuestChecklistButton(), questButton);
+		}
+
+		public class QuestButton : NPCInteraction
+		{
+			public override string GetText() => Language.GetTextValue("LegacyInterface.64"); //Quest
+			public override bool Condition() => true;
+			public override void Interact()
 			{
-				button2 = "Quest Checklist";
-				showingQuestChecklistButton = true;
+				InterstellarTraveler.QuestSystem(TalkNPC);
+				Main.DoNPCPortraitHop();
+			}
+			public override bool ShowExcalmation => CheckIfQuestIsAvailableToTurnIn(out _, out _);
+			public override void TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton)
+			{
+				if (CheckIfQuestIsAvailableToTurnIn(out _, out _))
+				{
+					chatColor = Color.Orange * (Main.mouseTextColor / 255f);
+				}
 			}
 		}
 
-		public override void OnChatButtonClicked(bool firstButton, ref string shop)
+		public class QuestChecklistButton : NPCInteraction
 		{
-			if (firstButton)
+			public override string GetText() => "Quest Checklist";
+			public override bool Condition() => true;
+			public override void Interact()
 			{
-				shop = ShopName;
-			}
-			if (!firstButton)
-			{
-				if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift))
-				{
-					QuestSystemChecklist();
-				}
-				else
-				{
-					QuestSystem();
-				}
+				InterstellarTraveler.QuestSystemChecklist();
+				Main.DoNPCPortraitHop();
 			}
 		}
 		#endregion
 
 		#region Quest System
-		public void QuestSystem()
+		/// <summary>
+		/// Turns in a quest if the player is able to do that, otherwise it gives hints.
+		/// </summary>
+		/// <param name="npc"></param>
+		public static void QuestSystem(NPC npc)
 		{
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<OddDevice>()) && RijamsModWorld.intTravQuestOddDevice == false)
+			Mod mod = ModContent.GetInstance<RijamsMod>();
+			if (
+				TurnInQuestItem_Outer(mod, npc, ModContent.ItemType<OddDevice>(), ref RijamsModWorld.intTravQuestOddDevice, RijamsModMessageType.SetQuestOddDevice)
+				|| TurnInQuestItem_Outer(mod, npc, ModContent.ItemType<BlankDisplay>(), ref RijamsModWorld.intTravQuestBlankDisplay, RijamsModMessageType.SetQuestBlankDisplay)
+				|| TurnInQuestItem_Outer(mod, npc, ModContent.ItemType<TeleportationCore>(), ref RijamsModWorld.intTravQuestTPCore, RijamsModMessageType.SetQuestTPCore)
+				|| TurnInQuestItem_Outer(mod, npc, ModContent.ItemType<BreadAndJelly>(), ref RijamsModWorld.intTravQuestBreadAndJelly, RijamsModMessageType.SetQuestBreadAndJelly, secret: true)
+				|| TurnInQuestItem_Outer(mod, npc, ModContent.ItemType<MagicOxygenizer>(), ref RijamsModWorld.intTravQuestMagicOxygenizer, RijamsModMessageType.SetQuestMagicOxygenizer)
+				|| TurnInQuestItem_Outer(mod, npc, ModContent.ItemType<PrimeThruster>(), ref RijamsModWorld.intTravQuestPrimeThruster, RijamsModMessageType.SetQuestPrimeThruster)
+				)
 			{
-				Main.npcChatText = "I was tracking that device you have. Where did you get it? Yeah... it's irresponsible of me to enter an uncontacted planet, but I didn't have much choice. Anyway, I'll buy that device from you for 2[i:73].";
-				Main.npcChatCornerItem = ModContent.ItemType<OddDevice>();
-				//int oddDeviceItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<OddDevice>());
-				//Main.LocalPlayer.inventory[oddDeviceItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
-				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<OddDevice>());
-				Main.LocalPlayer.QuickSpawnItem(NPC.GetSource_FromThis(), ItemID.GoldCoin, 2);
-				RijamsModWorld.intTravQuestOddDevice = true;
-				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.WorldData);
-					//RijamsModWorld.SetIntTravQuestOddDevice();
-					ModPacket packet = Mod.GetPacket();
-					packet.Write((byte)RijamsModMessageType.SetQuestOddDevice);
-					//packet.Write((byte)npc.whoAmI);
-					packet.Send();
-				}
-
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
-				{
-					PositionInWorld = Main.LocalPlayer.Center,
-					MovementVector = NPC.Center - Main.LocalPlayer.Center,
-					UniqueInfoPiece = ModContent.ItemType<OddDevice>()
-				});
-				Mod.Logger.Debug("RijamsMod: Odd Device quest completed.");
-				PlayCompleteQuestSound(false);
-				return;
-			}
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<BlankDisplay>()) && RijamsModWorld.intTravQuestBlankDisplay == false)
-			{
-				Main.npcChatText = "Ah, I could program this device to display certain useful aspects about yourself. Take a look at my shop if you would like to have one. I will randomly offer two of these displays every time you talk to me. And don't worry, I won't be selling your data or anything.";
-				Main.npcChatCornerItem = ModContent.ItemType<BlankDisplay>();
-				//int blankDisplayItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<BlankDisplay>());
-				//Main.LocalPlayer.inventory[blankDisplayItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
-				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<BlankDisplay>());
-				RijamsModWorld.intTravQuestBlankDisplay = true;
-				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.WorldData);
-					//RijamsModWorld.SetIntTravQuestBlankDisplay();
-					ModPacket packet = Mod.GetPacket();
-					packet.Write((byte)RijamsModMessageType.SetQuestBlankDisplay);
-					//packet.Write((byte)npc.whoAmI);
-					packet.Send();
-				}
-
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
-				{
-					PositionInWorld = Main.LocalPlayer.Center,
-					MovementVector = NPC.Center - Main.LocalPlayer.Center,
-					UniqueInfoPiece = ModContent.ItemType<BlankDisplay>()
-				});
-				Mod.Logger.Debug("RijamsMod: Blank Display quest completed.");
-				PlayCompleteQuestSound(false);
-				return;
-			}
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<TeleportationCore>()) && RijamsModWorld.intTravQuestTPCore == false)
-			{
-				Main.npcChatText = "This looks interesting! I bet I could use this to repair the hyper-drive on my ship. Its magical properties could let me travel even faster than before! I might even be able to create a device that can let you utilize its teleporting capabilities, too.";
-				Main.npcChatCornerItem = ModContent.ItemType<TeleportationCore>();
-				//int tPCoreItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<TeleportationCore>());
-				//Main.LocalPlayer.inventory[tPCoreItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
-				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<TeleportationCore>());
-				RijamsModWorld.intTravQuestTPCore = true;
-				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.WorldData);
-					ModPacket packet = Mod.GetPacket();
-					packet.Write((byte)RijamsModMessageType.SetQuestTPCore);
-					//packet.Write((byte)npc.whoAmI);
-					packet.Send();
-				}
-
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
-				{
-					PositionInWorld = Main.LocalPlayer.Center,
-					MovementVector = NPC.Center - Main.LocalPlayer.Center,
-					UniqueInfoPiece = ModContent.ItemType<TeleportationCore>()
-				});
-				Mod.Logger.Debug("RijamsMod: Teleportation Core quest completed.");
-				PlayCompleteQuestSound(false);
-				return;
-			}
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<BreadAndJelly>()) && RijamsModWorld.intTravQuestBreadAndJelly == false)
-			{
-				Main.npcChatText = "You're offering me food? Well, I'll never deny food. This bread and this jelly seem to be very high quality. Let me open this jar and slice this bread.\nMmmm... Thanks!";
-				Main.npcChatCornerItem = ModContent.ItemType<BreadAndJelly>();
-				//int breadAndJellyItemIndex = Main.LocalPlayer.FindItem(ModContent.ItemType<BreadAndJelly>());
-				//Main.LocalPlayer.inventory[breadAndJellyItemIndex].TurnToAir(); //Currently consumes all the items in a stack (instead of 1).
-				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<BreadAndJelly>());
-				RijamsModWorld.intTravQuestBreadAndJelly = true;
-				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.WorldData);
-					RijamsModWorld.intTravQuestBreadAndJelly = true;
-					ModPacket packet = Mod.GetPacket();
-					packet.Write((byte)RijamsModMessageType.SetQuestBreadAndJelly);
-					//packet.Write((byte)npc.whoAmI);
-					packet.Send();
-				}
-
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
-				{
-					PositionInWorld = Main.LocalPlayer.Center,
-					MovementVector = NPC.Center - Main.LocalPlayer.Center,
-					UniqueInfoPiece = ModContent.ItemType<BreadAndJelly>()
-				});
-				Mod.Logger.Debug("RijamsMod: Bread and Jelly quest completed.");
-				PlayCompleteQuestSound(true);
-				return;
-			}
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<MagicOxygenizer>()) && RijamsModWorld.intTravQuestMagicOxygenizer == false)
-			{
-				Main.npcChatText = "This machine seems to create oxygen from only electricity. How does it do that? Well it is magic, I guess. Anyway, I could use this on my ship and to create a personal breathing device!";
-				Main.npcChatCornerItem = ModContent.ItemType<MagicOxygenizer>();
-				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<MagicOxygenizer>());
-				RijamsModWorld.intTravQuestMagicOxygenizer = true;
-				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.WorldData);
-					ModPacket packet = Mod.GetPacket();
-					packet.Write((byte)RijamsModMessageType.SetQuestMagicOxygenizer);
-					packet.Send();
-				}
-
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
-				{
-					PositionInWorld = Main.LocalPlayer.Center,
-					MovementVector = NPC.Center - Main.LocalPlayer.Center,
-					UniqueInfoPiece = ModContent.ItemType<MagicOxygenizer>()
-				});
-				Mod.Logger.Debug("RijamsMod: Magic Oxygenizer quest completed.");
-				PlayCompleteQuestSound(false);
-				return;
-			}
-			if (Main.LocalPlayer.HasItem(ModContent.ItemType<PrimeThruster>()) && RijamsModWorld.intTravQuestPrimeThruster == false)
-			{
-				Main.npcChatText = "This is the perfect replacement for my ship's thrusters. It seems like the magic from the this planet has been very beneficial for repairing my ship. Oh, and you of course! Thanks!";
-				Main.npcChatCornerItem = ModContent.ItemType<PrimeThruster>();
-				Main.LocalPlayer.ConsumeItem(ModContent.ItemType<PrimeThruster>());
-				RijamsModWorld.intTravQuestPrimeThruster = true;
-				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.WorldData);
-					ModPacket packet = Mod.GetPacket();
-					packet.Write((byte)RijamsModMessageType.SetQuestPrimeThruster);
-					packet.Send();
-				}
-
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
-				{
-					PositionInWorld = Main.LocalPlayer.Center,
-					MovementVector = NPC.Center - Main.LocalPlayer.Center,
-					UniqueInfoPiece = ModContent.ItemType<PrimeThruster>()
-				});
-				Mod.Logger.Debug("RijamsMod: Prime Thruster quest completed.");
-				PlayCompleteQuestSound(false);
 				return;
 			}
 			else
 			{
-				List<string> lines = [];
-				if (!RijamsModWorld.intTravQuestBreadAndJelly)
-				{
-					lines.Add("I'd be happy to take a look at other items, too; if you think I could use them for something.");
-				}
-				if (NPCHelper.AllQuestsCompleted())
-				{
-					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
-					lines.Add("It looks like you've found everything I needed, thanks!");
-					lines.Add("Nice job! You have collected and turned in everything I needed.");
-					lines.Add("With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!");
-					lines.Add("I'm going to be in so much trouble when I get back home. Not only have I been MIA for a long time, but when I do show up, how do I explain all of the magical parts in my ship? Sorry, none of this is your fault. You were great help!");
-				}
-				else
-				{
-					Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
-					lines.Add("I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.");
-					lines.Add("I need some items to repair my space ship. Do you think you could help me out?");
-					lines.Add("Hold [c/FFFF00:LEFT SHIFT] to check which quests you have completed and what I still need.");
-
-					if (!RijamsModWorld.intTravQuestOddDevice)
-					{
-						lines.Add("I was tracking that [c/FFFF00:device] that you have. Could I take a look at it?");
-						lines.Add("Would you let me take a look at the [c/FFFF00:device] that you were carrying around?");
-					}
-					if (!RijamsModWorld.intTravQuestBlankDisplay)
-					{
-						lines.Add("I could use some sort of electronic screen. Something to [c/FFFF00:display] information on. It shouldn't be too hard for you to craft.");
-						lines.Add("Just some glass, a lens, and some metal would be all that is required to craft something to [c/FFFF00:display] information on.");
-					}
-					if (!RijamsModWorld.intTravQuestTPCore && Main.hardMode)
-					{
-						lines.Add("My hyper-drive needs to be repaired. There seems to be new creatures in this world who have the ability to [c/FFFF00:teleport].");
-						lines.Add("Several creatures have the ability to [c/FFFF00:teleport]. Harnessing that ability would be perfect for repairing my hyper-drive.");
-					}
-					if (!RijamsModWorld.intTravQuestMagicOxygenizer && NPC.downedMechBossAny)
-					{
-						lines.Add("My ship's oxygen supplier isn't working anymore, which makes it inconvenient to repair my ship. If you were able to create a device that can [c/FFFF00:create oxygen], that would be very helpful.");
-						lines.Add("The magic in this world is fascinating! If you were able to create a device that can [c/FFFF00:create oxygen], I could use that to repair the oxygen supplier on my ship.");
-					}
-					if (!RijamsModWorld.intTravQuestPrimeThruster && NPC.downedPlantBoss)
-					{
-						lines.Add("Without thrusters, my ship isn't going to move anywhere! A new [c/FFFF00:thruster] should solve that, of course!");
-						int cyborg = NPC.FindFirstNPC(NPCID.Cyborg);
-						if (cyborg >= 0)
-						{
-							lines.Add($"{Main.npc[cyborg].FullName} has several rockets available. I bet you could use those to craft a new [c/FFFF00:thruster] for my ship.");
-						}
-					}
-				}
-				Main.npcChatText = lines[Main.rand.Next(lines.Count)];
+				QuestItemHints();
 			}
+		}
+
+		public static bool TurnInQuestItem_Outer(Mod mod, NPC npc, int item, ref bool worldFlag, RijamsModMessageType packetEnum, bool secret = false)
+		{
+			if (Main.LocalPlayer.HasItem(item) && worldFlag == false)
+			{
+				switch (packetEnum)
+				{
+					case RijamsModMessageType.SetQuestOddDevice:
+						TurnInQuestItem_Inner_OddDevice(npc);
+						break;
+					case RijamsModMessageType.SetQuestBlankDisplay:
+						TurnInQuestItem_Inner_BlankDisplay();
+						break;
+					case RijamsModMessageType.SetQuestTPCore:
+						TurnInQuestItem_Inner_TeleportationCore();
+						break;
+					case RijamsModMessageType.SetQuestBreadAndJelly:
+						TurnInQuestItem_Inner_BreadAndJelly();
+						break;
+					case RijamsModMessageType.SetQuestMagicOxygenizer:
+						TurnInQuestItem_Inner_MagicOxygenizer();
+						break;
+					case RijamsModMessageType.SetQuestPrimeThruster:
+						TurnInQuestItem_Inner_PrimeThruster();
+						break;
+					default:
+						break;
+				}
+				Main.npcChatCornerItem = item;
+				Main.LocalPlayer.ConsumeItem(item);
+				
+				worldFlag = true;
+				if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					// NetMessage.SendData(MessageID.WorldData);
+					//RijamsModWorld.SetIntTravQuestOddDevice();
+					ModPacket packet = mod.GetPacket();
+					packet.Write((byte)packetEnum);
+					//packet.Write((byte)npc.whoAmI);
+					packet.Send();
+				}
+
+				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ItemTransfer, new ParticleOrchestraSettings
+				{
+					PositionInWorld = Main.LocalPlayer.Center,
+					MovementVector = npc.Center - Main.LocalPlayer.Center,
+					UniqueInfoPiece = item
+				});
+				mod.Logger.Debug($"RijamsMod: {packetEnum} quest completed.");
+				PlayCompleteQuestSound(secret);
+				return true;
+			}
+			return false;
+		}
+
+		public static void TurnInQuestItem_Inner_OddDevice(NPC npc)
+		{
+			Main.npcChatText = "I was tracking that device you have. Where did you get it? Yeah... it's irresponsible of me to enter an uncontacted planet, but I didn't have much choice. Anyway, I'll buy that device from you for 2[i:73]."; ;
+			Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("Thinking");
+			Main.LocalPlayer.QuickSpawnItem(npc.GetSource_FromThis(), ItemID.GoldCoin, 2);
+		}
+
+		public static void TurnInQuestItem_Inner_BlankDisplay()
+		{
+			Main.npcChatText = "Ah, I could program this device to display certain useful aspects about yourself. Take a look at my shop if you would like to have one. I will randomly offer two of these displays every time you talk to me. And don't worry, I won't be selling your data or anything.";
+			Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("Smirk");
+		}
+
+		public static void TurnInQuestItem_Inner_TeleportationCore()
+		{
+			Main.npcChatText = "This looks interesting! I bet I could use this to repair the hyper-drive on my ship. Its magical properties could let me travel even faster than before! I might even be able to create a device that can let you utilize its teleporting capabilities, too.";
+			Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("Thinking");
+		}
+		public static void TurnInQuestItem_Inner_BreadAndJelly()
+		{
+			Main.npcChatText = "You're offering me food? Well, I'll never deny food. This bread and this jelly seem to be very high quality. Let me open this jar and slice this bread.\nMmmm... Thanks!";
+			Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("Blushing");
+		}
+		public static void TurnInQuestItem_Inner_MagicOxygenizer()
+		{
+			Main.npcChatText = "This machine seems to create oxygen from only electricity. How does it do that? Well it is magic, I guess. Anyway, I could use this on my ship and to create a personal breathing device!";
+			Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("Shocked");
+		}
+		public static void TurnInQuestItem_Inner_PrimeThruster()
+		{
+			Main.npcChatText = "This is the perfect replacement for my ship's thrusters. It seems like the magic from the this planet has been very beneficial for repairing my ship. Oh, and you of course! Thanks!";
+			Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("VeryHappy");
+		}
+
+		public static void QuestItemHints()
+		{
+			ChatWithPortrait lines = new();
+			if (!RijamsModWorld.intTravQuestBreadAndJelly)
+			{
+				lines.Add("I'd be happy to take a look at other items, too; if you think I could use them for something.", emotion: PortraitEmotion.Happy);
+			}
+			if (NPCHelper.AllQuestsCompleted())
+			{
+				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
+				lines.Add("It looks like you've found everything I needed, thanks!", emotion: PortraitEmotion.VeryHappy);
+				lines.Add("Nice job! You have collected and turned in everything I needed.", emotion: PortraitEmotion.VeryHappy);
+				lines.Add("With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!", emotion: PortraitEmotion.Smirk);
+				lines.Add("I'm going to be in so much trouble when I get back home. Not only have I been MIA for a long time, but when I do show up, how do I explain all of the magical parts in my ship? Sorry, none of this is your fault. You were great help!", emotion: PortraitEmotion.Worried);
+			}
+			else
+			{
+				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
+				lines.Add("I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.");
+				lines.Add("I need some items to repair my space ship. Do you think you could help me out?");
+				lines.Add("Look at my checklist to see which quests you have completed and what I still need.");
+
+				if (!RijamsModWorld.intTravQuestOddDevice)
+				{
+					lines.Add("I was tracking that [c/FFFF00:device] that you have. Could I take a look at it?", emotion: PortraitEmotion.Thinking);
+					lines.Add("Would you let me take a look at the [c/FFFF00:device] that you were carrying around?", emotion: PortraitEmotion.Thinking);
+				}
+				if (!RijamsModWorld.intTravQuestBlankDisplay)
+				{
+					lines.Add("I could use some sort of electronic screen. Something to [c/FFFF00:display] information on. It shouldn't be too hard for you to craft.", emotion: PortraitEmotion.Smirk);
+					lines.Add("Just some glass, a lens, and some metal would be all that is required to craft something to [c/FFFF00:display] information on.", emotion: PortraitEmotion.Happy);
+				}
+				if (!RijamsModWorld.intTravQuestTPCore && Main.hardMode)
+				{
+					lines.Add("My hyper-drive needs to be repaired. There seems to be new creatures in this world who have the ability to [c/FFFF00:teleport].", emotion: PortraitEmotion.Thinking);
+					lines.Add("Several creatures have the ability to [c/FFFF00:teleport]. Harnessing that ability would be perfect for repairing my hyper-drive.", emotion: PortraitEmotion.Happy);
+				}
+				if (!RijamsModWorld.intTravQuestMagicOxygenizer && NPC.downedMechBossAny)
+				{
+					lines.Add("My ship's oxygen supplier isn't working anymore, which makes it inconvenient to repair my ship. If you were able to create a device that can [c/FFFF00:create oxygen], that would be very helpful.", emotion: PortraitEmotion.Smirk);
+					lines.Add("The magic in this world is fascinating! If you were able to create a device that can [c/FFFF00:create oxygen], I could use that to repair the oxygen supplier on my ship.", emotion: PortraitEmotion.Happy);
+				}
+				if (!RijamsModWorld.intTravQuestPrimeThruster && NPC.downedPlantBoss)
+				{
+					lines.Add("Without thrusters, my ship isn't going to move anywhere! A new [c/FFFF00:thruster] should solve that, of course!", emotion: PortraitEmotion.Smirk);
+					int cyborg = NPC.FindFirstNPC(NPCID.Cyborg);
+					if (cyborg >= 0)
+					{
+						lines.Add($"{Main.npc[cyborg].FullName} has several rockets available. I bet you could use those to craft a new [c/FFFF00:thruster] for my ship.", emotion: PortraitEmotion.Thinking);
+					}
+				}
+			}
+			ChatWithPortrait.DialogWithEmotion chosenLine = lines.ChatDB.Get();
+			Main.npcChatText = chosenLine.Chat;
+			Main.npcChatPortrait = ChooseTheCorrectVariantPortrait(chosenLine.Emotion.ToString());
 		}
 
 		public static void QuestSystemChecklist()
@@ -1047,13 +1122,15 @@ namespace RijamsMod.NPCs.TownNPCs
 			if (NPCHelper.AllQuestsCompleted())
 			{
 				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerComplete>();
+				Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("VeryHappy");
 			}
 			else
 			{
 				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
+				Main.npcChatPortrait = ChooseTheCorrectVariantPortrait("Thinking");
 			}
 		}
-		public void PlayCompleteQuestSound(bool secret)
+		public static void PlayCompleteQuestSound(bool secret)
 		{
 			// Play the second jingle if all the quests are completed
 			if (NPCHelper.AllQuestsCompleted() && !secret) 
@@ -1077,12 +1154,12 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			foreach (Player searchPlayer in Main.ActivePlayers)
 			{
-				if (searchPlayer.HasItem(ModContent.ItemType<OddDevice>()) && !RijamsModWorld.intTravQuestOddDevice) { which = 0; return true; }
-				if (searchPlayer.HasItem(ModContent.ItemType<BlankDisplay>()) && !RijamsModWorld.intTravQuestBlankDisplay) { which = 1; return true; }
-				if (searchPlayer.HasItem(ModContent.ItemType<TeleportationCore>()) && !RijamsModWorld.intTravQuestTPCore) { which = 2; return true; }
-				if (searchPlayer.HasItem(ModContent.ItemType<BreadAndJelly>()) && !RijamsModWorld.intTravQuestBreadAndJelly) { which = 3; secret = true; return true; }
-				if (searchPlayer.HasItem(ModContent.ItemType<MagicOxygenizer>()) && !RijamsModWorld.intTravQuestMagicOxygenizer) { which = 4; return true; }
-				if (searchPlayer.HasItem(ModContent.ItemType<PrimeThruster>()) && !RijamsModWorld.intTravQuestPrimeThruster) { which = 5; return true; }
+				if (!RijamsModWorld.intTravQuestOddDevice && searchPlayer.HasItem(ModContent.ItemType<OddDevice>())) { which = 0; return true; }
+				if (!RijamsModWorld.intTravQuestBlankDisplay && searchPlayer.HasItem(ModContent.ItemType<BlankDisplay>())) { which = 1; return true; }
+				if (!RijamsModWorld.intTravQuestTPCore && searchPlayer.HasItem(ModContent.ItemType<TeleportationCore>())) { which = 2; return true; }
+				if (!RijamsModWorld.intTravQuestBreadAndJelly && searchPlayer.HasItem(ModContent.ItemType<BreadAndJelly>())) { which = 3; secret = true; return true; }
+				if (!RijamsModWorld.intTravQuestMagicOxygenizer && searchPlayer.HasItem(ModContent.ItemType<MagicOxygenizer>())) { which = 4; return true; }
+				if (!RijamsModWorld.intTravQuestPrimeThruster && searchPlayer.HasItem(ModContent.ItemType<PrimeThruster>())) { which = 5; return true; }
 			}
 			return false;
 		}
@@ -1100,7 +1177,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				.Add(ModContent.ItemType<AGMMissileLauncher>(), Condition.DownedGolem, Condition.NpcIsPresent(NPCID.Cyborg))
 				.Add(ModContent.ItemType<InterstellarSniper>(), Condition.DownedCultist)
 				.Add(ModContent.ItemType<InterstellarCarbine>(), Condition.DownedMoonLord)
-				.Add(ModContent.ItemType<ControlGlove>(), new Condition("After defeating Deerclops or in Hardmode", () => Condition.DownedDeerclops.IsMet() || Condition.Hardmode.IsMet()));
+				// .Add(ModContent.ItemType<ControlGlove>(), new Condition("After defeating Deerclops or in Hardmode", () => Condition.DownedDeerclops.IsMet() || Condition.Hardmode.IsMet()));
+				.Add(ModContent.ItemType<ControlGlove>(), ShopConditions.OrConditions(Condition.DownedDeerclops, Condition.Hardmode));
 
 			Condition watchRandom(int numberToCheck) => new("Swaps between Watches at random", () => Main.GameUpdateCount % 2 == numberToCheck);
 			npcShop.Add(new Item(ItemID.GoldWatch) { shopCustomPrice = 10000 }, watchRandom(0));
@@ -1282,6 +1360,54 @@ namespace RijamsMod.NPCs.TownNPCs
 				scale = 0.75f;
 				horizontalHoldoutOffset = -34;
 			}
+		}
+
+		private static bool CasualPortraitEmotionCondtion(PortraitEmotion emotion)
+		{
+			if (NPCHelper.AllQuestsCompleted())
+			{
+				return ChatWithPortrait.PartyPortraitEmotionCondtion(emotion);
+			}
+			return false;
+		}
+
+		private static bool CasualShowingHappinessText(float minHappiness, float maxHappiness)
+		{
+			if (NPCHelper.AllQuestsCompleted())
+			{
+				return ChatWithPortrait.PartyShowingHappinessText(minHappiness, maxHappiness);
+			}
+			return false;
+		}
+
+		private static bool CasualShowingHousingText()
+		{
+			if (NPCHelper.AllQuestsCompleted())
+			{
+				return ChatWithPortrait.PartyShowingHousingText();
+			}
+			return false;
+		}
+
+		public static NPCID.Sets.BasicNPCPortrait ChooseTheCorrectVariantPortrait(string mood)
+		{
+			if (ModContent.GetInstance<RijamsModConfigClient>().Ornithophobia)
+			{
+				return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath("RijamsMod/NPCs/TownNPCs", "InterstellarTraveler", "Helmet", ""));
+			}
+			else if (NPCHelper.PartyPortraitCondition() && NPCHelper.AllQuestsCompleted())
+			{
+				return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath("RijamsMod/NPCs/TownNPCs", "InterstellarTraveler", "Casual", mood));
+			}
+			else if (NPCID.Sets.ShimmeredPortraitCondition() && NPCHelper.PartyPortraitCondition())
+			{
+				return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath("RijamsMod/NPCs/TownNPCs", "InterstellarTraveler", "Shimmer_Hatless", mood));
+			}
+			else if (NPCID.Sets.ShimmeredPortraitCondition())
+			{
+				return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath("RijamsMod/NPCs/TownNPCs", "InterstellarTraveler", "Shimmer", mood));
+			}
+			return NPCID.Sets.BasicPortrait(ChatWithPortrait.PortraitPath("RijamsMod/NPCs/TownNPCs", "InterstellarTraveler", "Default", mood));
 		}
 
 		#endregion

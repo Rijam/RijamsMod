@@ -3,6 +3,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using RijamsMod.Items;
+using System.Linq;
+using Microsoft.Xna.Framework.Input;
 
 namespace RijamsMod
 {
@@ -102,116 +104,128 @@ namespace RijamsMod
 			}
 		}
 
-		public const string DefendersGear = "RijamsMod:DefendersGear";
-		public const string CopperBars = "RijamsMod:CopperBars";
-		public const string SilverBars = "RijamsMod:SilverBars";
-		public const string GoldBars = "RijamsMod:GoldBars";
-		public const string EvilBars = "RijamsMod:EvilBars";
-		public const string CobaltBars = "RijamsMod:CobaltBars";
-		public const string MythrilBars = "RijamsMod:MythrilBars";
-		public const string AdamantiteBars = "RijamsMod:AdamantiteBars";
-		public const string HoneyBalloons = "RijamsMod:HoneyBalloons";
-		public const string FartBalloons = "RijamsMod:FartBalloons";
-		public const string SharkronBalloons = "RijamsMod:SharkronBalloons";
-		public const string Counterweights = "RijamsMod:Counterweights";
-		public const string Flares = "RijamsMod:Flares";
+		public static RecipeGroup DefendersGear;
+		public static RecipeGroup CopperBars;
+		public static RecipeGroup SilverBars;
+		public static RecipeGroup GoldBars;
+		public static RecipeGroup EvilBars;
+		public static RecipeGroup HoneyBalloons;
+		public static RecipeGroup FartBalloons;
+		public static RecipeGroup SharkronBalloons;
+		public static RecipeGroup Counterweights;
+		public static RecipeGroup Flares;
+		public const string DefendersGearKey = "RijamsMod:DefendersGear";
+		public const string CopperBarsKey = "RijamsMod:CopperBars";
+		public const string SilverBarsKey = "RijamsMod:SilverBars";
+		public const string GoldBarsKey = "RijamsMod:GoldBars";
+		public const string EvilBarsKey = "RijamsMod:EvilBars";
+		public const string HoneyBalloonsKey = "RijamsMod:HoneyBalloons";
+		public const string FartBalloonsKey = "RijamsMod:FartBalloons";
+		public const string SharkronBalloonsKey = "RijamsMod:SharkronBalloons";
+		public const string CounterweightsKey = "RijamsMod:Counterweights";
+		public const string FlaresKey = "RijamsMod:Flares";
+
+		public override void Unload()
+		{
+			DefendersGear = null;
+			CopperBars = null;
+			SilverBars = null;
+			GoldBars = null;
+			EvilBars = null;
+			HoneyBalloons = null;
+			FartBalloons = null;
+			SharkronBalloons = null;
+			Counterweights = null;
+			Flares = null;
+		}
 
 		public override void AddRecipeGroups()
 		{
-			RecipeGroup group = new(() => Language.GetTextValue("LegacyMisc.37") + " OOA Sentry accessories",
-			[
-				ItemID.ApprenticeScarf,
-				ItemID.MonkBelt,
-				ItemID.HuntressBuckler,
-				ItemID.SquireShield
-			]);
-			RecipeGroup.RegisterGroup(DefendersGear, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Copper Bar",
-			[
-				ItemID.CopperBar,
-				ItemID.TinBar
-			]);
-			RecipeGroup.RegisterGroup(CopperBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Silver Bar",
-			[
-				ItemID.SilverBar,
-				ItemID.TungstenBar
-			]);
-			RecipeGroup.RegisterGroup(SilverBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Gold Bar",
-			[
-				ItemID.GoldBar,
-				ItemID.PlatinumBar
-			]);
-			RecipeGroup.RegisterGroup(GoldBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Evil Bar",
-			[
-				ItemID.DemoniteBar,
-				ItemID.CrimtaneBar
-			]);
-			RecipeGroup.RegisterGroup(EvilBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Cobalt Bar",
-			[
-				ItemID.CobaltBar,
-				ItemID.PalladiumBar
-			]);
-			RecipeGroup.RegisterGroup(CobaltBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Mythril Bar",
-			[
-				ItemID.MythrilBar,
-				ItemID.OrichalcumBar
-			]);
-			RecipeGroup.RegisterGroup(MythrilBars, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Adamantite Bar",
-			[
-				ItemID.AdamantiteBar,
-				ItemID.TitaniumBar
-			]);
-			RecipeGroup.RegisterGroup(AdamantiteBars, group);
+			DefendersGear = RecipeGroup.Register(
+				DefendersGearKey,
+				"OOA Sentry accessories",
+					ItemID.ApprenticeScarf,
+					ItemID.MonkBelt,
+					ItemID.HuntressBuckler,
+					ItemID.SquireShield
+			);
+			CopperBars = RecipeGroup.Register(
+				CopperBarsKey,
+				"Copper Bar",
+					ItemID.CopperBar,
+					ItemID.TinBar
+			);
+			SilverBars = RecipeGroup.Register(
+				SilverBarsKey,
+				"Silver Bar",
+					ItemID.SilverBar,
+					ItemID.TungstenBar
+			);
+			GoldBars = RecipeGroup.Register(
+				GoldBarsKey,
+				"Gold Bar",
+					ItemID.GoldBar,
+					ItemID.PlatinumBar
+			);
+			EvilBars = RecipeGroup.Register(
+				EvilBarsKey,
+				"Evil Bar",
+					ItemID.DemoniteBar,
+					ItemID.CrimtaneBar
+			);
+			HoneyBalloons = RecipeGroup.Register(
+				HoneyBalloonsKey,
+				"Honey Balloon",
+					ItemID.HoneyBalloon,
+					ItemID.BalloonHorseshoeHoney
+			);
+			FartBalloons = RecipeGroup.Register(
+				FartBalloonsKey,
+				"Fart Balloon",
+					ItemID.FartInABalloon,
+					ItemID.BalloonHorseshoeFart
+			);
+			SharkronBalloons = RecipeGroup.Register(
+				SharkronBalloonsKey,
+				"Sharkron Balloon",
+					ItemID.SharkronBalloon,
+					ItemID.BalloonHorseshoeSharkron
+			);
+			SharkronBalloons = RecipeGroup.Register(
+				SharkronBalloonsKey,
+				"Sharkron Balloon",
+					ItemID.SharkronBalloon,
+					ItemID.BalloonHorseshoeSharkron
+			);
+			Counterweights = RecipeGroup.Register(
+				CounterweightsKey,
+				"Counterweight",
+					ItemID.BlackCounterweight,
+					ItemID.BlueCounterweight,
+					ItemID.GreenCounterweight,
+					ItemID.PurpleCounterweight,
+					ItemID.RedCounterweight,
+					ItemID.YellowCounterweight
+			);
+			Flares = RecipeGroup.Register(
+				FlaresKey,
+				Language.GetTextValue("ItemName.Flare"),
+					ItemID.Flare,
+					ItemID.BlueFlare
+			);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Honey Balloon",
-			[
-				ItemID.HoneyBalloon,
-				ItemID.BalloonHorseshoeHoney
-			]);
-			RecipeGroup.RegisterGroup(HoneyBalloons, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Fart Balloon",
-			[
-				ItemID.FartInABalloon,
-				ItemID.BalloonHorseshoeFart
-			]);
-			RecipeGroup.RegisterGroup(FartBalloons, group);
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Sharkron Balloon",
-			[
-				ItemID.SharkronBalloon,
-				ItemID.BalloonHorseshoeSharkron
-			]);
-			RecipeGroup.RegisterGroup(SharkronBalloons, group);
+			RecipeGroups.Fruit.ValidItems.Add(ItemID.BlueBerries);
 
-			group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Counterweight",
-			[
-				ItemID.BlackCounterweight,
-				ItemID.BlueCounterweight,
-				ItemID.GreenCounterweight,
-				ItemID.PurpleCounterweight,
-				ItemID.RedCounterweight,
-				ItemID.YellowCounterweight
-			]);
-			RecipeGroup.RegisterGroup(Counterweights, group);
-
-			group = new RecipeGroup(() => Language.GetTextValue("ItemName.Flare"),
-			[
-				ItemID.Flare,
-				ItemID.BlueFlare
-			]);
-			RecipeGroup.RegisterGroup(Flares, group);
-
-			if (RecipeGroup.recipeGroupIDs.TryGetValue("Fruit", out int fruitIndex))
+			RecipeGroup fargosMutantAnyCaughtNPC = RecipeGroup.recipeGroups.Where(rg => rg.Value.Key == "Fargowiltas:AnyCaughtNPC").FirstOrDefault().Value;
+			if (fargosMutantAnyCaughtNPC is not null)
 			{
-				RecipeGroup vanillaGroup = RecipeGroup.recipeGroups[fruitIndex];
-				vanillaGroup.ValidItems.Add(ItemID.BlueBerries);
+				fargosMutantAnyCaughtNPC.ValidItems.Add(ModContent.ItemType<CaughtHarpy>());
+				fargosMutantAnyCaughtNPC.ValidItems.Add(ModContent.ItemType<CaughtHellTrader>());
+				fargosMutantAnyCaughtNPC.ValidItems.Add(ModContent.ItemType<CaughtIntTrav>());
+				fargosMutantAnyCaughtNPC.ValidItems.Add(ModContent.ItemType<CaughtSnugget>());
 			}
 
+			/*
 			if (RecipeGroup.recipeGroupIDs.TryGetValue("Fargowiltas:AnyCaughtNPC", out int anyCaughtNPCIndex))
 			{
 				RecipeGroup fargosAnyCaughtNPCGroup = RecipeGroup.recipeGroups[anyCaughtNPCIndex];
@@ -220,6 +234,7 @@ namespace RijamsMod
 				fargosAnyCaughtNPCGroup.ValidItems.Add(ModContent.ItemType<CaughtIntTrav>());
 				fargosAnyCaughtNPCGroup.ValidItems.Add(ModContent.ItemType<CaughtSnugget>());
 			}
+			*/
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		public override void AddRecipes()
 		{
 			CreateRecipe(100)
-				.AddRecipeGroup("IronBar", 1)
+				.AddRecipeGroup(RecipeGroups.IronBar, 1)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 		}

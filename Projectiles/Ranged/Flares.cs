@@ -210,7 +210,7 @@ namespace RijamsMod.Projectiles.Ranged
 		}
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
-			target.AddBuff(DebuffType(), PlayerDebuffDuration(), quiet: false);
+			target.AddBuff(DebuffType(), PlayerDebuffDuration());
 		}
 	}
 

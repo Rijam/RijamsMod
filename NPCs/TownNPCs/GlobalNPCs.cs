@@ -75,7 +75,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					{
 						if (npcTypeListVillage4.Contains(ModContent.NPCType<InterstellarTraveler>()))
 						{
-							if (npc.ShouldBestiaryGirlBeLycantrope())
+							if (NPC.ShouldBestiaryGirlBeLycantrope())
 							{
 								chat = Main.npc[interTravel].GivenName + " exciting! Want to CHAT!";
 							}
@@ -87,7 +87,7 @@ namespace RijamsMod.NPCs.TownNPCs
 					}
 					if (Main.rand.NextBool(4) && npcTypeListVillage4.Contains(ModContent.NPCType<Harpy>()))
 					{
-						if (npc.ShouldBestiaryGirlBeLycantrope())
+						if (NPC.ShouldBestiaryGirlBeLycantrope())
 						{
 							chat = "Friendly " + Main.npc[harpy].GivenName + "! LEARN about them!";
 						}
@@ -159,20 +159,20 @@ namespace RijamsMod.NPCs.TownNPCs
 		{
 			// BossesAsNPCs support in RijamsMod.cs PostSetupContent()
 
-			if (shop.NpcType == NPCID.ArmsDealer)
+			if (shop.NpcType == NPCID.ArmsDealer && shop.Name == "Shop")
 			{
 				shop.Add(new Item(ModContent.ItemType<Items.Weapons.Ranged.Ammo.BloodyArrow>()) { shopCustomPrice = 40 },
 					new Condition(Condition.DownedEowOrBoc.Description + " and " + Condition.TimeNight.Description + ", or in Hardmode",
 					() => (Condition.DownedEowOrBoc.IsMet() && Condition.TimeNight.IsMet()) || Condition.Hardmode.IsMet()));
 			}
-			if (shop.NpcType == NPCID.WitchDoctor)
+			if (shop.NpcType == NPCID.WitchDoctor && shop.Name == "Shop")
 			{
 				shop.Add(new Item(ItemID.WormTooth) { shopCustomPrice = 100 },
 					new Condition(Condition.CrimsonWorld.Description + ", or in Hardmode", () => Condition.CrimsonWorld.IsMet() || Condition.Hardmode.IsMet()));
 				shop.Add(new Item(ModContent.ItemType<Items.Materials.CrawlerChelicera>()) { shopCustomPrice = 125 },
 					new Condition(Condition.CorruptWorld.Description + ", or in Hardmode", () => Condition.CorruptWorld.IsMet() || Condition.Hardmode.IsMet()));
 			}
-			if (shop.NpcType == NPCID.DyeTrader)
+			if (shop.NpcType == NPCID.DyeTrader && shop.Name == "Shop")
 			{
 				shop.Add(ItemID.RedHusk, Condition.InRockLayerHeight);
 				Condition undergroundOrCaverns = new("In the Underground or Caverns",
@@ -198,7 +198,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 				shop.Add(ModContent.ItemType<Items.Dyes.BeamDye>(), Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
-			if (shop.NpcType == NPCID.Demolitionist)
+			if (shop.NpcType == NPCID.Demolitionist && shop.Name == "Shop")
 			{
 				shop.Add(new Item(ItemID.Flare) { shopCustomPrice = 7 });
 				shop.Add(new Item(ItemID.BlueFlare) { shopCustomPrice = 7 });
@@ -210,22 +210,22 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.Add(new Item(ItemID.Explosives) { shopCustomPrice = 7000 }, new Condition("Rescued Mechanic", () => NPC.savedMech));
 				shop.Add(new Item(ItemID.Detonator) { shopCustomPrice = 10000 });
 			}
-			if (shop.NpcType == NPCID.Dryad)
+			if (shop.NpcType == NPCID.Dryad && shop.Name == "Shop")
 			{
 				shop.Add(new Item(ItemID.JungleGrassSeeds) { shopCustomPrice = 1500 }, Condition.InJungle);
 				shop.Add(new Item(ItemID.FireBlossomPlanterBox) { shopCustomPrice = 100 },
 					Condition.DownedEyeOfCthulhu, Condition.DownedEowOrBoc, Condition.DownedSkeletron, Condition.PreHardmode);
 			}
-			if (shop.NpcType == NPCID.Truffle)
+			if (shop.NpcType == NPCID.Truffle && shop.Name == "Shop")
 			{
 				shop.Add(new Item(ItemID.MushroomGrassSeeds) { shopCustomPrice = 1500 });
 				shop.Add(ModContent.ItemType<Items.Weapons.Summon.Cudgels.GleamingFungusCudgel>());
 			}
-			if (shop.NpcType == NPCID.Pirate)
+			if (shop.NpcType == NPCID.Pirate && shop.Name == "Shop")
 			{
 				shop.Add(ItemID.SnowballLauncher, Condition.InSnow);
 			}
-			if (shop.NpcType == NPCID.SkeletonMerchant)
+			if (shop.NpcType == NPCID.SkeletonMerchant && shop.Name == "Shop")
 			{
 				shop.Add(new Item(ItemID.Hook) { shopCustomPrice = 5000 }, Condition.DownedGoblinArmy);
 				shop.Add(new Item(ItemID.Bone) { shopCustomPrice = 250 }, Condition.DownedSkeletron);
@@ -234,13 +234,13 @@ namespace RijamsMod.NPCs.TownNPCs
 				shop.Add(new Item(ItemID.BonePickaxe) { shopCustomPrice = 75000 }, Condition.DownedEarlygameBoss);
 				shop.Add(ModContent.ItemType<CaveCarrot>(), Condition.InBelowSurface, Condition.DownedOldOnesArmyAny, Condition.MoonPhasesEven);
 			}
-			if (shop.NpcType == NPCID.GoblinTinkerer)
+			if (shop.NpcType == NPCID.GoblinTinkerer && shop.Name == "Shop")
 			{
 				shop.Add(ModContent.ItemType<Items.Placeable.Grindstone>());
 				shop.Add(ModContent.ItemType<Items.Placeable.StripLight>(), Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
 
-			if (shop.NpcType == NPCID.BestiaryGirl)
+			if (shop.NpcType == NPCID.BestiaryGirl && shop.Name == "Shop")
 			{
 				shop.Add(ModContent.ItemType<Items.Pets.StardustDragonCrest>(), Condition.DownedStardustPillar);
 				shop.Add(ModContent.ItemType<SnuggetPetLicense>(),
@@ -251,7 +251,7 @@ namespace RijamsMod.NPCs.TownNPCs
 
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
-				if (pboneUtils.TryFind<ModNPC>("Miner", out ModNPC minerModNPC) && shop.NpcType == minerModNPC.Type)
+				if (pboneUtils.TryFind<ModNPC>("Miner", out ModNPC minerModNPC) && shop.NpcType == minerModNPC.Type && shop.Name == "Shop")
 				{
 					shop.Add(new Item(ItemID.MiningShirt) { shopCustomPrice = 100000 }, Condition.Hardmode);
 					shop.Add(new Item(ItemID.MiningPants) { shopCustomPrice = 100000 }, Condition.Hardmode);
@@ -387,9 +387,9 @@ namespace RijamsMod.NPCs.TownNPCs
 				steampunker.SetNPCAffection(harpy, AffectionLevel.Like);
 				pirate.SetNPCAffection(harpy, AffectionLevel.Like);
 				stylist.SetNPCAffection(harpy, AffectionLevel.Like);
-				armsDealer.SetNPCAffection(intTrav, AffectionLevel.Dislike);
-				angler.SetNPCAffection(intTrav, AffectionLevel.Dislike);
-				nurse.SetNPCAffection(intTrav, AffectionLevel.Hate);
+				armsDealer.SetNPCAffection(harpy, AffectionLevel.Dislike);
+				angler.SetNPCAffection(harpy, AffectionLevel.Dislike);
+				nurse.SetNPCAffection(harpy, AffectionLevel.Hate);
 
 				zoologist.SetNPCAffection(intTrav, AffectionLevel.Love);
 				dryad.SetNPCAffection(intTrav, AffectionLevel.Like);

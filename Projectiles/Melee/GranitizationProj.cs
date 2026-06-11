@@ -181,7 +181,7 @@ namespace RijamsMod.Projectiles.Melee
             return new Color(255, 255, 255, 200);
         }*/
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 
         {
             Texture2D texture = TextureAssets.Projectile[Type].Value;
@@ -205,7 +205,7 @@ namespace RijamsMod.Projectiles.Melee
             bool distanceCheck = chainDistance < 100f;
             Vector2 direction = Vector2.Normalize(Projectile.velocity);
             Rectangle rectangle = chainHandle;
-            Vector2 yOffset = new(0f, Main.player[Projectile.owner].gfxOffY);
+            Vector2 yOffset = new(0f, player.gfxOffY);
             float rotation = direction.ToRotation() + MathHelper.ToRadians(-90f);
             // Draw the chain handle. This is the first piece in the sprite.
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + yOffset, rectangle, color, rotation, rectangle.Size() / 2f - Vector2.UnitY * 4f, Projectile.scale, SpriteEffects.None, 0);

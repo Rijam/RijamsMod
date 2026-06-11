@@ -48,7 +48,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 		private Color lerpColor = Color.White;
 		private readonly Asset<Texture2D> brightTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/CrystalClusterBright");
 
-		public override void PostDraw(Color lightColor)
+		public override void PostDraw(Player player, Color lightColor)
 		{
 			Projectile.ai[1] += 1;
 

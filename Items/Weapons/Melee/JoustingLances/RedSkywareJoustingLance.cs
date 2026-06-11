@@ -55,8 +55,12 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 			velocity.X = Math.Clamp(velocity.X, -16, 16);
 			velocity.Y = Math.Clamp(velocity.Y, -16, 16);
 
-			Projectile feather = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<RedSkywareArmorHarpyFeather>(), (int)newDamage, knockback);
+			Projectile feather = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<RedSkywareArmorHarpyFeather>(), (int)newDamage, knockback, player.whoAmI);
 			feather.DamageType = DamageClass.Melee;
+			if (Main.netMode == NetmodeID.MultiplayerClient)
+			{
+				NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, feather.whoAmI);
+			}
 
 			return true;
 		}

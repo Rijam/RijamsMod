@@ -24,7 +24,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 			// Sets the amount of frames this minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 1;
 			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargetingFeature[Projectile.type] = true;
 
 			// These below are needed for a minion
 			// Denotes that this projectile is a pet or minion
@@ -179,7 +179,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 						Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
 						Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, alpha, dustColor, 0.75f);
 						d.noGravity = true;
-						d.noLightEmittence = true;
+						d.noLightEmittance = true;
 						// Messing around with mixing the tile light with the color.
 						/*Color lightingColor = Lighting.GetColor(d.position.ToTileCoordinates());
 						d.color = Color.Lerp(dustColor, lightingColor, 0.75f);
@@ -212,7 +212,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 						Vector2 speed = Main.rand.NextVector2CircularEdge(1f, 1f);
 						Dust d = Dust.NewDustPerfect(Projectile.Center + speed * radius, ModContent.DustType<Dusts.AuraDust>(), speed, alpha, dustColor, 0.75f);
 						d.noGravity = true;
-						d.noLightEmittence = true;
+						d.noLightEmittance = true;
 					}
 				}
 			}

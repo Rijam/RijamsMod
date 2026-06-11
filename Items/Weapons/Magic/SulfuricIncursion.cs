@@ -47,7 +47,8 @@ namespace RijamsMod.Items.Weapons.Magic
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.AshTreeShake, new ParticleOrchestraSettings
+			//ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.BestReforge, new ParticleOrchestraSettings // Ash Tree Shake removed in vanilla in 1.4.5
+			CustomParticleOrchestra.RequestParticleSpawn(clientOnly: true, CustomParticleOrchestraType.AshTreeShake, new ParticleOrchestraSettings 
 			{
 				PositionInWorld = player.HandPosition ?? player.Center,
 				MovementVector = Vector2.Zero

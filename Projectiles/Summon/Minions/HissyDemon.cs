@@ -21,7 +21,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			// Sets the amount of frames projectile minion has on its spritesheet
 			Main.projFrames[Projectile.type] = 8;
 			// projectile is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
+			ProjectileID.Sets.MinionTargetingFeature[Projectile.type] = true;
 
 			// These below are needed for a minion
 			// Denotes that projectile projectile is a pet or minion
@@ -96,7 +96,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			//Copied from AIStyle 62
 			float num5 = 0.07f;
 			float num6 = Projectile.width;
-			for (int m = 0; m < 1000; m++)
+			for (int m = 0; m < Main.maxProjectiles; m++)
 			{
 				if (m != Projectile.whoAmI && Main.projectile[m].active && Main.projectile[m].owner == Projectile.owner && Main.projectile[m].type == Projectile.type && Math.Abs(Projectile.position.X - Main.projectile[m].position.X) + Math.Abs(Projectile.position.Y - Main.projectile[m].position.Y) < num6)
 				{
@@ -405,7 +405,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
             {
 				return Color.White;
 			}
-			else return null;
+			else return base.GetAlpha(lightColor);
 		}
 	}
 }

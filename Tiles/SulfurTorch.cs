@@ -26,7 +26,7 @@ namespace RijamsMod.Tiles
 			TileID.Sets.FramesOnKillWall[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.DisableSmartInteract[Type] = true;
-			TileID.Sets.Torch[Type] = true;
+			TileID.Sets.Torches[Type] = true;
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.Torches, 0));
 			TileObjectData.newSubTile.CopyFrom(TileObjectData.newTile);
@@ -58,7 +58,7 @@ namespace RijamsMod.Tiles
 			AddMapEntry(new Color(250, 250, 0), Language.GetText("ItemName.Torch"));
 			DustType = ModContent.DustType<SulfurDust>();
 			AdjTiles = new int[] { TileID.Torches };
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
+			TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
 			// Assets
 			flameTexture = ModContent.Request<Texture2D>("RijamsMod/Tiles/SulfurTorch_Flame");
 		}

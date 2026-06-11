@@ -24,7 +24,9 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.tileCollide = false;
-			Projectile.hide = false;
+			// Projectile.hide = false;
+			// Projectile.drawLayer = ProjectileDrawLayerID.HeldProj;
+			Projectile.usesOwnerLight = true;
 			Projectile.DamageType = DamageClass.Magic;
 			Projectile.ignoreWater = true;
 			Projectile.ownerHitCheck = true;
@@ -63,7 +65,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
 		}
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = SpriteEffects.FlipHorizontally;

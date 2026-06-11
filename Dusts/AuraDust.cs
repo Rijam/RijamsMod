@@ -16,7 +16,7 @@ namespace RijamsMod.Dusts
 		{
 			dust.scale *= 0.97f;
 
-			if (dust.noLight || dust.noLightEmittence)
+			if (dust.noLight || dust.noLightEmittance)
 			{
 				return false;
 			}

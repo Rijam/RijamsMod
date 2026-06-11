@@ -247,12 +247,12 @@ namespace RijamsMod.Items.Information
 			if (isLeftCtrlHeld)
 			{
 				//Damage
-				tooltips.Add(new TooltipLine(Mod, "Melee", "[i:CopperBroadsword] Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
-				tooltips.Add(new TooltipLine(Mod, "Ranged", "[i:WoodenBow] Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
-				tooltips.Add(new TooltipLine(Mod, "Magic", "[i:WandofSparking] Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "Summon", "[i:BabyBirdStaff] Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
-				tooltips.Add(new TooltipLine(Mod, "Throwing", "[i:ThrowingKnife] Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
-				tooltips.Add(new TooltipLine(Mod, "All", "[i:AvengerEmblem] All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
+				tooltips.Add(new TooltipLine(Mod, "MeleeDamage", "[i:CopperBroadsword] Melee damage multiplier: " + StatCalc.Damage(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "RangedDamage", "[i:WoodenBow] Ranged damage multiplier: " + StatCalc.Damage(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "MagicDamage", "[i:WandofSparking] Magic damage multiplier: " + StatCalc.Damage(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "SummonDamage", "[i:BabyBirdStaff] Summon damage multiplier: " + StatCalc.Damage(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "ThrowingDamage", "[i:ThrowingKnife] Throwing damage multiplier: " + StatCalc.Damage(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "AllDamage", "[i:AvengerEmblem] All damage multiplier: " + StatCalc.Damage(DamageClass.Generic)));
 				tooltips.Add(new TooltipLine(Mod, "MeleeSpeed", "[i:CopperBroadsword] Melee speed: " + StatCalc.AttackSpeed(DamageClass.Melee)));
 				tooltips.Add(new TooltipLine(Mod, "RangedSpeed", "[i:WoodenBow] Ranged speed: " + StatCalc.AttackSpeed(DamageClass.Ranged)));
 				tooltips.Add(new TooltipLine(Mod, "MagicSpeed", "[i:WandofSparking] Magic speed: " + StatCalc.AttackSpeed(DamageClass.Magic)));
@@ -260,15 +260,13 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "[i:ThornWhip] Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
 				tooltips.Add(new TooltipLine(Mod, "ThrowingSpeed", "[i:ThrowingKnife] Throwing speed: " + StatCalc.AttackSpeed(DamageClass.Throwing)));
 				tooltips.Add(new TooltipLine(Mod, "AllSpeed", "[i:AvengerEmblem] All speed: " + StatCalc.AttackSpeed(DamageClass.Generic)));
-
 				//Crit
-				tooltips.Add(new TooltipLine(Mod, "Melee", "[i:CopperBroadsword] Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
-				tooltips.Add(new TooltipLine(Mod, "Ranged", "[i:WoodenBow] Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
-				tooltips.Add(new TooltipLine(Mod, "Magic", "[i:WandofSparking] Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "Summon", "[i:BabyBirdStaff] Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
-				tooltips.Add(new TooltipLine(Mod, "Throwing", "[i:ThrowingKnife] Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
-				tooltips.Add(new TooltipLine(Mod, "All", "[i:AvengerEmblem] Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
-
+				tooltips.Add(new TooltipLine(Mod, "MeleeCrit", "[i:CopperBroadsword] Bonus Melee critical hit: " + StatCalc.CritChance(DamageClass.Melee)));
+				tooltips.Add(new TooltipLine(Mod, "RangedCrit", "[i:WoodenBow] Bonus Ranged critical hit: " + StatCalc.CritChance(DamageClass.Ranged)));
+				tooltips.Add(new TooltipLine(Mod, "MagicCrit", "[i:WandofSparking] Bonus Magic critical hit: " + StatCalc.CritChance(DamageClass.Magic)));
+				tooltips.Add(new TooltipLine(Mod, "SummonCrit", "[i:BabyBirdStaff] Bonus Summon critical hit: " + StatCalc.CritChance(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "ThrowingCrit", "[i:ThrowingKnife] Bonus Throwing critical hit: " + StatCalc.CritChance(DamageClass.Throwing)));
+				tooltips.Add(new TooltipLine(Mod, "AllCrit", "[i:AvengerEmblem] Bonus All critical hit: " + StatCalc.CritChance(DamageClass.Generic)));
 				//Armor Penetration
 				tooltips.Add(new TooltipLine(Mod, "MeleeAP", "[i:CopperBroadsword] Bonus Melee armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Melee)));
 				tooltips.Add(new TooltipLine(Mod, "RangedAP", "[i:WoodenBow] Bonus Ranged armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Ranged)));
@@ -276,12 +274,11 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "SummonAP", "[i:BabyBirdStaff] Bonus Summon armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Summon)));
 				tooltips.Add(new TooltipLine(Mod, "ThrowingAP", "[i:ThrowingKnife] Bonus Throwing armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Throwing)));
 				tooltips.Add(new TooltipLine(Mod, "AllAP", "[i:AvengerEmblem] Bonus All armor penetration: " + StatCalc.ArmorPenetration(DamageClass.Generic)));
-
 				//Knockback
 				tooltips.Add(new TooltipLine(Mod, "KnockbackMelee", "[i:CopperBroadsword] Melee Knockback: " + StatCalc.Knockback(DamageClass.Melee)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackRanged", "[i:WoodenBow] Ranged Knockback: " + StatCalc.Knockback(DamageClass.Ranged)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackMagic", "[i:WandofSparking] Magic Knockback: " + StatCalc.Knockback(DamageClass.Magic)));
-				tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon Knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackSummon", "[i:BabyBirdStaff] Summon Knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackThrowing", "[i:ThrowingKnife] Throwing Knockback: " + StatCalc.Knockback(DamageClass.Throwing)));
 				tooltips.Add(new TooltipLine(Mod, "KnockbackAll", "[i:AvengerEmblem] All Knockback: " + StatCalc.Knockback(DamageClass.Generic)));
 			}

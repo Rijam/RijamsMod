@@ -249,7 +249,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 			// Supposed to rotate the item in the player's hand, but it doesn't seem to do anything. 
 			player.itemRotation = (float)Math.Atan2(velocity.Y * (float)player.direction, velocity.X * (float)player.direction) - player.fullRotation;
 			NetMessage.SendData(MessageID.PlayerControls, -1, -1, null, player.whoAmI);
-			NetMessage.SendData(MessageID.ShotAnimationAndSound, -1, -1, null, player.whoAmI);
+			NetMessage.SendData(MessageID.ItemRotationAndAnimation, -1, -1, null, player.whoAmI);
 
 			// Spawn the first projectile
 			Projectile.NewProjectile(projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, damage, knockback, player.whoAmI);
@@ -302,9 +302,9 @@ namespace RijamsMod.Items.Weapons.Ranged
 			rightClicking = reader.ReadBoolean();
 		}
 
-		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+		public override void PostDrawInWorld(WorldItem item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
-			base.PostDrawInWorld(spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
+			base.PostDrawInWorld(item,spriteBatch, lightColor, alphaColor, rotation, scale, whoAmI);
 		}
 	}
 

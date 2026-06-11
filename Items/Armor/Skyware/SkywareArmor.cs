@@ -394,7 +394,7 @@ namespace RijamsMod.Items.Armor.Skyware
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 			{
 				RijamsModPlayer modPlayer = Player.GetModPlayer<RijamsModPlayer>();
-				if (modPlayer.skywareArmorSetBonus > 0 && modPlayer.skywareArmorSetBonusTimer == 0 && victim.active)
+				if (modPlayer.skywareArmorSetBonus > 0 && modPlayer.skywareArmorSetBonusTimer == 0 && victim is NPC npc && npc.active)
 				{
 					modPlayer.skywareArmorSetBonusTimer = 60;
 

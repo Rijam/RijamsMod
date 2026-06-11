@@ -37,12 +37,38 @@ namespace RijamsMod.Items.Accessories.Melee
 			player.aggro += 25 * 16; //25 tiles
 			player.autoReuseGlove = true;
 			player.meleeScaleGlove = true;
+			player.magicString = true;
 		}
 		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.FireGauntlet, 1)
 				.AddIngredient(ModContent.ItemType<YoyoBackpack>(), 1)
+				.AddIngredient(ItemID.MagicYoyoBag, 1)
+				.AddIngredient(ItemID.FleshKnuckles, 1)
+				.AddIngredient(ModContent.ItemType<DaybreakStone>(), 1)
+				.AddIngredient(ItemID.LunarBar, 1)
+				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.FireGauntlet, 1)
+				.AddIngredient(ModContent.ItemType<YoyoBackpack>(), 1)
+				.AddIngredient(ItemID.MagicString, 1)
+				.AddIngredient(ItemID.FleshKnuckles, 1)
+				.AddIngredient(ModContent.ItemType<DaybreakStone>(), 1)
+				.AddIngredient(ItemID.LunarBar, 1)
+				.AddTile(TileID.TinkerersWorkbench)
+				.AddTile(TileID.LunarCraftingStation)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ItemID.FireGauntlet, 1)
+				.AddIngredient(ItemID.MagicYoyoBag, 1)
+				.AddIngredient(ItemID.RainbowString, 1)
+				.AddRecipeGroup(RijamsModRecipes.Counterweights)
+				.AddIngredient(ModContent.ItemType<LoopingOil>())
+				.AddIngredient(ModContent.ItemType<Materials.InfernicFabric>(), 10)
+				.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 10)
 				.AddIngredient(ItemID.FleshKnuckles, 1)
 				.AddIngredient(ModContent.ItemType<DaybreakStone>(), 1)
 				.AddIngredient(ItemID.LunarBar, 1)

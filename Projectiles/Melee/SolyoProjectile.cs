@@ -29,7 +29,7 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.width = 16;
 			Projectile.height = 16;
 			// aiStyle 99 is used for all yoyos, and is Extremely suggested, as yoyo are extremely difficult without them
-			Projectile.aiStyle = 99;
+			Projectile.aiStyle = ProjAIStyleID.Yoyo;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 			Projectile.DamageType = DamageClass.Melee;

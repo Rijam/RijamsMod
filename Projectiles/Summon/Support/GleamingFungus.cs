@@ -95,7 +95,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		private Asset<Texture2D> glowTexture;
 
-		public override void PostDraw(Color lightColor)
+		public override void PostDraw(Player player, Color lightColor)
 		{
 			SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 

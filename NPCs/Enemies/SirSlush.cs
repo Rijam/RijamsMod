@@ -46,7 +46,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.DeathSound = SoundID.NPCDeath15;
 			NPC.value = 10000f;
 			NPC.knockBackResist = 0f;
-			NPC.aiStyle = 0; //0 will face the player
+			NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer; //0 will face the player
 			NPC.dontTakeDamage = false;
 			Banner = NPC.type;
 			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.SirSlushBanner>();
@@ -89,7 +89,7 @@ namespace RijamsMod.NPCs.Enemies
 				}
 			}*/
 		}
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
 			if (SpawnCondition.FrostLegion.Active)
 			{

@@ -128,15 +128,15 @@ namespace RijamsMod.NPCs.Enemies
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 				{
 					NPC.localAI[1]++;
-					if (NPC.localAI[1] == 1f && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1))
+					if (NPC.localAI[1] == 1f && Collision.CanHitLine(NPC.Center, 16, 16, target.Center, 16, 16))
 					{
 						NPC.ai[1] = 1f;
 						Vector2 velocity = targetPos;
 						velocity.Normalize();
 						Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(8 * NPC.direction, 8), velocity, ModContent.ProjectileType<Projectiles.Enemies.WindGust>(), 5, 32f);
 
-						ModContent.GetInstance<RijamsMod>().PlayNetworkSound(SoundID.Item45 with { Pitch = -1f }, NPC.Center, Main.player[Main.myPlayer]);
-						ModContent.GetInstance<RijamsMod>().PlayNetworkSound("Terraria/Sounds/Custom/dd2_dark_mage_attack_0", volume: 1f, pitch: -1f, NPC.Center, Main.player[Main.myPlayer]);
+						ModContent.GetInstance<RijamsMod>().PlayNetworkSound(SoundID.Item45 with { Pitch = -1f }, NPC.Center, Main.LocalPlayer);
+						ModContent.GetInstance<RijamsMod>().PlayNetworkSound("Terraria/Sounds/Custom/dd2_dark_mage_attack_0", volume: 1f, pitch: -1f, NPC.Center, Main.LocalPlayer);
 						NPC.velocity -= new Vector2(NPC.direction * 0.5f, 0);
 						NPC.netUpdate = true;
 					}
@@ -144,8 +144,7 @@ namespace RijamsMod.NPCs.Enemies
 					{
 						NPC.ai[1] = 0f;
 					}
-					float attackDelay = Main.expertMode ? 60f : 90f;
-					if (NPC.localAI[1] >= attackDelay)
+					if (NPC.localAI[1] >= 60f)
 					{
 						NPC.localAI[1] = 0f;
 						NPC.ai[1] = 0f;
@@ -237,31 +236,26 @@ namespace RijamsMod.NPCs.Enemies
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Weapons.Magic.MiniGuster>(), 7));
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
-			if (Main.tile[spawnInfo.SpawnTileX, spawnInfo.SpawnTileY].WallType > WallID.None)
+			if (NPC.CountNPCS(Type) > 3)
 			{
 				return 0f;
 			}
-			if (!(spawnInfo.Player.ZoneOverworldHeight || spawnInfo.Player.ZoneSkyHeight))
+			if (!(spawner.Player.ZoneOverworldHeight || spawner.Player.ZoneSkyHeight))
 			{
 				return 0f;
 			}
-			if (spawnInfo.Player.position.Y > Main.worldSurface * 16) // Below the surface. * 16 because Player.position is in pixels while Main.worldSurface is in tiles.
-			{
-				return 0f;
-			}
-			int aliveCount = NPC.CountNPCS(Type);
-			if (aliveCount > 3)
+			if (spawner.Player.position.Y > Main.worldSurface * 16) // Below the surface. * 16 because Player.position is in pixels while Main.worldSurface is in tiles.
 			{
 				return 0f;
 			}
 
 			float spawnChance = 0f;
 
-			if (spawnInfo.Sky)
+			if (spawner.skyMob)
 			{
-				spawnChance += 0.2f;
+				spawnChance += 0.25f;
 			}
 			if (Main.IsItAHappyWindyDay)
 			{
@@ -271,19 +265,14 @@ namespace RijamsMod.NPCs.Enemies
 			{
 				spawnChance += 0.02f;
 			}
-			if (Main.raining)
+			if (Condition.InRain.IsMet())
 			{
 				spawnChance += 0.1f;
 			}
-			if (spawnInfo.PlayerInTown)
+			if (spawner.spawnFriendly)
 			{
 				spawnChance -= 0.1f;
 			}
-			if (!Condition.DownedEarlygameBoss.IsMet())
-			{
-				spawnChance -= 0.1f;
-			}
-			spawnChance -= aliveCount / 20f;
 
 			return Math.Clamp(spawnChance, 0f, 1f);
 		}

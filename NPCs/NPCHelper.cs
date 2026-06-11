@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using Terraria.GameContent.Bestiary;
 
 namespace RijamsMod.NPCs
 {
@@ -75,6 +76,21 @@ namespace RijamsMod.NPCs
 		public static string DialogPath(string npc)
 		{
 			return "Mods." + mod + ".NPCs." + npc + ".NPCDialog.";
+		}
+
+		/// <summary>
+		/// Checks if Happiness Listing mod has the automatic happiness info box enabled. If so, returns false.
+		/// </summary>
+		public static bool ShouldAddHappinessInfoBox()
+		{
+			if (ModLoader.TryGetMod("HappinessListing", out Mod happinessListing))
+			{
+				if ((string)happinessListing.Call("BestiaryFlavorTextEntryToString") != "None")
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		/// <summary>
@@ -259,7 +275,7 @@ namespace RijamsMod.NPCs
 		public static bool FindItemInShop(int[] shop, int item, out int? slotNumber)
 		{
 			slotNumber = null;
-			for (int i = 0; i < Chest.maxItems; i++)
+			for (int i = 0; i < shop.Length; i++)
 			{
 				if (shop[i] == item)
 				{
@@ -277,7 +293,7 @@ namespace RijamsMod.NPCs
 		public static bool FindItemInShop(Chest shop, int item, out int? slotNumber)
 		{
 			slotNumber = null;
-			for (int i = 0; i < Chest.maxItems; i++)
+			for (int i = 0; i < shop.maxItems; i++)
 			{
 				if (shop.item[i].type == item)
 				{
@@ -426,6 +442,84 @@ namespace RijamsMod.NPCs
 			int value = ContentSamples.ItemsByType[item]?.value ?? 0;
 			return new Item(item) { shopCustomPrice = (int)Math.Round(value * priceMulti) };
 		}
+
+		public static bool PartyPortraitCondition()
+		{
+			int talkNPC = Main.LocalPlayer.talkNPC;
+			if (talkNPC < 0 || talkNPC >= Main.maxNPCs)
+				return false;
+
+			return Main.npc[talkNPC].altTexture == 1;
+		}
+
+		public static bool ShimmerPartyPortraitCondition()
+		{
+			int talkNPC = Main.LocalPlayer.talkNPC;
+			if (talkNPC < 0 || talkNPC >= Main.maxNPCs)
+				return false;
+
+			return Main.npc[talkNPC].altTexture == 1 && Main.npc[talkNPC].IsShimmerVariant;
+		}
+
+		public static bool HomelessPortraitCondition()
+		{
+			int talkNPC = Main.LocalPlayer.talkNPC;
+			if (talkNPC < 0 || talkNPC >= Main.maxNPCs)
+				return false;
+
+			return Main.npc[talkNPC].homeless;
+		}
+
+		public static bool NPCChatTextPortraitCondition(string chatText)
+		{
+			return Main.npcChatText == chatText;
+		}
+
+		public static bool IsFarFromHomePortraitCondition()
+		{
+			return NPCHelper.IsFarFromHome(Main.LocalPlayer.TalkNPC);
+		}
+
+		public static bool HellTraderArrivable()
+		{
+			return RijamsModWorld.hellTraderArrivable;
+		}
+
+		public static Vector2 DrawingOffsets(NPC npc)
+		{
+			// Move the position up by 4 pixels plus the gfxOffY value (that is for climbing half blocks).
+			// Main.NPCAddHeight() makes it so if the Town NPC is sitting, it also moves the glow mask up by 4 more pixels.
+			Vector2 verticalOffset = new(0, -4 + npc.gfxOffY + Main.NPCAddHeight(npc));
+
+			// If the NPC is actually a dummy for the Profile and Retro portrait:
+			if (npc.IsAPortraitDummy)
+			{
+				// The Profile dummy will have a scale of 3f. The Retro portrait will have a scale of 2f.
+				verticalOffset.Y += npc.scale == 2f ? -28 : -56; // Move our drawing up.
+
+				// The offsets from NPCID.Sets.NPCPortraitsCloseUpOffsets and NPCID.Sets.NPCPortraitsFullBodyRetroOffsets are already taken into account.
+
+				// A similar thing can be done with NPC.IsABestiaryIconDummy if the image in the bestiary doesn't line up.
+			}
+			return verticalOffset;
+		}
+
+		public static Color GlowColor(NPC npc, Color color, bool shimmerUsesDiscoColor = true, bool portraitUsesDiscoColor = false)
+		{
+			if (!npc.IsAPortraitDummy && npc.IsShimmerVariant && shimmerUsesDiscoColor)
+			{
+				color = Main.DiscoColor;
+			}
+			if (npc.IsAPortraitDummy && npc.IsShimmerVariant && portraitUsesDiscoColor)
+			{
+				color = Main.DiscoColor;
+			}
+			return npc.GetShimmerColor(color);
+		}
+		public static Color GlowColor(NPC npc, byte r, byte g, byte b, byte a, bool shimmerUsesDiscoColor = true, bool portraitUsesDiscoColor = false)
+		{
+			return GlowColor(npc, new Color(r, g, b, a), shimmerUsesDiscoColor, portraitUsesDiscoColor);
+		}
 	}
 	public static class ShopConditions
 	{
@@ -457,6 +551,76 @@ namespace RijamsMod.NPCs
 		public static Condition AnglerQuestsFinishedRange(int min, int max) => new($"When the player has finished {min}-{max} Angler Quests", () => Main.LocalPlayer.anglerQuestsFinished >= min && Main.LocalPlayer.anglerQuestsFinished <= max);
 		public static Condition RandomBasedOnGameTick(int modulo, int numberToCheck) => new("Randomly when the shop is opened", () => Main.GameUpdateCount % modulo == numberToCheck);
 		public static Condition RandomBasedOnGameTick(int modulo, int numberToCheck, string uniqueMessage) => new(uniqueMessage, () => Main.GameUpdateCount % modulo == numberToCheck);
+
+		/// <summary>
+		/// ORs two conditions together. The description is both descriptions separated with an "or".
+		/// </summary>
+		/// <param name="condition1">The first Condition</param>
+		/// <param name="condition2">The second Condition</param>
+		/// <returns>A new Condition that is condition1 or condition2</returns>
+		public static Condition OrConditions(Condition condition1, Condition condition2)
+		{
+			return new Condition(Language.GetText("Mods.RijamsMod.UI.OrConditions").WithFormatArgs(condition1.Description, condition2.Description), () => condition1.Predicate() || condition2.Predicate());
+		}
+
+		/// <summary>
+		/// ORs two conditions together. The description is set to the <paramref name="newLocalizationKey"/>.
+		/// </summary>
+		/// <param name="newLocalizationKey">The new description to use.</param>
+		/// <param name="condition1">The first Condition</param>
+		/// <param name="condition2">The second Condition</param>
+		/// <returns>A new Condition that is condition1 or condition2</returns>
+		public static Condition OrConditions(string newLocalizationKey, Condition condition1, Condition condition2)
+		{
+			return new Condition(Language.GetOrRegister(newLocalizationKey), () => condition1.Predicate() || condition2.Predicate());
+		}
+
+		/// <summary>
+		/// ORs one condition with a set of more conditions which are ANDed together.
+		/// <br/> conditionOR || (conditionsAND1 &amp;&amp; conditionsAND2 &amp;&amp; ...)
+		/// <br/> The description is a combination of all of the descriptions in the order above.
+		/// </summary>
+		/// <param name="conditionOR">The Condition to OR against all of the other conditions.</param>
+		/// <param name="conditionsAND">Multiple Conditions that are all ANDed together.</param>
+		/// <returns>A new Condition that is conditionOR || (conditionsAND1 &amp;&amp; conditionsAND2 &amp;&amp; ...)</returns>
+		public static Condition ConditionOrConditionsAND(Condition conditionOR, params Condition[] conditionsAND)
+		{
+			LocalizedText andConditionDescriptions = conditionsAND[0].Description;
+			Func<bool> andConditionPredicates = conditionsAND[0].Predicate;
+			if (conditionsAND.Length > 1)
+			{
+				for (int i = 1; i < conditionsAND.Length; i++)
+				{
+					andConditionPredicates = () => andConditionPredicates() && conditionsAND[i].Predicate();
+					andConditionDescriptions = Language.GetText("Mods.RijamsMod.UI.AndConditions").WithFormatArgs(andConditionDescriptions, conditionsAND[i]);
+				}
+			}
+
+			return new Condition(Language.GetText("Mods.RijamsMod.UI.OrConditions").WithFormatArgs(conditionOR.Description, andConditionDescriptions), () => conditionOR.Predicate() || andConditionPredicates());
+		}
+
+		/// <summary>
+		/// ORs one condition with a set of more conditions which are ANDed together.
+		/// <br/> conditionOR || (conditionsAND1 &amp;&amp; conditionsAND2 &amp;&amp; ...)
+		/// <br/> The description is set to the <paramref name="newLocalizationKey"/>.
+		/// </summary>
+		/// <param name="newLocalizationKey">The new description to use.</param>
+		/// <param name="conditionOR"></param>
+		/// <param name="conditionsAND"></param>
+		/// <returns>A new Condition that is conditionOR || (conditionsAND1 &amp;&amp; conditionsAND2 &amp;&amp; ...)</returns>
+		public static Condition ConditionOrConditionsAND(string newLocalizationKey, Condition conditionOR, params Condition[] conditionsAND)
+		{
+			Func<bool> andConditionPredicates = conditionsAND[0].Predicate;
+			if (conditionsAND.Length > 1)
+			{
+				for (int i = 1; i < conditionsAND.Length; i++)
+				{
+					andConditionPredicates = () => andConditionPredicates() && conditionsAND[i].Predicate();
+				}
+			}
+
+			return new Condition(Language.GetOrRegister(newLocalizationKey), () => conditionOR.Predicate() || andConditionPredicates());
+		}
 
 #pragma warning restore CA2211 // Non-constant fields should not be visible
 	}

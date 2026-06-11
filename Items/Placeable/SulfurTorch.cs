@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using RijamsMod.Items.Information;
 
 namespace RijamsMod.Items.Placeable
 {
@@ -33,9 +32,9 @@ namespace RijamsMod.Items.Placeable
 			Lighting.AddLight(position, Color.Yellow.ToVector3() * 0.75f);
 		}
 
-		public override void PostUpdate()
+		public override void PostUpdate(WorldItem item)
 		{
-			Lighting.AddLight((int)((Item.position.X + Item.width / 2) / 16f), (int)((Item.position.Y + Item.height / 2) / 16f), 0.5f, 0.5f, 0f);
+			Lighting.AddLight((int)((item.position.X + item.width / 2) / 16f), (int)((item.position.Y + item.height / 2) / 16f), 0.5f, 0.5f, 0f);
 		}
 
 		public override void AddRecipes()

@@ -46,14 +46,14 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			Player owner = Main.player[Projectile.owner];
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Without PiOver2, the rotation would be off by 90 degrees counterclockwise.
 
-			Projectile.Center = Main.GetPlayerArmPosition(Projectile) + Projectile.velocity * Timer;
+			Projectile.Center = Main.GetPlayerArmPosition(Projectile, owner) + Projectile.velocity * Timer;
 			// Vanilla uses Vector2.Dot(Projectile.velocity, Vector2.UnitX) here. Dot Product returns the difference between two vectors, 0 meaning they are perpendicular.
 			// However, the use of UnitX basically turns it into a more complicated way of checking if the projectile's velocity is above or equal to zero on the X axis.
 			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
 
 			Timer++; // make sure you keep this line if you remove the charging mechanic.
 
-			float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates;
+			Projectile.GetWhipSettings(Projectile, out float swingTime, out _, out _);
 
 			if (Timer >= swingTime || owner.itemAnimation <= 1) // itemAnimation <= 1 allows quick swapping between whips
 			{
@@ -63,6 +63,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			}
 
 			owner.heldProj = Projectile.whoAmI;
+			owner.MatchItemTimeToItemAnimation();
 
 			if (Timer == swingTime / 2)
 			{
@@ -88,40 +89,17 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			target.AddBuff(ModContent.BuffType<Buffs.Debuffs.ForbiddenWhipDebuff>(), 180); // 3 Seconds
+			// target.AddBuff(ModContent.BuffType<Buffs.Debuffs.ForbiddenWhipDebuff>(), 180); // 3 Seconds
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 			Projectile.damage = (int)(Projectile.damage * 0.9f);
 		}
 
-		// This method draws a line between all points of the whip, in case there's empty space between the sprites.
-		private static void DrawLine(List<Vector2> list)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
-			Texture2D texture = TextureAssets.FishingLine.Value;
-			Rectangle frame = texture.Frame();
-			Vector2 origin = new(frame.Width / 2, 2);
+			List<Vector2> controlPoints = new();
+			Projectile.FillWhipControlPoints(Projectile, controlPoints);
 
-			Vector2 pos = list[0];
-			for (int i = 0; i < list.Count - 1; i++)
-			{
-				Vector2 element = list[i];
-				Vector2 diff = list[i + 1] - element;
-
-				float rotation = diff.ToRotation() - MathHelper.PiOver2;
-				Color color = Lighting.GetColor(element.ToTileCoordinates(), Color.Goldenrod);
-				Vector2 scale = new(1, (diff.Length() + 2) / frame.Height);
-
-				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);
-
-				pos += diff;
-			}
-		}
-
-		public override bool PreDraw(ref Color lightColor)
-		{
-			List<Vector2> list = new();
-			Projectile.FillWhipControlPoints(Projectile, list);
-
-			DrawLine(list);
+			RijamsModProjectile.DrawLineForWhips(controlPoints, Color.Goldenrod, true);
 
 			//Main.DrawWhip_WhipBland(Projectile, list);
 			// The code below is for custom drawing.
@@ -130,12 +108,13 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
 			SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-			Main.instance.LoadProjectile(Type);
+			int totalSegments = Projectile.WhipSettings.Segments; // The number of segments this whip has.
+
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
-			Vector2 pos = list[0];
+			Vector2 pos = controlPoints[0];
 
-			for (int i = 0; i < list.Count - 1; i++)
+			for (int i = 0; i < controlPoints.Count - 1; i++)
 			{
 				// These two values are set to suit this projectile's sprite, but won't necessarily work for your own.
 				// You can change them if they don't!
@@ -145,7 +124,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
 				// These statements determine what part of the spritesheet to draw for the current segment.
 				// They can also be changed to suit your sprite.
-				if (i == list.Count - 2)
+				if (i == controlPoints.Count - 2)
 				{
 					// This is the head of the whip. You need to measure the sprite to figure out these values.
 					frame.Y = 88; // frame.Y is the number of pixels from the top of the sprite to the top of the current segment's rectangle
@@ -156,31 +135,32 @@ namespace RijamsMod.Projectiles.Summon.Whips
 					float t = Timer / timeToFlyOut;
 					scale = MathHelper.Lerp(0.7f, 1.3f, Utils.GetLerpValue(0.1f, 0.7f, t, true) * Utils.GetLerpValue(0.9f, 0.7f, t, true));
 				}
-				else if (i > 10)
+				// Divide the middle of the whip (after the handle and before the head) by approximately 3 and use the middle segments in each third.
+				else if (i > 2 * (totalSegments / 3)) // At 2/3 of the way across the whip, the third segment is used.
 				{
 					// Third segment
 					frame.Y = 68;
 					frame.Height = 20;
 				}
-				else if (i > 5)
+				else if (i > totalSegments / 3) // At 1/3 of the way across the whip, the second segment is used.
 				{
 					// Second Segment
 					frame.Y = 48;
 					frame.Height = 20;
 				}
-				else if (i > 0)
+				else // At the start of the whip after the handle, the first segment is used.else if (i > 0)
 				{
 					// First Segment
 					frame.Y = 28;
 					frame.Height = 20;
 				}
 
-				Vector2 element = list[i];
-				Vector2 diff = list[i + 1] - element;
+				Vector2 element = controlPoints[i];
+				Vector2 diff = controlPoints[i + 1] - element;
 
 				float rotation = diff.ToRotation() - MathHelper.PiOver2; // This projectile's sprite faces down, so PiOver2 is used to correct rotation.
 				Color color = Color.Lerp(Lighting.GetColor(element.ToTileCoordinates()), Color.White, i / 21f); // Make the segments brighter the closer to the head they are
-				if (i == list.Count - 2) // Make the head full bright
+				if (i == controlPoints.Count - 2) // Make the head full bright
 				{
 					color = Color.White;
 				}

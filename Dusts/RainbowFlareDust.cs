@@ -31,7 +31,7 @@ namespace RijamsMod.Dusts
 			if (num90 > 1f)
 				num90 = 1f;
 			
-			if (!dust.noLight && !dust.noLightEmittence)
+			if (!dust.noLight && !dust.noLightEmittance)
 			{
 				Lighting.AddLight((int)(dust.position.X / 16f), (int)(dust.position.Y / 16f), num90 * ((float)(int)dust.color.R / 255f), num90 * ((float)(int)dust.color.G / 255f), num90 * ((float)(int)dust.color.B / 255f));
 			}

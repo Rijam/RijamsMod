@@ -45,7 +45,7 @@ namespace RijamsMod.Projectiles.Melee
 			}
 		}
 
-        public override bool PreDraw(ref Color lightColor)
+        public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			int selectRand = Utils.SelectRandom(Main.rand, DustID.OrangeTorch, DustID.SolarFlare, DustID.Torch);
 			Dust killDust = Main.dust[Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, selectRand)];

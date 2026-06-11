@@ -17,9 +17,9 @@ namespace RijamsMod.Items.Placeable
 			Item.width = 18;
 			Item.height = 20;
 		}
-		public override void PostUpdate()
+		public override void PostUpdate(WorldItem item)
 		{
-			Lighting.AddLight(Item.Center, 0.75f, 0.75f, 0f);
+			Lighting.AddLight(item.Center, 0.75f, 0.75f, 0f);
 		}
 		public override void AddRecipes()
 		{

@@ -24,6 +24,8 @@ Mods: {
 			Like: Like
 			Dislike: Dislike
 			LicenseSnuggetUse: The license teleports away to the Snugget delivery service...
+			AndConditions: "{0} and {1}"
+			OrConditions: "{0} or {1}"
 		}
 
 		ArmorSetBonus: {

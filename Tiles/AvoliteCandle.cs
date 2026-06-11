@@ -24,7 +24,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.Allowed;
 			TileObjectData.newTile.LavaPlacement = LiquidPlacement.NotAllowed;
 			TileObjectData.addTile(Type);
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsTorch);
+			TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
 			AdjTiles = new int[] { TileID.Candles };
 
 			AddMapEntry(new Color(255, 6, 63), Language.GetText("Avolite Candle"));

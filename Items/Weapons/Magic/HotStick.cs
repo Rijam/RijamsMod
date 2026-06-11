@@ -48,7 +48,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup("Wood", 3)
+				.AddRecipeGroup(RecipeGroups.Wood, 3)
 				.AddIngredient(ItemID.Torch, 1)
 				.AddTile(TileID.WorkBenches)
 				.Register();

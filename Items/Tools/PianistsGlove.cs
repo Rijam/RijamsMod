@@ -104,8 +104,8 @@ namespace RijamsMod.Items.Tools
 					Main.mouseRightRelease = false;
 					SoundEngine.PlaySound(SoundID.Unlock with { Volume = (ModContent.GetInstance<RijamsModConfigClient>().BurglarsRingSound / 100f) });
 					player.inventory[player.selectedItem].ChangeItemType(itemToTransformTo);
-					Recipe.FindRecipes();
-					
+					// Recipe.FindRecipes()
+
 					return true;
 				}
 			}
@@ -118,7 +118,7 @@ namespace RijamsMod.Items.Tools
 			SoundEngine.PlaySound(SoundID.Unlock with { Volume = (ModContent.GetInstance<RijamsModConfigClient>().BurglarsRingSound / 100f) });
 			int index = player.FindItemInInventoryOrOpenVoidBag(Type, out _);
 			player.inventory[index].ChangeItemType(itemToTransformTo);
-			Recipe.FindRecipes();
+			// Recipe.FindRecipes();
 		}
 
 		public override bool ConsumeItem(Player player)

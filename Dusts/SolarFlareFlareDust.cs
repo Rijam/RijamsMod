@@ -18,7 +18,7 @@ namespace RijamsMod.Dusts
 				dust.velocity.Y += 0.05f;
 			}
 
-			if (!dust.noLight && !dust.noLightEmittence)
+			if (!dust.noLight && !dust.noLightEmittance)
 			{
 				Lighting.AddLight(dust.position, new Color(255, 230, 150).ToVector3());
 			}

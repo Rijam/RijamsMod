@@ -511,27 +511,27 @@ namespace RijamsMod.NPCs.Enemies
 			}
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
 			float spawnChance = 0f;
-			if (spawnInfo.Player.ZoneUnderworldHeight) //Underworld
+			if (spawner.Player.ZoneUnderworldHeight) //Underworld
 			{
-				spawnChance += 0.25f;
+				spawnChance += 0.3f;
 			}
-			if (spawnInfo.Player.ZoneRockLayerHeight && // Player in the caverns layer
-				spawnInfo.SpawnTileY <= Main.maxTilesY - 200 && // Above the underworld
-				spawnInfo.SpawnTileY > (Main.rockLayer + Main.maxTilesY - 200) / 2) // Lower half of the canverns above the underworld.
+			if (spawner.Player.ZoneRockLayerHeight && // Player in the caverns layer
+				spawner.SpawnTileY <= Main.maxTilesY - 200 && // Above the underworld
+				spawner.SpawnTileY > (Main.rockLayer + Main.maxTilesY - 200) / 2) // Lower half of the caverns above the underworld.
 			{
 				spawnChance += 0.08f;
 			}
-			if (spawnInfo.PlayerInTown) // Decrease the chance dramatically if in a town
+			if (spawner.spawnFriendly) // Decrease the chance dramatically if in a town
 			{
 				spawnChance -= 0.2f;
 			}
 			if (Main.remixWorld && !Main.hardMode) // Don't Dig Up or Get Fixed Boi worlds and Pre-Hardmode.
 			{
 				spawnChance -= 0.2f;
-				if (spawnInfo.SpawnTileX > Main.maxTilesX / 3 && spawnInfo.SpawnTileX < 2 * Main.maxTilesX / 3) // Middle 1/3 of the world, decrease spawns even more.
+				if (spawner.SpawnTileX > Main.maxTilesX / 3 && spawner.SpawnTileX < 2 * Main.maxTilesX / 3) // Middle 1/3 of the world, decrease spawns even more.
 				{
 					spawnChance -= 0.05f;
 				}

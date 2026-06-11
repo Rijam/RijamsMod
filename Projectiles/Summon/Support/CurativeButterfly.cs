@@ -188,7 +188,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 		private readonly Asset<Texture2D> outlineTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/CurativeButterflyOutline");
 		private readonly Asset<Texture2D> glowTexture = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/CurativeButterflyGlow");
 
-		public override bool PreDraw(ref Color lightColor)
+		public override bool PreDraw(Player player, ref Color lightColor)
 		{
 			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
@@ -206,7 +206,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 			return true;
 		}
 
-		public override void PostDraw(Color lightColor)
+		public override void PostDraw(Player player, Color lightColor)
 		{
 			SpriteEffects spriteEffects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 

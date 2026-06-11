@@ -174,7 +174,7 @@ namespace RijamsMod.NPCs.Enemies
 			}
 		}
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+		public override float SpawnChance(NPC.Spawner spawner)
 		{
 			if (SpawnCondition.FrostLegion.Active)
 			{

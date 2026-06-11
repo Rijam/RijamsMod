@@ -115,7 +115,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 		private readonly Asset<Texture2D> textureBigRocks = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_BigRocks");
 		private readonly Asset<Texture2D> textureLight = ModContent.Request<Texture2D>("RijamsMod/Projectiles/Summon/Support/GraniteElemental_Light");
 
-		public override void PostDraw(Color lightColor)
+		public override void PostDraw(Player player, Color lightColor)
 		{
 			SpriteEffects spriteEffects = SpriteEffects.None;
 

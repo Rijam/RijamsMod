@@ -29,7 +29,7 @@ namespace RijamsMod.Dusts
 				dust.frame = new Rectangle(0, 48, 24, 24);
 			}
 
-			if (dust.noLight || dust.noLightEmittence)
+			if (dust.noLight || dust.noLightEmittance)
 			{
 				return true;
 			}
