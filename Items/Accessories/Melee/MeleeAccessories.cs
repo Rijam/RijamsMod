@@ -32,8 +32,8 @@ namespace RijamsMod.Items.Accessories.Melee
 			player.GetAttackSpeed(DamageClass.Melee) += 0.12f;
 			player.kbGlove = true;
 			player.statDefense += 8;
-			player.GetModPlayer<RijamsModPlayer>().daybreakStone = true;
-			player.GetModPlayer<RijamsModPlayer>().yoyoBackpack = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_DaybreakStone = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_YoyoBackpack = true;
 			player.aggro += 25 * 16; //25 tiles
 			player.autoReuseGlove = true;
 			player.meleeScaleGlove = true;
@@ -97,7 +97,7 @@ namespace RijamsMod.Items.Accessories.Melee
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().yoyoBackpack = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_YoyoBackpack = true;
 		}
 		public override void AddRecipes()
 		{
@@ -129,7 +129,7 @@ namespace RijamsMod.Items.Accessories.Melee
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().loopingOil = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_LoopingOil = true;
 		}
 	}
 
@@ -149,7 +149,7 @@ namespace RijamsMod.Items.Accessories.Melee
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().sideEffects = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_SideEffects = true;
 		}
 
 		public override void AddRecipes()

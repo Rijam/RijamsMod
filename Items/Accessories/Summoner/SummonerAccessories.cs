@@ -60,7 +60,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 			player.maxMinions++;
 			player.fireWalk = true;
 			player.statDefense++;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 		}
 
 		public override void AddRecipes()
@@ -125,7 +125,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 			player.GetDamage(DamageClass.Summon) += 0.15f;
 			player.GetKnockback(DamageClass.Summon).Base += 2f;
 			player.fireWalk = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 		}
 		public override void AddRecipes()
 		{
@@ -162,7 +162,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 			player.GetDamage(DamageClass.Summon) += 0.30f;
 			player.statDefense++;
 			player.fireWalk = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 		}
 		public override void AddRecipes()
 		{
@@ -201,7 +201,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 			player.GetKnockback(DamageClass.Summon).Base += 2f;
 			player.statDefense++;
 			player.fireWalk = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 			player.aggro -= 30 * 16; //30 tiles
 		}
 		public override void AddRecipes()

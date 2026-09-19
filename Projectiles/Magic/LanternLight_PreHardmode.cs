@@ -126,6 +126,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.ignoreWater = false;
 			Projectile.penetrate = 2;
 			Projectile.timeLeft = 500;
+			Projectile.localNPCHitCooldown = 50;
 		}
 
 		public override bool BounceOnTiles() => true;
@@ -159,6 +160,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.ignoreWater = true;
 			Projectile.penetrate = 2;
 			Projectile.timeLeft = 440;
+			Projectile.localNPCHitCooldown = 50;
 		}
 
 		public override bool BounceOnTiles() => true;
@@ -192,6 +194,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.ignoreWater = false;
 			Projectile.penetrate = 2;
 			Projectile.timeLeft = 440;
+			Projectile.localNPCHitCooldown = 50;
 		}
 
 		public override bool BounceOnTiles() => true;

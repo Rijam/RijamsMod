@@ -22,7 +22,7 @@ namespace RijamsMod.Items.Accessories.Misc
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().curiosityLure = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_CuriosityLure = true;
 			if (!hideVisual)
 			{
 				player.overrideFishingBobber = ModContent.ProjectileType<CuriosityLureProj>();
@@ -45,7 +45,7 @@ namespace RijamsMod.Items.Accessories.Misc
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().trapBobber = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_TrapBobber = true;
 			if (!hideVisual)
 			{
 				player.overrideFishingBobber = ModContent.ProjectileType<TrapBobberProj>();
@@ -78,7 +78,7 @@ namespace RijamsMod.Items.Accessories.Misc
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().spinnerBobber = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_SpinnerBobber = true;
 			if (!hideVisual)
 			{
 				player.overrideFishingBobber = ModContent.ProjectileType<SpinnerBobberProj>();

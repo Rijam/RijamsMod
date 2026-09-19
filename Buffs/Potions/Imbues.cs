@@ -24,7 +24,7 @@ namespace RijamsMod.Buffs.Potions
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().flaskBuff = FlaskIDs.SulfuricAcid;
+			player.GetModPlayer<RijamsModPlayer>().Buff_ModFlaskBuff = FlaskIDs.SulfuricAcid;
 			// We set this to a value not used by existing imbues simply to indicate to other mods that a weapon imbue is active. The real flag is exampleWeaponImbue above.
 			player.meleeEnchant = 255;
 		}
@@ -42,7 +42,7 @@ namespace RijamsMod.Buffs.Potions
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().flaskBuff = FlaskIDs.Oiled;
+			player.GetModPlayer<RijamsModPlayer>().Buff_ModFlaskBuff = FlaskIDs.Oiled;
 			// We set this to a value not used by existing imbues simply to indicate to other mods that a weapon imbue is active. The real flag is exampleWeaponImbue above.
 			player.meleeEnchant = 255;
 		}
@@ -59,7 +59,7 @@ namespace RijamsMod.Buffs.Potions
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().flaskBuff = FlaskIDs.Daybroken;
+			player.GetModPlayer<RijamsModPlayer>().Buff_ModFlaskBuff = FlaskIDs.Daybroken;
 			// We set this to a value not used by existing imbues simply to indicate to other mods that a weapon imbue is active. The real flag is exampleWeaponImbue above.
 			player.meleeEnchant = 255;
 		}

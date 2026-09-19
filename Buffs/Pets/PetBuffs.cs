@@ -16,7 +16,7 @@ namespace RijamsMod.Buffs.Pets
 		public override void Update(Player player, ref int buffIndex)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.dwarfStarPet, ModContent.ProjectileType<Projectiles.Pets.DwarfStar>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.Pet_DwarfStarPet, ModContent.ProjectileType<Projectiles.Pets.DwarfStar>());
 		}
 	}
 	public class LumothBuff : ModBuff
@@ -32,7 +32,7 @@ namespace RijamsMod.Buffs.Pets
 		public override void Update(Player player, ref int buffIndex)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.lumothPet, ModContent.ProjectileType<Projectiles.Pets.Lumoth>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.Pet_LumothPet, ModContent.ProjectileType<Projectiles.Pets.Lumoth>());
 		}
 	}
 	public class LEDLumothBuff : ModBuff
@@ -48,7 +48,7 @@ namespace RijamsMod.Buffs.Pets
 		public override void Update(Player player, ref int buffIndex)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.lEDLumothPet, ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.Pet_LEDLumothPet, ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>());
 		}
 	}
 	public class SnuggetBuff : ModBuff
@@ -64,7 +64,7 @@ namespace RijamsMod.Buffs.Pets
 		public override void Update(Player player, ref int buffIndex)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.snuggetPet, ModContent.ProjectileType<Projectiles.Pets.Snugget>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.Pet_SnuggetPet, ModContent.ProjectileType<Projectiles.Pets.Snugget>());
 		}
 	}
 	public class FluffaloBuff : ModBuff
@@ -80,7 +80,7 @@ namespace RijamsMod.Buffs.Pets
 		public override void Update(Player player, ref int buffIndex)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.fluffaloPet, ModContent.ProjectileType<Projectiles.Pets.Fluffalo>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.Pet_FluffaloPet, ModContent.ProjectileType<Projectiles.Pets.Fluffalo>());
 		}
 	}
 	public class BabyStardustDragonBuff : ModBuff
@@ -94,7 +94,7 @@ namespace RijamsMod.Buffs.Pets
 		public override void Update(Player player, ref int buffIndex)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.babyStardustDragonPet, ModContent.ProjectileType<Projectiles.Pets.BabyStardustDragon>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref modPlayer.Pet_BabyStardustDragonPet, ModContent.ProjectileType<Projectiles.Pets.BabyStardustDragon>());
 		}
 	}
 }

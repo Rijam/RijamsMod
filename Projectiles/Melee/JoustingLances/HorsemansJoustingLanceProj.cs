@@ -77,5 +77,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 				}
 			}
 		}
+
+		public override int DollHeldOffset() => 160;
 	}
 }

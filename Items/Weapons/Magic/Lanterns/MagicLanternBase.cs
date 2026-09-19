@@ -4,7 +4,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using RijamsMod.Projectiles.Magic;
-using Terraria.GameContent.Drawing;
 
 namespace RijamsMod.Items.Weapons.Magic.Lanterns
 {

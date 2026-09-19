@@ -1,9 +1,10 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -105,6 +106,15 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 		public virtual void ModifyDrawing(ref Color drawColor)
 		{
 
+		}
+
+		/// <summary>
+		/// Changes the offset for where the mannequin holds the Jousting Lance.
+		/// </summary>
+		/// <returns></returns>
+		public virtual int DollHeldOffset()
+		{
+			return 122; // This matches the vanilla Jousting Lances. Other spears may need a different value.
 		}
 
 		// This is the behavior of the Jousting Lances.
@@ -286,9 +296,25 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 			// This will make it so the bottom of the sprite is correctly facing down when shot to the right.
 			if (Projectile.direction > 0)
 			{
-				rotation -= (float)Math.PI / 2f;
+				rotation -= MathHelper.PiOver2;
 				origin.X += sourceRectangle.Width;
 				spriteEffects = SpriteEffects.FlipHorizontally;
+			}
+
+			if (player.gravDir == -1f)
+			{
+				if (Projectile.direction == 1)
+				{
+					spriteEffects = SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically;
+					origin = new Vector2(sourceRectangle.Width, sourceRectangle.Height);
+					rotation -= MathHelper.PiOver2;
+				}
+				else
+				{
+					spriteEffects = SpriteEffects.FlipVertically;
+					origin = new Vector2(0f, sourceRectangle.Height);
+					rotation += MathHelper.PiOver2;
+				}
 			}
 
 			// The position of the sprite. Not subtracting Main.player[Projectile.owner].gfxOffY will cause the sprite to bounce when walking up blocks.
@@ -316,6 +342,32 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 			*/
 
 			// It's important to return false, otherwise we also draw the original texture.
+			return false;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+		{
+			Projectile.direction = doll.direction;
+			Projectile.spriteDirection = -Projectile.direction;
+			Vector2 projctileRotation = Vector2.UnitX;
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
+
+			projctileRotation = projctileRotation.RotatedBy(armRotation);
+			if (Projectile.direction == -1)
+				projctileRotation.X *= -1f;
+
+			Projectile.velocity = projctileRotation;
+
+			Projectile.alpha = 0; // Jousting Lance specific: The jousting lance normally starts invisible and fades in. 0 alpha is fully opaque.
+
+			int forwardOffset = DollHeldOffset(); // This matches the vanilla Jousting Lances. Other spears may need a different value.
+			Projectile.position += Projectile.velocity * forwardOffset; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = (float)Math.Atan2(projctileRotation.Y, projctileRotation.X) + (3f * MathHelper.PiOver4); // Set the projectile's rotation based on the mannequin's hand.
+
 			return false;
 		}
 	}

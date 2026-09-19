@@ -37,7 +37,7 @@ namespace RijamsMod.Items.Fishing
 				{
 					if (fish.maxStack == 1)
 					{
-						Item.NewItem(new EntitySource_OverfullInventory(Player), Player.Center, fish.Clone(), noGrabDelay: true);
+						Item.NewItem(new EntitySource_OverfullInventory(Player), Player.Center, fish.Clone()/*, noGrabDelay: true*/);
 					}
 					else
 					{
@@ -48,7 +48,7 @@ namespace RijamsMod.Items.Fishing
 		}
 		public override void ModifyFishingAttempt(ref FishingAttempt attempt)
 		{
-			if (Player.GetModPlayer<RijamsModPlayer>().curiosityLure)
+			if (Player.GetModPlayer<RijamsModPlayer>().Accessory_CuriosityLure)
 			{
 				// Main.NewText($"Pre {attempt.common} {attempt.uncommon} {attempt.rare} {attempt.veryrare} {attempt.legendary}");
 
@@ -118,11 +118,11 @@ namespace RijamsMod.Items.Fishing
 				// localAI[1] timer until you can catch a fish. Counts up to 660. Becomes the item ID when the fish is on the line.
 				// Main.NewText($" {projectile.ai[0]} {projectile.ai[1]} {projectile.localAI[0]} {projectile.localAI[1]} {projectile.localAI[2]}");
 
-				if (Main.player[projectile.owner].GetModPlayer<RijamsModPlayer>().spinnerBobber && projectile.ai[1] == 0f && Main.myPlayer == projectile.owner)
+				if (Main.player[projectile.owner].GetModPlayer<RijamsModPlayer>().Accessory_SpinnerBobber && projectile.ai[1] == 0f && Main.myPlayer == projectile.owner)
 				{
 					projectile.localAI[1] += 4; // Timer until you can catch a fish. Increasing it makes you catch it faster.
 				}
-				if (Main.player[projectile.owner].GetModPlayer<RijamsModPlayer>().trapBobber && projectile.ai[1] < 0f)
+				if (Main.player[projectile.owner].GetModPlayer<RijamsModPlayer>().Accessory_TrapBobber && projectile.ai[1] < 0f)
 				{
 					// ai[1] gets set to Main.rand.Next(-180, -60) - 100 when a fish can be caught.
 					// Increases by Main.rand.Next(1, 5) every tick. (1 to 4)

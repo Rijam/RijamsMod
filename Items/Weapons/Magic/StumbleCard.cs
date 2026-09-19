@@ -79,7 +79,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		{
 			if (player.whoAmI == Main.myPlayer && player.itemTime != 0)
 			{
-				player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
+				player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.25f;
 			}
 		}
 

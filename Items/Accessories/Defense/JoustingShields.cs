@@ -20,7 +20,7 @@ namespace RijamsMod.Items.Accessories.Defense
 		public override void UpdateEquip(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.moveSpeedDamageReductionMax = 0.1f;
+			modPlayer.Stat_MoveSpeedDamageReductionMax = 0.1f;
 		}
 		public override void AddRecipes()
 		{
@@ -47,7 +47,7 @@ namespace RijamsMod.Items.Accessories.Defense
 		public override void UpdateEquip(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.moveSpeedDamageReductionMax = 0.2f;
+			modPlayer.Stat_MoveSpeedDamageReductionMax = 0.2f;
 		}
 		public override void AddRecipes()
 		{
@@ -74,7 +74,7 @@ namespace RijamsMod.Items.Accessories.Defense
 		public override void UpdateEquip(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.moveSpeedDamageReductionMax = 0.3f;
+			modPlayer.Stat_MoveSpeedDamageReductionMax = 0.3f;
 		}
 		public override void AddRecipes()
 		{

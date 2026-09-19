@@ -656,7 +656,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				HellTrader.MoveIn(instance);
 				Main.DoNPCPortraitHop();
 			}
-			public override bool ShowExcalmation => true;
+			public override bool ShowExclamation => true;
 		}
 		public class FalseHousingButton(HellTrader instance) : NPCInteractions.Actions.RequestHome
 		{
@@ -678,7 +678,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				Main.npcChatPortrait = ChooseTheCorrectVariantPortrait(instance, chosenLine.Emotion.ToString());
 				Main.DoNPCPortraitHop();
 			}
-			public override bool ShowExcalmation => false;
+			public override bool ShowExclamation => false;
 		}
 		public class HousingButtonOnlyAfterMovingIn : NPCInteractions.Actions.RequestHome
 		{

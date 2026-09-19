@@ -55,7 +55,7 @@ namespace RijamsMod.Items.Accessories.Misc
 			if (Main.netMode != NetmodeID.Server)
 			{
 				RijamsModPlayer moddedplayer = player.GetModPlayer<RijamsModPlayer>();
-				if (moddedplayer.burglarsRing || moddedplayer.warriorRing || moddedplayer.lifeSapperRing || moddedplayer.manaSapperRing)
+				if (moddedplayer.Accessory_BurglarsRing || moddedplayer.Accessory_WarriorRing || moddedplayer.Accessory_LifeSapperRing || moddedplayer.Accessory_ManaSapperRing)
 				{
 					// Mod.Logger.Debug($"Player {player.whoAmI} has Burglar's Ring");
 					// Mod.Logger.Debug($"NPC is: {npc.FullName}");
@@ -72,7 +72,7 @@ namespace RijamsMod.Items.Accessories.Misc
 					// ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"2"), Color.Yellow);
 
 					// If the player has the Burglar's Ring equipped, the NPC is not a boss, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-					if (moddedplayer.burglarsRing && !npc.boss)
+					if (moddedplayer.Accessory_BurglarsRing && !npc.boss)
 					{
 						// Mod.Logger.Debug($"NPCLoot called for NPC Id: {npc.type}. Who Am I: {npc.whoAmI}. To banner: {Item.NPCtoBanner(npc.type)}");
 						npc.NPCLoot();
@@ -86,7 +86,7 @@ namespace RijamsMod.Items.Accessories.Misc
 					}
 
 					// If the player has the Warrior Ring equipped, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-					if (moddedplayer.warriorRing)
+					if (moddedplayer.Accessory_WarriorRing)
 					{
 						int chance = (int)Math.Round(10 - (player.luck * 10)); //1 in 10 chance (10%) but is affected by luck.
 						if (Main.rand.NextBool(chance))
@@ -103,7 +103,7 @@ namespace RijamsMod.Items.Accessories.Misc
 					}
 
 					// If the player has the Life Sapper Ring equipped, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-					if (moddedplayer.lifeSapperRing && !player.moonLeech)
+					if (moddedplayer.Accessory_LifeSapperRing && !player.moonLeech)
 					{
 						int healAmount = 1 + (Math.Max(player.statLifeMax, player.statLifeMax2) / 100); // Base of 1 + 1 for every 100 max HP. Example: 100 HP = healed 2; 400 HP = healed 5; 
 						if (Main.netMode == NetmodeID.SinglePlayer)
@@ -126,7 +126,7 @@ namespace RijamsMod.Items.Accessories.Misc
 					}
 
 					// If the player has the Life Sapper Ring equipped, the NPC is not immortal, the NPC is counted, the NPC is alive, and the NPC was hit by a player
-					if (moddedplayer.manaSapperRing && (player.HeldItem.DamageType.CountsAsClass(DamageClass.Magic) || player.HeldItem.ModItem is MagicMeleeGlow))
+					if (moddedplayer.Accessory_ManaSapperRing && (player.HeldItem.DamageType.CountsAsClass(DamageClass.Magic) || player.HeldItem.ModItem is MagicMeleeGlow))
 					{
 						int manaAmount = 2 + (Math.Max(player.statManaMax, player.statManaMax2) / 100); // Base of 2 + 1 for every 100 max mana. Example: 20 MP = healed 2; 200 MP = healed 4; 
 

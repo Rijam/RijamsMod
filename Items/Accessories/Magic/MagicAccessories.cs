@@ -19,7 +19,7 @@ namespace RijamsMod.Items.Accessories.Magic
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.statManaMax2 += 20;
-			player.GetModPlayer<RijamsModPlayer>().manaSapperRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_ManaSapperRing = true;
 		}
 		public override void AddRecipes()
 		{
@@ -93,7 +93,7 @@ namespace RijamsMod.Items.Accessories.Magic
 			player.starCloakItem = Item;
 			player.aggro -= 20 * 16; //20 tiles
 			player.manaCost -= 0.08f;
-			player.GetModPlayer<RijamsModPlayer>().manaSapperRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_ManaSapperRing = true;
 		}
 
 		public override void AddRecipes()

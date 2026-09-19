@@ -4,8 +4,6 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using static Terraria.ModLoader.PlayerDrawLayer;
 using System;
 using Terraria.GameContent.Drawing;
 using System.Reflection;
@@ -383,8 +381,8 @@ namespace RijamsMod.Items
 			Main.NewText("REK is currenty: " + Main.LocalPlayer.HasItem(ItemID.REK));
 			Main.NewText("PDA is currenty: " + Main.LocalPlayer.HasItem(ItemID.PDA));
 			Main.NewText("CellPhone is currenty: " + Main.LocalPlayer.HasItem(ItemID.CellPhone));
-			Main.NewText("player.GetModPlayer<RijamsModPlayer>().summonersGlove is currenty: " + player.GetModPlayer<RijamsModPlayer>().summonersGlove);
-			Main.NewText("player.GetModPlayer<RijamsModPlayer>().breathingPack is currenty: " + player.GetModPlayer<RijamsModPlayer>().breathingPack);
+			Main.NewText("player.GetModPlayer<RijamsModPlayer>().summonersGlove is currenty: " + player.GetModPlayer<RijamsModPlayer>().Accessory_SummonersGlove);
+			Main.NewText("player.GetModPlayer<RijamsModPlayer>().breathingPack is currenty: " + player.GetModPlayer<RijamsModPlayer>().Accessory_BreathingPack);
 			Main.NewText("GetType().Namespace.ToString(): " + GetType().Namespace.ToString());
 			//Main.NewText("player.GetModPlayer<RijamsModPlayer>().breathingPackUsed is currenty: " + player.GetModPlayer<RijamsModPlayer>().breathingPackUsed);
 
@@ -626,6 +624,7 @@ namespace RijamsMod.Items
 			//Projectile projectile1 = Projectile.NewProjectileDirect(null, new Vector2(player.Center.X - 216, player.position.Y - 224), Vector2.Zero, ProjectileID.CultistRitual, 1, 1);
 			//Projectile projectile2 = Projectile.NewProjectileDirect(null, new Vector2(player.Center.X + 216, player.position.Y - 224), Vector2.Zero, ProjectileID.CultistRitual, 1, 1);
 
+			/*
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, particleType, new ParticleOrchestraSettings
 			{
 				//PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224),
@@ -642,6 +641,18 @@ namespace RijamsMod.Items
 				//MovementVector = new Vector2(100, 100),
 				MovementVector = Vector2.One,
 				UniqueInfoPiece = 1
+			});
+			*/
+			CustomParticleOrchestra.RequestParticleSpawn(clientOnly: true, CustomParticleOrchestraType.ExplosiveFlarePop, new ParticleOrchestraSettings
+			{
+				PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 224),
+				MovementVector = Vector2.One,
+				UniqueInfoPiece = (int)Color.White.PackedValue
+			});
+
+			CustomParticleOrchestra.RequestParticleSpawn(clientOnly: true, CustomParticleOrchestraType.AshTreeShake, new ParticleOrchestraSettings
+			{
+				PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224)
 			});
 			return true;
 		}

@@ -61,7 +61,8 @@ namespace RijamsMod.Items.Weapons.Melee
 				//Projectile.NewProjectile(source, player.MountedCenter, new Vector2(player.direction, 0f), type, damage, knockback, player.whoAmI, (float)player.direction * player.gravDir, player.itemAnimationMax, adjustedItemScale);
 				//Projectile.NewProjectile(source, player.MountedCenter, velocity, type, damage, knockback, player.whoAmI, (float)player.direction * player.gravDir * 0.1f, 30f, adjustedItemScale);
 				NetMessage.SendData(MessageID.PlayerControls, -1, -1, null, player.whoAmI);
-				player.manaRegenDelay = player.maxRegenDelay * 2f;
+				// player.manaRegenDelay = player.maxRegenDelay * 2f;
+				player.manaRegenDelay = 60 * 2f;
 			}
 
 			return true;

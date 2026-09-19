@@ -32,7 +32,7 @@ namespace RijamsMod.Items.Armor
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.FlinxFur");
+			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.FlinxFur");
 			player.maxMinions++;
 			player.statDefense++;
 		}
@@ -60,7 +60,7 @@ namespace RijamsMod.Items.Armor
 
 		public override void UpdateEquip(Player player)
 		{
-			player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 3;
+			player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionRadiusIncrease += 3;
 			player.whipRangeMultiplier += 0.05f;
 		}
 
@@ -73,8 +73,27 @@ namespace RijamsMod.Items.Armor
 				.AddTile(TileID.Loom)
 				.Register();
 		}
+
+		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
+		{
+			// Draw the pants
+			DrawData pantsDrawData = new(
+				TextureAssets.Players[drawInfo.skinVar, 11].Value,
+				drawData.position,
+				//new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - (float)(drawInfo.drawPlayer.legFrame.Width / 2) + (float)(drawInfo.drawPlayer.width / 2)), (int)(drawInfo.Position.Y - Main.screenPosition.Y + (float)drawInfo.drawPlayer.height - (float)drawInfo.drawPlayer.legFrame.Height + 4f)) + drawInfo.drawPlayer.legPosition + drawInfo.legVect,
+				drawInfo.drawPlayer.legFrame,
+				drawInfo.colorPants,
+				drawInfo.drawPlayer.legRotation,
+				drawInfo.legVect,
+				1f,
+				drawInfo.playerEffect);
+			drawInfo.DrawDataCache.Add(pantsDrawData);
+			return true;
+		}
 	}
 
+	// Superseded by ModItem.ModifyEquipTextureDraw
+	/*
 	public class FlinxFurBootsPlayerDrawLayer : PlayerDrawLayer
 	{
 		public override Position GetDefaultPosition()
@@ -100,20 +119,20 @@ namespace RijamsMod.Items.Armor
 					1f,
 					drawInfo.playerEffect);
 				drawInfo.DrawDataCache.Add(drawData);
-				/*
+
 				// Draw the shoes
-				drawData = new DrawData(
-					TextureAssets.Players[drawInfo.skinVar, 12].Value,
-					new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - (float)(drawInfo.drawPlayer.legFrame.Width / 2) + (float)(drawInfo.drawPlayer.width / 2)), (int)(drawInfo.Position.Y - Main.screenPosition.Y + (float)drawInfo.drawPlayer.height - (float)drawInfo.drawPlayer.legFrame.Height + 4f)) + drawInfo.drawPlayer.legPosition + drawInfo.legVect,
-					drawInfo.drawPlayer.legFrame,
-					drawInfo.colorShoes,
-					drawInfo.drawPlayer.legRotation,
-					drawInfo.legVect,
-					1f,
-					drawInfo.playerEffect);
-				drawInfo.DrawDataCache.Add(drawData);
-				*/
+				// drawData = new DrawData(
+				//	TextureAssets.Players[drawInfo.skinVar, 12].Value,
+				//	new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - (float)(drawInfo.drawPlayer.legFrame.Width / 2) + (float)(drawInfo.drawPlayer.width / 2)), (int)(drawInfo.Position.Y - Main.screenPosition.Y + (float)drawInfo.drawPlayer.height - (float)drawInfo.drawPlayer.legFrame.Height + 4f)) + drawInfo.drawPlayer.legPosition + drawInfo.legVect,
+				//	drawInfo.drawPlayer.legFrame,
+				//	drawInfo.colorShoes,
+				//	drawInfo.drawPlayer.legRotation,
+				//	drawInfo.legVect,
+				//	1f,
+				//	drawInfo.playerEffect);
+				// drawInfo.DrawDataCache.Add(drawData);
 			}
 		}
 	}
+	*/
 }

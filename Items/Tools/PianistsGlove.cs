@@ -75,10 +75,16 @@ namespace RijamsMod.Items.Tools
 		{
 			if (!Main.dedServ)
 			{
-				player.handon = HandsOnEquipTexture;
-				player.handoff = HandsOffEquipTexture;
+				// Setting the cached slot doesn't seem to work anymore?
+				// player.handon = HandsOnEquipTexture;
+				// player.handoff = HandsOffEquipTexture;
+				player.handon = EquipLoader.GetEquipSlot(Mod, "PianistsGlove_HandsOn", EquipType.HandsOn);
+				player.handoff = EquipLoader.GetEquipSlot(Mod, "PianistsGlove_HandsOff", EquipType.HandsOff);
+				// Apply the body dye to the gloves.
+				player.cHandOn = player.cBody;
+				player.cHandOff = player.cBody;
 			}
-			int note = CalcNote(player, out float _);
+			int note = CalcNote(player);
 			if (note > 0)
 			{
 				CursorNotes(note, player, octave);
@@ -87,7 +93,7 @@ namespace RijamsMod.Items.Tools
 
 		public bool? UseItemInner(Player player, int octave, int itemToTransformTo)
 		{
-			int note = CalcNote(player, out	float range);
+			int note = CalcNote(player);
 			if (Main.mouseLeft && Main.mouseLeftRelease && note > 0)
 			{
 				PlayPiano(note, player, octave);
@@ -126,132 +132,58 @@ namespace RijamsMod.Items.Tools
 			return false;
 		}
 
-		public static int CalcNote(Player player, out float range)
+		public static int CalcNote(Player player)
 		{
-			range = 0;
-			float OneSixth = 1f / 6f;
 			int playerPosX = (int)player.Center.X / 16;
 			int playerPosY = (int)player.Center.Y / 16;
 			Tile tile = Main.tile[playerPosX, playerPosY];
 			ModTile modTile = TileLoader.GetTile(tile.TileType);
 			if (WorldGen.InWorld(playerPosX, playerPosY) && tile != null && (Tiles.CustomTileIDSets.IsPiano[tile.TileType] || (modTile != null && modTile.AdjTiles.Contains(TileID.Pianos))))
 			{
-				Vector2 vector6 = new(player.position.X + (float)player.width * 0.5f, player.position.Y + (float)player.height * 0.5f);
-				float mousePosX = (float)Main.mouseX + Main.screenPosition.X - vector6.X;
-				float mousePosY = (float)Main.mouseY + Main.screenPosition.Y - vector6.Y;
-				float pitch = (float)Math.Sqrt(mousePosX * mousePosX + mousePosY * mousePosY) * 0.675f; // 48 tile reach... maybe
-				float adjustedScreenHeight = (float)Main.screenHeight / Main.GameViewMatrix.Zoom.Y;
-				pitch /= adjustedScreenHeight / 2f;
-				if (pitch > 1f)
-				{
-					pitch = 1f;
-				}
+				float OneSixth = 1f / 6f;
+				// This is different to how vanilla calculates the note based on the distance.
+				// Vanilla also only allows 6 notes per octave instead of all 12.
 
-				pitch = pitch * 4f - 2f;
-				pitch = Math.Clamp(pitch, -2f, 2f);
+				// Get the mouse position.
+				float mousePosX = (float)Main.mouseX + Main.screenPosition.X - player.Center.X;
+				float mousePosY = (float)Main.mouseY + Main.screenPosition.Y - player.Center.Y;
 
-				range = pitch;
+				// Main.NewText($"mousePosX {mousePosX} mousePosY {mousePosY} Main.Camera.ScaledSize.X {Main.Camera.ScaledSize.X}");
+				
+				// Calculate X and Y separately.
+				// This means the distance becomes a rectangular area with diagonal steps instead of a perfect circle.
+				// Normally that would be a problem for distance calculations, but in this application it actually makes it easier to get the correct note.
+				//		___________
+				//	   |--__   __--|
+				//	   |  __-P-__  |
+				//	   |--_______--|
 
-				if (pitch <= OneSixth * -11f)
-				{
-					return 1; // C low
-				}
-				else if (pitch > OneSixth * -11f && pitch <= OneSixth * -10f)
-				{
-					return 2; // C#
-				}
-				else if (pitch > OneSixth * -10f && pitch <= OneSixth * -9f)
-				{
-					return 3; // D
-				}
-				else if (pitch > OneSixth * -9f && pitch <= OneSixth * -8f)
-				{
-					return 4; // D#
-				}
-				else if (pitch > OneSixth * -8f && pitch <= OneSixth * -7f)
-				{
-					return 5; // E
-				}
-				else if (pitch > OneSixth * -7f && pitch <= OneSixth * -6f)
-				{
-					return 6; // F
-				}
-				else if (pitch > OneSixth * -6f && pitch <= OneSixth * -5f)
-				{
-					return 7; // F#
-				}
-				else if (pitch > OneSixth * -5f && pitch <= OneSixth * -4f)
-				{
-					return 8; // G
-				}
-				else if (pitch > OneSixth * -4f && pitch <= OneSixth * -3f)
-				{
-					return 9; // G#
-				}
-				else if (pitch > OneSixth * -3f && pitch <= OneSixth * -2f)
-				{
-					return 10; // A
-				}
-				else if (pitch > OneSixth * -2f && pitch <= OneSixth * -1f)
-				{
-					return 11; // A#
-				}
-				else if (pitch > OneSixth * -1f && pitch < 0f)
-				{
-					return 12; // B
-				}
-				else if (pitch >= 0f && pitch < OneSixth)
-				{
-					return 13; // C middle
-				}
-				else if (pitch >= OneSixth && pitch < OneSixth * 2f)
-				{
-					return 14; // C#
-				}
-				else if (pitch >= OneSixth * 2f && pitch < OneSixth * 3f)
-				{
-					return 15; // D
-				}
-				else if (pitch >= OneSixth * 3f && pitch < OneSixth * 4f)
-				{
-					return 16; // D#
-				}
-				else if (pitch >= OneSixth * 4f && pitch < OneSixth * 5f)
-				{
-					return 17; // E
-				}
-				else if (pitch >= OneSixth * 5f && pitch < OneSixth * 6f)
-				{
-					return 18; // F
-				}
-				else if (pitch >= OneSixth * 6f && pitch < OneSixth * 7f)
-				{
-					return 19; // F#
-				}
-				else if (pitch >= OneSixth * 7f && pitch < OneSixth * 8f)
-				{
-					return 20; // G
-				}
-				else if (pitch >= OneSixth * 8f && pitch < OneSixth * 9f)
-				{
-					return 21; // G#
-				}
-				else if (pitch >= OneSixth * 9f && pitch < OneSixth * 10f)
-				{
-					return 22; // A
-				}
-				else if (pitch >= OneSixth * 10f && pitch < OneSixth * 11f)
-				{
-					return 23; // A#
-				}
-				else if (pitch >= OneSixth * 11f && pitch < OneSixth * 12f)
-				{
-					return 24; // B
-				}
-				else if (pitch >= OneSixth * 12f)
-				{
-					return 25; // C high
-				}
+				// At 100% zoom and a 1920px wide screen, this gives -960 to 959.
+				float pitchX = (float)Math.Abs(mousePosX);
+				// At 100% zoom and a 1080px height screen, this gives -540 to 549.
+				float pitchY = (float)Math.Abs(mousePosY);
+
+				// At 100% zoom and a 1920px wide screen, this gives a range from the player's center to 80% of the screen width which is 48 tiles (2 tiles per note).
+				// At 200% zoom and a 1920px wide screen, it is 24 tiles (1 tile per note).
+				pitchX /= (Main.Camera.ScaledSize.X / 2f) * 0.8f; // 80% of the screen is 1f.
+				pitchY /= (Main.Camera.ScaledSize.Y / 2f) * 0.8f; // 80% of the screen is 1f.
+
+				pitchX *= 4f;
+				pitchX = Math.Clamp(pitchX, 0f, 4f); // Multiply and clamp to 4f so 80% of the screen is 4f.
+				pitchY *= 4f;
+				pitchY = Math.Clamp(pitchY, 0f, 4f); // Multiply and clamp to 4f so 80% of the screen is 4f.
+
+				// Main.NewText($"pitchX {pitchX} pitchX/OneSixth {pitchX / OneSixth} {(int)(pitchX / OneSixth) + 1}");
+				// Main.NewText($"pitchY {pitchY} pitchX/OneSixth {pitchY / OneSixth} {(int)(pitchY / OneSixth) + 1}");
+
+				float combinedPitch = MathHelper.Max(pitchX, pitchY); // Take the one furthest from the player.
+
+				// Pitch ranges from about -0.01 to 4f
+				// Divide by 1/6 and cast to int to get 0 to 24. Add one for 1 to 25.
+				// 1 -> C low
+				// 13 -> C middle
+				// 25 -> C high
+				return ((int)(combinedPitch / OneSixth)) + 1;
 			}
 			return 0;
 		}
@@ -280,174 +212,77 @@ namespace RijamsMod.Items.Tools
 
 			RijamsMod modInstance = ModContent.GetInstance<RijamsMod>();
 
-			switch (noteValue)
+			float pitchToPlay = noteValue switch
 			{
-				case 1:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.5f }, player.position, player); // C low
-					break;
-				case 2:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.4703f }, player.position, player); // C#
-					break;
-				case 3:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.4388f }, player.position, player); // D
-					break;
-				case 4:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.4054f }, player.position, player); // D#
-					break;
-				case 5:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.3700f }, player.position, player); // E
-					break;
-				case 6:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.3326f }, player.position, player); // F
-					break;
-				case 7:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.2929f }, player.position, player); // F#
-					break;
-				case 8:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.2508f }, player.position, player); // G
-					break;
-				case 9:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.2063f }, player.position, player); // G#
-					break;
-				case 10:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.1591f }, player.position, player); // A
-					break;
-				case 11:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.1091f }, player.position, player); // A#
-					break;
-				case 12:
-					modInstance.PlayNetworkSound(note with { Pitch = -0.0561f }, player.position, player); // B
-					break;
-				case 13:
-					modInstance.PlayNetworkSound(note with { Pitch = 0f }, player.position, player); // C middle
-					break;
-				case 14:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.0595f }, player.position, player); // C#
-					break;
-				case 15:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.1225f }, player.position, player); // D
-					break;
-				case 16:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.1892f }, player.position, player); // D#
-					break;
-				case 17:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.2599f }, player.position, player); // E
-					break;
-				case 18:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.3348f }, player.position, player); // F
-					break;
-				case 19:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.4142f }, player.position, player); // F#
-					break;
-				case 20:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.4983f }, player.position, player); // G
-					break;
-				case 21:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.5874f }, player.position, player); // G#
-					break;
-				case 22:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.6818f }, player.position, player); // A
-					break;
-				case 23:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.7818f }, player.position, player); // A#
-					break;
-				case 24:
-					modInstance.PlayNetworkSound(note with { Pitch = 0.8877f }, player.position, player); // B
-					break;
-				case 25:
-					modInstance.PlayNetworkSound(note with { Pitch = 2f }, player.position, player); // C high
-					break;
-				default:
-					modInstance.PlayNetworkSound(note with { Pitch = 0f }, player.position, player); // C middle
-					break;
+				1 => -0.5f,			// C low
+				2 => -0.45833f,		// C#
+				3 => -0.41667f,		// D
+				4 => -0.375f,		// D#
+				5 => -0.33333f,		// E
+				6 => -0.29167f,		// F
+				7 => -0.25f,		// F#
+				8 => -0.20833f,		// G
+				9 => -0.16667f,		// G#
+				10 => -0.125f,		// A
+				11 => -0.08333f,	// A#
+				12 => -0.04167f,	// B
+				13 => 0,			// C middle
+				14 => 0.08333f,		// C#
+				15 => 0.16667f,		// D
+				16 => 0.25f,		// D#
+				17 => 0.33333f,		// E
+				18 => 0.41667f,		// F
+				19 => 0.5f,			// F#
+				20 => 0.58333f,		// G
+				21 => 0.66667f,		// G#
+				22 => 0.75f,		// A
+				23 => 0.83333f,		// A#
+				24 => 0.91667f,		// B
+				25 => 1,			// C middle
+				_ => 0
 			};
+
+			modInstance.PlayNetworkSound(note with { Pitch = pitchToPlay }, player.position, player);
 		}
 		public static void CursorNotes(int noteValue, Player player, int octave)
 		{
 			if (player.whoAmI == Main.myPlayer)
 			{
 				Main.mouseText = true;
-				switch (noteValue)
+
+				string noteName = noteValue switch
 				{
-					case 1:
-						Main.instance.MouseText("C " + (octave + 1)); // C low
-						break;
-					case 2:
-						Main.instance.MouseText("C# " + (octave + 1)); // C#
-						break;
-					case 3:
-						Main.instance.MouseText("D " + (octave + 1)); // D
-						break;
-					case 4:
-						Main.instance.MouseText("D# " + (octave + 1)); // D#
-						break;
-					case 5:
-						Main.instance.MouseText("E " + (octave + 1)); // E
-						break;
-					case 6:
-						Main.instance.MouseText("F " + (octave + 1)); // F
-						break;
-					case 7:
-						Main.instance.MouseText("F# " + (octave + 1)); // F#
-						break;
-					case 8:
-						Main.instance.MouseText("G " + (octave + 1)); // G
-						break;
-					case 9:
-						Main.instance.MouseText("G# " + (octave + 1));// G#
-						break;
-					case 10:
-						Main.instance.MouseText("A " + (octave + 1)); // A
-						break;
-					case 11:
-						Main.instance.MouseText("A# " + (octave + 1)); // A#
-						break;
-					case 12:
-						Main.instance.MouseText("B " + (octave + 1)); // B
-						break;
-					case 13:
-						Main.instance.MouseText("C " + (octave + 2)); // C middle
-						break;
-					case 14:
-						Main.instance.MouseText("C# " + (octave + 2)); // C#
-						break;
-					case 15:
-						Main.instance.MouseText("D " + (octave + 2)); // D
-						break;
-					case 16:
-						Main.instance.MouseText("D# " + (octave + 2)); // D#
-						break;
-					case 17:
-						Main.instance.MouseText("E " + (octave + 2)); // E
-						break;
-					case 18:
-						Main.instance.MouseText("F " + (octave + 2)); // F
-						break;
-					case 19:
-						Main.instance.MouseText("F# " + (octave + 2)); // F#
-						break;
-					case 20:
-						Main.instance.MouseText("G " + (octave + 2)); // G
-						break;
-					case 21:
-						Main.instance.MouseText("G# " + (octave + 2)); // G#
-						break;
-					case 22:
-						Main.instance.MouseText("A " + (octave + 2)); // A
-						break;
-					case 23:
-						Main.instance.MouseText("A# " + (octave + 2)); // A#
-						break;
-					case 24:
-						Main.instance.MouseText("B " + (octave + 2)); // B
-						break;
-					case 25:
-						Main.instance.MouseText("C " + (octave + 3)); // C high
-						break;
-					default:
-						Main.instance.MouseText("C " + (octave + 2)); // C middle
-						break;
+					1 => "C",	// C low
+					2 => "C#",
+					3 => "D",
+					4 => "D#",
+					5 => "E",
+					6 => "F",
+					7 => "F#",
+					8 => "G",
+					9 => "G#",
+					10 => "A",
+					11 => "A#",
+					12 => "B",
+					13 => "C",	// C middle
+					14 => "C#",
+					15 => "D",
+					16 => "D#",
+					17 => "E",
+					18 => "F",
+					19 => "F#",
+					20 => "G",
+					21 => "G#",
+					22 => "A",
+					23 => "A#",
+					24 => "B",
+					25 => "C",	// C high
+					_ => "C"
 				};
+
+				octave += noteValue >= 25 ? 3 : noteValue >= 13 ? 2 : 1;
+
+				Main.instance.MouseText($"{noteName} {octave}");
 			}
 		}
 	}

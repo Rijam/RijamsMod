@@ -41,7 +41,7 @@ namespace RijamsMod.Items.Armor.Infernic
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Infernic");
+			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Infernic");
 			player.buffImmune[BuffID.OnFire] = true;
 			player.fireWalk = true;
 			player.lavaMax += 120;

@@ -31,7 +31,7 @@ namespace RijamsMod.Items.Accessories.Defense
 			player.statDefense += 2;
 			player.noKnockback = true;
 			player.fireWalk = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 			player.lavaRose = true;
 			player.longInvince = true;
 			player.panic = true;
@@ -80,7 +80,7 @@ namespace RijamsMod.Items.Accessories.Defense
 			player.statDefense += 4;
 			player.noKnockback = true;
 			player.fireWalk = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 			player.buffImmune[BuffID.Bleeding] = true;
 			player.buffImmune[BuffID.BrokenArmor] = true;
 			player.buffImmune[BuffID.Confused] = true;

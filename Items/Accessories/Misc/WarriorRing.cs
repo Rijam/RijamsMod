@@ -22,7 +22,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().warriorRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_WarriorRing = true;
 		}
 		public override void AddRecipes()
 		{
@@ -48,12 +48,12 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().peakPerformanceRing = true;
-			PeakPerformanceUpdate(player, player.GetModPlayer<RijamsModPlayer>().peakPerformanceRing);
+			player.GetModPlayer<RijamsModPlayer>().Accessory_PeakPerformanceRing = true;
+			PeakPerformanceUpdate(player, player.GetModPlayer<RijamsModPlayer>().Accessory_PeakPerformanceRing);
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			PeakPerformanceTooltip(Main.LocalPlayer, tooltips, Mod, Main.LocalPlayer.GetModPlayer<RijamsModPlayer>().peakPerformanceRing, 3);
+			PeakPerformanceTooltip(Main.LocalPlayer, tooltips, Mod, Main.LocalPlayer.GetModPlayer<RijamsModPlayer>().Accessory_PeakPerformanceRing, 3);
 		}
 
 		public static void PeakPerformanceUpdate(Player player, bool equipped)
@@ -125,13 +125,13 @@ namespace RijamsMod.Items.Accessories.Misc
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.peakPerformanceRing = true;
-			modPlayer.warriorRing = true;
-			PeakPerformanceRing.PeakPerformanceUpdate(player, modPlayer.peakPerformanceRing);
+			modPlayer.Accessory_PeakPerformanceRing = true;
+			modPlayer.Accessory_WarriorRing = true;
+			PeakPerformanceRing.PeakPerformanceUpdate(player, modPlayer.Accessory_PeakPerformanceRing);
 		}
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			PeakPerformanceRing.PeakPerformanceTooltip(Main.LocalPlayer, tooltips, Mod, Main.LocalPlayer.GetModPlayer<RijamsModPlayer>().peakPerformanceRing, 10);
+			PeakPerformanceRing.PeakPerformanceTooltip(Main.LocalPlayer, tooltips, Mod, Main.LocalPlayer.GetModPlayer<RijamsModPlayer>().Accessory_PeakPerformanceRing, 10);
 		}
 
 		public override void AddRecipes()

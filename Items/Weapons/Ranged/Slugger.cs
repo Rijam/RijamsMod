@@ -62,8 +62,9 @@ namespace RijamsMod.Items.Weapons.Ranged
 				flash.frameCount = 5;
 				flash.frameRate = 2;
 				flash.animationLoop = false;
-				flash.forceFirstFrame = false;
+				flash.forceFirstFrame = true;
 				flash.onlyUseOnPrimaryFire = true;
+				//flash.Timer = flash.frameRate;
 			}
 		}
 
@@ -92,7 +93,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 
 		public override void UseStyle(Player player, Rectangle heldItemFrame)
 		{
-			var flash = ModContent.GetInstance<WeaponAttackFlashLayer>();
+			var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 			RijamsMod mod = ModContent.GetInstance<RijamsMod>();
 			//Main.NewText($"{flash.frame} {flash.Timer}");
 
@@ -105,7 +106,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 			// At least 1 shot is loaded
 			if ((player.altFunctionUse != 2 || !rightClicking) && player.itemTime == 0  && player.reuseDelay > 0 && numberOfShots > 0)
 			{
-				ShootProjectile(player, mod, flash);
+				//ShootProjectile(player, mod, flash);
 			}
 			/*else if (player.altFunctionUse == 2)
 			{
@@ -144,12 +145,12 @@ namespace RijamsMod.Items.Weapons.Ranged
 
 		public override bool? UseItem(Player player)
 		{
-			var flash = ModContent.GetInstance<WeaponAttackFlashLayer>();
+			var flash = Item.GetGlobalItem<WeaponAttackFlash>();
 			RijamsMod mod = ModContent.GetInstance<RijamsMod>();
 
 			//Main.NewText($"{numberOfShots}");
 			ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"numberOfShots {numberOfShots}; rightClicking {rightClicking}; player.altFunctionUse {player.altFunctionUse}"), Color.White);
-			
+
 			/*
 			//if (player.whoAmI != 255)
 			if (player.whoAmI != Main.myPlayer)
@@ -157,12 +158,13 @@ namespace RijamsMod.Items.Weapons.Ranged
 				return !(rightClicking || player.altFunctionUse == 2);
 			}
 			*/
-			
+
 			// Out of ammo!
 			// Play click sound and emote the prohibition sign (circle with slash)
 			if (numberOfShots <= 0 && (player.altFunctionUse != 2 || !rightClicking))
 			{
-				flash.frame = 6; // Set the flash frame to 6 which is invisible.
+				// flash.frame = 6; // Set the flash frame to 6 which is invisible.
+				flash.flashCondition = () => false;
 				mod.PlayNetworkSound(SoundID.Item143 with { Pitch = 1f, Volume = 0.5f }, player.position, player);
 				EmoteBubble.NewBubble(EmoteID.DebuffCurse, new WorldUIAnchor(player), 45);
 				// Main.NewText($"Out of ammo! Load more by right clicking.");
@@ -200,6 +202,8 @@ namespace RijamsMod.Items.Weapons.Ranged
 			{
 				numberOfShots--; // Decrease the number of shots loaded.
 				rightClicking = false;
+				flash.flashCondition = () => true;
+				ShootProjectile(player, mod, flash);
 				Item.NetStateChanged(); // Sync the numberOfShots var.
 				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Shot decreased? numberOfShots {numberOfShots}; rightClicking {rightClicking}; player.altFunctionUse {player.altFunctionUse}"), Color.Gray);
 			}
@@ -213,14 +217,14 @@ namespace RijamsMod.Items.Weapons.Ranged
 		/// <param name="player">Player instance</param>
 		/// <param name="mod">Mod instance</param>
 		/// <param name="flash">WeaponAttackFlashLayer instance</param>
-		public void ShootProjectile(Player player, RijamsMod mod, WeaponAttackFlashLayer flash)
+		public void ShootProjectile(Player player, RijamsMod mod, WeaponAttackFlash flash)
 		{
 			if (player.whoAmI != Main.myPlayer)
 			{
 				return;
 			}
-			flash.frame = 0; // Set the flash frame and flash time to the beginning.
-			flash.Timer = 0;
+			//flash.frame = 0; // Set the flash frame and flash time to the beginning.
+			//flash.Timer = 0;
 			mod.PlayNetworkSound(SoundID.Item38 with { Pitch = -0.5f }, player.position, player); // Play the shooting sound
 
 			Vector2 pointPoisition = player.RotatedRelativePoint(player.MountedCenter); // Position of the shots

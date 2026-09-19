@@ -132,7 +132,7 @@ namespace RijamsMod.Projectiles
 			Player owner = Main.player[projectile.owner];
 			if (owner != null && owner.whoAmI != Main.maxPlayers)
 			{
-				if (owner.active && owner.GetModPlayer<RijamsModPlayer>().rocketBooster)
+				if (owner.active && owner.GetModPlayer<RijamsModPlayer>().Accessory_RocketBooster)
 				{
 					if (owner.HeldItem.useAmmo == AmmoID.Rocket &&
 						(CustomProjectileIDSets.RocketsAffectedByRocketBoosterExtraUpdates[projectile.type] || ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[projectile.type])
@@ -149,16 +149,16 @@ namespace RijamsMod.Projectiles
 				// Yoyo related things
 				if (owner.active && projectile.aiStyle == ProjAIStyleID.Yoyo)
 				{
-					if (owner.GetModPlayer<RijamsModPlayer>().yoyoBackpack && projectile.counterweight)
+					if (owner.GetModPlayer<RijamsModPlayer>().Accessory_YoyoBackpack && projectile.counterweight)
 					{
 						projectile.scale *= 1.5f;
 						projectile.Resize((int)(projectile.width * 1.5f), (int)(projectile.height * 1.5f));
 					}
-					if (owner.GetModPlayer<RijamsModPlayer>().loopingOil)
+					if (owner.GetModPlayer<RijamsModPlayer>().Accessory_LoopingOil)
 					{
 						projectile.localAI[0] = -1;
 					}
-					if (owner.GetModPlayer<RijamsModPlayer>().sideEffects && projectile.extraUpdates == 0 && !projectile.counterweight)
+					if (owner.GetModPlayer<RijamsModPlayer>().Accessory_SideEffects && projectile.extraUpdates == 0 && !projectile.counterweight)
 					{
 						projectile.velocity *= 0.5f; // Doesn't really do anything because the Yoyo follows the mouse and this is only applied once.
 						projectile.extraUpdates++;
@@ -180,34 +180,6 @@ namespace RijamsMod.Projectiles
 			if (projectile.type == ProjectileID.ShadowJoustingLance)
 			{
 				target.AddBuff(BuffID.ShadowFlame, info.Damage * 2);
-			}
-		}
-
-		public static void DrawLineForWhips(List<Vector2> controlPoints, Color lineColor, bool decrementCount = false)
-		{
-			Texture2D texture = TextureAssets.FishingLine.Value;
-			Rectangle frame = texture.Frame();
-			Vector2 origin = new(frame.Width / 2, 2);
-
-			Vector2 pos = controlPoints[0];
-			int maxCount = controlPoints.Count - 1;
-			if (decrementCount)
-			{
-				maxCount--;
-			}
-			// If you whip has a long range and this line is poking out of the front, use list.Count - 2 instead of list.Count - 1.
-			for (int i = 0; i < maxCount; i++)
-			{
-				Vector2 element = controlPoints[i];
-				Vector2 diff = controlPoints[i + 1] - element;
-
-				float rotation = diff.ToRotation() - MathHelper.PiOver2;
-				Color color = Lighting.GetColor(element.ToTileCoordinates(), lineColor);
-				Vector2 scale = new(1, (diff.Length() + 2) / frame.Height);
-
-				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);
-
-				pos += diff;
 			}
 		}
 	}

@@ -20,7 +20,7 @@ namespace RijamsMod.Buffs.Debuffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().bleedingOut = true;
+			player.GetModPlayer<RijamsModPlayer>().Buff_BleedingOut = true;
 		}
 
 		public override void Update(NPC npc, ref int buffIndex)

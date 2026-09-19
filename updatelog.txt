@@ -335,6 +335,15 @@
 1.2.9.1 - (May 2, 2025)
 	* Changed and added safety checks for applying static immunity to jousting lances to mitigate issues with "The given key 'X' was not present in the dictionary."
 
+1.2.9.2 - (June 5, 2026)
+	* Angry Guster cannot spawn in front of background walls.
+	* Angry Guster for sure cannot spawn if the player is not in the surface or sky layers. There already was a check for this, but now there is another one.
+	* Slightly decreased the spawn rates of the Angry Guster while in space.
+	* Decreased the spawn rates of the Angry Guster if an early game boss has not been defeated.
+	* Decreased the spawn rates of the Angry Guster for each Angry Guster that is alive in the world. (There still is a maximum of 4 that can be alive at any time.)
+	* Increased the delay between attacks on normal mode to 1.5 seconds. (Expert and above still remains at 1 second.)
+	* Slightly decreased the spawn rates of the Dark Soldier while in hell.
+
 1.3.0.0 - (? ?, ?)
 	* Added a config option to make Yoyos use static immunity frames instead of global.
 	* Added Flask of Daybroken.
@@ -350,6 +359,12 @@
 	* Antlion Biter minion local immunity reduced from 30 to 13. This will increase the DPS of the minion.
 	* Added Giant Worm Staff and minion.
 	* Added portraits for the Town NPCs.
-	* Further limited the Angry Guster spawning conditions to surface and sky heights. 
 	* Updated all of the whips with the new tag damage system and added some more visual effects for a few of them.
 	* Fixed the Cresceptre projectile's after images being misaligned.
+	* Buffed Festive armor set bonus: now gives +25% Whip damage instead of +5% Whip damage.
+	* Buffed Control Glove, Summoner's Glove, and Reinforced Summoner's Glove: Now gives +4 Summon armor penetration.
+	* Added Aether Dye.
+	* Fixed the magic lantern weapons' projectiles not retargeting their target as fast as the Nightglow does. This will increase the DPS of the weapons by a lot.
+	* Fixed armor glow masks drawing when the player was transformation mounts that should hide the player.
+	* Improved the Vanilla Vanity and Armor Change config to allow turning on/off each specific set.
+	* Improved the Pianist's Glove. Fixed the tuning and the note range.

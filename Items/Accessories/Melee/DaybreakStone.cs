@@ -30,7 +30,7 @@ namespace RijamsMod.Items.Accessories.Melee
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().daybreakStone = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_DaybreakStone = true;
 		}
 		public override void AddRecipes()
 		{

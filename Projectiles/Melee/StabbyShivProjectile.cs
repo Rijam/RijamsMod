@@ -1,10 +1,12 @@
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.Enums;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using Terraria;
+using Terraria.Enums;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Melee
 {
@@ -28,10 +30,6 @@ namespace RijamsMod.Projectiles.Melee
 			set => Projectile.ai[0] = value;
 		}
 		public override string Texture => Mod.Name + "/Items/Weapons/Melee/StabbyShiv";
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Stabby Shiv");
-		}
 
 		public override void SetDefaults()
 		{
@@ -46,6 +44,7 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.extraUpdates = 1; // Update 1+extraUpdates times per tick
 			Projectile.timeLeft = 360; // This value does not matter since we manually kill it earlier, it just has to be higher than the duration we use in AI
 			Projectile.hide = true; // Important when used alongside player.heldProj. "Hidden" projectiles have special draw conditions
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 
 		public override void AI()
@@ -81,16 +80,14 @@ namespace RijamsMod.Projectiles.Melee
 			// Point towards where it is moving, applied offset for top right of the sprite respecting spriteDirection
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2 - MathHelper.PiOver4 * Projectile.spriteDirection;
 
-			// The code in this method is important to align the sprite with the hitbox how we want it to
-			SetVisualOffsets();
+			SetVisualOffsets(); // The code in this method is important to align the sprite with the hitbox how we want it to
 		}
 
 		private void SetVisualOffsets()
 		{
-			
-			// 32 is the sprite size (here both width and height equal)
-			int HalfSpriteWidth = TextureAssets.Projectile[Type].Value.Width / 2;
-			int HalfSpriteHeight = TextureAssets.Projectile[Type].Value.Height / 2;
+			// 18 is the sprite size (here both width and height equal)
+			int HalfSpriteWidth = 18 / 2;
+			int HalfSpriteHeight = 18 / 2;
 
 			int HalfProjWidth = Projectile.width / 2;
 			int HalfProjHeight = Projectile.height / 2;
@@ -137,14 +134,36 @@ namespace RijamsMod.Projectiles.Melee
 			float collisionPoint = 0f; // Don't need that variable, but required as parameter
 			return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, CollisionWidth, ref collisionPoint);
 		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 161 (Shortsword)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+		{
+			SetVisualOffsets(); // The code in this method is important to align the sprite with the hitbox how we want it to
+
+			Projectile.spriteDirection = Projectile.direction; // Set the direction of the sprite to the direction the projectile is facing.
+			Vector2 projectileRotation = Vector2.UnitX * 9f; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation); // Rotate the projectile based on the rotation of the mannequin's hand.
+			if (Projectile.direction == -1)
+				projectileRotation.X *= -1f;
+
+			Projectile.velocity = projectileRotation;
+			Projectile.position += projectileRotation + (projectileRotation * 1.5f); // Move the projectile's location while being held by the mannequin.
+
+			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
+			Projectile.rotation -= MathHelper.PiOver4 * Projectile.spriteDirection; // Correct the rotation of the shortsword since we set this in the AI.
+
+			return false;
+		}
 	}
 	public class FrostyShivProjectile : StabbyShivProjectile
 	{
 		public override string Texture => Mod.Name + "/Items/Weapons/Melee/FrostyShiv";
-		public override void SetStaticDefaults()
-		{
-			// DisplayName.SetDefault("Frosty Shiv");
-		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			// 60 frames = 1 second
@@ -157,6 +176,45 @@ namespace RijamsMod.Projectiles.Melee
 		public override Color? GetAlpha(Color lightColor)
 		{
 			return Color.White;
+		}
+
+		public override void AI()
+		{
+			base.AI();
+			SetVisualOffsets(); // The code in this method is important to align the sprite with the hitbox how we want it to
+		}
+
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+		{
+			SetVisualOffsets(); // The code in this method is important to align the sprite with the hitbox how we want it to
+			return base.DisplayDollSettings(doll, pose, ref aiStyle, ref aiType);
+		}
+
+		private void SetVisualOffsets()
+		{
+			// 20 is the sprite size (here both width and height equal)
+			int HalfSpriteWidth = 20 / 2;
+			int HalfSpriteHeight = 20 / 2;
+
+			int HalfProjWidth = Projectile.width / 2;
+			int HalfProjHeight = Projectile.height / 2;
+
+			// Vanilla configuration for "hitbox in middle of sprite"
+			DrawOriginOffsetX = 0;
+			DrawOffsetX = -(HalfSpriteWidth - HalfProjWidth);
+			DrawOriginOffsetY = -(HalfSpriteHeight - HalfProjHeight);
+
+			// Vanilla configuration for "hitbox towards the end"
+			//if (Projectile.spriteDirection == 1) {
+			//	DrawOriginOffsetX = -(HalfProjWidth - HalfSpriteWidth);
+			//	DrawOffsetX = (int)-DrawOriginOffsetX * 2;
+			//	DrawOriginOffsetY = 0;
+			//}
+			//else {
+			//	DrawOriginOffsetX = (HalfProjWidth - HalfSpriteWidth);
+			//	DrawOffsetX = 0;
+			//	DrawOriginOffsetY = 0;
+			//}
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace RijamsMod.Items.Armor
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = Language.GetTextValue("ArmorSetBonus.Shroomite");
+			// TODO player.setBonus = Language.GetTextValue("ArmorSetBonus.Shroomite");
 			player.shroomiteStealth = true;
 		}
 		public override void ArmorSetShadows(Player player)

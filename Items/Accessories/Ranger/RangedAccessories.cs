@@ -58,7 +58,7 @@ namespace RijamsMod.Items.Accessories.Ranger
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			//player.specialistDamage += 0.1f;
-			player.GetModPlayer<RijamsModPlayer>().rocketBooster = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_RocketBooster = true;
 		}
 	}
 	[AutoloadEquip(EquipType.Back, EquipType.Face, EquipType.HandsOn)]
@@ -85,8 +85,8 @@ namespace RijamsMod.Items.Accessories.Ranger
 			player.GetCritChance(DamageClass.Ranged) += 10;
 			
 			player.ammoCost80 = true;
-			player.GetModPlayer<RijamsModPlayer>().rocketBooster = true;
-			player.GetModPlayer<RijamsModPlayer>().gamutApparatus = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_RocketBooster = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_GamutApparatus = true;
 			player.aggro -= 15 * 16; //15 tiles
 			if (!hideVisual)
 			{

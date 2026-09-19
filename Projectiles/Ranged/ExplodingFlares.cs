@@ -105,6 +105,7 @@ namespace RijamsMod.Projectiles.Ranged
 			DrawOriginOffsetY = -10;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 60;
+			Projectile.DamageType = DamageClass.Ranged;
 		}
 
 		/// <summary>

@@ -809,7 +809,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				InterstellarTraveler.QuestSystem(TalkNPC);
 				Main.DoNPCPortraitHop();
 			}
-			public override bool ShowExcalmation => CheckIfQuestIsAvailableToTurnIn(out _, out _);
+			public override bool ShowExclamation => CheckIfQuestIsAvailableToTurnIn(out _, out _);
 			public override void TextColor(ref Color chatColor, ref Color chatColorShadow, bool hoveringOverButton)
 			{
 				if (CheckIfQuestIsAvailableToTurnIn(out _, out _))

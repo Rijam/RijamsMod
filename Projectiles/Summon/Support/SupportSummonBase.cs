@@ -231,7 +231,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 		public int GetRadius(Player player)
 		{
-			return (distRadius + player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease) * 16;
+			return (distRadius + player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionRadiusIncrease) * 16;
 		}
 
 		public static bool SearchPlayers(Player player1, Player searchPlayer2)

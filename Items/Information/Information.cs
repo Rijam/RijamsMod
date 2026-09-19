@@ -477,8 +477,8 @@ namespace RijamsMod.Items.Information
 		public static string PlayerInZoneHallow() => colorOther + player.ZoneHallow.ToString() + colorClose;
 		public static string GolferScoreAccumulated() => colorOther + player.golferScoreAccumulated.ToString() + colorClose;
 		public static string Luck() => colorOther + player.luck.ToString() + colorClose;
-		public static string CriticalHitAdditionalDamage() => colorCrit + modPlayer.criticalHitAdditionalDamage + colorClose;
-		public static string SupportMinionRadiusIncrease() => colorSummon + modPlayer.supportMinionRadiusIncrease + colorClose;
-		public static string KnockbackSusceptibility() => colorKnockback + modPlayer.knockbackSusceptibility + colorClose;
+		public static string CriticalHitAdditionalDamage() => colorCrit + modPlayer.Stat_CriticalHitAdditionalDamage + colorClose;
+		public static string SupportMinionRadiusIncrease() => colorSummon + modPlayer.Stat_SupportMinionRadiusIncrease + colorClose;
+		public static string KnockbackSusceptibility() => colorKnockback + modPlayer.Stat_KnockbackSusceptibility + colorClose;
 	}
 }

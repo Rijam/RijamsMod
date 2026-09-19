@@ -58,12 +58,12 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		}
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
+			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.skywareArmorSetBonus = 5;
-			if (modPlayer.skywareArmorSetBonusTimer > 0)
+			modPlayer.Armor_SkywareArmorSetBonus = 5;
+			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
-				modPlayer.skywareArmorSetBonusTimer--;
+				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
 
@@ -123,11 +123,11 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		public override void UpdateArmorSet(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.skywareArmorSetBonus = 6;
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
-			if (modPlayer.skywareArmorSetBonusTimer > 0)
+			modPlayer.Armor_SkywareArmorSetBonus = 6;
+			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
+			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
-				modPlayer.skywareArmorSetBonusTimer--;
+				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
 		public override void ArmorSetShadows(Player player)
@@ -185,11 +185,11 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		public override void UpdateArmorSet(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.skywareArmorSetBonus = 7;
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
-			if (modPlayer.skywareArmorSetBonusTimer > 0)
+			modPlayer.Armor_SkywareArmorSetBonus = 7;
+			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
+			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
-				modPlayer.skywareArmorSetBonusTimer--;
+				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
 		public override void ArmorSetShadows(Player player)
@@ -220,7 +220,7 @@ namespace RijamsMod.Items.Armor.RedSkyware
 			player.GetDamage(DamageClass.Summon) += 0.1f;
 			player.maxMinions += 3;
 			player.maxTurrets++;
-			player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 7;
+			player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionRadiusIncrease += 7;
 		}
 
 		public override void AddRecipes()
@@ -248,11 +248,11 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		public override void UpdateArmorSet(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.skywareArmorSetBonus = 8;
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
-			if (modPlayer.skywareArmorSetBonusTimer > 0)
+			modPlayer.Armor_SkywareArmorSetBonus = 8;
+			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
+			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
-				modPlayer.skywareArmorSetBonusTimer--;
+				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
 		public override void ArmorSetShadows(Player player)
@@ -333,7 +333,7 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		public override void UpdateEquip(Player player)
 		{
 			player.noFallDmg = true;
-			player.GetModPlayer<RijamsModPlayer>().redSkywareLeggings = true;
+			player.GetModPlayer<RijamsModPlayer>().Armor_RedSkywareLeggings = true;
 		}
 
 		public override void AddRecipes()

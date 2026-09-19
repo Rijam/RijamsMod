@@ -6,6 +6,7 @@ using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -273,6 +274,32 @@ namespace RijamsMod.Projectiles.Magic
 			Main.EntitySpriteDraw(texture,
 				Projectile.Center - Main.screenPosition,
 				sourceRectangle, lightColor * 0.85f, Projectile.rotation, origin, Projectile.scale, spriteEffects, 0);
+
+			return false;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 100 (MedusaRay)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+		{
+			Vector2 offset = Vector2.Zero;
+			offset.X = doll.direction * 6f;
+			offset.Y = doll.gravDir * -14f;
+			Projectile.rotation = (doll.gravDir == 1f) ? 0f : MathHelper.Pi;
+			Projectile.spriteDirection = Projectile.direction;
+			Vector2 dollHand = Main.OffsetsPlayerOnhand[doll.bodyFrame.Y / 56] * 2f;
+			if (doll.direction != 1)
+			{
+				dollHand.X = (float)doll.bodyFrame.Width - dollHand.X;
+			}
+
+			if (doll.gravDir != 1f)
+			{
+				dollHand.Y = (float)doll.bodyFrame.Height - dollHand.Y;
+			}
+
+			dollHand -= new Vector2(doll.bodyFrame.Width - doll.width, doll.bodyFrame.Height - 42) / 2f;
+			Projectile.Center = (doll.RotatedRelativePoint(doll.MountedCenter - new Vector2(20f, 42f) / 2f + dollHand + offset) - Projectile.velocity).Floor();
 
 			return false;
 		}

@@ -27,7 +27,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 		{
 			player.GetDamage(DamageClass.Melee) += 0.15f;
 			player.GetDamage(DamageClass.Ranged) += 0.15f;
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.25f;
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -48,7 +48,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 			player.whipRangeMultiplier += 0.25f;
 
 			//Main.NewText("player.dash " + player.dash + " player.dashDelay " + player.dashDelay + " player.dashTime " + player.dashTime + " player.timeSinceLastDashStarted " + player.timeSinceLastDashStarted);
-			player.setBonus = Language.GetTextValue("Mods.RijamsMod.ArmorSetBonus.GodsentKing");
+			// TODO player.setBonus = Language.GetTextValue("Mods.RijamsMod.ArmorSetBonus.GodsentKing");
 			if (player.timeSinceLastDashStarted == 1)
 			{
 				player.velocity.X *= 1.25f;
@@ -95,7 +95,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 		{
 			player.GetAttackSpeed(DamageClass.Melee) += 0.1f;
 			player.GetAttackSpeed(DamageClass.Ranged) += 0.1f;
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.5f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.5f;
 		}
 		public override void AddRecipes()
 		{
@@ -129,7 +129,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 			//player.dashType = 5;
 			player.moveSpeed += 0.5f;
 			// Additional movement set in PostUpdateRunSpeeds in RijamsModPlayer
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.25f;
 		}
 		public override void AddRecipes()
 		{
@@ -164,7 +164,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 			player.GetDamage(DamageClass.Magic) += 0.15f;
 			player.GetDamage(DamageClass.Summon) += 0.15f;
 			player.maxMinions++;
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.25f;
 		}
 
 		public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -215,7 +215,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 			player.GetAttackSpeed(DamageClass.Magic) += 0.1f;
 			player.GetAttackSpeed(DamageClass.Summon) += 0.1f;
 			player.maxMinions++;
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.5f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.5f;
 		}
 		public override void AddRecipes()
 		{
@@ -247,7 +247,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 		public override void UpdateEquip(Player player)
 		{
 			player.dashType = 5; // Crystal Assassin Dash
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.25f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.25f;
 		}
 
 		public override void AddRecipes()

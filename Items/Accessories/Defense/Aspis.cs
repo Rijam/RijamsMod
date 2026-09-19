@@ -23,7 +23,7 @@ namespace RijamsMod.Items.Accessories.Defense
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.statDefense++;
-			player.GetModPlayer<RijamsModPlayer>().knockbackSusceptibility -= 0.5f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_KnockbackSusceptibility -= 0.5f;
 		}
 	}
 }

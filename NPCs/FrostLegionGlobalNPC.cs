@@ -47,7 +47,7 @@ namespace RijamsMod.NPCs
 
 			Vector2 scaledSize = Main.Camera.ScaledSize;
 			Vector2 scaledPosition = Main.Camera.ScaledPosition;
-			if (Main.gamePaused /* || Main.SceneMetrics.SnowTileCount <= 0 */ || (!((double)Main.LocalPlayer.position.Y < Main.worldSurface * 16.0) && (!Main.remixWorld || !((double)Main.player[Main.myPlayer].position.Y > Main.worldSurface * 16.0))))
+			if (Main.gamePaused /* || Main.SceneMetrics.SnowTileCount <= 0 */ || (!((double)Main.LocalPlayer.position.Y < Main.worldSurface * 16.0) && (!Main.remixWorld || !((double)Main.LocalPlayer.position.Y > Main.worldSurface * 16.0))))
 			{
 				return;
 			}

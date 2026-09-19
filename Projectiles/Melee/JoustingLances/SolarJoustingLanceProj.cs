@@ -68,5 +68,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 				Projectile.localAI[1] = 20f;
 			}
 		}
+
+		public override int DollHeldOffset() => 194;
 	}
 }

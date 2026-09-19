@@ -1,13 +1,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ReLogic.Content;
 
 namespace RijamsMod.Projectiles.Tools
 {
@@ -60,6 +61,7 @@ namespace RijamsMod.Projectiles.Tools
 			Projectile.ignoreWater = true;
 			Projectile.ownerHitCheck = false;
 			Projectile.extraUpdates = 1;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 
 		public override bool? CanCutTiles()
@@ -428,6 +430,26 @@ namespace RijamsMod.Projectiles.Tools
 			hammer = reader.ReadBoolean();
 			//colorMode[0] = reader.ReadInt32();
 			//colorMode[1] = reader.ReadInt32();
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 20 (Drill)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+		{
+			Projectile.spriteDirection = Projectile.direction;
+			Vector2 projectileRotation = Vector2.UnitX * 20f; // How far out the item is held.
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value;
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation); // The rotation of the mannequin's hand.
+			if (Projectile.direction == -1)
+				projectileRotation.X *= -1f;
+
+			Projectile.velocity = projectileRotation;
+			Projectile.position += projectileRotation; // Move the projectile's location while being held by the mannequin.
+			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
+			return false;
 		}
 	}
 }

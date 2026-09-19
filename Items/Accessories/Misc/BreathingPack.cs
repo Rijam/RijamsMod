@@ -24,7 +24,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().breathingPack = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_BreathingPack = true;
 		}
 	}
 	[AutoloadEquip(EquipType.Back)]
@@ -45,7 +45,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().breathingPack = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_BreathingPack = true;
 			player.buffImmune[BuffID.OnFire] = true;
 			player.buffImmune[ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>()] = true;
 			player.buffImmune[BuffID.Ichor] = true;

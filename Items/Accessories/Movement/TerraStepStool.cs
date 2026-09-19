@@ -24,7 +24,7 @@ namespace RijamsMod.Items.Accessories.Movement
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.portableStoolInfo.SetStats(112, 112, 112);
-			player.GetModPlayer<RijamsModPlayer>().terraStepStool = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_TerraStepStool = true;
 	
 			// Add the dye for the slot the step stool is in.
 			// Still a little weirdness when equipping the normal step stool (or Hand Of Creation for some reason) in different slots.
@@ -55,7 +55,7 @@ namespace RijamsMod.Items.Accessories.Movement
 			// Probably not the best way to do this since it is just drawing the new texture on top of the vanilla one.
 			// The check for the HeightBoost is so it doesn't draw when the vanilla Step Stool takes priority.
 			Player stoolPlayer = drawinfo.drawPlayer;
-			if (stoolPlayer.portableStoolInfo.IsInUse && stoolPlayer.portableStoolInfo.HeightBoost != 26 && stoolPlayer.GetModPlayer<RijamsModPlayer>().terraStepStool)
+			if (stoolPlayer.portableStoolInfo.IsInUse && stoolPlayer.portableStoolInfo.HeightBoost != 26 && stoolPlayer.GetModPlayer<RijamsModPlayer>().Accessory_TerraStepStool)
 			{
 				Texture2D value = ModContent.Request<Texture2D>("RijamsMod/Items/Accessories/Movement/TerraStepStoolWorld").Value;
 				Vector2 position = new((int)(drawinfo.Position.X - Main.screenPosition.X + (float)(stoolPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)stoolPlayer.height + 112f));

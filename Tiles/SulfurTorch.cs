@@ -57,7 +57,8 @@ namespace RijamsMod.Tiles
 
 			AddMapEntry(new Color(250, 250, 0), Language.GetText("ItemName.Torch"));
 			DustType = ModContent.DustType<SulfurDust>();
-			AdjTiles = new int[] { TileID.Torches };
+			AdjTiles = [TileID.Torches];
+			VanillaFallbackOnModDeletion = TileID.Torches;
 			TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
 			// Assets
 			flameTexture = ModContent.Request<Texture2D>("RijamsMod/Tiles/SulfurTorch_Flame");
@@ -138,10 +139,7 @@ namespace RijamsMod.Tiles
 				offsetY = 4;
 			}
 			Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen)
-			{
-				zero = Vector2.Zero;
-			}
+
 			for (int k = 0; k < 7; k++)
 			{
 				float x = (float)Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;

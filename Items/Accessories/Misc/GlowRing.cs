@@ -141,7 +141,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().burglarsRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_BurglarsRing = true;
 			//See RijamsModNPC PreNPCLoot() for the effects of the accessory
 		}
 		public override void AddRecipes()

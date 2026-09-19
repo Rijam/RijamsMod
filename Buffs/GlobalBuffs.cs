@@ -89,11 +89,11 @@ namespace RijamsMod.Buffs
 
 	public class GlobalBuffsPlayer : RijamsModPlayer
 	{
-		public bool Oiled { get => oiled; set => oiled = value; }
-		public bool ShadowFlame { get => onShadowflame; set => onShadowflame = value; }
-		public bool BetsysCurse { get => betsysCurse; set => betsysCurse = value; }
-		public bool DryadsBane { get => dryadsBane; set => dryadsBane = value; }
-		public bool Daybroken { get => onDaybroken; set => onDaybroken = value; }
+		public bool Oiled { get => Buff_Oiled; set => Buff_Oiled = value; }
+		public bool ShadowFlame { get => Buff_OnShadowflame; set => Buff_OnShadowflame = value; }
+		public bool BetsysCurse { get => Buff_BetsysCurse; set => Buff_BetsysCurse = value; }
+		public bool DryadsBane { get => Buff_DryadsBane; set => Buff_DryadsBane = value; }
+		public bool Daybroken { get => Buff_OnDaybroken; set => Buff_OnDaybroken = value; }
 
 		public override void UpdateBadLifeRegen()
 		{
@@ -138,7 +138,7 @@ namespace RijamsMod.Buffs
 				}
 				*/
 
-				Player.lifeRegen -= 200;
+				Player.lifeRegen -= 100;
 				// Player.lifeRegen -= numberOfDaybreaksInPlayer * 2 * 100;
 				// if (num < num8 * 100 / num9)
 				//	 num = num8 * 100 / num9;

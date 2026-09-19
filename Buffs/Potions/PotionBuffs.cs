@@ -41,7 +41,7 @@ namespace RijamsMod.Buffs.Potions
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().soaringPotion = true;
+			player.GetModPlayer<RijamsModPlayer>().Buff_SoaringPotion = true;
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace RijamsMod.Buffs.Potions
 	{
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.1f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.1f;
 		}
 	}
 }

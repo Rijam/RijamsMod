@@ -16,7 +16,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		{
 			// DisplayName.SetDefault("Festive Whip");
 			// Tooltip.SetDefault("8 summon tag damage\nCauses Ornaments to fall from the sky when\nstriking an enemy at the end of the whip\n{$CommonItemTooltip.Whips}");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Ice Queen]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Ice Queen]"] );
 			CustomItemIDSets.IsWhip[Type] = true;
 			ItemID.Sets.UniqueTagEffects[Type] = new WhipTagEffect_FestiveWhip() { TagDamage = 8 };
 		}
@@ -53,13 +53,12 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 
 	public class WhipTagEffect_FestiveWhip : WhipTagEffect
 	{
-		public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
-			base.OnProcHit(owner, optionalProjectile, npcHit, calcDamage);
-			
+			return base.OnProcHit(owner, optionalProjectile, npcHit, hit);
 		}
 
-		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
 			for (int i = 0; i < 5; i++)
 			{

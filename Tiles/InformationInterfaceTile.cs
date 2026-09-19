@@ -20,7 +20,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3);
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(1, 2);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = [16, 16, 16];
 			TileObjectData.addTile(Type);
 			AddMapEntry(new Color(255, 255, 255));
 			DustType = DustID.Stone;
@@ -68,10 +68,6 @@ namespace RijamsMod.Tiles
 				return;
 			}
 			Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen)
-			{
-				zero = Vector2.Zero;
-			}
 			int height = tile.TileFrameY == 36 ? 18 : 16;
 			int animate = Main.tileFrame[Type] * AnimationFrameHeight;
 			Main.spriteBatch.Draw(glowmask.Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

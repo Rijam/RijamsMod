@@ -66,7 +66,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 		public int VelocityReductionPercent;
 		public float VelocityReductionMultiplier => 1f - (VelocityReductionPercent / 100f);
 
-		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
 			CombatText.NewText(optionalProjectile.Hitbox, Color.OrangeRed, "⏪");
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.DeadCellsMushroomBoiTargetFound, new ParticleOrchestraSettings
@@ -98,7 +98,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 			// if (markedByForbiddenWhip && npc.active)
 			foreach (Player player in Main.ActivePlayers)
 			{
-				if (npc.active && player.TagEffectState.Type == ModContent.ItemType<ForbiddenWhip>() && player.TagEffectState.IsNPCTagged(npc.whoAmI))
+				if (npc.active && player.TagEffectStack.IsNPCTagged(ModContent.ItemType<ForbiddenWhip>(), npc.whoAmI))
 				{
 					//npc.color = Color.Lerp(new Color(240, 156, 64), drawColor, 0.5f);
 					drawColor = Color.Lerp(new Color(240, 156, 64), drawColor, 0.5f);

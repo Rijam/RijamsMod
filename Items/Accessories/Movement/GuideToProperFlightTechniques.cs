@@ -24,7 +24,7 @@ namespace RijamsMod.Items.Accessories.Movement
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().guideToProperFlightTechniques = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_GuideToProperFlightTechniques = true;
 			//See RijamsModPlayer PostUpdateEquips() and GlobalAccessoryItem for the effects of the accessory
 		}
 	}	

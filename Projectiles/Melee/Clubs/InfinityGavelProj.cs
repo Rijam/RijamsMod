@@ -52,6 +52,7 @@ namespace RijamsMod.Projectiles.Melee.Clubs
 			Projectile.extraUpdates = 1; // Update 1+extraUpdates times per tick
 			Projectile.timeLeft = 360; // This value does not matter since we manually kill it earlier, it just has to be higher than the duration we use in AI
 			Projectile.hide = false; // Important when used alongside player.heldProj. "Hidden" projectiles have special draw conditions
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 
 		SoundStyle clubSwing = new(nameof(RijamsMod) + "/Sounds/Item/ClubSwing") { Volume = 1f, PitchVariance = 0.05f, MaxInstances = 10 };

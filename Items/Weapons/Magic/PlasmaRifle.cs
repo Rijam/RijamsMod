@@ -44,6 +44,7 @@ namespace RijamsMod.Items.Weapons.Magic
 				flash.frameCount = 2;
 				flash.frameRate = 7;
 				flash.useRandomFrame = true;
+				//flash.Timer = flash.frameRate;
 			}
 		}
 		public override Vector2? HoldoutOffset()

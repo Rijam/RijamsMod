@@ -22,7 +22,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateEquip(Player player)
 		{
-			player.GetModPlayer<RijamsModPlayer>().criticalHitAdditionalDamage += 0.36f;
+			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.36f;
 		}
 	}
 }

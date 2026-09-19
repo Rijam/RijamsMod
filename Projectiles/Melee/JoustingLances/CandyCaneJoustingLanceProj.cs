@@ -1,10 +1,10 @@
 using Microsoft.Xna.Framework;
-using RijamsMod.Items.Weapons.Melee.JoustingLances;
-using RijamsMod.Projectiles.Summon.Whips;
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using RijamsMod.Items.Weapons.Melee.JoustingLances;
+using RijamsMod.Projectiles.Summon.Whips;
 
 namespace RijamsMod.Projectiles.Melee.JoustingLances
 {
@@ -73,5 +73,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 				}
 			}
 		}
+
+		public override int DollHeldOffset() => 160;
 	}
 }

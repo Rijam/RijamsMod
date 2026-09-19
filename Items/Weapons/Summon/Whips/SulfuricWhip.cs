@@ -62,7 +62,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 
 	public class WhipTagEffect_SulfuricWhip : WhipTagEffect
 	{
-		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
 			Dust.NewDust(npcHit.Center, npcHit.width, npcHit.height, ModContent.DustType<Dusts.SulfurDust>(), npcHit.direction, npcHit.direction, 150, default, 1f);
 			CustomParticleOrchestra.RequestParticleSpawn(clientOnly: true, CustomParticleOrchestraType.AshTreeShake, new ParticleOrchestraSettings

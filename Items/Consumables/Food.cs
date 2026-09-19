@@ -15,7 +15,7 @@ namespace RijamsMod.Items.Consumables
 			// DisplayName.SetDefault("Strange Roll");
 			// Tooltip.SetDefault("{$CommonItemTooltip.MediumStats}\n'A strange food from an unknown place'\n'What's inside?'");
 			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Traveling Merchant]", "[c/474747:After defeating Eye of Cthulhu]" } );
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] =
 			[
 				new Color(187, 76, 218),
@@ -42,7 +42,7 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Rye Jam");
 			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.ExtremeStats}\n'Wait, how do you pronounce it?'");
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] =
 			[
 				new Color(242, 225, 23),
@@ -72,7 +72,7 @@ namespace RijamsMod.Items.Consumables
 			// DisplayName.SetDefault("Reef-Cola");
 			// Tooltip.SetDefault("Move freely in liquids\n'Taste the ocean, with Reef-Cola.'");
 			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Duke Fishron]" } );
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.DrinkParticleColors[Item.type] =
 			[
 				new Color(85, 136, 212),
@@ -94,7 +94,7 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Roasted Mushroom");
 			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.MinusculeStats}");
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] =
 			[
 				new Color(237, 160, 69),
@@ -153,7 +153,7 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Fresh Blueberry");
 			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.MinusculeStats}");
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] =
 			[
 				new Color(93, 115, 196),
@@ -182,7 +182,7 @@ namespace RijamsMod.Items.Consumables
 			// DisplayName.SetDefault("Cave Carrot");
 			// Tooltip.SetDefault("{$Mods.RijamsMod.Common.MinusculeStats}");
 			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by pots in the Caverns layer]", "[c/474747:Sold by Skeleton Merchant]", "[c/474747:  after any Old One's Army has been defeated]", "[c/474747:  and even moon phases]" });
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] =
 			[
 				new Color(193, 112, 38),
@@ -204,7 +204,7 @@ namespace RijamsMod.Items.Consumables
 		{
 			// DisplayName.SetDefault("Hardy Stew");
 			// Tooltip.SetDefault("{$CommonItemTooltip.MajorStats}");
-			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(-1, 3));
+			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(int.MaxValue, 3));
 			ItemID.Sets.FoodParticleColors[Item.type] =
 			[
 				new Color(205, 139, 15),

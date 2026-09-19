@@ -39,9 +39,9 @@ namespace RijamsMod.Projectiles.Pets
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
-				modPlayer.lumothPet = false;
+				modPlayer.Pet_LumothPet = false;
 			}
-			if (modPlayer.lumothPet)
+			if (modPlayer.Pet_LumothPet)
 			{
 				Projectile.timeLeft = 2;
 			}
@@ -95,9 +95,9 @@ namespace RijamsMod.Projectiles.Pets
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
-				modPlayer.lEDLumothPet = false;
+				modPlayer.Pet_LEDLumothPet = false;
 			}
-			if (modPlayer.lEDLumothPet)
+			if (modPlayer.Pet_LEDLumothPet)
 			{
 				Projectile.timeLeft = 2;
 			}

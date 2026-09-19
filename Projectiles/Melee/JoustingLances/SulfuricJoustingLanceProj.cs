@@ -38,5 +38,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 		{
 			target.AddBuff(ModContent.BuffType<SulfuricAcid>(), (int)(info.Damage * 1.5f));
 		}
+
+		public override int DollHeldOffset() => 118;
 	}
 }

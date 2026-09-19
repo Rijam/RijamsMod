@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System.Reflection;
 using Terraria;
 using Terraria.DataStructures;
@@ -139,36 +140,36 @@ namespace RijamsMod.Tiles
 				// Gem Trees: 33% chance to get 1-3 gems.
 				if (gemTree == TileID.TreeTopaz && WorldGen.genRand.NextBool(3))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Topaz, WorldGen.genRand.Next(1, 4));
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Topaz, WorldGen.genRand.Next(1, 4));
 				}
 				if (gemTree == TileID.TreeAmethyst && WorldGen.genRand.NextBool(3))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Amethyst, WorldGen.genRand.Next(1, 4));
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Amethyst, WorldGen.genRand.Next(1, 4));
 				}
 				if (gemTree == TileID.TreeSapphire && WorldGen.genRand.NextBool(3))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Sapphire, WorldGen.genRand.Next(1, 4));
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Sapphire, WorldGen.genRand.Next(1, 4));
 				}
 				if (gemTree == TileID.TreeEmerald && WorldGen.genRand.NextBool(3))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Emerald, WorldGen.genRand.Next(1, 4));
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Emerald, WorldGen.genRand.Next(1, 4));
 				}
 				if (gemTree == TileID.TreeRuby && WorldGen.genRand.NextBool(3))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Ruby, WorldGen.genRand.Next(1, 4));
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Ruby, WorldGen.genRand.Next(1, 4));
 				}
 				if (gemTree == TileID.TreeDiamond && WorldGen.genRand.NextBool(3))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Diamond, WorldGen.genRand.Next(1, 4));
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Diamond, WorldGen.genRand.Next(1, 4));
 				}
 				if (gemTree == TileID.TreeAmber && WorldGen.genRand.NextBool(3))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Amber, WorldGen.genRand.Next(1, 4));
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Amber, WorldGen.genRand.Next(1, 4));
 				}
 				// Any gem tree has a chance of dropping a Geode.
 				if (gemTree > -1 && WorldGen.genRand.NextBool(10))
 				{
-					Item.NewItem(new EntitySource_ShakeTree(x, y), x * 16, y * 16, 16, 16, ItemID.Geode);
+					Item.NewItem(new EntitySource_ShakeTree(x, y), new Vector2(x * 16, y * 16), ItemID.Geode);
 				}
 			}
 

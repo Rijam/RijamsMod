@@ -1,125 +1,134 @@
-using System;
 using Microsoft.Xna.Framework;
+using RijamsMod.Buffs.Potions;
+using RijamsMod.Items;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using RijamsMod.Buffs.Potions;
-using RijamsMod.Items;
 
 namespace RijamsMod
 {
 	public class RijamsModPlayer : ModPlayer
 	{
 		// Accessories
-		public bool guideToProperFlightTechniques;
-		public bool controlGlove;
-		public bool summonersGlove;
-		public bool daybreakStone;
-		public bool breathingPack;
-		public int breathingPackTimer;
-		public bool burglarsRing;
-		public bool rocketBooster;
-		public bool gamutApparatus;
-		public bool frostburnStone;
-		public bool frostyRose;
-		public bool yoyoBackpack;
-		public bool hailfireBootsBoost;
-		public bool warriorRing;
-		public bool lifeSapperRing;
-		public bool manaSapperRing;
-		public bool terraStepStool;
-		public bool loopingOil;
-		public bool sideEffects;
-		public bool curiosityLure;
-		public bool trapBobber;
-		public bool spinnerBobber;
-		public bool peakPerformanceRing;
+		public bool Accessory_GuideToProperFlightTechniques;
+		public bool Accessory_ControlGlove;
+		public bool Accessory_SummonersGlove;
+		public bool Accessory_DaybreakStone;
+		public bool Accessory_BreathingPack;
+		public int Accessory_BreathingPackTimer;
+		public bool Accessory_BurglarsRing;
+		public bool Accessory_RocketBooster;
+		public bool Accessory_GamutApparatus;
+		public bool Accessory_FrostburnStone;
+		public bool Accessory_FrostyRose;
+		public bool Accessory_YoyoBackpack;
+		public bool Accessory_HailfireBootsBoost;
+		public bool Accessory_WarriorRing;
+		public bool Accessory_LifeSapperRing;
+		public bool Accessory_ManaSapperRing;
+		public bool Accessory_TerraStepStool;
+		public bool Accessory_LoopingOil;
+		public bool Accessory_SideEffects;
+		public bool Accessory_CuriosityLure;
+		public bool Accessory_TrapBobber;
+		public bool Accessory_SpinnerBobber;
+		public bool Accessory_PeakPerformanceRing;
 
 		// Pets
-		public bool lumothPet;
-		public bool lEDLumothPet;
-		public bool snuggetPet;
-		public bool fluffaloPet;
-		public bool dwarfStarPet;
-		public bool babyStardustDragonPet;
+		public bool Pet_LumothPet;
+		public bool Pet_LEDLumothPet;
+		public bool Pet_SnuggetPet;
+		public bool Pet_FluffaloPet;
+		public bool Pet_DwarfStarPet;
+		public bool Pet_BabyStardustDragonPet;
 
 		// Buffs
-		public bool sulfuricAcid;
-		public int flaskBuff = FlaskIDs.None;
-		public bool bleedingOut = false;
-		public bool soaringPotion;
-		public bool oiled;
-		public bool onShadowflame;
-		public bool betsysCurse;
-		public bool dryadsBane;
-		public bool onDaybroken;
+		public bool Buff_SulfuricAcid;
+		public int Buff_ModFlaskBuff = FlaskIDs.None;
+		public bool Buff_BleedingOut = false;
+		public bool Buff_SoaringPotion;
+		public bool Buff_Oiled;
+		public bool Buff_OnShadowflame;
+		public bool Buff_BetsysCurse;
+		public bool Buff_DryadsBane;
+		public bool Buff_OnDaybroken;
 
 		// Stats
-		public int supportMinionRadiusIncrease = 0;
-		public float criticalHitAdditionalDamage = 0f;
-		public float knockbackSusceptibility = 1f;
-		public int bonusYoyosAndCounterweights = 0;
-		public int bonusCounterweights = 0;
-		public float moveSpeedDamageReductionMax = 0f;
+		/// <summary> Increases the radius for support minions. Number is in tiles. </summary>
+		public int Stat_SupportMinionRadiusIncrease = 0;
+		/// <summary> Increases damage for critical hits. Crit damage. </summary>
+		public float Stat_CriticalHitAdditionalDamage = 0f;
+		/// <summary> Changes how resistant to knockback the player is. 1f is 0% resistance, 0f is 100% resistance. </summary>
+		public float Stat_KnockbackSusceptibility = 1f;
+		/// <summary> Grants additional yoyos and counterweights when the player has the Yoyo Glove. </summary>
+		public int Stat_BonusYoyosAndCounterweights = 0;
+		/// <summary> Grants additional counterweights when the player has counterweights. </summary>
+		public int Stat_BonusCounterweights = 0;
+		/// <summary> The maximum amount of damage reduction to grant based on the player's movement speed. </summary>
+		public float Stat_MoveSpeedDamageReductionMax = 0f;
 
 		// Armor
-		public bool ancientSet;
-		public int skywareArmorSetBonus = 0;
-		public int skywareArmorSetBonusTimer = 0;
-		public bool redSkywareLeggings;
+		public bool Armor_AncientSet;
+		public int Armor_SkywareArmorSetBonus = 0;
+		public int Armor_SkywareArmorSetBonusTimer = 0;
+		public bool Armor_RedSkywareLeggings;
 
 		public override void ResetEffects()
 		{
-			guideToProperFlightTechniques = false;
-			controlGlove = false;
-			summonersGlove = false;
-			daybreakStone = false;
-			breathingPack = false;
-			lumothPet = false;
-			lEDLumothPet = false;
-			burglarsRing = false;
-			rocketBooster = false;
-			gamutApparatus = false;
-			frostburnStone = false;
-			sulfuricAcid = false;
-			ancientSet = false;
-			frostyRose = false;
-			yoyoBackpack = false;
-			snuggetPet = false;
-			fluffaloPet = false;
-			hailfireBootsBoost = false;
-			flaskBuff = FlaskIDs.None;
-			skywareArmorSetBonus = 0;
-			bleedingOut = false;
-			soaringPotion = false;
-			warriorRing = false;
-			lifeSapperRing = false;
-			manaSapperRing = false;
-			terraStepStool = false;
-			dwarfStarPet = false;
-			redSkywareLeggings = false;
-			babyStardustDragonPet = false;
-			loopingOil = false;
-			sideEffects = false;
-			curiosityLure = false;
-			trapBobber = false;
-			spinnerBobber = false;
-			oiled = false;
-			onShadowflame = false;
-			betsysCurse = false;
-			dryadsBane = false;
-			onDaybroken = false;
-			peakPerformanceRing = false;
+			Accessory_GuideToProperFlightTechniques = false;
+			Accessory_ControlGlove = false;
+			Accessory_SummonersGlove = false;
+			Accessory_DaybreakStone = false;
+			Accessory_BreathingPack = false;
+			Accessory_BurglarsRing = false;
+			Accessory_RocketBooster = false;
+			Accessory_GamutApparatus = false;
+			Accessory_FrostburnStone = false;
+			Accessory_FrostyRose = false;
+			Accessory_YoyoBackpack = false;
+			Accessory_HailfireBootsBoost = false;
+			Accessory_WarriorRing = false;
+			Accessory_LifeSapperRing = false;
+			Accessory_ManaSapperRing = false;
+			Accessory_TerraStepStool = false;
+			Accessory_LoopingOil = false;
+			Accessory_SideEffects = false;
+			Accessory_CuriosityLure = false;
+			Accessory_TrapBobber = false;
+			Accessory_SpinnerBobber = false;
+			Accessory_PeakPerformanceRing = false;
 
-			supportMinionRadiusIncrease = 0;
-			criticalHitAdditionalDamage = 0f;
-			knockbackSusceptibility = 1f;
-			bonusYoyosAndCounterweights = 0;
-			bonusCounterweights = 0;
-			moveSpeedDamageReductionMax = 0f;
-			if (!hailfireBootsBoost)
+			Pet_LumothPet = false;
+			Pet_LEDLumothPet = false;
+			Pet_SnuggetPet = false;
+			Pet_FluffaloPet = false;
+			Pet_DwarfStarPet = false;
+			Pet_BabyStardustDragonPet = false;
+
+			Buff_SulfuricAcid = false;
+			Buff_ModFlaskBuff = FlaskIDs.None;
+			Buff_BleedingOut = false;
+			Buff_SoaringPotion = false;
+			Buff_Oiled = false;
+			Buff_OnShadowflame = false;
+			Buff_BetsysCurse = false;
+			Buff_DryadsBane = false;
+			Buff_OnDaybroken = false;
+
+			Armor_AncientSet = false;
+			Armor_SkywareArmorSetBonus = 0;
+			Armor_RedSkywareLeggings = false;
+
+			Stat_SupportMinionRadiusIncrease = 0;
+			Stat_CriticalHitAdditionalDamage = 0f;
+			Stat_KnockbackSusceptibility = 1f;
+			Stat_BonusYoyosAndCounterweights = 0;
+			Stat_BonusCounterweights = 0;
+			Stat_MoveSpeedDamageReductionMax = 0f;
+			if (!Accessory_HailfireBootsBoost)
 			{
 				Player.rocketTimeMax = 7;
 			}
@@ -127,12 +136,12 @@ namespace RijamsMod
 
 		public override void UpdateDead()
 		{
-			sulfuricAcid = false;
-			oiled = false;
-			onShadowflame = false;
-			betsysCurse = false;
-			dryadsBane = false;
-			onDaybroken = false;
+			Buff_SulfuricAcid = false;
+			Buff_Oiled = false;
+			Buff_OnShadowflame = false;
+			Buff_BetsysCurse = false;
+			Buff_DryadsBane = false;
+			Buff_OnDaybroken = false;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 		{
@@ -148,13 +157,13 @@ namespace RijamsMod
 
 		public override void PostUpdateEquips()
 		{
-			if (frostyRose)
+			if (Accessory_FrostyRose)
 			{
 				Player.buffImmune[BuffID.Frostburn] = true;
 				Player.buffImmune[BuffID.Frozen] = true;
 				Player.buffImmune[BuffID.Chilled] = true;
 			}
-			if (guideToProperFlightTechniques)
+			if (Accessory_GuideToProperFlightTechniques)
 			{
 				if (Player.wingTimeMax > 0)
 				{
@@ -163,17 +172,17 @@ namespace RijamsMod
 					Player.moveSpeed += 1f;
 				}
 			}
-			if (soaringPotion)
+			if (Buff_SoaringPotion)
 			{
 				Player.wingTimeMax += 30;
 			}
-			if (redSkywareLeggings)
+			if (Armor_RedSkywareLeggings)
 			{
 				Player.wingTimeMax += 60;
 				Player.moveSpeed += 0.2f;
 				Player.maxRunSpeed += 0.2f;
 			}
-			if (hailfireBootsBoost)
+			if (Accessory_HailfireBootsBoost)
 			{
 				if (Player.wingTimeMax > 0)
 				{
@@ -184,7 +193,7 @@ namespace RijamsMod
 					Player.rocketTimeMax = 8;
 				}
 			}
-			if (breathingPack)
+			if (Accessory_BreathingPack)
 			{
 				//Main.NewText("breathingPackUsed " + breathingPackUsed);
 				//Main.NewText("breathingPackTimer " + breathingPackTimer);
@@ -193,22 +202,22 @@ namespace RijamsMod
 				{
 					//breathingPackUsed = true;
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = true;
-					breathingPackTimer++;
-					if (breathingPackTimer == 1 && !Main.dedServ)
+					Accessory_BreathingPackTimer++;
+					if (Accessory_BreathingPackTimer == 1 && !Main.dedServ)
 					{
 						SoundEngine.PlaySound(BreathingPackBeep with { Pitch = 1.5f } );
 					}
-					if (breathingPackTimer == 60 && !Main.dedServ)
+					if (Accessory_BreathingPackTimer == 60 && !Main.dedServ)
 					{
 						SoundEngine.PlaySound(BreathingPackBeep with { Pitch = 2f });
 					}
-					if (breathingPackTimer >= 120)
+					if (Accessory_BreathingPackTimer >= 120)
 					{
 						if (!Main.dedServ)
 						{
 							SoundEngine.PlaySound(BreathingPackBeep with { Pitch = 0.5f });
 						}
-						breathingPackTimer = 0;
+						Accessory_BreathingPackTimer = 0;
 						//breathingPackUsed = true;
 						//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = true;
 						Player.breath += Player.breathMax;
@@ -225,7 +234,7 @@ namespace RijamsMod
 					//player.GetModPlayer<RijamsModPlayer>().breathingPackUsed = false;
 				//}
 			}
-			if (yoyoBackpack)
+			if (Accessory_YoyoBackpack)
 			{
 				if (Player.counterWeight == 0)
 				{
@@ -237,22 +246,22 @@ namespace RijamsMod
 				Player.yoyoGlove = true;
 				Player.yoyoString = true;
 				Player.stringColor = 27;
-				bonusCounterweights += 2;
-				loopingOil = true;
+				Stat_BonusCounterweights += 2;
+				Accessory_LoopingOil = true;
 			}
 
-			if (moveSpeedDamageReductionMax > 0f)
+			if (Stat_MoveSpeedDamageReductionMax > 0f)
 			{
 				// Main.NewText(Player.velocity.Length());
 				double potentialDR = Player.velocity.Length() / 50.0;
 				// Main.NewText(potentialDR);
-				Player.endurance += (float)Math.Round(Math.Clamp(potentialDR, 0.0, moveSpeedDamageReductionMax), 3);
+				Player.endurance += (float)Math.Round(Math.Clamp(potentialDR, 0.0, Stat_MoveSpeedDamageReductionMax), 3);
 				// Main.NewText(Player.endurance);
 			}
 		}
 		public override void UpdateBadLifeRegen()
 		{
-			if (sulfuricAcid)
+			if (Buff_SulfuricAcid)
 			{
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects.
 				if (Player.lifeRegen > 0)
@@ -264,7 +273,7 @@ namespace RijamsMod
 				Player.lifeRegen -= 16;
 				Player.GetDamage(DamageClass.Generic) *= 0.9f;
 			}
-			if (bleedingOut)
+			if (Buff_BleedingOut)
 			{
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects.
 				if (Player.lifeRegen > 0)
@@ -282,7 +291,7 @@ namespace RijamsMod
 		{
 			if (drawInfo.drawPlayer.active && !drawInfo.drawPlayer.dead)
 			{
-				if (sulfuricAcid)
+				if (Buff_SulfuricAcid)
 				{
 					if (Main.rand.NextBool(4) && drawInfo.shadow == 0f)
 					{
@@ -301,7 +310,7 @@ namespace RijamsMod
 					b *= 0.0f;
 					fullBright = true;
 				}
-				if (bleedingOut)
+				if (Buff_BleedingOut)
 				{
 					for (int i = 0; i < 5; i++)
 					{
@@ -315,7 +324,7 @@ namespace RijamsMod
 		}
 		public override void PostUpdateRunSpeeds()
 		{
-			if (ancientSet)
+			if (Armor_AncientSet)
 			{
 				Player.runAcceleration += 0.1f;
 				Player.maxRunSpeed += 2;
@@ -339,11 +348,11 @@ namespace RijamsMod
 
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 		{
-			modifiers.CritDamage += criticalHitAdditionalDamage;
+			modifiers.CritDamage += Stat_CriticalHitAdditionalDamage;
 		}
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers)
 		{
-			float clampedKnockbackSusceptibility = MathHelper.Clamp(knockbackSusceptibility, 0, 10);
+			float clampedKnockbackSusceptibility = MathHelper.Clamp(Stat_KnockbackSusceptibility, 0, 10);
 			modifiers.Knockback *= clampedKnockbackSusceptibility;
 		}
 
@@ -354,7 +363,7 @@ namespace RijamsMod
 
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (daybreakStone && item.DamageType.CountsAsClass<MeleeDamageClass>())
+			if (Accessory_DaybreakStone && item.DamageType.CountsAsClass<MeleeDamageClass>())
 			{
 				//Same chances as Magma Stone, but half duration
 				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
@@ -371,7 +380,7 @@ namespace RijamsMod
 					target.AddBuff(BuffID.Daybreak, 60);
 				}
 			}
-			if (frostburnStone && item.DamageType.CountsAsClass<MeleeDamageClass>())
+			if (Accessory_FrostburnStone && item.DamageType.CountsAsClass<MeleeDamageClass>())
 			{
 				//Same chances as Magma Stone
 				int dayBreakStoneRand = Main.rand.Next(8);//random number from 0 to 7
@@ -388,15 +397,15 @@ namespace RijamsMod
 					target.AddBuff(BuffID.Frostburn2, 120);
 				}
 			}
-			if (flaskBuff == FlaskIDs.SulfuricAcid)
+			if (Buff_ModFlaskBuff == FlaskIDs.SulfuricAcid)
 			{
 				target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 			}
-			if (flaskBuff == FlaskIDs.Oiled)
+			if (Buff_ModFlaskBuff == FlaskIDs.Oiled)
 			{
 				target.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
 			}
-			if (flaskBuff == FlaskIDs.Daybroken)
+			if (Buff_ModFlaskBuff == FlaskIDs.Daybroken)
 			{
 				target.AddBuff(BuffID.Daybreak, 150 + Main.rand.Next(0, 120));
 			}
@@ -406,19 +415,19 @@ namespace RijamsMod
 		{
 			if ((proj.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[proj.type]) && !proj.noEnchantments)
 			{
-				if (flaskBuff == FlaskIDs.SulfuricAcid)
+				if (Buff_ModFlaskBuff == FlaskIDs.SulfuricAcid)
 				{
 					target.AddBuff(ModContent.BuffType<Buffs.Debuffs.SulfuricAcid>(), 150 + Main.rand.Next(0, 120));
 				}
-				if (flaskBuff == FlaskIDs.Oiled)
+				if (Buff_ModFlaskBuff == FlaskIDs.Oiled)
 				{
 					target.AddBuff(BuffID.Oiled, 150 + Main.rand.Next(0, 120));
 				}
-				if (flaskBuff == FlaskIDs.Daybroken)
+				if (Buff_ModFlaskBuff == FlaskIDs.Daybroken)
 				{
 					target.AddBuff(BuffID.Daybreak, 150 + Main.rand.Next(0, 120));
 				}
-				if (daybreakStone)
+				if (Accessory_DaybreakStone)
 				{
 					//Same chances as Magma Stone, but half duration
 					if (Main.rand.Next(8) <= 2)
@@ -434,7 +443,7 @@ namespace RijamsMod
 						target.AddBuff(BuffID.Daybreak, 60);
 					}
 				}
-				if (frostburnStone)
+				if (Accessory_FrostburnStone)
 				{
 					//Same chances as Magma Stone
 					if (Main.rand.Next(8) <= 2)
@@ -457,7 +466,7 @@ namespace RijamsMod
 		{
 			if (item.DamageType.CountsAsClass<MeleeDamageClass>() && !item.noMelee && !item.noUseGraphic && Main.rand.NextBool(2))
 			{
-				if (daybreakStone)
+				if (Accessory_DaybreakStone)
 				{
 					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.SolarFlare, Player.velocity.X * 0.2f + (Player.direction * 3), Player.velocity.Y * 0.2f, 100, default, 1f);
 					Main.dust[dust].noGravity = true;
@@ -465,7 +474,7 @@ namespace RijamsMod
 					Main.dust[dust].velocity.Y -= 0.5f;
 					Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.875f);
 				}
-				if (frostburnStone)
+				if (Accessory_FrostburnStone)
 				{
 					int dust = Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Frost, Player.velocity.X * 0.2f + (Player.direction * 3), Player.velocity.Y * 0.2f, 100, default, 1f);
 					Main.dust[dust].noGravity = true;
@@ -473,19 +482,19 @@ namespace RijamsMod
 					Main.dust[dust].velocity.Y -= 0.5f;
 					Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.LightBlue.ToVector3() * 0.875f);
 				}
-				if (flaskBuff >= 1)
+				if (Buff_ModFlaskBuff >= 1)
 				{
 					int dustType = DustID.Dirt;
-					if (flaskBuff == FlaskIDs.SulfuricAcid)
+					if (Buff_ModFlaskBuff == FlaskIDs.SulfuricAcid)
 					{
 						dustType = ModContent.DustType<Dusts.SulfurDust>();
 						Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.Yellow.ToVector3() * 0.1f);
 					}
-					if (flaskBuff == FlaskIDs.Oiled)
+					if (Buff_ModFlaskBuff == FlaskIDs.Oiled)
 					{
 						dustType = DustID.Asphalt;
 					}
-					if (flaskBuff == FlaskIDs.Daybroken)
+					if (Buff_ModFlaskBuff == FlaskIDs.Daybroken)
 					{
 						dustType = DustID.SolarFlare;
 						Lighting.AddLight(new Vector2(hitbox.X, hitbox.Y), Color.LightGoldenrodYellow.ToVector3() * 0.1f);
@@ -502,7 +511,7 @@ namespace RijamsMod
 		{
 			if ((projectile.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[projectile.type]) && !projectile.noEnchantments && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 			{
-				if (daybreakStone)
+				if (Accessory_DaybreakStone)
 				{
 					if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 					{
@@ -513,7 +522,7 @@ namespace RijamsMod
 						Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.875f);
 					}
 				}
-				if (frostburnStone)
+				if (Accessory_FrostburnStone)
 				{
 					if (projectile.friendly && !projectile.hostile && !projectile.noEnchantmentVisuals && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
 					{
@@ -524,19 +533,19 @@ namespace RijamsMod
 						Lighting.AddLight(projectile.Center, Color.LightBlue.ToVector3() * 0.875f);
 					}
 				}
-				if (flaskBuff >= 1)
+				if (Buff_ModFlaskBuff >= 1)
 				{
 					int dustType = DustID.Dirt;
-					if (flaskBuff == FlaskIDs.SulfuricAcid)
+					if (Buff_ModFlaskBuff == FlaskIDs.SulfuricAcid)
 					{
 						dustType = ModContent.DustType<Dusts.SulfurDust>();
 						Lighting.AddLight(projectile.Center, Color.Yellow.ToVector3() * 0.1f);
 					}
-					if (flaskBuff == FlaskIDs.Oiled)
+					if (Buff_ModFlaskBuff == FlaskIDs.Oiled)
 					{
 						dustType = DustID.Asphalt;
 					}
-					if (flaskBuff == FlaskIDs.Daybroken)
+					if (Buff_ModFlaskBuff == FlaskIDs.Daybroken)
 					{
 						dustType = DustID.SolarFlare;
 						Lighting.AddLight(projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 0.1f);

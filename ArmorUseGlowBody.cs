@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace RijamsMod
@@ -43,8 +44,12 @@ namespace RijamsMod
 			{
 				return;
 			}
-			drawInfo.bodyGlowColor = color * drawInfo.drawPlayer.stealth;
-			drawInfo.armGlowColor = color * drawInfo.drawPlayer.stealth;
+			if (drawInfo.hideEntirePlayer || (drawInfo.drawPlayer.mount.Active && MountID.Sets.PlayerIsHidden[drawInfo.drawPlayer.mount.Type]))
+			{
+				return;
+			}
+			drawInfo.bodyGlowColor = drawInfo.drawPlayer.GetImmuneAlphaPure(color * drawInfo.drawPlayer.stealth, drawInfo.shadow);
+			drawInfo.armGlowColor = drawInfo.drawPlayer.GetImmuneAlphaPure(color * drawInfo.drawPlayer.stealth, drawInfo.shadow);
 		}
 	}
 }

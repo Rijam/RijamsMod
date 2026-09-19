@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -33,7 +34,8 @@ namespace RijamsMod.Projectiles.Melee
             Projectile.localNPCHitCooldown = 10;
             Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
             Projectile.noEnchantmentVisuals = true; // The flask effects are spawned manually.
-        }
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
+		}
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -275,6 +277,29 @@ namespace RijamsMod.Projectiles.Melee
 			firingSpeed = reader.ReadSingle();
 			firingAnimation = reader.ReadSingle();
 			firingTime = reader.ReadSingle();
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 161 (Shortsword)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+		{
+			Projectile.spriteDirection = Projectile.direction; // Set the direction of the sprite to the direction the projectile is facing.
+			Vector2 projectileRotation = Vector2.UnitX * 4f; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
+
+			projectileRotation = projectileRotation.RotatedBy(armRotation); // Rotate the projectile based on the rotation of the mannequin's hand.
+			if (Projectile.direction == -1)
+				projectileRotation.X *= -1f;
+
+			Projectile.velocity = projectileRotation;
+			Projectile.position += projectileRotation + (projectileRotation * 1.5f); // Move the projectile's location while being held by the mannequin.
+
+			Projectile.rotation = (float)Math.Atan2(projectileRotation.Y, projectileRotation.X) + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
+			Projectile.rotation -= MathHelper.PiOver4 * Projectile.spriteDirection; // Correct the rotation of the shortsword since we set this in the AI.
+
+			return false;
 		}
 	}
 }

@@ -1,7 +1,5 @@
 using Microsoft.Xna.Framework;
-using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Melee.JoustingLances
 {
@@ -20,5 +18,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 			widthMultiplier = 20.4f;
 			lanceHitboxBounds = new(0, 0, 140, 140);
 		}
+
+		public override int DollHeldOffset() => 80;
 	}
 }

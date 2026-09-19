@@ -77,7 +77,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 					Projectile.frame = 4;
 					attacking = true;
 					int attackDamage = baseDamage;
-					if (player.setBonus == "Stardust" || player.setStardust) // Bonus damage if the player is wearing Stardust armor
+					if (/* TODO player.setBonus == "Stardust" || */ player.setStardust) // Bonus damage if the player is wearing Stardust armor
 					{
 						attackDamage += 20;
 					}

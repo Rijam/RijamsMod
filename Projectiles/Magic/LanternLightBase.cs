@@ -192,30 +192,61 @@ namespace RijamsMod.Projectiles.Magic
 
 			if (beforeHoming)
 			{
-				float num6 = (float)Math.Cos(Projectile.whoAmI % 6f / 6f + Projectile.position.X / 320f + Projectile.position.Y / 160f);
+				float angle = (float)Math.Cos(Projectile.whoAmI % 6f / 6f + Projectile.position.X / 320f + Projectile.position.Y / 160f);
 				Projectile.velocity *= velSlowDown;
-				Projectile.velocity = Projectile.velocity.RotatedBy(num6 * (MathHelper.TwoPi * -Projectile.direction) * 0.125f * 1f / 30f);
+				Projectile.velocity = Projectile.velocity.RotatedBy(angle * (MathHelper.TwoPi * -Projectile.direction) * 0.125f * 1f / 30f);
 			}
 
-			int newTarget;
+			int curentTarget = (int)Projectile.ai[0];
+			if (Main.npc.IndexInRange(curentTarget) && !Main.npc[curentTarget].CanBeChasedBy(this))
+			{
+				curentTarget = -1;
+				Projectile.ai[0] = -1f;
+				Projectile.netUpdate = true;
+			}
 			if (homingNeedsLineOfSight)
 			{
-				newTarget = Projectile.FindTargetWithLineOfSight(homingRange);
+				if (curentTarget == -1)
+				{
+					int newTarget = Projectile.FindTargetWithLineOfSight(homingRange);
+					if (newTarget != -1)
+					{
+						curentTarget = newTarget;
+						Projectile.ai[0] = newTarget;
+						Projectile.netUpdate = true;
+					}
+				}
 			}
 			else
 			{
-				NPC maybeTarget = Projectile.FindTargetWithinRange(homingRange);
-				newTarget = maybeTarget != null ? maybeTarget.whoAmI : -1;
+				if (curentTarget == -1)
+				{
+					NPC maybeTarget = Projectile.FindTargetWithinRange(homingRange);
+					int newTarget = maybeTarget != null ? maybeTarget.whoAmI : -1;
+					if (newTarget != -1)
+					{
+						curentTarget = newTarget;
+						Projectile.ai[0] = newTarget;
+						Projectile.netUpdate = true;
+					}
+				}
+				
 			}
 			//ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(
 			//	"-> newTarget " + newTarget), new Color(50, 50, 150));
 
 			if (canHome)
 			{
+				int target = (int)Projectile.ai[0];
 				Vector2 projVelocity = Projectile.velocity;
-				if (Main.npc.IndexInRange(newTarget))
+				if (Main.npc.IndexInRange(target))
 				{
-					NPC npc = Main.npc[newTarget];
+					if (Projectile.timeLeft < 10)
+					{
+						Projectile.timeLeft = 10;
+					}
+
+					NPC npc = Main.npc[target];
 					projVelocity = Projectile.DirectionTo(npc.Center) * vecolityMultiplier;
 				}
 				else
@@ -228,7 +259,7 @@ namespace RijamsMod.Projectiles.Magic
 				Projectile.velocity *= MathHelper.Lerp(0.85f, 1f, Utils.GetLerpValue(0f, 90f, Projectile.timeLeft, clamped: true));
 			}
 			Projectile.Opacity = Utils.GetLerpValue(timeLeftMax, timeLeftMax - 20f, Projectile.timeLeft, clamped: true);
-			Projectile.rotation = Projectile.velocity.ToRotation() + (float)Math.PI / 2f;
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 		}
 		public override void OnKill(int timeLeft)
 		{

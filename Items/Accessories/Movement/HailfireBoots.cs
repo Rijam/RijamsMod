@@ -31,7 +31,7 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().hailfireBootsBoost = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_HailfireBootsBoost = true;
 			player.rocketBoots = player.vanityRocketBoots = 2;
 			player.accRunSpeed = 8f; // The player's maximum run speed with accessories
 			player.moveSpeed += 0.1f; // The acceleration multiplier of the player's movement speed
@@ -45,7 +45,7 @@ namespace RijamsMod.Items.Accessories.Movement
 			player.jumpSpeedBoost += 1.6f;
 			player.extraFall += 10;
 			player.buffImmune[BuffID.OnFire] = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 		}
 		public override void AddRecipes()
 		{

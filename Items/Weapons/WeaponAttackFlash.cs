@@ -5,8 +5,10 @@ using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 
 namespace RijamsMod.Items.Weapons
 {
@@ -55,13 +57,164 @@ namespace RijamsMod.Items.Weapons
 		public bool discoColor = false;
 		/// <summary> If true, the flash will only play if player.altFunctionUse != 2<br>Default: false</br></summary>
 		public bool onlyUseOnPrimaryFire = false;
+		/// <summary> Allows the use of vanilla shaders<br>Default: ""</br></summary>
+		public string shader = "";
 
 		public override bool InstancePerEntity => true;
 		public override GlobalItem Clone(Item item, Item itemClone)
 		{
 			return base.Clone(item, itemClone);
 		}
+
+		/*
+		public int frame = 0; // The frame of the texture.
+		public int time = 0; // time for the Timer.
+
+		public int Timer
+		{
+			get => time;
+			set => time = value;
+		}
+
+		public void CalcFrame()
+		{
+			// Don't animate if the game isn't focused.
+			if (Main.gamePaused)
+			{
+				return;
+			}
+
+			Timer++;
+			if (Timer >= frameRate)
+			{
+				if (useRandomFrame)
+				{
+					frame = Main.rand.Next(0, frameCount); // Select a random frame.
+				}
+				else
+				{
+					frame++; // Cycle through the animation.
+				}
+
+				Timer = 0;
+				if (frame >= frameCount && animationLoop)
+				{
+					frame = 0;
+				}
+				// If animationLoop is false, the frame will grow continuously. Frames above the max frames will just be invisible.
+				// The texture needs padding at bottom for it to be invisible. If there is no padding, it'll stretch the last row of pixels to fill the size of the frame.
+
+			}
+		}
+		*/
+
+		/*
+		public override void PostModifyItemDraw(Item item, ref PlayerDrawSet drawInfo, DrawData drawData, DrawData? coloredDrawData, DrawData? glowmaskDrawData)
+		{
+			Item heldItem = drawInfo.heldItem;
+			int itemID = heldItem.type;
+			float adjustedItemScale = drawInfo.drawPlayer.GetAdjustedItemScale(heldItem);
+			Player drawPlayer = drawInfo.drawPlayer;
+
+			if (onlyUseOnPrimaryFire && drawPlayer.altFunctionUse == 2)
+			{
+				return;
+			}
+
+			if (flashTexture != null && flashCondition.Invoke()) // If a flash texture for the weapon exists and the flashCondition is true
+			{
+				bool usingItem = drawPlayer.itemAnimation > 0 && heldItem.useStyle != ItemUseStyleID.None;
+				bool holdingAndNotPully = heldItem.holdStyle != 0 && !drawPlayer.pulley;
+				if (drawInfo.shadow != 0f || drawPlayer.frozen || !(usingItem || holdingAndNotPully) || itemID <= 0 || drawPlayer.dead || heldItem.noUseGraphic || (drawPlayer.wet && heldItem.noWet) || (drawPlayer.happyFunTorchTime && drawPlayer.inventory[drawPlayer.selectedItem].createTile == TileID.Torches && drawPlayer.itemAnimation == 0))
+				{
+					return;
+				}
+
+				// Stop the flash from drawing if the item isn't being used (but is being held)
+				if (onlyDrawInUse && !drawPlayer.ItemAnimationActive)
+				{
+					return;
+				}
+
+				// Make it the first frame when the weapon has just started to be used
+				if (forceFirstFrame && drawPlayer.ItemAnimationJustStarted)
+				{
+					frame = 0;
+					Timer = 0;
+				}
+
+				Texture2D itemTexture = TextureAssets.Item[itemID].Value;
+
+				Vector2 position = new((int)(drawInfo.ItemLocation.X - Main.screenPosition.X), (int)(drawInfo.ItemLocation.Y - Main.screenPosition.Y));
+
+				CalcFrame(); // Change the frame.
+				if (frameCount <= 0) // Divide by zero check
+				{
+					frameCount = 1;
+				}
+				Rectangle sourceRect = flashTexture.Frame(1, frameCount, 0, frame, 0, 0);
+
+				Main.NewText($"frame {frame} Timer {Timer} frameCount {frameCount} frameRate {frameRate}");
+
+				if ((drawPlayer.shroomiteStealth || drawPlayer.setVortex) && heldItem.CountsAsClass(DamageClass.Ranged)) // Decrease the alpha if stealthy
+				{
+					float alphaMulti = drawPlayer.stealth;
+					if (alphaMulti < 0.03)
+					{
+						alphaMulti = 0.03f;
+					}
+					alpha = (int)(alpha * alphaMulti);
+					colorNoAlpha *= alphaMulti;
+				}
+
+				Vector2 halfTextureSize = itemTexture.Size() / 2f;
+				Vector2 itemPos = Main.DrawPlayerItemPos(drawPlayer.gravDir, itemID);
+				halfTextureSize.Y = itemPos.Y;
+				Vector2 origin = new((-itemTexture.Width - (int)itemPos.X - posOffsetXRight), itemTexture.Height - itemPos.Y - posOffsetY); // facing right
+
+				if (drawPlayer.direction == -1) // If facing left
+				{
+					origin = new Vector2(itemTexture.Width + (int)itemPos.X + posOffsetXLeft, itemTexture.Height - itemPos.Y - posOffsetY);
+				}
+
+				if (drawPlayer.gravDir == -1f) // If up-side-down
+				{
+					origin.Y = sourceRect.Height - origin.Y + posOffsetYGravity;
+				}
+
+				// Dust.NewDustPerfect(drawInfo.ItemLocation, DustID.Pixie, Vector2.Zero);
+				// Dust.NewDustPerfect(origin + drawPlayer.position, DustID.RedTorch, Vector2.Zero);
+				// Dust.NewDustPerfect(itemPos + drawPlayer.position, DustID.GreenTorch, Vector2.Zero);
+
+				float itemRotation = drawPlayer.itemRotation + angleAdd;
+
+				if (discoColor)
+				{
+					colorNoAlpha = Main.DiscoColor;
+				}
+
+				if (heldItem.useStyle == ItemUseStyleID.Shoot)
+				{
+					position.Y += halfTextureSize.Y;
+				}
+				else
+				{
+					position += halfTextureSize;
+				}
+
+				DrawData flashDrawData = new(flashTexture.Value, position, sourceRect, new(colorNoAlpha.R, colorNoAlpha.G, colorNoAlpha.B, alpha), itemRotation, origin, adjustedItemScale * scale, drawInfo.itemEffect, 0);
+				if (shader != "")
+				{
+					GameShaders.Misc[shader].Apply(flashDrawData);
+				}
+
+				drawInfo.DrawDataCache.Add(flashDrawData);
+			}
+			base.PostModifyItemDraw(item, ref drawInfo, drawData, coloredDrawData, glowmaskDrawData);
+		}
+		*/
 	}
+
 	public class WeaponAttackFlashLayer : PlayerDrawLayer
 	{
 		public int frame = 0; // The frame of the texture.
@@ -213,6 +366,11 @@ namespace RijamsMod.Items.Weapons
 					}
 
 					DrawData drawData = new(flashTexture.Value, position, sourceRect, new(colorNoAlpha.R, colorNoAlpha.G, colorNoAlpha.B, alpha), itemRotation, origin, adjustedItemScale * scale, drawInfo.itemEffect, 0);
+					if (result.shader != "")
+					{
+						GameShaders.Misc[result.shader].Apply(drawData);
+					}
+					
 					drawInfo.DrawDataCache.Add(drawData);
 				}
 			}

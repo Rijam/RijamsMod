@@ -18,15 +18,15 @@ namespace RijamsMod.Items.Accessories
 	{
 		public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
 		{
-			if (player.GetModPlayer<RijamsModPlayer>().rocketBooster && (ammo.type == AmmoID.Rocket || weapon.useAmmo == AmmoID.Rocket || 
+			if (player.GetModPlayer<RijamsModPlayer>().Accessory_RocketBooster && (ammo.type == AmmoID.Rocket || weapon.useAmmo == AmmoID.Rocket || 
 					ammo.type == ItemID.ExplosiveJackOLantern || weapon.useAmmo == ItemID.ExplosiveJackOLantern || ammo.type == ItemID.Nail ||
-					weapon.useAmmo == ItemID.Nail || ammo.type == ItemID.StyngerBolt || weapon.useAmmo == ItemID.StyngerBolt) && !player.GetModPlayer<RijamsModPlayer>().gamutApparatus)
+					weapon.useAmmo == ItemID.Nail || ammo.type == ItemID.StyngerBolt || weapon.useAmmo == ItemID.StyngerBolt) && !player.GetModPlayer<RijamsModPlayer>().Accessory_GamutApparatus)
 			{
 				damage += 0.1f;
 				knockback *= 1.1f;
 				speed *= 1.5f;
 			}
-			if (player.GetModPlayer<RijamsModPlayer>().gamutApparatus)
+			if (player.GetModPlayer<RijamsModPlayer>().Accessory_GamutApparatus)
 			{
 				knockback *= 1.2f;
 				if (ammo.type == AmmoID.Rocket || weapon.useAmmo == AmmoID.Rocket ||
@@ -64,14 +64,14 @@ namespace RijamsMod.Items.Accessories
 	{
 		public override bool? CanAutoReuseItem(Item item, Player player)
 		{
-			if (player.GetModPlayer<RijamsModPlayer>().controlGlove)
+			if (player.GetModPlayer<RijamsModPlayer>().Accessory_ControlGlove)
 			{
 				if ((item.sentry || ProjectileID.Sets.MinionShot[item.shoot] || ProjectileID.Sets.MinionSacrificable[item.shoot]) && item.CountsAsClass(DamageClass.Summon))
 				{
 					return true;
 				}
 			}
-			if (player.GetModPlayer<RijamsModPlayer>().summonersGlove)
+			if (player.GetModPlayer<RijamsModPlayer>().Accessory_SummonersGlove)
 			{
 				if (item.CountsAsClass(DamageClass.Summon))
 				{
@@ -85,7 +85,7 @@ namespace RijamsMod.Items.Accessories
 	{
 		public override void HorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration)
 		{
-			if (player.GetModPlayer<RijamsModPlayer>().guideToProperFlightTechniques)
+			if (player.GetModPlayer<RijamsModPlayer>().Accessory_GuideToProperFlightTechniques)
 			{
 				if (player.wingTimeMax > 0)
 				{
@@ -96,7 +96,7 @@ namespace RijamsMod.Items.Accessories
 		}
 		public override void VerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
-			if (player.GetModPlayer<RijamsModPlayer>().guideToProperFlightTechniques)
+			if (player.GetModPlayer<RijamsModPlayer>().Accessory_GuideToProperFlightTechniques)
 			{
 				if (player.wingTimeMax > 0)
 				{
@@ -149,7 +149,7 @@ namespace RijamsMod.Items.Accessories
 
 				// Change the 2 to a 3 if the player has the Yoyo Backpack.
 				// This will give the player an extra yoyo and extra counterweight.
-				return returnValue + player.GetModPlayer<RijamsModPlayer>().bonusYoyosAndCounterweights;
+				return returnValue + player.GetModPlayer<RijamsModPlayer>().Stat_BonusYoyosAndCounterweights;
 			});
 
 			if (!c.TryGotoNext(MoveType.After, i => i.MatchLdloc1()))
@@ -179,7 +179,7 @@ namespace RijamsMod.Items.Accessories
 				// }
 
 				// This will give the player an extra counterweight (no extra yoyo, though).
-				return returnValue + player.GetModPlayer<RijamsModPlayer>().bonusCounterweights;
+				return returnValue + player.GetModPlayer<RijamsModPlayer>().Stat_BonusCounterweights;
 			});
 		}
 	}

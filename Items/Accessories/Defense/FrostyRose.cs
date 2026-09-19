@@ -26,7 +26,7 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 		}
 	}
 
@@ -51,7 +51,7 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 			player.fireWalk = true;
 			player.statDefense++;
 		}
@@ -86,8 +86,8 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().frostburnStone = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostburnStone = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 			player.fireWalk = true;
 			player.statDefense++;
 		}
@@ -122,7 +122,7 @@ namespace RijamsMod.Items.Accessories.Defense
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.lavaRose = true;
-			player.GetModPlayer<RijamsModPlayer>().frostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
 		}
 		public override void AddRecipes()
 		{

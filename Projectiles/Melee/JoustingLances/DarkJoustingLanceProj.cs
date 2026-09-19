@@ -1,9 +1,6 @@
 using Microsoft.Xna.Framework;
-using RijamsMod.Buffs.Debuffs;
-using RijamsMod.Dusts;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace RijamsMod.Projectiles.Melee.JoustingLances
 {
@@ -32,5 +29,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 		{
 			target.AddBuff(BuffID.ShadowFlame, (int)(info.Damage * 1.5f));
 		}
+
+		public override int DollHeldOffset() => 114;
 	}
 }

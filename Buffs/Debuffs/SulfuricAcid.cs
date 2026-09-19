@@ -21,7 +21,7 @@ namespace RijamsMod.Buffs.Debuffs
 
 		public override void Update(Player player, ref int buffIndex)
 		{
-			player.GetModPlayer<RijamsModPlayer>().sulfuricAcid = true;
+			player.GetModPlayer<RijamsModPlayer>().Buff_SulfuricAcid = true;
 		}
 
 		public override void Update(NPC npc, ref int buffIndex)

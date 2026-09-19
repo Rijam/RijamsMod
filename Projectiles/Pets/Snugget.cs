@@ -43,9 +43,9 @@ namespace RijamsMod.Projectiles.Pets
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
-				modPlayer.snuggetPet = false;
+				modPlayer.Pet_SnuggetPet = false;
 			}
-			if (modPlayer.snuggetPet)
+			if (modPlayer.Pet_SnuggetPet)
 			{
 				Projectile.timeLeft = 2;
 			}

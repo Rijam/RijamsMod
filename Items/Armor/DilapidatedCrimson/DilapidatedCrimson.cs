@@ -47,7 +47,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 		public override void UpdateArmorSet(Player player)
 		{
 			// Set in the detour below.
-			player.setBonus = Language.GetTextValue("ArmorSetBonus.Crimson");
+			// TODO player.setBonus = Language.GetTextValue("ArmorSetBonus.Crimson");
 			player.crimsonRegen = true;
 		}
 
@@ -157,7 +157,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 				(self.body == ArmorIDs.Body.CrimsonScalemail || self.body == EquipLoader.GetEquipSlot(Mod, "DilapidatedCrimsonScalemail", EquipType.Body)) &&
 				(self.legs == ArmorIDs.Legs.CrimsonGreaves || self.legs == EquipLoader.GetEquipSlot(Mod, "DilapidatedCrimsonGreaves", EquipType.Legs)))
 			{
-				self.setBonus = Language.GetTextValue("ArmorSetBonus.Crimson");
+				// TODO self.setBonus = Language.GetTextValue("ArmorSetBonus.Crimson");
 				self.crimsonRegen = true;
 			}
 		}
@@ -171,6 +171,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 					Player.body == ArmorIDs.Body.CrimsonScalemail &&
 					Player.legs == ArmorIDs.Legs.CrimsonGreaves;
 
+				/* TODO
 				if (Player.setBonus == Language.GetTextValue("ArmorSetBonus.Crimson") && !hasAllVanillaCrimsonSetOn)
 				{
 					int maxValue = 10;
@@ -188,6 +189,7 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 						Main.dust[num6].shader = GameShaders.Armor.GetSecondaryShader(Player.ArmorSetDye(), Player);
 					}
 				}
+				*/
 			}
 		}
 	}

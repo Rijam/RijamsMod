@@ -102,43 +102,6 @@ namespace RijamsMod.NPCs
 			return Main.Configuration.Get("UnlockMusicSwap", false);
 		}
 
-		private static bool shop1;
-		private static bool shop2;
-
-		/// <summary>
-		/// Sets the shop1 bool. Set it to the opposite of the SetShop2()
-		/// </summary>
-		public static void SetShop1(bool tOrF)
-		{
-			shop1 = tOrF;
-		}
-
-		/// <summary>
-		/// Sets the shop2 bool. Set it to the opposite of the SetShop1()
-		/// </summary>
-		public static void SetShop2(bool tOrF)
-		{
-			shop2 = tOrF;
-		}
-
-		/// <summary>
-		/// Gets if shop1 is open.
-		/// </summary>
-		/// <returns>bool</returns>
-		public static bool StatusShop1()
-		{
-			return shop1;
-		}
-
-		/// <summary>
-		/// Gets if shop2 is open.
-		/// </summary>
-		/// <returns>bool</returns>
-		public static bool StatusShop2()
-		{
-			return shop2;
-		}
-
 		public const int NUMBEROFQUESTS = 5;
 
 		public static int NumberOfQuestsCompleted()

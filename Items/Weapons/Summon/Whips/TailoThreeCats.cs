@@ -50,7 +50,7 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 
 	public class WhipTagEffect_TailoThreeCats : WhipTagEffect
 	{
-		public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
 			//base.OnProcHit(owner, optionalProjectile, npcHit, calcDamage);
 			npcHit.AddBuff(BuffID.Confused, 420);
@@ -59,9 +59,10 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 			{
 				UniqueInfoPiece = optionalProjectile.whoAmI
 			});
+			return true;
 		}
 
-		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
 			//npcHit.AddBuff(BuffID.Confused, 240);
 			//CombatText.NewText(optionalProjectile.Hitbox, Color.Purple, "BANG!");

@@ -3,16 +3,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
 using Terraria.GameContent.Creative;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace RijamsMod.Items.Dyes
 {
-	public class YellaDye : ModItem
+	public class AetherDye : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
-			// DisplayName.SetDefault("Yella Dye");
-			// Tooltip.SetDefault("'It may or may not be a color'");
 			// Avoid loading assets on dedicated servers. They don't use graphics cards.
 			if (!Main.dedServ)
 			{
@@ -20,9 +17,8 @@ namespace RijamsMod.Items.Dyes
 				GameShaders.Armor.BindShader
 				(
 					Item.type,
-					// new ArmorShaderData(new Ref<Effect>(Mod.Assets.Request<Effect>("Effects/YellaShader", AssetRequestMode.ImmediateLoad).Value), "YellaDyePass") // Be sure to update the effect path and pass name here.
-					new ArmorShaderData(Mod.Assets.Request<Effect>("Effects/YellaShader"), "YellaDyePass") // Be sure to update the effect path and pass name here.
-				).UseColor(2f, 2f, 0f).UseSecondaryColor(0.6f, 0.3f, 0f);
+					new ArmorShaderData(Main.PixelShaderRef, "RainbowTownSlime") // Vanilla shader
+				);
 			}
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
 		}
@@ -31,12 +27,14 @@ namespace RijamsMod.Items.Dyes
 			int dye = Item.dye;
 			Item.CloneDefaults(ItemID.ShiftingSandsDye);
 			Item.dye = dye;
+			Item.value = Item.sellPrice(0, 1, 0, 0);
 		}
+
 		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.BottledWater)
-				.AddIngredient(ModContent.ItemType<Materials.SunEssence>(), 10)
+				.AddIngredient(ItemID.ShimmerBlock, 5)
 				.AddTile(TileID.DyeVat)
 				.Register();
 		}

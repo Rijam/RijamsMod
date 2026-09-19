@@ -11,7 +11,6 @@ using RijamsMod.Items.Weapons.Melee.JoustingLances;
 using RijamsMod.Items.Weapons.Ranged;
 using RijamsMod.Items.Weapons.Ranged.Ammo;
 using RijamsMod.Items.Weapons.Summon.Whips;
-using static RijamsMod.RijamsModConfigServer;
 
 namespace RijamsMod.Items
 {
@@ -55,39 +54,46 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults(Item item)
 		{
-			RijamsModConfigServer.ArmorOptions vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
+			RijamsModConfigServer.VanillaArmorList vanillaArmorChanges = ModContent.GetInstance<RijamsModConfigServer>().VanillaArmorChanges;
 
 			if (item.type == ItemID.Coal)
 			{
 				item.maxStack = Item.CommonMaxStack;
 			}
-			if (item.type == ItemID.PharaohsMask && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (vanillaArmorChanges.PharaohsSet)
 			{
-				item.vanity = false;
-				item.defense = 2;
-				item.value = 5000;
+				if (item.type == ItemID.PharaohsMask)
+				{
+					item.vanity = false;
+					item.defense = 2;
+					item.value = 5000;
+				}
+				if (item.type == ItemID.PharaohsRobe)
+				{
+					item.vanity = false;
+					item.defense = 3;
+					item.value = 5000;
+				}
 			}
-			if (item.type == ItemID.PharaohsRobe && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (vanillaArmorChanges.AncientSet)
 			{
-				item.vanity = false;
-				item.defense = 3;
-				item.value = 5000;
+				if (item.type == ItemID.AncientArmorHat)
+				{
+					item.vanity = false;
+					item.defense = 10;
+				}
+				if (item.type == ItemID.AncientArmorShirt)
+				{
+					item.vanity = false;
+					item.defense = 14;
+				}
+				if (item.type == ItemID.AncientArmorPants)
+				{
+					item.vanity = false;
+					item.defense = 9;
+				}
 			}
-			if (item.type == ItemID.AncientArmorHat && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
-			{
-				item.vanity = false;
-				item.defense = 10;
-			}
-			if (item.type == ItemID.AncientArmorShirt && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
-			{
-				item.vanity = false;
-				item.defense = 14;
-			}
-			if (item.type == ItemID.AncientArmorPants && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
-			{
-				item.vanity = false;
-				item.defense = 9;
-			}
+			
 			if (item.type == ItemID.PinkPricklyPear)
 			{
 				item.consumable = true;
@@ -99,7 +105,7 @@ namespace RijamsMod.Items
 				item.buffType = ModContent.BuffType<Buffs.Potions.Satiated>(); //Specify an existing buff to be applied when used.
 				item.buffTime = 3600; //1 minute
 			}
-			if (item.type == ItemID.FlinxFurCoat && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			if (item.type == ItemID.FlinxFurCoat && vanillaArmorChanges.BuffFlinxFurCoat)
 			{
 				item.defense = 3;
 			}
@@ -160,7 +166,7 @@ namespace RijamsMod.Items
 		}
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
 		{
-			ArmorOptions vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
+			RijamsModConfigServer.VanillaArmorList vanillaArmorChanges = ModContent.GetInstance<RijamsModConfigServer>().VanillaArmorChanges;
 			bool isLeftShiftHeld = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
 			if (item.buffType == ModContent.BuffType<Buffs.Potions.ExceptionalFeast>())
@@ -216,33 +222,36 @@ namespace RijamsMod.Items
 					tooltips.Insert(index + 1, new TooltipLine(Mod, "Buff", "Provides the Honey buff when placed nearby"));
 				}
 			}
-			if (item.type == ItemID.AncientArmorHat && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (vanillaArmorChanges.AncientSet)
 			{
-				if (FindTooltipIndex(tooltips, "Defense", "Terraria", out int index))
+				if (item.type == ItemID.AncientArmorHat)
 				{
-					tooltips.Insert(index + 1, new TooltipLine(Mod, "AncientHeaddress", "+5 critical strike chance"));
-					tooltips.Insert(index + 2, new TooltipLine(Mod, "AncientHeaddress", "20% chance to not consume ammo"));
+					if (FindTooltipIndex(tooltips, "Defense", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "AncientHeaddress", "+5 critical strike chance"));
+						tooltips.Insert(index + 2, new TooltipLine(Mod, "AncientHeaddress", "20% chance to not consume ammo"));
+					}
+				}
+				if (item.type == ItemID.AncientArmorShirt)
+				{
+					if (FindTooltipIndex(tooltips, "Defense", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "AncientGarments", "20% increased damage"));
+						tooltips.Insert(index + 2, new TooltipLine(Mod, "AncientGarments", "+1 Minion capacity"));
+						tooltips.Insert(index + 3, new TooltipLine(Mod, "AncientGarments", "+5 Support minion radius"));
+					}
+				}
+				if (item.type == ItemID.AncientArmorPants)
+				{
+					if (FindTooltipIndex(tooltips, "Defense", "Terraria", out int index))
+					{
+						tooltips.Insert(index + 1, new TooltipLine(Mod, "AncientSlacks", "10% increased melee speed"));
+						tooltips.Insert(index + 2, new TooltipLine(Mod, "AncientSlacks", "10% reduced mana usage"));
+						tooltips.Insert(index + 3, new TooltipLine(Mod, "AncientSlacks", "+2 life regeneration"));
+					}
 				}
 			}
-			if (item.type == ItemID.AncientArmorShirt && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
-			{
-				if (FindTooltipIndex(tooltips, "Defense", "Terraria", out int index))
-				{
-					tooltips.Insert(index + 1, new TooltipLine(Mod, "AncientGarments", "20% increased damage"));
-					tooltips.Insert(index + 2, new TooltipLine(Mod, "AncientGarments", "+1 Minion capacity"));
-					tooltips.Insert(index + 3, new TooltipLine(Mod, "AncientGarments", "+5 Support minion radius"));
-				}
-			}
-			if (item.type == ItemID.AncientArmorPants && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
-			{
-				if (FindTooltipIndex(tooltips, "Defense", "Terraria", out int index))
-				{
-					tooltips.Insert(index + 1, new TooltipLine(Mod, "AncientSlacks", "10% increased melee speed"));
-					tooltips.Insert(index + 2, new TooltipLine(Mod, "AncientSlacks", "10% reduced mana usage"));
-					tooltips.Insert(index + 3, new TooltipLine(Mod, "AncientSlacks", "+2 life regeneration"));
-				}
-			}
-			if (item.type == ItemID.BeeGreaves && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			if (item.type == ItemID.BeeGreaves && vanillaArmorChanges.BuffBeeGreaves)
 			{
 				if (FindTooltipIndex(tooltips, "Tooltip0", "Terraria", out int index))
 				{
@@ -264,6 +273,13 @@ namespace RijamsMod.Items
 			{
 				TooltipLine line = tooltips.FirstOrDefault(x => x.Name == "Tooltip0" && x.Mod == "Terraria");
 				line?.Text = Language.GetTextValue("ItemTooltip.ShadowJoustingLance") + "\n7.65 tile reach\nInflicts Shadowflame";
+			}
+			if (item.type == ItemID.FairyQueenMagicItem) // Nightglow
+			{
+				if (FindTooltipIndex(tooltips, "UseMana", "Terraria", out int index))
+				{
+					tooltips.Insert(index + 1, new TooltipLine(Mod, "LanternStats", "3 Very Fast projectiles\n50 tile homing radius\nBounces off tiles\nPierces 2 times"));
+				}
 			}
 			RijamsModConfigClient configClient = ModContent.GetInstance<RijamsModConfigClient>();
 			if (CustomItemIDSets.IsWhip[item.type] && (isLeftShiftHeld && configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.HoldShift || configClient.DisplayWhipMultihitPenalty == RijamsModConfigClient.WhipMultihitPenalty.On))
@@ -480,21 +496,21 @@ namespace RijamsMod.Items
 
 		public override string IsArmorSet(Item head, Item body, Item legs)
 		{
-			ArmorOptions vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
+			RijamsModConfigServer.VanillaArmorList vanillaArmorChanges = ModContent.GetInstance<RijamsModConfigServer>().VanillaArmorChanges;
 
 			if (head.type == ItemID.CrimsonHelmet && (body.type == ItemID.CrimsonScalemail || body.type == ModContent.ItemType<Armor.DilapidatedCrimson.DilapidatedCrimsonScalemail>()) && (legs.type == ItemID.CrimsonGreaves || legs.type == ModContent.ItemType<Armor.DilapidatedCrimson.DilapidatedCrimsonGreaves>()))
 			{
 				return Language.GetTextValue("ArmorSetBonus.Crimson");
 			}
-			if (head.type == ItemID.PharaohsMask && body.type == ItemID.PharaohsRobe && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (head.type == ItemID.PharaohsMask && body.type == ItemID.PharaohsRobe && vanillaArmorChanges.PharaohsSet)
 			{
 				return "Pharaoh";
 			}
-			if (head.type == ItemID.AncientArmorHat && body.type == ItemID.AncientArmorShirt && legs.type == ItemID.AncientArmorPants && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (head.type == ItemID.AncientArmorHat && body.type == ItemID.AncientArmorShirt && legs.type == ItemID.AncientArmorPants && vanillaArmorChanges.AncientSet)
 			{
 				return "Ancient";
 			}
-			if (head.type == ItemID.StardustHelmet && body.type == ItemID.StardustBreastplate && legs.type == ItemID.StardustLeggings && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			if (head.type == ItemID.StardustHelmet && body.type == ItemID.StardustBreastplate && legs.type == ItemID.StardustLeggings && vanillaArmorChanges.BuffStardustSetBonus)
 			{
 				return "Stardust";
 			}
@@ -502,50 +518,53 @@ namespace RijamsMod.Items
 		}
 		public override void UpdateEquip(Item item, Player player)
 		{
-			ArmorOptions vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
+			RijamsModConfigServer.VanillaArmorList vanillaArmorChanges = ModContent.GetInstance<RijamsModConfigServer>().VanillaArmorChanges;
 
-			if (item.type == ItemID.AncientArmorHat && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (vanillaArmorChanges.AncientSet)
 			{
-				player.GetCritChance(DamageClass.Melee) += 5;
-				player.GetCritChance(DamageClass.Ranged) += 5;
-				player.GetCritChance(DamageClass.Magic) += 5;
-				player.GetCritChance(DamageClass.Throwing) += 5;
-				player.ammoCost80 = true;
+				if (item.type == ItemID.AncientArmorHat)
+				{
+					player.GetCritChance(DamageClass.Melee) += 5;
+					player.GetCritChance(DamageClass.Ranged) += 5;
+					player.GetCritChance(DamageClass.Magic) += 5;
+					player.GetCritChance(DamageClass.Throwing) += 5;
+					player.ammoCost80 = true;
+				}
+				if (item.type == ItemID.AncientArmorShirt)
+				{
+					player.maxMinions += 1;
+					player.GetDamage(DamageClass.Generic) *= 1.2f;
+					player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionRadiusIncrease += 5;
+				}
+				if (item.type == ItemID.AncientArmorPants)
+				{
+					player.GetAttackSpeed(DamageClass.Melee) *= 1.1f;
+					player.manaCost *= 0.9f;
+					player.lifeRegen += 2;
+				}
 			}
-			if (item.type == ItemID.AncientArmorShirt && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
-			{
-				player.maxMinions += 1;
-				player.GetDamage(DamageClass.Generic) *= 1.2f;
-				player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 5;
-			}
-			if (item.type == ItemID.AncientArmorPants && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
-			{
-				player.GetAttackSpeed(DamageClass.Melee) *= 1.1f;
-				player.manaCost *= 0.9f;
-				player.lifeRegen += 2;
-			}
-			if (item.type == ItemID.BeeGreaves && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			if (item.type == ItemID.BeeGreaves && vanillaArmorChanges.BuffBeeGreaves)
 			{
 				player.maxTurrets++;
 			}
 		}
 		public override void UpdateArmorSet(Player player, string set)
 		{
-			ArmorOptions vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
+			RijamsModConfigServer.VanillaArmorList vanillaArmorChanges = ModContent.GetInstance<RijamsModConfigServer>().VanillaArmorChanges;
 
-			if (set == "Pharaoh" && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (set == "Pharaoh" && vanillaArmorChanges.PharaohsSet)
 			{
-				player.setBonus = "\n10% reduced mana usage\n+1 Minion capacity\n+10% Whip range\n5% increased movement speed\nGrants Immunity to Mighty Wind";
+				// TODO player.setBonus = "\n10% reduced mana usage\n+1 Minion capacity\n+10% Whip range\n5% increased movement speed\nGrants Immunity to Mighty Wind";
 				player.manaCost -= 0.1f;
 				player.maxMinions++;
 				player.whipRangeMultiplier += 0.1f;
 				player.moveSpeed += 0.05f;
 				player.buffImmune[BuffID.WindPushed] = true;
 			}
-			if (set == "Ancient" && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (set == "Ancient" && vanillaArmorChanges.AncientSet)
 			{
-				player.GetModPlayer<RijamsModPlayer>().ancientSet = true;
-				player.setBonus = "\nIncreased maximum running speed\nIncreased running acceleration\n+0.5 seconds flight time\n+15% Whip speed\n+20% Whip range\nAllows Shield of Cthulhu style dashing";
+				player.GetModPlayer<RijamsModPlayer>().Armor_AncientSet = true;
+				// TODO player.setBonus = "\nIncreased maximum running speed\nIncreased running acceleration\n+0.5 seconds flight time\n+15% Whip speed\n+20% Whip range\nAllows Shield of Cthulhu style dashing";
 				player.dashType = 2; //Shield of Cthulhu dash
 				//Set in PostUpdateRunSpeeds() in RijamsModPlayer.cs
 				//player.runAcceleration += 0.1f;
@@ -554,17 +573,17 @@ namespace RijamsMod.Items
 				player.whipRangeMultiplier += 0.2f;
 				player.wingTimeMax += 30;
 			}
-			if ((player.setStardust || set == "Stardust") && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.ArmorOnly))
+			if ((player.setStardust || set == "Stardust") && vanillaArmorChanges.BuffStardustSetBonus)
 			{
-				player.setBonus = Language.GetTextValue("ArmorSetBonus.Stardust") + "\n+15% Whip speed";
+				// TODO player.setBonus = Language.GetTextValue("ArmorSetBonus.Stardust") + "\n+15% Whip speed";
 				player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.15f;
 			}
 		}
 		public override void ArmorSetShadows(Player player, string set)
 		{
-			ArmorOptions vanillaVanityToArmor = ModContent.GetInstance<RijamsModConfigServer>().VanillaVanityToArmor;
+			RijamsModConfigServer.VanillaArmorList vanillaArmorChanges = ModContent.GetInstance<RijamsModConfigServer>().VanillaArmorChanges;
 
-			if (set == "Ancient" && (vanillaVanityToArmor == ArmorOptions.All || vanillaVanityToArmor == ArmorOptions.VanityOnly))
+			if (set == "Ancient" && vanillaArmorChanges.AncientSet)
 			{
 				player.armorEffectDrawShadow = true;
 			}

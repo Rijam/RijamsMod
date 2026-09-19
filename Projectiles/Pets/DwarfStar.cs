@@ -1,15 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using rail;
 using ReLogic.Content;
 using System;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Humanizer.In;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace RijamsMod.Projectiles.Pets
 {
@@ -42,9 +38,9 @@ namespace RijamsMod.Projectiles.Pets
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
-				modPlayer.dwarfStarPet = false;
+				modPlayer.Pet_DwarfStarPet = false;
 			}
-			if (modPlayer.dwarfStarPet)
+			if (modPlayer.Pet_DwarfStarPet)
 			{
 				Projectile.timeLeft = 2;
 			}

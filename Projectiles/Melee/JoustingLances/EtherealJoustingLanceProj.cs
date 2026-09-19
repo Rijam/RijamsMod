@@ -163,5 +163,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 					sourceRectangle, glowColor, rotation, origin, Projectile.scale, spriteEffects, 0);
 			}
 		}
+
+		public override int DollHeldOffset() => 174;
 	}
 }

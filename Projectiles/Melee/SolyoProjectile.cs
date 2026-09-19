@@ -2,6 +2,7 @@
 using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,6 +37,7 @@ namespace RijamsMod.Projectiles.Melee
 			Projectile.scale = 1f;
 			Projectile.usesIDStaticNPCImmunity = true;
 			Projectile.idStaticNPCHitCooldown = 10;
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 		// notes for aiStyle 99: 
 		// localAI[0] is used for timing up to YoyosLifeTimeMultiplier
@@ -61,5 +63,16 @@ namespace RijamsMod.Projectiles.Melee
 
 			Projectile.NewProjectile(Entity.GetSource_FromThis(), new Vector2(Projectile.position.X, Projectile.position.Y - Main.screenHeight - 100), new Vector2(Main.rand.NextFloat(-1, 1f), Main.rand.NextFloat(12f, 16f)), ModContent.ProjectileType<SolarFlare>(), Projectile.damage / 2, Projectile.knockBack / 2, Projectile.owner);
 		}
+
+		/*
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 99 (Yoyo)
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+		{
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.position = new Vector2(doll.Center.X + (9 * doll.direction), doll.Bottom.Y - 8f); // Set the position to be at the mannequin's feet.
+			return false;
+		}
+		*/
 	}
 }

@@ -20,5 +20,7 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 			widthMultiplier = 20f;
 			lanceHitboxBounds = new(0, 0, 120, 120);
 		}
+
+		public override int DollHeldOffset() => 70;
 	}
 }

@@ -87,17 +87,33 @@ WhipMultihitPenalty: {
 
 	On: {
 		Label: On
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When On: Multihit Penalty will always be displayed.
+			'''
 	}
 
 	HoldShift: {
 		Label: Hold Shift
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Hold Shift: Multihit Penalty will only be displayed when holding left shift.
+			'''
 	}
 
 	Off: {
 		Label: Off
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Off: Multihit Penalty will not be shown.
+			Set to this for vanilla behavior or to turn this feature off.
+			'''
 	}
 }
 
@@ -106,22 +122,43 @@ SupportSummonsAura: {
 
 	Opaque: {
 		Label: Opaque
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Opaque: The dust indicator will be shown as completely opaque.
+			'''
 	}
 
 	Normal: {
 		Label: Normal
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Normal: The dust indicator will be shown as semi-transparent.
+			'''
 	}
 
 	Faded: {
 		Label: Faded
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Faded: The dust indicator will be shown as almost completely transparent.
+			'''
 	}
 
 	Off: {
 		Label: Off
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Off: The dust indicator will be hidden.
+			Turn Off if you don't want to see the auras.
+			'''
 	}
 }
 
@@ -129,24 +166,17 @@ RijamsModConfigServer: {
 	DisplayName: Server Options
 	Headers.ServerOptions: "[c/00FF00:Server Options]"
 
-	VanillaVanityToArmor: {
+	VanillaArmorChanges: {
 		Label: "[i:848]   Vanilla Vanity and Armor Changes"
 		Tooltip:
 			'''
 			This option toggles if certain vanilla vanity sets are changed into armor sets
 			and if certain vanilla armor sets are changed.
-			  When All: The follow vanity sets will be changed to armor and armor sets are changed.
-			  When Vanity Only: Only the vanity sets will be changed to armor.
-			  When Armor Only: Only the armor sets will be changed.
-			  When Off: Same as vanilla. None of the vanilla sets will be changed.
-			    Turn Off to keep them the same as vanilla or for cross mod compatibility.
-			* Pharaoh's Set
-			* Ancient Set
-			* Buffs to Stardust set bonus
-			* Buffs to the Bee Pants
-			* Buffs to the Flinx Fur Coat
-			Default value: All
-			Reload required
+
+			Turn Off to keep them the same as vanilla or for cross mod compatibility.
+
+			Default value: On
+			Requires a Reload.
 			'''
 	}
 
@@ -233,7 +263,7 @@ RijamsModConfigServer: {
 	}
 
 	SnowBallaGriefing: {
-		Label: "[i:SnowBlock] Snow Balla Griefing"
+		Label: "[i:SnowBlock]   Snow Balla Griefing"
 		Tooltip:
 			'''
 			This option toggles if the snowballs thrown by the Snow Balla will place snow blocks.
@@ -246,45 +276,125 @@ RijamsModConfigServer: {
 	}
 }
 
-ArmorOptions: {
-	Tooltip: ""
-
-	All: {
-		Label: All
-		Tooltip: ""
-	}
-
-	VanityOnly: {
-		Label: Vanity Only
-		Tooltip: ""
-	}
-
-	ArmorOnly: {
-		Label: Armor Only
-		Tooltip: ""
-	}
-
-	Off: {
-		Label: Off
-		Tooltip: ""
-	}
-}
-
 SnowBallaGriefingOptions: {
 	Tooltip: ""
 
 	On: {
 		Label: On
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When On: Same as vanilla. The snowballs will place snow block tiles.
+			Set to this for vanilla behavior.
+			'''
 	}
 
 	DropAsItem: {
 		Label: Drop as Item
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Drop as Item: The snowballs will drop snow block items instead.
+			'''
 	}
 
 	Off: {
 		Label: Off
-		Tooltip: ""
+		Tooltip:
+			'''
+			{$Label}
+
+			When Off: The snowballs will not place nor drop anything.
+			'''
+	}
+}
+
+VanillaArmorList: {
+	Tooltip: ""
+
+	PharaohsSet: {
+		Label: Pharaoh's Set [i:PharaohsMask] [i:PharaohsRobe]
+		Tooltip:
+			'''
+			The Pharaoh's vanity set will be turned into armor.
+
+			Pharaoh's Mask:
+			  2 Defense
+
+			Pharaoh's Robe:
+			  3 Defense
+
+			Set Bonus:
+			  10% reduced mana usage
+			  +1 Minion capacity
+			  +10% Whip range
+			  5% increased movement speed
+			  Grants Immunity to Mighty Wind
+			'''
+	}
+
+	AncientSet: {
+		Label: Ancient Set [i:AncientArmorHat] [i:AncientArmorShirt] [i:AncientArmorPants]
+		Tooltip:
+			'''
+			The Ancient vanity set will be turned into armor.
+
+			Ancient Headdress:
+			  10 Defense
+			  +5 critical strike chance
+			  20% chance to not consume ammo
+
+			Ancient Garments:
+			  14 Defense
+			  20% increased damage
+			  +1 Minion capacity
+			  +5 Support minion radius
+
+			Ancient Slacks:
+			  9 Defense
+			  10% increased melee speed
+			  10% reduced mana usage
+			  +2 life regeneration
+
+			Set Bonus:
+			  Increased maximum running speed
+			  Increased running acceleration
+			  +0.5 seconds flight time
+			  +15% Whip speed
+			  +20% Whip range
+			  Allows Shield of Cthulhu style dashing
+			'''
+	}
+
+	BuffStardustSetBonus: {
+		Label: Buff Stardust Set Bonus [i:StardustHelmet] [i:StardustBreastplate] [i:StardustLeggings]
+		Tooltip:
+			'''
+			The Stardust armor's set bonus will be buffed.
+
+			+15% Whip speed
+			'''
+	}
+
+	BuffBeeGreaves: {
+		Label: Buff Bee Greaves [i:BeeGreaves]
+		Tooltip:
+			'''
+			The Bee Greaves will be buffed.
+
+			+1 Sentry capacity
+			'''
+	}
+
+	BuffFlinxFurCoat: {
+		Label: Buff Flinx Fur Coat [i:FlinxFurCoat]
+		Tooltip:
+			'''
+			The Flinx Fur Coat will be buffed.
+
+			3 Defense (from 1)
+			'''
 	}
 }

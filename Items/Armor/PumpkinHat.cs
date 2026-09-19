@@ -35,7 +35,7 @@ namespace RijamsMod.Items.Armor
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
+			// TODO player.setBonus = Language.GetTextValue("ArmorSetBonus.Pumpkin");
 			player.GetDamage(DamageClass.Generic) += 0.1f;
 		}
 

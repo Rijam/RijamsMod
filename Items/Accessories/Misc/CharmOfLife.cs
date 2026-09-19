@@ -19,7 +19,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			// Life regen set in SetDefaults ^
-			player.GetModPlayer<RijamsModPlayer>().lifeSapperRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_LifeSapperRing = true;
 		}
 		public override void AddRecipes()
 		{
@@ -54,7 +54,7 @@ namespace RijamsMod.Items.Accessories.Misc
 			// Life regen set in SetDefaults ^
 			player.pStone = true;
 			player.statLifeMax2 += 25;
-			player.GetModPlayer<RijamsModPlayer>().lifeSapperRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_LifeSapperRing = true;
 		}
 		public override void AddRecipes()
 		{

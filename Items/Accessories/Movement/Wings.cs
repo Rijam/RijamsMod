@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Audio;
+using Microsoft.Xna.Framework;
 
 namespace RijamsMod.Items.Accessories.Movement
 {
@@ -77,6 +78,16 @@ namespace RijamsMod.Items.Accessories.Movement
 				tooltips.Add(new TooltipLine(Mod, "Stats", "Vertical Speed Multiplier: 250%"));
 			}
 		}
+
+		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
+		{
+			// Draw the wings
+			int wingFrameCount = 7;
+			drawData.position.Y += 23; // Move down. Odd number for some reason.
+			drawData.sourceRect = new Rectangle(0, drawData.texture.Height / wingFrameCount * drawInfo.drawPlayer.wingFrame, drawData.texture.Width, drawData.texture.Height / wingFrameCount);
+
+			return true;
+		}
 		public override bool WingUpdate(Player player, bool inUse)
 		{
 			if (player.pulley || player.velocity.Y == 0f || (player.wet && player.velocity.Y > -0.02 && player.velocity.Y < 0.02)
@@ -137,6 +148,9 @@ namespace RijamsMod.Items.Accessories.Movement
 		}
 	}
 
+	// Superseded by ModItem.ModifyEquipTextureDraw
+	// For when autoloaded texture is default 4 frame wings
+	/*
 	public class RedHarpyWingsDrawLayer : PlayerDrawLayer
 	{
 		public Asset<Texture2D> wingTexture;
@@ -193,4 +207,5 @@ namespace RijamsMod.Items.Accessories.Movement
 			}
 		}
 	}
+	*/
 }

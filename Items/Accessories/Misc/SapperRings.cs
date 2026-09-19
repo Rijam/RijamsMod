@@ -28,7 +28,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().lifeSapperRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_LifeSapperRing = true;
 		}
 	}
 
@@ -53,7 +53,7 @@ namespace RijamsMod.Items.Accessories.Misc
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().manaSapperRing = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_ManaSapperRing = true;
 		}
 	}
 }

@@ -526,6 +526,7 @@ ControlGlove: {
 	Tooltip:
 		'''
 		+2 Support minion radius
+		+4 Summon armor penetration
 		Enables auto swing for all minion and sentry weapons
 		'''
 }
@@ -594,6 +595,7 @@ ReinforcedSummonersGlove: {
 		+5% Whip damage
 		+100% Summon knockback
 		+2 Support minion radius
+		+4 Summon armor penetration
 		+4 Defense
 		Enables auto swing for all summon weapons
 		'''
@@ -607,6 +609,7 @@ SummonersGlove: {
 		+10% Whip size
 		+100% Summon knockback
 		+2 Support minion radius
+		+4 Summon armor penetration
 		Enables auto swing for all summon weapons
 		'''
 }
@@ -1054,6 +1057,11 @@ OutlineDye: {
 	Tooltip: ""
 }
 
+AetherDye: {
+	DisplayName: Aether Dye
+	Tooltip: ""
+}
+
 # Items/Fishing
 
 HornetTail: {
@@ -1396,7 +1404,7 @@ PianistsGlove: {
 	Tooltip:
 		'''
 		Playable next to Piano
-		<right> to switch octaves
+		{InputTrigger_ToggleOrOpen} to switch octaves
 		'''
 }
 
@@ -2002,7 +2010,7 @@ Slugger: {
 	Tooltip:
 		'''
 		Shoots two high powered bullets
-		<right> to load up to 10 bullets
+		{InputTrigger_InteractWithTile} to load up to 10 bullets
 		'''
 }
 

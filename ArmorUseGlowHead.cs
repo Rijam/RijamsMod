@@ -1,10 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
-using ReLogic.Content;
 
 namespace RijamsMod
 {
@@ -52,6 +53,10 @@ namespace RijamsMod
 		{
 			Player drawPlayer = drawInfo.drawPlayer;
 			if (drawPlayer.dead || drawPlayer.invis || drawPlayer.head == -1)
+			{
+				return false;
+			}
+			if (drawInfo.hideEntirePlayer || drawPlayer.mount.Active && MountID.Sets.PlayerIsHidden[drawPlayer.mount.Type])
 			{
 				return false;
 			}

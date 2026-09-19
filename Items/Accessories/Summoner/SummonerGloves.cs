@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,7 +11,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		{
 			// DisplayName.SetDefault("Control Glove");
 			// Tooltip.SetDefault("Enables auto swing for all minion and sentry weapons");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Deerclops]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Deerclops]"]);
 		}
 
 		public override void SetDefaults()
@@ -25,8 +24,9 @@ namespace RijamsMod.Items.Accessories.Summoner
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().controlGlove = true;
-			player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 2;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_ControlGlove = true;
+			player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionRadiusIncrease += 2;
+			player.GetArmorPenetration(DamageClass.Summon) += 4;
 		}
 	}
 
@@ -49,11 +49,12 @@ namespace RijamsMod.Items.Accessories.Summoner
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().summonersGlove = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_SummonersGlove = true;
 			player.GetKnockback(DamageClass.Summon).Base += 1f;
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.12f;
 			player.whipRangeMultiplier += 0.1f;
-			player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 2;
+			player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionRadiusIncrease += 2;
+			player.GetArmorPenetration(DamageClass.Summon) += 4;
 		}
 		public override void AddRecipes()
 		{
@@ -84,13 +85,14 @@ namespace RijamsMod.Items.Accessories.Summoner
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetModPlayer<RijamsModPlayer>().summonersGlove = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_SummonersGlove = true;
 			player.GetKnockback(DamageClass.Summon).Base += 1f;
 			player.GetAttackSpeed(DamageClass.Summon) += 0.12f;
 			player.whipRangeMultiplier += 0.1f;
 			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.05f;
 			player.statDefense += 4;
-			player.GetModPlayer<RijamsModPlayer>().supportMinionRadiusIncrease += 2;
+			player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionRadiusIncrease += 2;
+			player.GetArmorPenetration(DamageClass.Summon) += 4;
 		}
 		public override void AddRecipes()
 		{

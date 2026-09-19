@@ -8,11 +8,18 @@ using System;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using ReLogic.Content;
+using Terraria.GameContent.Tile_Entities;
 
 namespace RijamsMod.Projectiles.Magic
 {
+	// Unused. The item has custom drawing now.
 	public class AetherLanternProj : ModProjectile
 	{
+		public override bool IsLoadingEnabled(Mod mod)
+		{
+			return false;
+		}
+
 		private readonly int sheetFrames = 5;
 		public override void SetStaticDefaults()
 		{
@@ -30,6 +37,7 @@ namespace RijamsMod.Projectiles.Magic
 			Projectile.scale = 0.75f;
 			Projectile.timeLeft = 30; // This value does not matter since we manually kill it earlier, it just has to be higher than the duration we use in AI
 			Projectile.hide = false; // Important when used alongside player.heldProj. "Hidden" projectiles have special draw conditions
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 		}
 		public override void AI()
 		{

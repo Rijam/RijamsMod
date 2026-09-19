@@ -24,7 +24,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Height = 2;
 			TileObjectData.newTile.Origin = new Point16(0, 1);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.RandomStyleRange = 3;
 			//TileObjectData.newTile.StyleLineSkip = 3;
@@ -53,10 +53,6 @@ namespace RijamsMod.Tiles
 				return;
 			}
 			Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen)
-			{
-				zero = Vector2.Zero;
-			}
 			int height = tile.TileFrameY == 36 ? 18 : 16;
 			int animate = Main.tileFrame[Type] * AnimationFrameHeight;
 			Main.spriteBatch.Draw(glowmask.Value, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY + animate, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

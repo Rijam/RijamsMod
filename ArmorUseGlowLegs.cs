@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using ReLogic.Content;
+using Terraria.ID;
 
 namespace RijamsMod
 {
@@ -49,6 +50,10 @@ namespace RijamsMod
 		{
 			Player drawPlayer = drawInfo.drawPlayer;
 			if (drawPlayer.dead || drawPlayer.invis || drawPlayer.legs == -1)
+			{
+				return false;
+			}
+			if (drawInfo.hideEntirePlayer || drawPlayer.mount.Active && MountID.Sets.PlayerIsHidden[drawPlayer.mount.Type])
 			{
 				return false;
 			}

@@ -43,7 +43,7 @@ namespace RijamsMod.Tiles
 
 			LocalizedText name = CreateMapEntryName();
 
-			AdjTiles = new int[] { TileID.Campfire };
+			AdjTiles = [TileID.Campfire];
 			AddMapEntry(new Color(250, 250, 0), name);
 			DustType = ModContent.DustType<SulfurDust>();
 
@@ -165,21 +165,17 @@ namespace RijamsMod.Tiles
 				return;
 			}
 
-			int addFrY = 252;
 			if (tile.TileFrameY < 36)
 			{
-				addFrY = Main.tileFrame[Type] * AnimationFrameHeight;
-			}
-			int tileTop = 2;
+				int addFrY = 252;
+				if (tile.TileFrameY < 36)
+				{
+					addFrY = Main.tileFrame[Type] * AnimationFrameHeight;
+				}
+				int tileTop = 2;
 
-			Vector2 screenOffset = new(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen)
-			{
-				screenOffset = Vector2.Zero;
-			}
+				Vector2 screenOffset = new(Main.offScreenRange);
 
-			if (tile.TileFrameY < 36)
-			{
 				Color color = new(255, 255, 255, 200);
 				spriteBatch.Draw(flameTexture.Value,
 					new Vector2((i * 16 - (int)Main.screenPosition.X) - (width - 16f) / 2f + 1, j * 16 - (int)Main.screenPosition.Y + tileTop) + screenOffset,
@@ -188,31 +184,24 @@ namespace RijamsMod.Tiles
 			}
 		}
 
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+		public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
 		{
-			if (Main.gamePaused || !Main.instance.IsActive)
+			// Unlike a typical tile, campfire tiles intentionally still spawn dust even when the tile is invisible. This means we do NOT check visible as other examples do.
+			Tile tile = Main.tile[i, j];
+			// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
+			if (tile.TileFrameY == 0 && Main.rand.NextBool(3))
 			{
-				return;
-			}
+				Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
+				if (tile.TileFrameX == 0)
+					dust.position.X += Main.rand.Next(8);
 
-			if (!Lighting.UpdateEveryFrame || new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) == 0)
-			{
-				Tile tile = Main.tile[i, j];
-				// Only emit dust from the top tiles, and only if toggled on. This logic limits dust spawning under different conditions.
-				if (tile.TileFrameY == 0 && Main.rand.NextBool(3) && ((Main.drawToScreen && Main.rand.NextBool(4)) || !Main.drawToScreen))
-				{
-					Dust dust = Dust.NewDustDirect(new Vector2(i * 16 + 2, j * 16 - 4), 4, 8, DustID.Smoke, 0f, 0f, 100);
-					if (tile.TileFrameX == 0)
-						dust.position.X += Main.rand.Next(8);
+				if (tile.TileFrameX == 36)
+					dust.position.X -= Main.rand.Next(8);
 
-					if (tile.TileFrameX == 36)
-						dust.position.X -= Main.rand.Next(8);
-
-					dust.alpha += Main.rand.Next(100);
-					dust.velocity *= 0.2f;
-					dust.velocity.Y -= 0.5f + Main.rand.Next(10) * 0.1f;
-					dust.fadeIn = 0.5f + Main.rand.Next(10) * 0.1f;
-				}
+				dust.alpha += Main.rand.Next(100);
+				dust.velocity *= 0.2f;
+				dust.velocity.Y -= 0.5f + Main.rand.Next(10) * 0.1f;
+				dust.fadeIn = 0.5f + Main.rand.Next(10) * 0.1f;
 			}
 		}
 	}

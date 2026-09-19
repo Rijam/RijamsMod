@@ -13,19 +13,39 @@ namespace RijamsMod.Items.Mounts
 {
 	public class DistortionSphere : ModMount
 	{
+		public override void Load()
+		{
+			Terraria.DataStructures.On_PlayerDrawSet.BoringSetup_2 += On_PlayerDrawSet_BoringSetup_2;
+		}
+
+		private void On_PlayerDrawSet_BoringSetup_2(On_PlayerDrawSet.orig_BoringSetup_2 orig, ref PlayerDrawSet self, Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin)
+		{
+			if (self.drawPlayer.mount.Active && (self.drawPlayer.mount.Type == ModContent.MountType<DistortionSphere>() || self.drawPlayer.mount.Type == ModContent.MountType<SwiftSphere>()))
+			{
+				self.hideEntirePlayer = true;
+			}
+			orig(ref self, player, drawData, dust, gore, drawPosition, shadowOpacity, rotation, rotationOrigin);
+		}
+
 		public override void SetStaticDefaults()
 		{
 			// Movement
 			MountData.jumpHeight = 7; // How high the mount can jump.
-			MountData.acceleration = 0.2f; // The rate at which the mount speeds up.
 			MountData.jumpSpeed = 4f; // The rate at which the player and mount ascend towards (negative y velocity) the jump height when the jump button is presssed.
 			MountData.blockExtraJumps = false; // Determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
 			MountData.constantJump = false; // Allows you to hold the jump button down.
 			MountData.heightBoost = -22; // Height between the mount and the ground
 			MountData.fallDamage = 0.5f; // Fall damage multiplier.
-			MountData.runSpeed = 12f; // The speed of the mount
 			MountData.dashSpeed = 0f; // The speed the mount moves when in the state of dashing.
 			MountData.flightTimeMax = 0; // The amount of time in frames a mount can be in the state of flying.
+
+#pragma warning disable IDE0150 // Prefer 'null' check over type check
+			if (this is DistortionSphere) // For some reason this was overriding the SwiftSphere's speed.
+			{
+				MountData.acceleration = 0.2f; // The rate at which the mount speeds up.
+				MountData.runSpeed = 12f; // The speed of the mount
+			}
+#pragma warning restore IDE0150 // Prefer 'null' check over type check
 
 			// Misc
 			MountData.fatigueMax = 0;
@@ -39,7 +59,7 @@ namespace RijamsMod.Items.Mounts
 			MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
 			MountData.xOffset = 0;
 			MountData.yOffset = 0;
-			MountData.playerHeadOffset = 0;
+			MountData.playerHeadOffset = -16;
 			MountData.bodyFrame = 3;
 			// Standing
 			MountData.standingFrameCount = 1;
@@ -72,6 +92,10 @@ namespace RijamsMod.Items.Mounts
 				MountData.textureWidth = MountData.backTexture.Width();
 				MountData.textureHeight = MountData.backTexture.Height();
 			}
+
+			MountID.Sets.IsTransformationMount[Type] = true;
+			MountID.Sets.PlayerIsHidden[Type] = true;
+			MountID.Sets.DontHoldItems[Type] = true;
 		}
 
 		public override void SetMount(Player player, ref bool skipDust)
@@ -87,6 +111,15 @@ namespace RijamsMod.Items.Mounts
 			player.slippy = true; // Make the player slide on the ground.
 			player.velocity.X *= 0.98f; // Apply extra friction
 			base.UpdateEffects(player);
+		}
+
+		public override void JumpSpeed(Player mountedPlayer, ref float jumpSeed, float xVelocity)
+		{
+			jumpSeed += (mountedPlayer.jumpSpeedBoost / 2f);
+		}
+		public override void JumpHeight(Player mountedPlayer, ref int jumpHeight, float xVelocity)
+		{
+			jumpHeight += (mountedPlayer.jumpBoost ? 8 : 0);
 		}
 
 		public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow)
@@ -119,39 +152,21 @@ namespace RijamsMod.Items.Mounts
 
 			return false;
 		}
-
-		public override void JumpSpeed(Player mountedPlayer, ref float jumpSeed, float xVelocity)
-		{
-			jumpSeed += (mountedPlayer.jumpSpeedBoost / 2f);
-		}
-		public override void JumpHeight(Player mountedPlayer, ref int jumpHeight, float xVelocity)
-		{
-			jumpHeight += (mountedPlayer.jumpBoost ? 8 : 0);
-		}
 	}
 
 	public class DistortionSpherePlayer : ModPlayer
 	{
-		public override void HideDrawLayers(PlayerDrawSet drawInfo)
+		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
 		{
-			// Hiding the head layer causes the head icon to disappear on the map. So, don't hide the layers if the fullscreen map is open. 
-			if (Player.HasBuff(ModContent.BuffType<Buffs.Mounts.DistortionSphereBuff>()) && !Main.mapFullscreen)
+			if (Player.mount.Active && (Player.mount.Type == ModContent.MountType<DistortionSphere>() || Player.mount.Type == ModContent.MountType<SwiftSphere>()))
 			{
 				drawInfo.hideEntirePlayer = true;
-				foreach (var layer in PlayerDrawLayerLoader.Layers)
-				{
-					if (layer.ToString() == "MountFront")
-					{
-						continue;
-					}
-					layer.Hide();
-				}
 			}
 		}
 
 		public override void PreUpdateMovement()
 		{
-			if (Player.HasBuff(ModContent.BuffType<Buffs.Mounts.DistortionSphereBuff>()))
+			if (Player.mount.Active && (Player.mount.Type == ModContent.MountType<DistortionSphere>() || Player.mount.Type == ModContent.MountType<SwiftSphere>()))
 			{
 				// Thing to increase speed while on a slope.
 				/*
@@ -187,14 +202,16 @@ namespace RijamsMod.Items.Mounts
 				Player.fullRotationOrigin = new Vector2(10, 10);
 				float playerVelX = Math.Abs(Player.velocity.X) / 24f; // 24 is just an arbitrary number. I chose it because it's double the mount runSpeed number.
 				// So the sphere doesn't still slowly rotate when running into a wall.
-				if (playerVelX < 0.01f)
+				float minSpeed = Player.mount.Type == ModContent.MountType<SwiftSphere>() ? 0.02f : 0.01f;
+				if (playerVelX < minSpeed)
 				{
 					playerVelX = 0;
 				}
 				Player.fullRotation += playerVelX * Player.direction;
 				//Player.slippy2 = true;
 
-				Player.manaRegenDelay = Player.maxRegenDelay;
+				// Player.manaRegenDelay = Player.maxRegenDelay;
+				Player.manaRegenDelay = 60;
 			}
 		}
 
@@ -206,7 +223,7 @@ namespace RijamsMod.Items.Mounts
 
 		public override bool CanUseItem(Item item)
 		{
-			if (Player.HasBuff(ModContent.BuffType<Buffs.Mounts.DistortionSphereBuff>()))
+			if (Player.mount.Active && (Player.mount.Type == ModContent.MountType<DistortionSphere>() || Player.mount.Type == ModContent.MountType<SwiftSphere>()))
 			{
 				return false;
 			}
@@ -236,7 +253,6 @@ namespace RijamsMod.Items.Mounts
 			Item.UseSound = SoundID.Item79; // What sound should play when using the item
 			Item.noMelee = true; // this item doesn't do any melee damage
 			Item.mountType = ModContent.MountType<DistortionSphere>();
-			Item.mana = 20;
 		}
 
 		public override bool? UseItem(Player player)

@@ -64,13 +64,12 @@ namespace RijamsMod.Items.Weapons.Summon.Whips
 
 	public class WhipTagEffect_SupernovaWhip : WhipTagEffect
 	{
-		public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
-			base.OnProcHit(owner, optionalProjectile, npcHit, calcDamage);
-			
+			return base.OnProcHit(owner, optionalProjectile, npcHit, hit);
 		}
 
-		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, float calcDamage)
+		public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
 		{
 			for (int i = 0; i < 10; i++)
 			{

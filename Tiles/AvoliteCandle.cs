@@ -25,7 +25,7 @@ namespace RijamsMod.Tiles
 			TileObjectData.newTile.LavaPlacement = LiquidPlacement.NotAllowed;
 			TileObjectData.addTile(Type);
 			TileID.Sets.RoomNeeds.CountsAsTorch[Type] = true;
-			AdjTiles = new int[] { TileID.Candles };
+			AdjTiles = [TileID.Candles];
 
 			AddMapEntry(new Color(255, 6, 63), Language.GetText("Avolite Candle"));
 			DustType = DustID.RedTorch;
@@ -66,14 +66,10 @@ namespace RijamsMod.Tiles
 			g = 0.02f;
 			b = 0.24f;
 		}
-		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
+		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			Tile tile = Main.tile[i, j];
 			Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen)
-			{
-				zero = Vector2.Zero;
-			}
 			int height = tile.TileFrameY == 18 ? 18 : 16;
 			int animate = Main.tileFrame[Type] * AnimationFrameHeight;
 			Main.spriteBatch.Draw(Mod.Assets.Request<Texture2D>("Tiles/AvoliteCandle_Glow").Value,

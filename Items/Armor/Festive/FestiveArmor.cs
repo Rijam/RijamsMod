@@ -41,10 +41,10 @@ namespace RijamsMod.Items.Armor.Festive
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Festive");
+			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Festive");
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.35f;
 			player.whipRangeMultiplier += 0.5f;
-			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.05f;
+			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.25f;
 			// player.GetCritChance(DamageClass.SummonMeleeSpeed) += 0.02f; // Don't even know if this works lol. It's so low that hopefully nobody will notice if it doesn't work.
 			if (Math.Abs(player.velocity.X) > 2 || Math.Abs(player.velocity.Y) > 2)
 			{

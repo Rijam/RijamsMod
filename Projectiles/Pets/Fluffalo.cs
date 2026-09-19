@@ -42,9 +42,9 @@ namespace RijamsMod.Projectiles.Pets
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
 			if (player.dead)
 			{
-				modPlayer.fluffaloPet = false;
+				modPlayer.Pet_FluffaloPet = false;
 			}
-			if (modPlayer.fluffaloPet)
+			if (modPlayer.Pet_FluffaloPet)
 			{
 				Projectile.timeLeft = 2;
 			}
