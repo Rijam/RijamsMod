@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -18,6 +18,13 @@ namespace RijamsMod.Items.Armor.Infernic
 			{
 				ArmorUseGlowHead.RegisterData(Item.headSlot, new ArmorHeadLegsOptions(Texture + "_Head_Glowmask"));
 			}
+			AddArmorSet<InfernicHood, InfernicRobes, InfernicTrousers>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.Infernic"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/Infernic",
+				Effect: SetBonus_Infernic
+			);
 		}
 
 		public override void SetDefaults()
@@ -34,14 +41,8 @@ namespace RijamsMod.Items.Armor.Infernic
 			player.maxMinions++;
 		}
 
-		public override bool IsArmorSet(Item head, Item body, Item legs)
+		public static void SetBonus_Infernic(Player player)
 		{
-			return body.type == ModContent.ItemType<InfernicRobes>() && legs.type == ModContent.ItemType<InfernicTrousers>();
-		}
-
-		public override void UpdateArmorSet(Player player)
-		{
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Infernic");
 			player.buffImmune[BuffID.OnFire] = true;
 			player.fireWalk = true;
 			player.lavaMax += 120;

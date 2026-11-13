@@ -16,8 +16,6 @@ namespace RijamsMod.Items.Quest
 		public override void SetDefaults()
 		{
 			Item.maxStack = 1;
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 0;
 			Item.rare = ItemRarityID.Gray;
 		}
@@ -33,8 +31,6 @@ namespace RijamsMod.Items.Quest
 		public override void SetDefaults()
 		{
 			Item.maxStack = 1;
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 0;
 			Item.rare = ItemRarityID.Gray;
 		}
@@ -45,15 +41,13 @@ namespace RijamsMod.Items.Quest
 
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/403638:UI Item]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/403638:UI Item]"]);
 			Item.ResearchUnlockCount = 0;
 		}
 
 		public override void SetDefaults()
 		{
 			Item.maxStack = 1;
-			Item.width = 24;
-			Item.height = 34;
 			Item.value = 0;
 			Item.rare = ItemRarityID.Gray;
 			Item.alpha = 240;
@@ -76,8 +70,6 @@ namespace RijamsMod.Items.Quest
 		public override void SetDefaults() 
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 16;
-			Item.height = 34;
 			Item.value = 100;
 			Item.rare = ItemRarityID.Quest;
 		}
@@ -127,8 +119,6 @@ namespace RijamsMod.Items.Quest
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 32;
-			Item.height = 24;
 			Item.value = 100;
 			Item.rare = ItemRarityID.Quest;
 		}
@@ -165,14 +155,12 @@ namespace RijamsMod.Items.Quest
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Chaos Elementals and Enchanted Swords]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Chaos Elementals and Enchanted Swords]"]);
 		}
 
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 28;
-			Item.height = 40;
 			Item.value = 50000;
 			Item.rare = ItemRarityID.Quest;
 		}
@@ -206,8 +194,6 @@ namespace RijamsMod.Items.Quest
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 42;
-			Item.height = 24;
 			Item.value = 5000;
 			Item.rare = ItemRarityID.Quest;
 		}
@@ -241,8 +227,6 @@ namespace RijamsMod.Items.Quest
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 42;
-			Item.height = 24;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Quest;
 		}
@@ -285,8 +269,6 @@ namespace RijamsMod.Items.Quest
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 60;
-			Item.height = 36;
 			Item.value = 15000;
 			Item.rare = ItemRarityID.Quest;
 		}

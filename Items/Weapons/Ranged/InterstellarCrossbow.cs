@@ -7,8 +7,6 @@ using System;
 using Terraria.DataStructures;
 using RijamsMod.Projectiles.Ranged;
 using Terraria.Audio;
-using System.Collections.Generic;
-using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -16,7 +14,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating any Mechanical Boss]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating any Mechanical Boss]"]);
 			//ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarPistol>(); // Shimmer transforms the item.
 		}
 
@@ -25,8 +23,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.damage = 60;
 			Item.crit = 6; // 10 crit
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 82;
-			Item.height = 36;
 			Item.useTime = 19;
 			Item.useAnimation = 19;
 			Item.useStyle = ItemUseStyleID.Shoot; //5

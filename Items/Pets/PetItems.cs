@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,8 +16,6 @@ namespace RijamsMod.Items.Pets
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.DD2PetGato);
-			Item.width = 40;
-			Item.height = 42;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.DwarfStar>();
 			Item.buffType = ModContent.BuffType<Buffs.Pets.DwarfStarBuff>();
 			Item.rare = ItemRarityID.Green;
@@ -46,8 +43,6 @@ namespace RijamsMod.Items.Pets
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.DD2PetGato);
-			Item.width = 16;
-			Item.height = 28;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.Lumoth>();
 			Item.buffType = ModContent.BuffType<Buffs.Pets.LumothBuff>();
 			Item.rare = ItemRarityID.LightRed;
@@ -93,8 +88,6 @@ namespace RijamsMod.Items.Pets
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.DD2PetGato);
-			Item.width = 16;
-			Item.height = 28;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.LEDLumoth>();
 			Item.buffType = ModContent.BuffType<Buffs.Pets.LEDLumothBuff>();
 			Item.rare = ItemRarityID.Red;
@@ -131,8 +124,6 @@ namespace RijamsMod.Items.Pets
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.DD2PetGato);
-			Item.width = 22;
-			Item.height = 22;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.Snugget>();
 			Item.buffType = ModContent.BuffType<Buffs.Pets.SnuggetBuff>();
 			Item.rare = ItemRarityID.Orange;
@@ -160,8 +151,6 @@ namespace RijamsMod.Items.Pets
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.DD2PetGato);
-			Item.width = 26;
-			Item.height = 32;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.Fluffalo>();
 			Item.buffType = ModContent.BuffType<Buffs.Pets.FluffaloBuff>();
 			Item.rare = ItemRarityID.LightPurple;
@@ -189,8 +178,6 @@ namespace RijamsMod.Items.Pets
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.DD2PetGato);
-			Item.width = 26;
-			Item.height = 24;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Pets.BabyStardustDragon>();
 			Item.buffType = ModContent.BuffType<Buffs.Pets.BabyStardustDragonBuff>();
 			Item.rare = ItemRarityID.Red;

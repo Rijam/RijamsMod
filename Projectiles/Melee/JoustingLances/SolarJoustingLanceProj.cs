@@ -12,6 +12,12 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 	// I made Example Jousting Lance so I'm going to use it!
 	public class SolarJoustingLanceProj : JoustingLanceProjBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override void DustTypes(ref int dustTypeCommon, ref int dustTypeRare, ref int offset)
 		{
 			dustTypeCommon = DustID.SolarFlare;

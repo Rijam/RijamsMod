@@ -24,13 +24,6 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			{
 				target.AddBuff(BuffID.Confused, 240);
 			}
-
-			// This is needed in order for OnProcHit in the WhipTagEffect to activate.
-			if (Projectile.localAI[0] == 0f)
-			{
-				Projectile.localAI[0] = 1f;
-				Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
-			}
 		}
 
 		public override int DustType()

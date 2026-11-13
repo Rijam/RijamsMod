@@ -1,5 +1,5 @@
-using RijamsMod.Items.Armor.RedSkyware;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -12,12 +12,22 @@ namespace RijamsMod.Items.Armor.GodsentKing
 		public override void SetStaticDefaults()
 		{
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<GodsentQueenMask>(); // Shimmer transforms the item.
+			CreateArmorSet
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.GodsentKing"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/GodsentKing",
+				Effect: SetBonus_GodsentKing
+			).Set
+			(
+				[ModContent.ItemType<GodsentKingMask>(), ModContent.ItemType<GodsentQueenMask>()],
+				[ModContent.ItemType<GodsentKingBreastplate>(), ModContent.ItemType<GodsentQueenBreastplate>()],
+				[ModContent.ItemType<GodsentKingPants>(), ModContent.ItemType<GodsentQueenPants>()]
+			).Add();
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.defense = 13;
@@ -30,25 +40,13 @@ namespace RijamsMod.Items.Armor.GodsentKing
 			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.25f;
 		}
 
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return (body.type == ModContent.ItemType<GodsentKingBreastplate>() || body.type == ModContent.ItemType<GodsentQueenBreastplate>())
-				&& (legs.type == ModContent.ItemType<GodsentKingPants>() || legs.type == ModContent.ItemType<GodsentQueenPants>());
-		}
-
-		public override void UpdateArmorSet(Player player)
-		{
-			SetBonus(player);
-		}
-
-		internal static void SetBonus(Player player)
+		public static void SetBonus_GodsentKing(Player player)
 		{
 			player.GetCritChance(DamageClass.Generic) += 10f;
 			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.1f;
 			player.whipRangeMultiplier += 0.25f;
 
-			//Main.NewText("player.dash " + player.dash + " player.dashDelay " + player.dashDelay + " player.dashTime " + player.dashTime + " player.timeSinceLastDashStarted " + player.timeSinceLastDashStarted);
-			// TODO player.setBonus = Language.GetTextValue("Mods.RijamsMod.ArmorSetBonus.GodsentKing");
+			// Main.NewText("player.dash " + player.dash + " player.dashDelay " + player.dashDelay + " player.dashTime " + player.dashTime + " player.timeSinceLastDashStarted " + player.timeSinceLastDashStarted);
 			if (player.timeSinceLastDashStarted == 1)
 			{
 				player.velocity.X *= 1.25f;
@@ -84,8 +82,6 @@ namespace RijamsMod.Items.Armor.GodsentKing
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.defense = 14;
@@ -117,8 +113,6 @@ namespace RijamsMod.Items.Armor.GodsentKing
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.defense = 10;
@@ -152,8 +146,6 @@ namespace RijamsMod.Items.Armor.GodsentKing
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.defense = 8;
@@ -167,6 +159,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 			player.GetModPlayer<RijamsModPlayer>().Stat_CriticalHitAdditionalDamage += 0.25f;
 		}
 
+		/*
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
 			return (body.type == ModContent.ItemType<GodsentKingBreastplate>() || body.type == ModContent.ItemType<GodsentQueenBreastplate>())
@@ -177,6 +170,7 @@ namespace RijamsMod.Items.Armor.GodsentKing
 		{
 			GodsentKingMask.SetBonus(player);
 		}
+		*/
 
 		public override void ArmorSetShadows(Player player)
 		{
@@ -203,8 +197,6 @@ namespace RijamsMod.Items.Armor.GodsentKing
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.defense = 9;
@@ -237,8 +229,6 @@ namespace RijamsMod.Items.Armor.GodsentKing
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;
 			Item.defense = 10;

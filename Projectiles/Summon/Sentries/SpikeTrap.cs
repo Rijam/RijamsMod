@@ -43,6 +43,9 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 				Projectile.velocity.Y = 16f;
 			}
 			Projectile.ai[0] += 1;
+
+			AI_CheckForHeavySling(Projectile);
+
 			if (Projectile.ai[0] % 30 == 0)
 			{
 				foreach (NPC npc in Main.npc)
@@ -91,6 +94,137 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 		{
 			return false;
 		}
+
+		internal static void AI_CheckForHeavySling(Projectile projectile)
+		{
+			if (projectile.ai[2] == 0f && projectile.CanGetPickedUpBySentryBackpack())
+			{
+				projectile.ai[2] = 1f;
+				projectile.netUpdate = true;
+			}
+
+			if (projectile.ai[2] == 1f)
+			{
+				projectile.SetAsSelectedSentryBackpackTarget();
+				projectile.velocity = Vector2.Zero;
+				projectile.tileCollide = false;
+				AI_TrapSentries_HeavySlingReposition(projectile);
+			}
+		}
+
+		internal static void AI_TrapSentries_HeavySlingReposition(Projectile projectile)
+		{
+			Player owner = Main.player[projectile.owner];
+			if (!owner.accSentryBackpack)
+			{
+				projectile.Kill();
+				return;
+			}
+
+			bool playerTransformationMount = owner.mount.Active && owner.mount.Type >= MountID.Rudolph && MountID.Sets.IsTransformationMount[owner.mount.Type];
+			/*
+			bool playerRidingMinecart = player.mount.Active && player.mount.AnyTrackRider;
+			int minimumYOffset = Math.Min(21, player.height / 2);
+			projectile.Center = player.MountedCenter + new Vector2(0f, player.gravDir * (0f - (minimumYOffset + 0 + (projectile.height / 2))));
+			projectile.position.Y += player.gfxOffY;
+
+			if (playerRidingMinecart)
+			{
+				projectile.Bottom = player.RotatedRelativePoint(projectile.Bottom);
+			}
+
+			projectile.position = projectile.position.Floor();
+			*/
+
+			int pushFromOriginHack = 0;
+			Vector2 halfProjSize = projectile.Size / 2f;
+			Vector2 sentryOffset = new(0, playerTransformationMount ? 0 : -27);
+
+			if (owner.mount.Active && owner.mount.Type == MountID.PogoStick)
+			{
+				pushFromOriginHack = 12;
+			}
+
+			switch (owner.mount.Type)
+			{
+				default:
+					{
+						// The default location of the sentry will be near the player's head.
+						projectile.Center = owner.MountedCenter + sentryOffset;
+
+						// Add the additional height to the sentry to match the player's bobbing while walking.
+						Vector2 playerWalkingBobbing = Main.OffsetsPlayerHeadgear[owner.bodyFrame.Y / owner.bodyFrame.Height] + new Vector2(0f, -2f);
+						projectile.position += playerWalkingBobbing * new Vector2(0f, owner.gravDir);
+
+						// Set the final position taking into account the player's rotation.
+						projectile.position = owner.RotatedRelativePoint(projectile.position + halfProjSize, reverseRotation: false, addGfxOffY: true, pushFromOriginHack) - halfProjSize;
+
+						// If desired, rotate the sentry to match the player's rotation.
+						projectile.rotation = owner.fullRotation;
+						break;
+					}
+				// For the transformation mounts, set the position of the sentry to be on the mount's head or back.
+				case MountID.Rat:
+					{
+						projectile.Bottom = owner.Top;
+						int ratYOffset = 10;
+						int ratWalkingBobbing = 0;
+						int mountFrame = owner.mount.Frame;
+						if (mountFrame == 0 || (uint)(mountFrame - 11) <= 1u || (uint)(mountFrame - 15) <= 1u)
+							ratWalkingBobbing = 2;
+
+						projectile.position.Y += ratYOffset + ratWalkingBobbing + owner.gfxOffY;
+						projectile.Bottom += sentryOffset;
+						break;
+					}
+				case MountID.Pixie:
+					{
+						projectile.Bottom = owner.Top;
+						int pixieYOffset = 10;
+						projectile.position.Y += pixieYOffset;
+						projectile.Bottom += sentryOffset;
+						break;
+					}
+				case MountID.Bat:
+					{
+						if (owner.dash > 0 && owner.dashDelay < 0)
+						{
+							projectile.Bottom = owner.Top + new Vector2(4f * owner.Directions.X, 3f);
+							projectile.Bottom += new Vector2(0f, -2f);
+						}
+						else
+						{
+							projectile.Bottom = (owner.Directions.X > 0f) ? (owner.Left + new Vector2(9f, 0f)) : (owner.Right + new Vector2(-10f, 0f));
+						}
+
+						int batYOffset = 2;
+						int mountFrame = owner.mount.Frame;
+						if ((uint)(mountFrame - 3) <= 2u)
+							batYOffset = 0;
+
+						projectile.Bottom += sentryOffset + new Vector2(0f, batYOffset);
+						projectile.Bottom = owner.RotatedRelativePoint(projectile.Bottom);
+						break;
+					}
+				case MountID.Velociraptor:
+					{
+						projectile.Bottom = owner.MountedTop + new Vector2(-12f * owner.Directions.X, 16f);
+						projectile.Bottom += sentryOffset;
+						projectile.Bottom = owner.RotatedRelativePoint(projectile.Bottom);
+						break;
+					}
+				case MountID.Wolf:
+					{
+						projectile.Bottom = owner.MountedTop + new Vector2(-4f * owner.Directions.X, 10f);
+						projectile.Bottom += sentryOffset;
+						projectile.Bottom = owner.RotatedRelativePoint(projectile.Bottom);
+						break;
+					}
+			}
+
+			// Floor the position to snap it to tile coordinates.
+			projectile.position = projectile.position.Floor();
+		}
 	}
 	public class SuperSpikeTrap : SpikeTrap
 	{
@@ -112,6 +246,9 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 				Projectile.velocity.Y = 16f;
 			}
 			Projectile.ai[0] += 1;
+
+			SpikeTrap.AI_CheckForHeavySling(Projectile);
+
 			if (Projectile.ai[0] % 15 == 0)
 			{
 				foreach (NPC npc in Main.npc)
@@ -180,6 +317,9 @@ namespace RijamsMod.Projectiles.Summon.Sentries
 				Projectile.velocity.Y = 16f;
 			}
 			Projectile.ai[0] += 1;
+
+			SpikeTrap.AI_CheckForHeavySling(Projectile);
+
 			if (Projectile.ai[0] % 2 == 0)
 			{
 				int damage = Main.DamageVar(Projectile.damage, Main.player[Projectile.owner].luck);

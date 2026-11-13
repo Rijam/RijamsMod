@@ -8,6 +8,7 @@ namespace RijamsMod
 { 
 	public class RijamsModWorld : ModSystem
 	{
+#pragma warning disable CA2211 // Non-constant fields should not be visible
 		public static bool savedHarpy = false;
 		public static bool intTravArrived = false;
 		public static bool intTravQuestOddDevice = false;
@@ -18,6 +19,7 @@ namespace RijamsMod
 		public static bool intTravQuestPrimeThruster = false;
 		public static bool hellTraderArrivable = false;
 		public static bool boughtSnuggetPet = false;
+#pragma warning restore CA2211 // Non-constant fields should not be visible
 
 		public override void OnWorldLoad()
 		{

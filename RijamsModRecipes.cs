@@ -4,7 +4,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using RijamsMod.Items;
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
 
 namespace RijamsMod
 {
@@ -104,6 +103,7 @@ namespace RijamsMod
 			}
 		}
 
+#pragma warning disable CA2211 // Non-constant fields should not be visible
 		public static RecipeGroup DefendersGear;
 		public static RecipeGroup CopperBars;
 		public static RecipeGroup SilverBars;
@@ -114,6 +114,7 @@ namespace RijamsMod
 		public static RecipeGroup SharkronBalloons;
 		public static RecipeGroup Counterweights;
 		public static RecipeGroup Flares;
+#pragma warning restore CA2211 // Non-constant fields should not be visible
 		public const string DefendersGearKey = "RijamsMod:DefendersGear";
 		public const string CopperBarsKey = "RijamsMod:CopperBars";
 		public const string SilverBarsKey = "RijamsMod:SilverBars";

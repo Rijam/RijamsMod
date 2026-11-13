@@ -31,8 +31,6 @@ namespace RijamsMod.Items.Weapons.Melee.JoustingLances
 			// If you are using aiStyle 19 and AIType = ProjectileID.JoustingLance, then multiply the value by about 3.5f.
 			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.Melee.JoustingLances.SkywareJoustingLanceProj>(), 0.775f, 30);
 
-			Item.width = 46;
-			Item.height = 46;
 			Item.DamageType = DamageClass.MeleeNoSpeed; // We need to use MeleeNoSpeed here so that attack speed doesn't effect our held projectile.
 
 			Item.SetWeaponValues(32, 8f, 4); // A special method that sets the damage, knockback, and bonus critical strike chance.

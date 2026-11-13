@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,8 +17,6 @@ namespace RijamsMod.Items.Accessories.Misc
 
 		public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 34;
 			Item.rare = ItemRarityID.Yellow;
 			Item.value = Item.sellPrice(0, 10, 0, 0);
 			Item.accessory = true;

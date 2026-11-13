@@ -18,8 +18,6 @@ namespace RijamsMod.Items.Tools
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 22;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.autoReuse = true;
 			Item.useTime = 10;

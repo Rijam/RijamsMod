@@ -25,8 +25,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			Item.damage = 21;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 56;
-			Item.height = 20;
 			Item.useTime = 20;
 			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Shoot; //5

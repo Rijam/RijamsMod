@@ -1,10 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RijamsMod.Items.Dyes;
-using System;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.RGB;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;

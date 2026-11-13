@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using RijamsMod.Projectiles.Other;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -22,8 +21,6 @@ namespace RijamsMod.Items.Weapons.Magic
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 32;
 			Item.DamageType = DamageClass.Magic;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.LightRed;

@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
-using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
 {
@@ -16,15 +15,13 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			base.SetStaticDefaults();
 			// DisplayName.SetDefault("Cobalt Protector Cudgel");
 			// Tooltip.SetDefault("Summons a Cobalt Protector to defend you\nPlayers within its aura receive:\n+5 defense\n+2% damage reduction\n10 tile radius");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Found in Dungeon chests or Golden Lock Boxes]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Found in Dungeon chests or Golden Lock Boxes]"]);
 		}
 
 		public override void SetDefaults()
 		{
 			Item.damage = 1; // Token amount of damage so it can be reforged and so it shows up in summon weapon filters.
 			Item.knockBack = 0f;
-			Item.width = 22;
-			Item.height = 48;
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
@@ -57,6 +54,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
 			projectile.originalDamage = Item.damage;
+			SupportMinionCanUseCheck.ShouldSupportMinionProjectileBeFree(player, Item, projectile);
 
 			if (projectile.ModProjectile is CobaltProtector modProjectile)
 			{

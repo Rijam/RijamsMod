@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -18,8 +17,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			Item.damage = 65;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 68;
-			Item.height = 30;
 			Item.useTime = 8;
 			Item.useAnimation = 8;
 			Item.useStyle = ItemUseStyleID.Shoot; //5

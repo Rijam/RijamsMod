@@ -58,6 +58,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
 			projectile.originalDamage = Item.damage;
+			SupportMinionCanUseCheck.ShouldSupportMinionProjectileBeFree(player, Item, projectile);
 			if (projectile.ModProjectile is RadiantLantern modProjectile)
 			{
 				modProjectile.healAmount = HealingAmount;

@@ -37,9 +37,17 @@ namespace RijamsMod.NPCs.TownNPCs
 			return true;
 		}
 
+		private bool spawnFacingRight = true;
+
 		public override void AI()
 		{
-			NPC.spriteDirection = 1;
+			if (NPC.localAI[0] == 0)
+			{
+				spawnFacingRight = Main.rand.NextBool();
+				NPC.localAI[0]++;
+			}
+
+			NPC.spriteDirection = spawnFacingRight.ToDirectionInt();
 
 			// This is where we check to see if a player has clicked on our NPC.
 			// First, don't run this code if it is a multiplayer client.

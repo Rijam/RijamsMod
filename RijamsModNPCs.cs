@@ -1,25 +1,23 @@
 using Microsoft.Xna.Framework;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.ItemDropRules;
-using RijamsMod.Items.Weapons.Melee;
-using RijamsMod.Items.Weapons.Melee.JoustingLances;
-using RijamsMod.Items.Weapons.Ranged;
-using RijamsMod.Items.Weapons.Summon.Whips;
-using RijamsMod.Items.Weapons.Summon.Minions;
-using RijamsMod.Items.Weapons.Summon.Cudgels;
 using RijamsMod.Items.Accessories.Defense;
 using RijamsMod.Items.Accessories.Misc;
+using RijamsMod.Items.Accessories.Summoner.Sentry;
 using RijamsMod.Items.Accessories.Vanity;
 using RijamsMod.Items.Materials;
 using RijamsMod.Items.Pets;
-using RijamsMod.Buffs.Potions;
-using RijamsMod.NPCs;
 using RijamsMod.Items.Quest;
-using RijamsMod.Items.Placeable;
-using RijamsMod.Items;
+using RijamsMod.Items.Weapons.Melee;
+using RijamsMod.Items.Weapons.Melee.JoustingLances;
+using RijamsMod.Items.Weapons.Ranged;
+using RijamsMod.Items.Weapons.Summon.Cudgels;
+using RijamsMod.Items.Weapons.Summon.Minions;
+using RijamsMod.Items.Weapons.Summon.Whips;
+using RijamsMod.NPCs;
+using System;
+using Terraria;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace RijamsMod
 {
@@ -71,7 +69,7 @@ namespace RijamsMod
 			}
 			if (npc.type == NPCID.SantaNK1)
 			{
-				npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), 20, 10));
+				npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<Items.Accessories.Summoner.Minion.NaughtyList>(), 20, 10));
 				npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<FestivePlating>(), 1, 1, 5));
 				npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<FestivePlating>(), 1, 2, 8));
 			}
@@ -82,6 +80,10 @@ namespace RijamsMod
 				questComplete.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<TeleportationCore>(), 20));
 				questComplete.OnSuccess(ItemDropRule.Common(ModContent.ItemType<TeleportationCore>(), 40));
 				npcLoot.Add(questComplete);
+			}
+			if (npc.type == NPCID.EnchantedSword)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Accessories.Summoner.Whip.VirtuousArmlet>(), 13));
 			}
 			if (ModLoader.TryGetMod("Consolaria", out Mod consolaria)) // Consolaria's Spectral Elemental can also drop it
 			{
@@ -148,6 +150,11 @@ namespace RijamsMod
 			{
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LonkheJoustingLance>(), 20));
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aspis>(), 10));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TaggingSpike>(), 60));
+			}
+			if (npc.type == NPCID.Medusa)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TaggingSpike>(), 60));
 			}
 			if (npc.type == NPCID.GraniteGolem)
 			{

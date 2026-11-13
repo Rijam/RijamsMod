@@ -14,8 +14,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.shootSpeed = 6f;
 			Item.damage = 3;
-			Item.width = 12;
-			Item.height = 12;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.ammo = AmmoID.Flare;
@@ -38,8 +36,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.shootSpeed = 6f;
 			Item.damage = 3;
-			Item.width = 12;
-			Item.height = 12;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.ammo = AmmoID.Flare;
@@ -63,8 +59,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.shootSpeed = 8f;
 			Item.damage = 6;
-			Item.width = 12;
-			Item.height = 12;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.ammo = AmmoID.Flare;
@@ -89,8 +83,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.shootSpeed = 7f;
 			Item.damage = 4;
-			Item.width = 12;
-			Item.height = 12;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.ammo = AmmoID.Flare;

@@ -15,8 +15,6 @@ namespace RijamsMod.Items.Fishing
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 38;
-			Item.height = 38;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = 4000;
 			Item.maxStack = Item.CommonMaxStack;
@@ -33,8 +31,6 @@ namespace RijamsMod.Items.Fishing
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 34;
-			Item.height = 34;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = 2750;
 			Item.maxStack = Item.CommonMaxStack;

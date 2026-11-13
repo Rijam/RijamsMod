@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System;
 using Terraria.GameContent.Drawing;
 using System.Reflection;
 using RijamsMod.NPCs.TownNPCs;
@@ -26,8 +25,6 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			Item.width = 14;
-			Item.height = 14;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
@@ -70,8 +67,6 @@ namespace RijamsMod.Items
 		public override void SetDefaults()
 		{
 			Item.color = Color.Orange;
-			Item.width = 14;
-			Item.height = 14;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
@@ -361,8 +356,6 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			Item.width = 14;
-			Item.height = 14;
 			Item.maxStack = 999;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
@@ -413,8 +406,6 @@ namespace RijamsMod.Items
 		public override void SetDefaults()
 		{
 			Item.color = Color.RoyalBlue;
-			Item.width = 14;
-			Item.height = 14;
 			Item.maxStack = 999;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
@@ -458,8 +449,6 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 30;
 			Item.maxStack = 999;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
@@ -603,8 +592,6 @@ namespace RijamsMod.Items
 		public override void SetDefaults()
 		{
 			Item.color = Color.RoyalBlue;
-			Item.width = 14;
-			Item.height = 14;
 			Item.maxStack = 999;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
@@ -612,37 +599,40 @@ namespace RijamsMod.Items
 			Item.useAnimation = 1;
 			Item.useTime = 1;
 			Item.useTurn = true;
-			Item.UseSound = SoundID.Item9;
+			//Item.UseSound = SoundID.Item9;
 			Item.consumable = true;
 			Item.noUseGraphic = true;
 		}
 		public override bool? UseItem(Player player)
 		{
-			ParticleOrchestraType particleType = ParticleOrchestraType.PaladinsShieldHit;
+			ParticleOrchestraType particleType = ParticleOrchestraType.StormLightning;
 			//ParticleOrchestraType particleType = ParticleOrchestraType.BlueLightningSmallLong;
 
 			//Projectile projectile1 = Projectile.NewProjectileDirect(null, new Vector2(player.Center.X - 216, player.position.Y - 224), Vector2.Zero, ProjectileID.CultistRitual, 1, 1);
 			//Projectile projectile2 = Projectile.NewProjectileDirect(null, new Vector2(player.Center.X + 216, player.position.Y - 224), Vector2.Zero, ProjectileID.CultistRitual, 1, 1);
 
-			/*
+
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, particleType, new ParticleOrchestraSettings
 			{
-				//PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224),
-				PositionInWorld = new Vector2(player.whoAmI, player.whoAmI),
-				//MovementVector = new Vector2(100, 100),
-				MovementVector = Vector2.One,
+				PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224),
+				// PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 64),
+				//PositionInWorld = new Vector2(player.whoAmI, player.whoAmI),
+				MovementVector = new Vector2(1, 1),
+				//MovementVector = Vector2.One,
 				UniqueInfoPiece = 1
 			});
 			ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, particleType, new ParticleOrchestraSettings
 			{
-				//PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 224),
+				PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 224),
+				// PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 64),
 				//MovementVector = new Vector2(player.Center.X + 216  *2, player.position.Y),
 				//PositionInWorld = new Vector2(player.whoAmI, player.whoAmI),
-				//MovementVector = new Vector2(100, 100),
-				MovementVector = Vector2.One,
+				MovementVector = new Vector2(1, 1),
+				//MovementVector = Vector2.One,
 				UniqueInfoPiece = 1
 			});
-			*/
+
+			/*
 			CustomParticleOrchestra.RequestParticleSpawn(clientOnly: true, CustomParticleOrchestraType.ExplosiveFlarePop, new ParticleOrchestraSettings
 			{
 				PositionInWorld = new Vector2(player.Center.X + 216, player.position.Y - 224),
@@ -654,6 +644,7 @@ namespace RijamsMod.Items
 			{
 				PositionInWorld = new Vector2(player.Center.X - 216, player.position.Y - 224)
 			});
+			*/
 			return true;
 		}
 	}
@@ -673,8 +664,6 @@ namespace RijamsMod.Items
 		public override void SetDefaults()
 		{
 			Item.color = Color.MediumVioletRed;
-			Item.width = 14;
-			Item.height = 14;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.rare = ItemRarityID.White;
 			Item.value = 0;
@@ -728,8 +717,6 @@ namespace RijamsMod.Items
 
 		public override void SetDefaults()
 		{
-			NPC.width = 20;
-			NPC.height = 42;
 			NPC.lifeMax = int.MaxValue;
 			NPC.lifeRegen = 1000;
 			NPC.immortal = false;

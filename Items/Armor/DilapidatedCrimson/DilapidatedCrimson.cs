@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Terraria.Graphics.Shaders;
 using Terraria;
-using Terraria.Localization;
+using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Armor.DilapidatedCrimson
@@ -24,6 +25,18 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 			// Tooltip.SetDefault("2% increased damage\nInterchangeable with Crimson Armor");
 			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Crimeras]" });
 			ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.CrimsonHelmet; // Shimmer transforms the item.
+			CreateArmorSet
+			(
+				LocalizedText: Language.GetText("ArmorSetBonus.Crimson"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "Crimson",
+				Effect: ArmorSetBonuses.Benefits.Crimson
+			).Set
+			(
+				[ModContent.ItemType<DilapidatedCrimsonHelmet>(), ItemID.CrimsonHelmet], 
+				[ModContent.ItemType<DilapidatedCrimsonScalemail>(), ItemID.CrimsonScalemail], 
+				[ModContent.ItemType<DilapidatedCrimsonGreaves>(), ItemID.CrimsonGreaves]
+			).Add();
 		}
 
 		public override void SetDefaults()
@@ -31,24 +44,9 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 			Item.CloneDefaults(ItemID.CrimsonHelmet);
 			Item.headSlot = EquipLoader.GetEquipSlot(Mod, "DilapidatedCrimsonHelmet", EquipType.Head); //Will draw the correct equip sprite, but then it's not interchangable with Crimson Armor and doesn't have the effects
 		}
-
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			// Set in the detour below.
-			//The Crimson Helmet doesn't seem to work.
-			return false; // (head.type == ItemID.CrimsonHelmet || head.type == ModContent.ItemType<DilapidatedCrimsonHelmet>()) && (body.type == ItemID.CrimsonScalemail || body.type == ModContent.ItemType<DilapidatedCrimsonScalemail>()) && (legs.type == ItemID.CrimsonGreaves || legs.type == ModContent.ItemType<DilapidatedCrimsonGreaves>());
-		}
-
 		public override void UpdateEquip(Player player)
 		{
 			player.GetDamage(DamageClass.Generic) += 0.03f;
-		}
-
-		public override void UpdateArmorSet(Player player)
-		{
-			// Set in the detour below.
-			// TODO player.setBonus = Language.GetTextValue("ArmorSetBonus.Crimson");
-			player.crimsonRegen = true;
 		}
 
 		public override void AddRecipes()
@@ -171,8 +169,9 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 					Player.body == ArmorIDs.Body.CrimsonScalemail &&
 					Player.legs == ArmorIDs.Legs.CrimsonGreaves;
 
-				/* TODO
-				if (Player.setBonus == Language.GetTextValue("ArmorSetBonus.Crimson") && !hasAllVanillaCrimsonSetOn)
+				// if (Player.setBonus == Language.GetTextValue("ArmorSetBonus.Crimson") && !hasAllVanillaCrimsonSetOn)
+				ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(Player));
+				if (armorSetBonus?.Description == Language.GetText("ArmorSetBonus.Crimson") && !hasAllVanillaCrimsonSetOn)
 				{
 					int maxValue = 10;
 					if (Math.Abs(Player.velocity.X) + Math.Abs(Player.velocity.Y) > 1f)
@@ -189,7 +188,6 @@ namespace RijamsMod.Items.Armor.DilapidatedCrimson
 						Main.dust[num6].shader = GameShaders.Armor.GetSecondaryShader(Player.ArmorSetDye(), Player);
 					}
 				}
-				*/
 			}
 		}
 	}

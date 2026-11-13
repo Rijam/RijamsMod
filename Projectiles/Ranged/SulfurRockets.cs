@@ -14,11 +14,11 @@ namespace RijamsMod.Projectiles.Ranged
 			CustomProjectileIDSets.RocketsAffectedByRocketBoosterExtraUpdates[Type] = true;
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true;
 			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
-			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true;
 			// This set handles some things for us already:
 			// Sets the timeLeft to 3 and the projectile direction when colliding with an NPC or player in PVP (so the explosive can detonate).
 			// Explosives also bounce off the top of Shimmer, detonate with no blast damage when touching the bottom or sides of Shimmer, and damage other players in For the Worthy worlds.
 			ProjectileID.Sets.Explosive[Type] = true;
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 		public override void SetDefaults()
 		{
@@ -196,7 +196,7 @@ namespace RijamsMod.Projectiles.Ranged
 		{
 			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 			ProjectileID.Sets.Explosive[Type] = true;
-			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true;
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 
 		public override void SetDefaults()
@@ -328,7 +328,7 @@ namespace RijamsMod.Projectiles.Ranged
 			ProjectileID.Sets.IsAMineThatDealsTripleDamageWhenStationary[Type] = true;
 			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 			ProjectileID.Sets.Explosive[Type] = true;
-			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true;
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 		public override void SetDefaults()
 		{
@@ -481,6 +481,7 @@ namespace RijamsMod.Projectiles.Ranged
 			ProjectileID.Sets.CultistIsResistantTo[Type] = true;
 			ProjectileID.Sets.RocketsSkipDamageForPlayers[Type] = true;
 			ProjectileID.Sets.Explosive[Type] = true;
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 		public override void SetDefaults()
 		{

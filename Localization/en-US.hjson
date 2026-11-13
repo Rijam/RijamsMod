@@ -74,6 +74,30 @@ Mods: {
 				+1 Minion capacity
 				+1 Defense
 				'''
+			Pharaoh:
+				'''
+
+				10% reduced mana usage
+				+1 Minion capacity
+				+10% Whip range
+				5% increased movement speed
+				Grants Immunity to Mighty Wind
+				'''
+			Ancient:
+				'''
+
+				Increased maximum running speed
+				Increased running acceleration
+				+0.5 seconds flight time
+				+15% Whip speed
+				+20% Whip range
+				Allows Shield of Cthulhu style dashing
+				'''
+			Stardust:
+				'''
+				{0}
+				+15% Whip speed
+				'''
 		}
 
 		Buffs: {
@@ -254,6 +278,15 @@ Mods: {
 					(+10% damage)
 					(+10% critical hit chance)
 					(+25% critical hit damage)
+					'''
+			}
+
+			SnowBalled: {
+				DisplayName: Snow Balled
+				Description:
+					'''
+					(+10% critical hit damage)
+					(+10% whip tag critical hit chance)
 					'''
 			}
 
@@ -508,6 +541,7 @@ Mods: {
 			TAGProj.DisplayName: Tacticle Awareness Grenade
 			BabyBoneSerpent.DisplayName: Baby Bone Serpent
 			GiantWorm.DisplayName: Giant Worm
+			FoamFingerProjectile.DisplayName: Foam Finger Projectile
 		}
 
 		Tiles: {

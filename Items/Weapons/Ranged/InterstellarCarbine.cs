@@ -4,7 +4,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System;
-using System.Collections.Generic;
 using Terraria.DataStructures;
 using RijamsMod.Projectiles.Ranged;
 
@@ -16,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			// DisplayName.SetDefault("Interstellar Carbine");
 			// Tooltip.SetDefault("50% not to consume ammo\nInherits many aspects of the bullets used");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Moon Lord]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Moon Lord]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarSniper>(); // Shimmer transforms the item.
 		}
 
@@ -25,8 +24,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.damage = 76;
 			Item.crit = 6; // 10 crit
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 94;
-			Item.height = 32;
 			Item.useTime = 5;
 			Item.useAnimation = 5;
 			Item.useStyle = ItemUseStyleID.Shoot; //5

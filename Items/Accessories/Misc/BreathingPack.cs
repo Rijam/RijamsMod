@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
@@ -11,13 +10,11 @@ namespace RijamsMod.Items.Accessories.Misc
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Refills the player's air supply two seconds after it reaches zero");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]"]);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 34;
 			Item.value = 50000;
 			Item.rare = ItemRarityID.Pink;
 			Item.accessory = true;
@@ -37,8 +34,6 @@ namespace RijamsMod.Items.Accessories.Misc
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 34;
 			Item.value = 60000;
 			Item.rare = ItemRarityID.LightPurple;
 			Item.accessory = true;

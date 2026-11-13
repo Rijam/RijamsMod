@@ -13,8 +13,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 16;
-			Item.height = 32;
 			Item.damage = 2;
 			Item.knockBack = 1;
 			Item.shoot = ModContent.ProjectileType<TAGProj>();

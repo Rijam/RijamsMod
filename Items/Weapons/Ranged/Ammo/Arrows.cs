@@ -38,8 +38,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 			Item.damage = 14;
 			Item.knockBack = 3f;
 			Item.value = 10;
-			Item.width = 14;
-			Item.height = 36;
 			Item.rare = ItemRarityID.LightRed;
 			Item.shootSpeed = 4f;
 			Item.shoot = ModContent.ProjectileType<Projectiles.Ranged.SulfurArrow>();   //The projectile shoot when your weapon using this ammo

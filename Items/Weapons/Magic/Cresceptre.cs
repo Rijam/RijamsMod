@@ -18,8 +18,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 15;
 			Item.rare = ItemRarityID.Pink; //5
-			Item.width = 64;
-			Item.height = 64;
 			Item.useTime = 13;
 			Item.knockBack = 1;
 			Item.UseSound = new(Mod.Name + "/Sounds/Item/Cresceptre") { PitchVariance = 0.05f, MaxInstances = 5 };

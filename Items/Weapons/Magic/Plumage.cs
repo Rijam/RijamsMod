@@ -21,8 +21,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 5;
 			Item.rare = ItemRarityID.Pink;
-			Item.width = 28;
-			Item.height = 30;
 			Item.useTime = 8;
 			Item.knockBack = 2;
 			Item.UseSound = SoundID.Item65;
@@ -65,8 +63,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 5;
 			Item.rare = ItemRarityID.Cyan;
-			Item.width = 28;
-			Item.height = 30;
 			Item.useTime = 8;
 			Item.knockBack = 2;
 			Item.UseSound = SoundID.Item63;
@@ -121,8 +117,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 5;
 			Item.rare = ItemRarityID.Purple;
-			Item.width = 28;
-			Item.height = 30;
 			Item.useTime = 8;
 			Item.knockBack = 2;
 			Item.UseSound = SoundID.Item122;

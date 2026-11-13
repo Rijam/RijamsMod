@@ -1,12 +1,17 @@
 using Microsoft.Xna.Framework;
+using RijamsMod.Buffs.Other;
 using RijamsMod.Buffs.Potions;
 using RijamsMod.Items;
+using RijamsMod.Items.Armor.Skyware;
+using RijamsMod.NPCs;
+using RijamsMod.Projectiles;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace RijamsMod
 {
@@ -14,7 +19,7 @@ namespace RijamsMod
 	{
 		// Accessories
 		public bool Accessory_GuideToProperFlightTechniques;
-		public bool Accessory_ControlGlove;
+		public bool Accessory_InterstellarCuffs;
 		public bool Accessory_SummonersGlove;
 		public bool Accessory_DaybreakStone;
 		public bool Accessory_BreathingPack;
@@ -36,6 +41,8 @@ namespace RijamsMod
 		public bool Accessory_TrapBobber;
 		public bool Accessory_SpinnerBobber;
 		public bool Accessory_PeakPerformanceRing;
+		public Item Accessory_LegionScarf;
+		public bool Accessory_TaggingSpike;
 
 		// Pets
 		public bool Pet_LumothPet;
@@ -59,8 +66,18 @@ namespace RijamsMod
 		// Stats
 		/// <summary> Increases the radius for support minions. Number is in tiles. </summary>
 		public int Stat_SupportMinionRadiusIncrease = 0;
+		/// <summary> Multiplier for the stats of support minions.</summary>
+		public float Stat_SupportMinionPotency = 1f;
+		/// <summary> Allows to summon one support minion without taking a minion slot. </summary>
+		public bool Stat_FreeSupportMinion = false;
+		/// <summary> The current amount free support minions projectile used. </summary>
+		public int Stat_CurrentlyUsedFreeSupportMinion = -1;
 		/// <summary> Increases damage for critical hits. Crit damage. </summary>
 		public float Stat_CriticalHitAdditionalDamage = 0f;
+		/// <summary> Applies additional flat damage to all whip tag damage. </summary>
+		public int Stat_BonusWhipTagDamage = 0;
+		/// <summary> Applies additional crit chance to all whip tag damage. </summary>
+		public int Stat_BonusWhipTagCritChance = 0;
 		/// <summary> Changes how resistant to knockback the player is. 1f is 0% resistance, 0f is 100% resistance. </summary>
 		public float Stat_KnockbackSusceptibility = 1f;
 		/// <summary> Grants additional yoyos and counterweights when the player has the Yoyo Glove. </summary>
@@ -72,14 +89,14 @@ namespace RijamsMod
 
 		// Armor
 		public bool Armor_AncientSet;
-		public int Armor_SkywareArmorSetBonus = 0;
+		public SkywareArmorSetPlayer.SetBonusType Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.None;
 		public int Armor_SkywareArmorSetBonusTimer = 0;
 		public bool Armor_RedSkywareLeggings;
 
 		public override void ResetEffects()
 		{
 			Accessory_GuideToProperFlightTechniques = false;
-			Accessory_ControlGlove = false;
+			Accessory_InterstellarCuffs = false;
 			Accessory_SummonersGlove = false;
 			Accessory_DaybreakStone = false;
 			Accessory_BreathingPack = false;
@@ -100,6 +117,8 @@ namespace RijamsMod
 			Accessory_TrapBobber = false;
 			Accessory_SpinnerBobber = false;
 			Accessory_PeakPerformanceRing = false;
+			Accessory_LegionScarf = null;
+			Accessory_TaggingSpike = false;
 
 			Pet_LumothPet = false;
 			Pet_LEDLumothPet = false;
@@ -119,10 +138,16 @@ namespace RijamsMod
 			Buff_OnDaybroken = false;
 
 			Armor_AncientSet = false;
-			Armor_SkywareArmorSetBonus = 0;
+			Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.None;
 			Armor_RedSkywareLeggings = false;
 
 			Stat_SupportMinionRadiusIncrease = 0;
+			Stat_SupportMinionPotency = 1;
+			Stat_FreeSupportMinion = false;
+			// Stat_CurrentlyUsedFreeSupportMinion = -1;
+			Stat_BonusWhipTagDamage = 0;
+			Stat_BonusWhipTagCritChance = 0;
+
 			Stat_CriticalHitAdditionalDamage = 0f;
 			Stat_KnockbackSusceptibility = 1f;
 			Stat_BonusYoyosAndCounterweights = 0;
@@ -142,6 +167,7 @@ namespace RijamsMod
 			Buff_BetsysCurse = false;
 			Buff_DryadsBane = false;
 			Buff_OnDaybroken = false;
+			Stat_CurrentlyUsedFreeSupportMinion = -1;
 		}
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 		{
@@ -157,12 +183,14 @@ namespace RijamsMod
 
 		public override void PostUpdateEquips()
 		{
+			/* Old FrostyRose
 			if (Accessory_FrostyRose)
 			{
 				Player.buffImmune[BuffID.Frostburn] = true;
 				Player.buffImmune[BuffID.Frozen] = true;
 				Player.buffImmune[BuffID.Chilled] = true;
 			}
+			*/
 			if (Accessory_GuideToProperFlightTechniques)
 			{
 				if (Player.wingTimeMax > 0)
@@ -258,6 +286,24 @@ namespace RijamsMod
 				Player.endurance += (float)Math.Round(Math.Clamp(potentialDR, 0.0, Stat_MoveSpeedDamageReductionMax), 3);
 				// Main.NewText(Player.endurance);
 			}
+
+			// Kill the free support summon if the accessory was unequipped.
+			if (!Stat_FreeSupportMinion && Stat_CurrentlyUsedFreeSupportMinion > -1)
+			{
+				foreach (Projectile projectile in Main.ActiveProjectiles)
+				{
+					if (Stat_CurrentlyUsedFreeSupportMinion == projectile.type)
+					{
+						projectile.Kill();
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+						{
+							NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile.whoAmI);
+						}
+						Stat_CurrentlyUsedFreeSupportMinion = -1;
+						break;
+					}
+				}
+			}
 		}
 		public override void UpdateBadLifeRegen()
 		{
@@ -287,6 +333,27 @@ namespace RijamsMod
 				Player.GetAttackSpeed(DamageClass.Generic) *= 0.9f;
 			}
 		}
+
+		public override void OnHurt(Player.HurtInfo info)
+		{
+			if (info.Damage > 1 && Accessory_LegionScarf != null && Player.whoAmI == Main.myPlayer && !Player.HasBuff(ModContent.BuffType<SnowBalled>()))
+			{
+				Player.AddBuff(ModContent.BuffType<SnowBalled>(), 120);
+				SoundEngine.PlaySound(SoundID.Item45 with { Pitch = -1f }, Player.Center);
+				for (int i = 0; i < 10; i++)
+				{
+					Vector2 velocity = Main.rand.NextVector2CircularEdge(8f, 8f);
+					int damage = (int)Math.Round(25 * Player.GetTotalDamage(DamageClass.Generic).Additive * Player.GetTotalDamage(DamageClass.Generic).Multiplicative);
+					float knockback = (float)Math.Round(2f * Player.GetTotalKnockback(DamageClass.Generic).Additive * Player.GetTotalKnockback(DamageClass.Generic).Multiplicative);
+					int projectile = Projectile.NewProjectile(Player.GetSource_Accessory_OnHurt(Accessory_LegionScarf, info.DamageSource), Player.Center, velocity, ProjectileID.SnowBallFriendly, damage, knockback, Player.whoAmI);
+					if (Main.netMode == NetmodeID.MultiplayerClient)
+					{
+						NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectile);
+					}
+				}
+			}
+		}
+
 		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
 		{
 			if (drawInfo.drawPlayer.active && !drawInfo.drawPlayer.dead)
@@ -352,13 +419,27 @@ namespace RijamsMod
 		}
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers)
 		{
-			float clampedKnockbackSusceptibility = MathHelper.Clamp(Stat_KnockbackSusceptibility, 0, 10);
-			modifiers.Knockback *= clampedKnockbackSusceptibility;
+			if (Stat_KnockbackSusceptibility != 1f)
+			{
+				float clampedKnockbackSusceptibility = MathHelper.Clamp(Stat_KnockbackSusceptibility, 0, 10);
+				modifiers.Knockback *= clampedKnockbackSusceptibility;
+			}
 		}
 
 		public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
 		{
-			//modifiers.FinalDamage *= moveSpeedDamageReductionCurrent;
+			if (Accessory_FrostyRose && !npc.coldDamage && CustomNPCIDSets.IsFireBasedAttackForFrostyRose[npc.type])
+			{
+				modifiers.IncomingDamageMultiplier *= 0.80f;
+			}
+		}
+
+		public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
+		{
+			if (Accessory_FrostyRose && !proj.coldDamage && CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[proj.type])
+			{
+				modifiers.IncomingDamageMultiplier *= 0.80f;
+			}
 		}
 
 		public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
@@ -556,6 +637,11 @@ namespace RijamsMod
 					Main.dust[dust].velocity.Y -= 0.5f;
 				}
 			}
+		}
+
+		public override void OnEnterWorld()
+		{
+			Stat_CurrentlyUsedFreeSupportMinion = -1;
 		}
 	}
 }

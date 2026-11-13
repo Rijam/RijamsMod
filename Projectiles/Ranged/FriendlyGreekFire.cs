@@ -13,6 +13,11 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.GreekFire1}";
 
+		public override void SetStaticDefaults()
+		{
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override void SetDefaults()
 		{
 			Projectile.width = 14;

@@ -249,6 +249,11 @@ namespace RijamsMod.NPCs.TownNPCs
 					Condition.NpcIsPresent(ModContent.NPCType<InterstellarTraveler>()));
 			}
 
+			if (shop.NpcType == NPCID.PartyGirl &&  shop.Name == "Shop")
+			{
+				shop.Add(ModContent.ItemType<Items.Accessories.Summoner.Sentry.FoamFinger>());
+			}
+
 			if (ModLoader.TryGetMod("PboneUtils", out Mod pboneUtils) && ShopConditions.TownNPCsCrossModSupport.IsMet())
 			{
 				if (pboneUtils.TryFind<ModNPC>("Miner", out ModNPC minerModNPC) && shop.NpcType == minerModNPC.Type && shop.Name == "Shop")

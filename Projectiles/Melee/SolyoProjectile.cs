@@ -22,6 +22,7 @@ namespace RijamsMod.Projectiles.Melee
 			// YoyosTopSpeed is top speed of the yoyo projectile. 
 			// Vanilla values range from 9f(Wood) to 17.5f(Terrarian), and defaults to 10f
 			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 16f;
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 
 		public override void SetDefaults()

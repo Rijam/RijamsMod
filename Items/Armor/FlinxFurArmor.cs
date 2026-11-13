@@ -1,41 +1,54 @@
 using Terraria;
-using Terraria.Localization;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
 using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Armor
 {
 	[AutoloadEquip(EquipType.Head)]
 	public class FlinxFurHat : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			AddArmorSet(ModContent.ItemType<FlinxFurHat>(), ItemID.FlinxFurCoat, ModContent.ItemType<FlinxFurBoots>(),
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.FlinxFur"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/FlinxFur",
+				Effect: SetBonus_FlinxFur);
+		}
 		public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 22;
 			Item.value = 25000;
 			Item.rare = ItemRarityID.Green;
 			Item.defense = 2;
 		}
-
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return body.type == ItemID.FlinxFurCoat && legs.type == ModContent.ItemType<FlinxFurBoots>();
-		}
-
 		public override void UpdateEquip(Player player)
 		{
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.1f;
 		}
 
-		public override void UpdateArmorSet(Player player)
+		/*
+		public override bool IsArmorSet(Item head, Item body, Item legs)
+		{
+			return body.type == ItemID.FlinxFurCoat && legs.type == ModContent.ItemType<FlinxFurBoots>();
+		}
+
+		public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus)
 		{
 			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.FlinxFur");
 			player.maxMinions++;
 			player.statDefense++;
 		}
+		*/
+
+		public static void SetBonus_FlinxFur(Player player)
+		{
+			player.maxMinions++;
+			player.statDefense++;
+		}
+
 		public override void AddRecipes()
 		{
 			CreateRecipe()
@@ -51,8 +64,6 @@ namespace RijamsMod.Items.Armor
 	{
 		public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 22;
 			Item.value = 25000;
 			Item.rare = ItemRarityID.Green;
 			Item.defense = 2;

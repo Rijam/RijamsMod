@@ -21,8 +21,6 @@ namespace RijamsMod.Items.Placeable
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.createTile = ModContent.TileType<Tiles.SulfurCampfire>();
-			Item.width = 12;
-			Item.height = 12;
 			Item.value = 5;
 		}
 

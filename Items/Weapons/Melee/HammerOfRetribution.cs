@@ -1,8 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using RijamsMod.Items.Armor.Vanity.IntTrav;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -18,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			// DisplayName.SetDefault("Hammer of Retribution");
 			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws a long range projectile\n  Weapon does double damage\n  Uses 20 mana");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating any Mechanical Boss]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Hell Trader]", "[c/474747:after defeating any Mechanical Boss]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<TimonsAxe>(); // Shimmer transforms the item.
 		}
 
@@ -26,8 +23,6 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			Item.damage = 50;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 60;
-			Item.height = 60;
 			Item.useTime = 45;
 			Item.useAnimation = 45;
 			Item.useStyle = ItemUseStyleID.Swing;

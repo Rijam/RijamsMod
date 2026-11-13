@@ -13,12 +13,10 @@ namespace RijamsMod.Items.Weapons.Magic
 		{
 			Main.RegisterItemAnimation(Type, new DrawAnimationVertical(15, 4));
 			ItemID.Sets.AnimatesAsSoul[Type] = true;
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Angry Gusters]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Angry Gusters]"]);
 		}
 		public override void SetDefaults()
 		{
-			Item.height = 24;
-			Item.width = 26;
 			Item.damage = 20;
 			Item.knockBack = 14f;
 			Item.mana = 10;

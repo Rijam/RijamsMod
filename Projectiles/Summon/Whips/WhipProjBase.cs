@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -84,10 +83,32 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			Projectile.WhipSettings.RangeMultiplier = 1f;
 		}
 
+		/// <summary>
+		/// This timer keeps track of the whip's life time.
+		/// </summary>
 		internal float Timer
 		{
 			get => Projectile.ai[0];
 			set => Projectile.ai[0] = value;
+		}
+
+		/// <summary>
+		/// Whips are spawned with some randomness on their swing animation and direction.
+		/// <br/>This value is set when the projectile spawns in the item's Shoot() method.
+		/// </summary>
+		internal float SwingDirection
+		{
+			get => Projectile.ai[1];
+			set => Projectile.ai[1] = value;
+		}
+
+		/// <summary>
+		/// This timer keeps track of the whip's life time if the whip is a secondary whips spawned by the Snake Band.
+		/// </summary>
+		internal float SecondaryWhipTimer
+		{
+			get => Projectile.ai[2];
+			set => Projectile.ai[2] = value;
 		}
 
 		public override void AI()
@@ -104,22 +125,32 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
 			Projectile.GetWhipSettings(Projectile, out float timeToFlyOut, out _, out _);
 
-			if (Timer >= timeToFlyOut || owner.itemAnimation <= 1) // itemAnimation <= 1 allows quick swapping between whips
+			if (Timer >= timeToFlyOut)
 			{
-				owner.itemAnimation = 0; // allows quick swapping between whips
 				Projectile.Kill();
 				return;
 			}
 
-			owner.heldProj = Projectile.whoAmI;
-			owner.MatchItemTimeToItemAnimation();
+			// Secondary whips spawned from the Snake Band will have their ai[2] set to 1000 + (item time * 2).
+			// Projectile.GetWhipSettings also checks for secondary whips and corrects for the extra 1000.
+			bool isASecondaryWhip = SecondaryWhipTimer >= 1000f;
+
+			if (!isASecondaryWhip) // The primary whip is the real held projectile and gets the item time applied to it.
+			{
+				owner.heldProj = Projectile.whoAmI;
+				owner.MatchItemTimeToItemAnimation();
+			}
+			else // The secondary whip will be drawn behind the player.
+			{
+				Projectile.drawLayer = ProjectileDrawLayerID.Default;
+			}
 
 			if (Timer == timeToFlyOut / 2)
 			{
 				// Plays a whipcrack sound at the tip of the whip.
-				List<Vector2> points = Projectile.WhipPointsForCollision;
-				Projectile.FillWhipControlPoints(Projectile, points);
-				SoundEngine.PlaySound(WhipCrackSound(), points[^1]);
+				Projectile.WhipPointsForCollision.Clear();
+				Projectile.FillWhipControlPoints(Projectile, Projectile.WhipPointsForCollision);
+				SoundEngine.PlaySound(WhipCrackSound(), Projectile.WhipPointsForCollision[^1]);
 			}
 
 			float swingProgress = Timer / timeToFlyOut;
@@ -140,6 +171,13 @@ namespace RijamsMod.Projectiles.Summon.Whips
 		{
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 			Projectile.damage = (int)(Projectile.damage * MultiHitPenatly());
+
+			// This is needed in order for OnProcHit in the WhipTagEffect to activate.
+			if (Projectile.localAI[0] == 0f)
+			{
+				Projectile.localAI[0] = 1f;
+				Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
+			}
 		}
 
 		public static void DrawLineForWhips(List<Vector2> controlPoints, Color lineColor, bool decrementCount = false)
@@ -172,7 +210,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 
 		public override bool PreDraw(Player player, ref Color lightColor)
 		{
-			List<Vector2> controlPoints = new();
+			List<Vector2> controlPoints = [];
 			Projectile.FillWhipControlPoints(Projectile, controlPoints, player);
 
 			bool decrementLineCount = false;

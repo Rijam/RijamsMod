@@ -1,7 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -17,15 +15,13 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			// DisplayName.SetDefault("Timon's Axe");
 			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws short range projectiles\n  Weapon does double damage\n  Uses 20 mana");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:after defeating Skeletron]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Hell Trader]", "[c/474747:after defeating Skeletron]"]);
 		}
 
 		public override void SetDefaults() 
 		{
 			Item.damage = 30;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 54;
-			Item.height = 44;
 			Item.useTime = 35;
 			Item.useAnimation = 35;
 			Item.useStyle = ItemUseStyleID.Swing;

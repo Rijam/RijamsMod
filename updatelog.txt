@@ -358,7 +358,7 @@
 	* Honey Candles now provide the Honey buff when placed nearby.
 	* Antlion Biter minion local immunity reduced from 30 to 13. This will increase the DPS of the minion.
 	* Added Giant Worm Staff and minion.
-	* Added portraits for the Town NPCs.
+	* Added portraits for the Town NPCs. The expression of the portraits change with the dialogue.
 	* Updated all of the whips with the new tag damage system and added some more visual effects for a few of them.
 	* Fixed the Cresceptre projectile's after images being misaligned.
 	* Buffed Festive armor set bonus: now gives +25% Whip damage instead of +5% Whip damage.
@@ -368,3 +368,8 @@
 	* Fixed armor glow masks drawing when the player was transformation mounts that should hide the player.
 	* Improved the Vanilla Vanity and Armor Change config to allow turning on/off each specific set.
 	* Improved the Pianist's Glove. Fixed the tuning and the note range.
+	* Added new summon accessories: Virtuous Armlet, Imp Choker, Harpy Headband, Interstellar Cuffs, Dream Catcher, Harmony Armlets.
+	* Removed Control Glove.
+	* Reworked Legion Scarf: now launches 10 snowballs in all directions after taking damage. Grants +10% crit damage and +10% whip tag crit chance for 2 seconds after activating.
+	* Reworked Frosty Rose: now grants 20% reduced damage to hot attacks.
+	* Added Panic Scarf, Legion Cloak, and Legion Sweetheart Cloak combination accessories.

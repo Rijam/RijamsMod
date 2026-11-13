@@ -85,7 +85,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 					NPC.HitInfo hitInfo = new()
 					{
-						Damage = (int)(attackDamage * (player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative)),
+						Damage = (int)(attackDamage * (player.GetTotalDamage(DamageClass.Summon).Additive * player.GetTotalDamage(DamageClass.Summon).Multiplicative) * player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionPotency),
 						HitDirection = npc.direction,
 						Knockback = 0f
 					};

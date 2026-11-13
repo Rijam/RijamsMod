@@ -24,8 +24,6 @@ namespace RijamsMod.Items.Tools
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 			Item.channel = true;
-			Item.width = 40;
-			Item.height = 40;
 			Item.useTime = 5;
 			Item.useAnimation = 25;
 			Item.pick = 0;

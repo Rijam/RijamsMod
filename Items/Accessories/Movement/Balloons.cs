@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,8 +15,6 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Yellow; //8
 			Item.value = Item.sellPrice(0, 3, 50, 0);
 			Item.accessory = true;
@@ -52,8 +49,6 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 38;
 			Item.rare = ItemRarityID.Yellow; //8
 			Item.value = Item.sellPrice(0, 4, 0, 0);
 			Item.accessory = true;
@@ -117,8 +112,6 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 42;
 			Item.rare = ItemRarityID.Cyan; //9
 			Item.value = Item.sellPrice(0, 8, 0, 0);
 			Item.accessory = true;
@@ -161,8 +154,6 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 42;
 			Item.rare = ItemRarityID.Red; //10
 			Item.value = Item.sellPrice(0, 15, 0, 0);
 			Item.accessory = true;

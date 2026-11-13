@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -242,6 +243,12 @@ namespace RijamsMod.Projectiles.Summon.Support
 			}
 			return false;
 		}
+
+		public override void OnKill(int timeLeft)
+		{
+			Player player = Main.player[Projectile.owner];
+			player.GetModPlayer<RijamsModPlayer>().Stat_CurrentlyUsedFreeSupportMinion = -1;
+		}
 	}
 
 	public class DefenseSupportSummonBase : SupportSummonBase
@@ -258,22 +265,51 @@ namespace RijamsMod.Projectiles.Summon.Support
 		/// </summary>
 		public float additionalDR = 0;
 
+		public int GetAdditionalDefense(Player player)
+		{
+			return (int)Math.Round(additionalDefense * player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionPotency);
+		}
+
+		public float GetAdditionalDR(Player player)
+		{
+			return additionalDR * player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionPotency;
+		}
+
 		public override void AI()
 		{
 			base.AI();
 
-			Player player = Main.player[Projectile.owner];
-			int radius = GetRadius(player);
+			Player owner = Main.player[Projectile.owner];
+			int radius = GetRadius(owner);
 			for (int i = 0; i < Main.maxPlayers; i++)
 			{
 				Player searchPlayer = Main.player[i];
-				if (SearchPlayers(player, searchPlayer))
+				if (SearchPlayers(owner, searchPlayer))
 				{
 					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 					if (distance <= radius)
 					{
-						searchPlayer.statDefense += additionalDefense;
-						searchPlayer.endurance += additionalDR;
+						searchPlayer.statDefense += GetAdditionalDefense(owner);
+						searchPlayer.endurance += GetAdditionalDR(owner);
+					}
+				}
+			}
+			if (owner.GetModPlayer<RijamsModPlayer>().Accessory_InterstellarCuffs)
+			{
+				foreach (NPC npc in Main.ActiveNPCs)
+				{
+					if (npc.CanBeChasedBy(owner))
+					{
+						double distance = Vector2.Distance(npc.Center, Projectile.Center);
+						if (distance <= radius)
+						{
+							// npc.defense -= (GetAdditionalDefense(owner) / 2);
+							npc.GetGlobalNPC<SupportSummonGobalNPC>().SupportMinionGrantingNPCDefense -= (GetAdditionalDefense(owner) / 2);
+							Color dustColor = Color.Blue;
+							int discard = 0;
+							DustCustomization(ref dustColor, ref discard);
+							Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Dusts.AuraDust>(), 0, 0, 200, dustColor, 1f);
+						}
 					}
 				}
 			}
@@ -317,6 +353,11 @@ namespace RijamsMod.Projectiles.Summon.Support
 		/// </summary>
 		internal int targetPlayer2 = -1;
 
+		public int GetHealAmount(Player player)
+		{
+			return (int)Math.Round(healAmount * player.GetModPlayer<RijamsModPlayer>().Stat_SupportMinionPotency);
+		}
+
 		/// <summary>
 		/// The projectile that is used to do the healing.
 		/// </summary>
@@ -358,18 +399,37 @@ namespace RijamsMod.Projectiles.Summon.Support
 		{
 			base.AI();
 
-			Player player = Main.player[Projectile.owner];
-			int radius = GetRadius(player);
+			Player owner = Main.player[Projectile.owner];
+			int radius = GetRadius(owner);
 			// Give passive regen for all players while within the radius.
 			for (int i = 0; i < Main.maxPlayers; i++)
 			{
 				Player searchPlayer = Main.player[i];
-				if (SearchPlayers(player, searchPlayer))
+				if (SearchPlayers(owner, searchPlayer))
 				{
 					double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 					if (distance <= radius)
 					{
-						searchPlayer.lifeRegen += (healAmount / 10); // 1 = +0.5 HP per second
+						searchPlayer.lifeRegen += (int)Math.Max(GetHealAmount(owner) / (cooldownTime / 200f), 1); // 1 = +0.5 HP per second; 20 hp & 30 time = 2; 30 hp & 20 time = 5
+					}
+				}
+			}
+			if (owner.GetModPlayer<RijamsModPlayer>().Accessory_InterstellarCuffs)
+			{
+				foreach (NPC npc in Main.ActiveNPCs)
+				{
+					if (npc.CanBeChasedBy(owner))
+					{
+						double distance = Vector2.Distance(npc.Center, Projectile.Center);
+						if (distance <= radius)
+						{
+							//npc.lifeRegen -= (GetHealAmount(owner) / 20);
+							npc.GetGlobalNPC<SupportSummonGobalNPC>().SupportMinionGrantingNPCLife -= (int)Math.Max(GetHealAmount(owner) / (cooldownTime / 400f), 2); // 1 = -0.5f HP per second; 20 hp & 30 time = 4; 30 hp & 20 time = 10
+							Color dustColor = Color.Blue;
+							int discard = 0;
+							DustCustomization(ref dustColor, ref discard);
+							Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<Dusts.AuraDust>(), 0, 0, 200, dustColor, 1f);
+						}
 					}
 				}
 			}
@@ -390,11 +450,11 @@ namespace RijamsMod.Projectiles.Summon.Support
 					// Search for each player within the radius and add them to the list.
 					if (Main.netMode != NetmodeID.Server)
 					{
-						Dictionary<Player, int> players = new();
+						Dictionary<Player, int> players = [];
 						for (int i = 0; i < Main.maxPlayers; i++)
 						{
 							Player searchPlayer = Main.player[i];
-							if (SearchPlayers(player, searchPlayer))
+							if (SearchPlayers(owner, searchPlayer))
 							{
 								double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 								if (distance <= radius)
@@ -429,7 +489,7 @@ namespace RijamsMod.Projectiles.Summon.Support
 
 						Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, new(0, -1), projectileType,
 							0, 0, Projectile.owner,
-							targetPlayer, healAmount);
+							targetPlayer, GetHealAmount(owner));
 					}
 				}
 				else // TargetTwoPlayers
@@ -437,11 +497,11 @@ namespace RijamsMod.Projectiles.Summon.Support
 					// Search for each player within the radius and add them to the list.
 					if (Main.netMode != NetmodeID.Server)
 					{
-						Dictionary<Player, int> players = new();
+						Dictionary<Player, int> players = [];
 						for (int i = 0; i < Main.maxPlayers; i++)
 						{
 							Player searchPlayer = Main.player[i];
-							if (SearchPlayers(player, searchPlayer))
+							if (SearchPlayers(owner, searchPlayer))
 							{
 								double distance = Vector2.Distance(searchPlayer.Center, Projectile.Center);
 								if (distance <= radius)
@@ -489,13 +549,13 @@ namespace RijamsMod.Projectiles.Summon.Support
 					Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One, ModContent.ProjectileType<Radiance>(),
 						0, 0, Projectile.owner,
 						targetPlayer,
-						Main.rand.NextFloat(0.8f, 0.9f), healAmount);
+						Main.rand.NextFloat(0.8f, 0.9f), GetHealAmount(owner));
 
 					// Spawn a second projectile with the owner as the target.
 					Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.One * -1, ModContent.ProjectileType<Radiance>(),
 						0, 0, Projectile.owner,
 						targetPlayer2,
-						Main.rand.NextFloat(0.8f, 0.9f), healAmount);
+						Main.rand.NextFloat(0.8f, 0.9f), GetHealAmount(owner));
 				}
 
 				SoundEngine.PlaySound(LaunchSound(), Projectile.Center);
@@ -543,6 +603,54 @@ namespace RijamsMod.Projectiles.Summon.Support
 			{
 				targetPlayer2 = reader.ReadInt32();
 			}
+		}
+	}
+
+	public class SupportSummonGobalNPC : GlobalNPC
+	{
+		public override bool InstancePerEntity => true;
+
+		/// <summary> The amount of defense that is granted to the NPC. Set to a negative value to subtract defense. </summary>
+		public int SupportMinionGrantingNPCDefense = 0;
+		/// <summary> The amount of life regen that is granted to the NPC. Set to a negative value to subtract life. </summary>
+		public int SupportMinionGrantingNPCLife = 0;
+
+		public override void ResetEffects(NPC npc)
+		{
+			SupportMinionGrantingNPCDefense = 0;
+			//SupportMinionGrantingNPCLife = 0;
+		}
+
+		public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
+		{
+			if (SupportMinionGrantingNPCDefense != 0)
+			{
+				modifiers.Defense.Flat += SupportMinionGrantingNPCDefense; // += because SupportMinionGrantingNPCDefense will be negative.
+			}
+		}
+		public override void UpdateLifeRegen(NPC npc, ref int damage)
+		{
+			if (npc.friendly)
+			{
+				return;
+			}
+
+			if (SupportMinionGrantingNPCLife != 0)
+			{
+				if (npc.lifeRegen > 0)
+				{
+					npc.lifeRegen = 0;
+				}
+
+				npc.lifeRegen += SupportMinionGrantingNPCLife; // += because SupportMinionGrantingNPCLife will be negative.
+				// damage = SupportMinionGrantingNPCLife; // 
+			}
+		}
+
+		public override void PostAI(NPC npc)
+		{
+			base.PostAI(npc);
+			SupportMinionGrantingNPCLife = 0;
 		}
 	}
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -15,7 +14,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		public override void SetStaticDefaults()
 		{
 			// Tooltip.SetDefault("Inherits many aspects of the bullets used");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Skeletron]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Skeletron]"] );
 		}
 
 		public override void SetDefaults()
@@ -23,8 +22,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.damage = 23;
 			Item.crit = 6; // 10 crit
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 52;
-			Item.height = 32;
 			Item.useTime = 16;
 			Item.useAnimation = 16;
 			Item.useStyle = ItemUseStyleID.Shoot; // 5

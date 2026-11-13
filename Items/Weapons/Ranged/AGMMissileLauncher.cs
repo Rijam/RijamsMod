@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -14,7 +13,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			// DisplayName.SetDefault("AGM Missile Launcher");
 			// Tooltip.SetDefault("10% chance not to consume ammo");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Golem]"]);
 			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 
 			AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[Type] = ItemID.RocketLauncher;
@@ -39,8 +38,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			Item.DefaultToRangedWeapon(ProjectileID.RocketI, AmmoID.Rocket, singleShotTime: 30, shotVelocity: 6f, hasAutoReuse: true);
 			Item.damage = 58;
-			Item.width = 70;
-			Item.height = 28;
 			Item.knockBack = 5;
 			Item.value = 300000;
 			Item.rare = ItemRarityID.Yellow; //8

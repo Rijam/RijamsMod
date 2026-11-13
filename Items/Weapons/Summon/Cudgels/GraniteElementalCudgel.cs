@@ -5,7 +5,6 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.Localization;
-using System.Collections.Generic;
 using System;
 
 namespace RijamsMod.Items.Weapons.Summon.Cudgels
@@ -15,15 +14,13 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Granite Elementals]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Granite Elementals]"]);
 		}
 
 		public override void SetDefaults()
 		{
 			Item.damage = 1; // Token amount of damage so it can be reforged and so it shows up in summon weapon filters.
 			Item.knockBack = 0f;
-			Item.width = 18;
-			Item.height = 48;
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
@@ -57,6 +54,7 @@ namespace RijamsMod.Items.Weapons.Summon.Cudgels
 			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, Vector2.Zero, type, damage, knockback, player.whoAmI);
 			projectile.originalDamage = Item.damage;
+			SupportMinionCanUseCheck.ShouldSupportMinionProjectileBeFree(player, Item, projectile);
 			if (projectile.ModProjectile is GraniteElemental modProjectile)
 			{
 				modProjectile.healAmount = HealingAmount;

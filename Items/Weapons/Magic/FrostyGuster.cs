@@ -16,8 +16,6 @@ namespace RijamsMod.Items.Weapons.Magic
 		}
 		public override void SetDefaults()
 		{
-			Item.height = 24;
-			Item.width = 26;
 			Item.damage = 50;
 			Item.knockBack = 16f;
 			Item.mana = 10;

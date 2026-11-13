@@ -21,8 +21,6 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void SetDefaults()
 		{
-			Item.width = 42; 
-			Item.height = 44;
 			Item.accessory = true;
 			Item.rare = ItemRarityID.Red;
 			Item.value = 200000;

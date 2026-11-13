@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,15 +11,13 @@ namespace RijamsMod.Items.Weapons.Melee
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Stabby Shiv");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Mister Stabby]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Mister Stabby]"]);
 		}
 
 		public override void SetDefaults()
 		{
 			Item.damage = 45;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 18;
-			Item.height = 18;
 			Item.useTime = 7; 
 			Item.useAnimation = 7;
 			Item.knockBack = 8;
@@ -64,8 +61,6 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			Item.damage = 45;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 20;
-			Item.height = 20;
 			Item.useTime = 7; 
 			Item.useAnimation = 7;
 			Item.knockBack = 8;

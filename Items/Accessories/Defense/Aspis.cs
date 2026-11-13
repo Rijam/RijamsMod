@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -10,12 +9,10 @@ namespace RijamsMod.Items.Accessories.Defense
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Hoplites]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Hoplites]"]);
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.sellPrice(silver: 20);
 			Item.accessory = true;

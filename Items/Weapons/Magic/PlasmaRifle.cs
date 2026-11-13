@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -13,7 +12,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Plasma Rifle");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]"]);
 		}
 
 		public override void SetDefaults()
@@ -23,8 +22,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 5;
 			Item.rare = ItemRarityID.Yellow; //8
-			Item.width = 60;
-			Item.height = 18;
 			Item.useTime = 7;
 			Item.knockBack = 2;
 			Item.UseSound = new(Mod.Name + "/Sounds/Item/PlasmaRifleAlt") { Volume = 0.8f, PitchVariance = 0.05f, MaxInstances = 10 };

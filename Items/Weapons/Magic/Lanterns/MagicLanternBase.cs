@@ -70,8 +70,6 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 
 		public override void SetDefaults()
 		{
-			Item.width = 18;
-			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.RaiseLamp;
 			Item.holdStyle = ItemHoldStyleID.HoldLamp;
 			Item.shoot = ModContent.ProjectileType<LanternLightShining>();

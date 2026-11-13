@@ -40,6 +40,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.value = 500f;
 			NPC.knockBackResist = 0.5f;
 			NPC.aiStyle = -1;
+			NPC.coldDamage = true;
 			AIType = NPCID.SnowmanGangsta;
 			AnimationType = NPCID.SnowmanGangsta;
 			Banner = NPC.type;

@@ -18,7 +18,7 @@ namespace RijamsMod.Items.Accessories.Magic
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.statManaMax2 += 20;
+			player.statManaMax2 += 40;
 			player.GetModPlayer<RijamsModPlayer>().Accessory_ManaSapperRing = true;
 		}
 		public override void AddRecipes()
@@ -41,12 +41,13 @@ namespace RijamsMod.Items.Accessories.Magic
 			Item.rare = ItemRarityID.Lime; //7
 			Item.value = Item.sellPrice(0, 5, 0, 0);
 			Item.accessory = true;
+			Item.defense = 2;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetDamage(DamageClass.Magic) += 0.10f;
 			player.GetCritChance(DamageClass.Magic) += 8;
-			player.statManaMax2 += 20;
+			player.statManaMax2 += 40;
 			player.manaMagnet = true;
 			player.magicCuffs = true;
 		}
@@ -79,12 +80,13 @@ namespace RijamsMod.Items.Accessories.Magic
 			Item.rare = ItemRarityID.Cyan; //9
 			Item.value = Item.sellPrice(0, 10, 0, 0);
 			Item.accessory = true;
+			Item.defense = 2;
 		}
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.GetDamage(DamageClass.Magic) += 0.15f;
 			player.GetCritChance(DamageClass.Magic) += 10;
-			player.statManaMax2 += 40;
+			player.statManaMax2 += 60;
 			player.manaRegenDelayBonus++;
 			player.manaRegenBonus += 25;
 			player.manaMagnet = true;

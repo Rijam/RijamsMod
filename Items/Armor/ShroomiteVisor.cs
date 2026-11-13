@@ -1,6 +1,7 @@
 using Terraria;
-using Terraria.Localization;
+using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace RijamsMod.Items.Armor
@@ -12,33 +13,25 @@ namespace RijamsMod.Items.Armor
 		{
 			// DisplayName.SetDefault("Shroomite Visor");
 			// Tooltip.SetDefault("10% increased all ranged damage\n5% increased ranged critical strike chance");
+			AddArmorSet(ModContent.ItemType<ShroomiteVisor>(), ItemID.ShroomiteBreastplate, ItemID.ShroomiteLeggings,
+				LocalizedText: Language.GetText($"ArmorSetBonus.Shroomite"),
+				PrimaryPart: ArmorSetBonus.PartType.Head,
+				Identifier: "Shroomite",
+				Effect: ArmorSetBonuses.Benefits.Shroomite);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 22;
 			Item.value = 375000;
 			Item.rare = ItemRarityID.Yellow;
 			Item.defense = 11;
 		}
-
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return body.type == ItemID.ShroomiteBreastplate && legs.type == ItemID.ShroomiteLeggings;
-		}
-
 		public override void UpdateEquip(Player player)
 		{
 			player.GetCritChance(DamageClass.Ranged) += 5;
 			player.GetDamage(DamageClass.Ranged) += 0.1f;
 		}
 
-		public override void UpdateArmorSet(Player player)
-		{
-			// TODO player.setBonus = Language.GetTextValue("ArmorSetBonus.Shroomite");
-			player.shroomiteStealth = true;
-		}
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadow = true;

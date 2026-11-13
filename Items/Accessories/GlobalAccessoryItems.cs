@@ -1,11 +1,8 @@
-using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RijamsMod.Items.Armor.RedSkyware;
 using System;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -64,6 +61,7 @@ namespace RijamsMod.Items.Accessories
 	{
 		public override bool? CanAutoReuseItem(Item item, Player player)
 		{
+			/* Old behavior
 			if (player.GetModPlayer<RijamsModPlayer>().Accessory_ControlGlove)
 			{
 				if ((item.sentry || ProjectileID.Sets.MinionShot[item.shoot] || ProjectileID.Sets.MinionSacrificable[item.shoot]) && item.CountsAsClass(DamageClass.Summon))
@@ -71,6 +69,7 @@ namespace RijamsMod.Items.Accessories
 					return true;
 				}
 			}
+			*/
 			if (player.GetModPlayer<RijamsModPlayer>().Accessory_SummonersGlove)
 			{
 				if (item.CountsAsClass(DamageClass.Summon))
@@ -180,6 +179,51 @@ namespace RijamsMod.Items.Accessories
 
 				// This will give the player an extra counterweight (no extra yoyo, though).
 				return returnValue + player.GetModPlayer<RijamsModPlayer>().Stat_BonusCounterweights;
+			});
+		}
+	}
+
+	public class SummonTagDamageDetour : GlobalItem
+	{
+		public override void Load()
+		{
+			Terraria.GameContent.Items.IL_WhipTagEffect.ModifyTaggedHit += IL_WhipTagEffect_ModifyTaggedHit;
+		}
+
+		private void IL_WhipTagEffect_ModifyTaggedHit(ILContext il)
+		{
+			// Original code
+			// modifiers.FlatBonusDamage += TagDamage * ProjectileID.Sets.SummonTagDamageMultiplier[optionalProjectile.type];
+
+			// if (Main.rand.Next(100) < CritChance)
+			//	modifiers.SetCrit();
+
+			ILCursor c = new(il);
+
+			// Try to find where TagDamage is placed onto the stack
+			if (!c.TryGotoNext(MoveType.After, i => i.MatchLdfld<Terraria.GameContent.Items.WhipTagEffect>(nameof(Terraria.GameContent.Items.WhipTagEffect.TagDamage))))
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.Debug("Patch 1 of IL_WhipTagEffect_ModifyTaggedHit unable to be applied! ");
+				return; // Patch unable to be applied
+			}
+
+			c.Emit(OpCodes.Ldarg_1); // owner parameter
+			c.EmitDelegate<Func<int, Player, int>>((tagDamage, owner) =>
+			{
+				return tagDamage + owner.GetModPlayer<RijamsModPlayer>().Stat_BonusWhipTagDamage;
+			});
+
+			// Try to find where CritChance is placed onto the stack
+			if (!c.TryGotoNext(MoveType.After, i => i.MatchLdfld<Terraria.GameContent.Items.WhipTagEffect>(nameof(Terraria.GameContent.Items.WhipTagEffect.CritChance))))
+			{
+				ModContent.GetInstance<RijamsMod>().Logger.Debug("Patch 2 of IL_WhipTagEffect_ModifyTaggedHit unable to be applied! ");
+				return; // Patch unable to be applied
+			}
+
+			c.Emit(OpCodes.Ldarg_1); // owner parameter
+			c.EmitDelegate<Func<int, Player, int>>((critChance, owner) =>
+			{
+				return critChance + owner.GetModPlayer<RijamsModPlayer>().Stat_BonusWhipTagCritChance;
 			});
 		}
 	}

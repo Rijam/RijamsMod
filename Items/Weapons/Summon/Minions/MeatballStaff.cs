@@ -21,8 +21,6 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 		{
 			Item.damage = 45;
 			Item.knockBack = 1f;
-			Item.width = 48;
-			Item.height = 44;
 			Item.useTime = 20;
 			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Swing;

@@ -1,7 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,15 +10,13 @@ namespace RijamsMod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Snowman Gansta]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Snowman Gansta]"]);
 		}
 
 		public override void SetDefaults()
 		{
 			Item.damage = 23;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 66;
-			Item.height = 22;
 			Item.useTime = 8;
 			Item.useAnimation = 8;
 			Item.useStyle = ItemUseStyleID.Shoot;

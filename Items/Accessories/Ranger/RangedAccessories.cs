@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,8 +15,6 @@ namespace RijamsMod.Items.Accessories.Ranger
 
 		public override void SetDefaults()
 		{
-			Item.width = 26;
-			Item.height = 32;
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.sellPrice(0, 0, 50, 0);
 			Item.accessory = true;
@@ -42,14 +39,11 @@ namespace RijamsMod.Items.Accessories.Ranger
 		{
 			// DisplayName.SetDefault("Rocket Booster");
 			// Tooltip.SetDefault("+10% rocket damage\n+20% rocket velocity\n+10% rocket knockback");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After completing quest]"]);
 		}
 
 		public override void SetDefaults()
 		{
-			//item.color = Color.Yellow; //colors the inventory sprite
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Lime; //7
 			Item.value = Item.sellPrice(0, 4, 0, 0);
 			Item.accessory = true;
@@ -72,8 +66,6 @@ namespace RijamsMod.Items.Accessories.Ranger
 
 		public override void SetDefaults()
 		{
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Cyan; //9
 			Item.value = Item.sellPrice(0, 10, 0, 0);
 			Item.accessory = true;

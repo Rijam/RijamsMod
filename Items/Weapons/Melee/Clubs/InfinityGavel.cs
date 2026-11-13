@@ -1,12 +1,10 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using RijamsMod.Projectiles.Melee.Clubs;
 using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.Player;
 
 namespace RijamsMod.Items.Weapons.Melee.Clubs
 {
@@ -25,8 +23,6 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 		{
 			Item.damage = 100;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 18;
-			Item.height = 18;
 			Item.useTime = 45;
 			Item.useAnimation = 45;
 			Item.knockBack = 8;
@@ -120,10 +116,10 @@ namespace RijamsMod.Items.Weapons.Melee.Clubs
 			float rotationDirection = rotationAmount + (float)Math.PI * 2f / 5f + newShootRotation;
 			rotationDirection *= player.direction;
 
-			player.SetCompositeArmFront(enabled: true, CompositeArmStretchAmount.Full, rotationDirection);
+			player.SetCompositeArmFront(enabled: true, Player.CompositeArmStretchAmount.Full, rotationDirection);
 
 
-			player.itemLocation = player.GetFrontHandPosition(CompositeArmStretchAmount.Full, rotationDirection);
+			player.itemLocation = player.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, rotationDirection);
 			// player.itemLocation -= player.MountedCenter; // Part of the original useStyle
 			player.itemLocation *= MathHelper.Lerp(1.5f, 1.2f, time);
 			// player.itemLocation += player.MountedCenter; // Part of the original useStyle

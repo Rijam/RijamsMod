@@ -1,4 +1,3 @@
-using RijamsMod.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -14,8 +13,6 @@ namespace RijamsMod.Items.Placeable
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 16;
-			Item.height = 16;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.holdStyle = ItemHoldStyleID.HoldFront;
 			Item.noWet = false;

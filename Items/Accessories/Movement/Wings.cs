@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.Audio;
 using Microsoft.Xna.Framework;
 
@@ -31,8 +28,6 @@ namespace RijamsMod.Items.Accessories.Movement
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 20;
 			Item.value = 80000;
 			Item.rare = ItemRarityID.Red;
 			Item.accessory = true;

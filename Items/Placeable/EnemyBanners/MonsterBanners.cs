@@ -11,8 +11,6 @@ namespace RijamsMod.Items.Placeable.EnemyBanners
 		public override void SetDefaults()
 		{
 			Item.DefaultToPlaceableTile(ModContent.TileType<MonsterBanners>(), 0); // Place style means which frame (Horizontally, starting from 0) of the tile should be placed
-			Item.width = 10;
-			Item.height = 24;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(0, 0, 10, 0);
 		}

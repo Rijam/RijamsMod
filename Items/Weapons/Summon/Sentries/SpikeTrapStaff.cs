@@ -21,8 +21,6 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 		{
 			Item.damage = 25;
 			Item.knockBack = 0f;
-			Item.width = 32;
-			Item.height = 32;
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.Swing;
@@ -75,8 +73,6 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 		{
 			base.SetDefaults();
 			Item.damage = 45;
-			Item.width = 48;
-			Item.height = 48;
 			Item.value = Item.sellPrice(gold: 1, silver: 50);
 			Item.rare = ItemRarityID.Yellow;
 			Item.UseSound = SoundID.Item44;
@@ -111,8 +107,6 @@ namespace RijamsMod.Items.Weapons.Summon.Sentries
 		{
 			base.SetDefaults();
 			Item.damage = 5;
-			Item.width = 28;
-			Item.height = 30;
 			Item.value = Item.sellPrice(silver: 50);
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item44;

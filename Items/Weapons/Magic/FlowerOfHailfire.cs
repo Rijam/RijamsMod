@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -13,7 +12,7 @@ namespace RijamsMod.Items.Weapons.Magic
 		{
 			// DisplayName.SetDefault("Flower of Hailfire");
 			// Tooltip.SetDefault("Throws balls of fire and frost");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Crafted in the Snow biome near lava]" } );
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Crafted in the Snow biome near lava]"] );
 		}
 
 		public override void SetDefaults()
@@ -24,8 +23,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.channel = false;
 			Item.mana = 15;
 			Item.rare = ItemRarityID.Pink; //5
-			Item.width = 32;
-			Item.height = 34;
 			Item.useTime = 15;
 			Item.knockBack = 7f;
 			Item.UseSound = SoundID.Item20;

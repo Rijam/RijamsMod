@@ -4,7 +4,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
-using System.Collections.Generic;
 
 namespace RijamsMod.Items.Weapons.Summon.Minions
 {
@@ -14,7 +13,7 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 		{
 			// DisplayName.SetDefault("Hissy Staff");
 			// Tooltip.SetDefault("Summons a Hissy Demon to fight for you");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Dark Soldier]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Dark Soldier]"]);
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
@@ -23,8 +22,6 @@ namespace RijamsMod.Items.Weapons.Summon.Minions
 		{
 			Item.damage = 20;
 			Item.knockBack = 1f;
-			Item.width = 48;
-			Item.height = 44;
 			Item.useTime = 25;
 			Item.useAnimation = 25;
 			Item.useStyle = ItemUseStyleID.Swing;

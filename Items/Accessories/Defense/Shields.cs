@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,8 +18,6 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void SetDefaults()
 		{
-			Item.width = 34;
-			Item.height = 34;
 			Item.rare = ItemRarityID.Pink; //5
 			Item.value = Item.sellPrice(0, 4, 50, 0);
 			Item.accessory = true;
@@ -68,8 +65,6 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void SetDefaults()
 		{
-			Item.width = 38;
-			Item.height = 36;
 			Item.rare = ItemRarityID.Red; //10
 			Item.value = Item.sellPrice(0, 10, 0, 0);
 			Item.accessory = true;

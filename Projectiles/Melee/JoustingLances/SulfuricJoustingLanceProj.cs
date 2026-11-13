@@ -9,6 +9,12 @@ namespace RijamsMod.Projectiles.Melee.JoustingLances
 {
 	public class SulfuricJoustingLanceProj : JoustingLanceProjBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override void DustTypes(ref int dustTypeCommon, ref int dustTypeRare, ref int offset)
 		{
 			dustTypeCommon = ModContent.DustType<SulfurDust>();

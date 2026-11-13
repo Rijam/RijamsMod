@@ -22,8 +22,6 @@ namespace RijamsMod.Items.Weapons.Magic
 			Item.DamageType = DamageClass.Magic;
 			Item.mana = 8;
 			Item.rare = ItemRarityID.LightRed;
-			Item.width = 28;
-			Item.height = 30;
 			Item.useTime = 14;
 			Item.knockBack = 2;
 			Item.UseSound = SoundID.Item8;

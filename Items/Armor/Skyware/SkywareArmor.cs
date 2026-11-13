@@ -1,7 +1,10 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using RijamsMod.Projectiles.Misc;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -15,12 +18,17 @@ namespace RijamsMod.Items.Armor.Skyware
 		{
 			// DisplayName.SetDefault("Skyware Mask");
 			// Tooltip.SetDefault("+5% Melee damage\n+5% Melee critical strike chance");
+			AddArmorSet<SkywareMask, SkywareChestplate, SkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.Skyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/Skyware_Melee",
+				Effect: SetBonus_Skyware_Melee
+			);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 26;
 			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;//1
 			Item.defense = 8;
@@ -41,15 +49,10 @@ namespace RijamsMod.Items.Armor.Skyware
 				.Register();
 		}
 
-		public override bool IsArmorSet(Item head, Item body, Item legs)
+		public static void SetBonus_Skyware_Melee(Player player)
 		{
-			return body.type == ModContent.ItemType<SkywareChestplate>() && legs.type == ModContent.ItemType<SkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
-		{
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Skyware");
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 1;
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.SkywareMelee;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
@@ -69,12 +72,17 @@ namespace RijamsMod.Items.Armor.Skyware
 		{
 			// DisplayName.SetDefault("Skyware Helmet");
 			// Tooltip.SetDefault("+5% Ranged damage\n+5% Ranged critical strike chance");
+			AddArmorSet<SkywareHelmet, SkywareChestplate, SkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.Skyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/Skyware_Ranged",
+				Effect: SetBonus_Skyware_Ranged
+			);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 26;
 			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;//1
 			Item.defense = 6;
@@ -95,20 +103,17 @@ namespace RijamsMod.Items.Armor.Skyware
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return head.type == Type && body.type == ModContent.ItemType<SkywareChestplate>() && legs.type == ModContent.ItemType<SkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
+
+		public static void SetBonus_Skyware_Ranged(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 2;
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Skyware");
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.SkywareRanged;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
+
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadowLokis = true;
@@ -121,12 +126,17 @@ namespace RijamsMod.Items.Armor.Skyware
 		{
 			// DisplayName.SetDefault("Skyware Hood");
 			// Tooltip.SetDefault("+5% Magic damage\n+5% Magic critical strike chance");
+			AddArmorSet<SkywareHood, SkywareChestplate, SkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.Skyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/Skyware_Magic",
+				Effect: SetBonus_Skyware_Magic
+			);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 22;
 			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;//1
 			Item.defense = 5;
@@ -147,20 +157,17 @@ namespace RijamsMod.Items.Armor.Skyware
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return head.type == Type && body.type == ModContent.ItemType<SkywareChestplate>() && legs.type == ModContent.ItemType<SkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
+
+		public static void SetBonus_Skyware_Magic(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 3;
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Skyware");
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.SkywareMagic;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
+
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadowLokis = true;
@@ -174,12 +181,19 @@ namespace RijamsMod.Items.Armor.Skyware
 			// DisplayName.SetDefault("Skyware Headgear");
 			// Tooltip.SetDefault("+5% Summon damage\n+1 minion capacity\n+2 Support minion radius");
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
+			AddArmorSet<SkywareHeadgear, SkywareChestplate, SkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.Skyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/Skyware_Summon",
+				Effect: SetBonus_Skyware_Summon
+			);
+			ArmorIDs.Head.Sets.CanDrawOnVelociraptorMount[Item.headSlot] = true;
+			ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[Item.headSlot] = new Vector2(0, -2);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 14;
 			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;//1
 			Item.defense = 3;
@@ -201,25 +215,23 @@ namespace RijamsMod.Items.Armor.Skyware
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return head.type == Type && body.type == ModContent.ItemType<SkywareChestplate>() && legs.type == ModContent.ItemType<SkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
+
+		public static void SetBonus_Skyware_Summon(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 4;
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Skyware");
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.SkywareSummon;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
+
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadowLokis = true;
 		}
 	}
+
 	[AutoloadEquip(EquipType.Body)]
 	public class SkywareChestplate : ModItem
 	{
@@ -231,8 +243,6 @@ namespace RijamsMod.Items.Armor.Skyware
 
 		public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 20;
 			Item.value = 2000;
 			Item.rare = ItemRarityID.Blue;
 			Item.defense = 6;
@@ -257,15 +267,18 @@ namespace RijamsMod.Items.Armor.Skyware
 	public class SkywareLeggings : ModItem
 	{
 		// Thanks Exterminator for the help
-		public int LegEquipTextureFemale;
+		// public int Old_LegEquipTextureFemale; // Superseded by ModifyEquipTextureDraw
+		public Asset<Texture2D> LegEquipTextureFemale;
 
+		/*
 		public override void Load()
 		{
 			if (!Main.dedServ)
 			{
-				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this, "SkywareLeggings_FemaleLegs");
+				Old_LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this, "SkywareLeggings_FemaleLegs");
 			}
 		}
+		*/
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Skyware Leggings");
@@ -297,11 +310,26 @@ namespace RijamsMod.Items.Armor.Skyware
 		}
 
 		// Changing the equipSlot in the leggings breaks the shadows. Sorry ladies!
+		/*
 		public override void SetMatch(bool male, ref int equipSlot, ref bool robes)
 		{
-			if (!male) equipSlot = LegEquipTextureFemale;
+			if (!male) equipSlot = Old_LegEquipTextureFemale;
+		}
+		*/
+
+		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
+		{
+			if (!drawInfo.drawPlayer.Male)
+			{
+				LegEquipTextureFemale ??= ModContent.Request<Texture2D>((GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs");
+
+				drawData.texture = LegEquipTextureFemale.Value;
+			}
+
+			return base.ModifyEquipTextureDraw(ref drawInfo, ref drawData, equipTexture, methodName);
 		}
 	}
+
 	/*public class SkywareArmorSetItem : GlobalItem
 	{
 		public override string IsArmorSet(Item head, Item body, Item legs)
@@ -402,7 +430,7 @@ namespace RijamsMod.Items.Armor.Skyware
 
 					Vector2 direction = Utils.DirectionTo(Player.Center, victim.Center);
 					Vector2 velocity = direction * 20f;
-					if (modPlayer.Armor_SkywareArmorSetBonus >= 5) // Red Skyware armor
+					if (modPlayer.Armor_SkywareArmorSetBonus >= SetBonusType.RedSkywareMelee) // Red Skyware armor
 					{
 						velocity *= 0.5f; // The Red variant has extraUpdates
 						baseDamage += 40;
@@ -415,7 +443,7 @@ namespace RijamsMod.Items.Armor.Skyware
 
 					switch (modPlayer.Armor_SkywareArmorSetBonus)
 					{
-						case 1:
+						case SetBonusType.SkywareMelee:
 							Projectile projMelee = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -426,7 +454,7 @@ namespace RijamsMod.Items.Armor.Skyware
 								Player.whoAmI);
 							projMelee.DamageType = DamageClass.Melee;
 							break;
-						case 2:
+						case SetBonusType.SkywareRanged:
 							Projectile projRanged = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -437,7 +465,7 @@ namespace RijamsMod.Items.Armor.Skyware
 								Player.whoAmI);
 							projRanged.DamageType = DamageClass.Ranged;
 							break;
-						case 3:
+						case SetBonusType.SkywareMagic:
 							Projectile projMagic = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -448,7 +476,7 @@ namespace RijamsMod.Items.Armor.Skyware
 								Player.whoAmI);
 							projMagic.DamageType = DamageClass.Magic;
 							break;
-						case 4:
+						case SetBonusType.SkywareSummon:
 							Projectile projSummon = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -459,7 +487,7 @@ namespace RijamsMod.Items.Armor.Skyware
 								Player.whoAmI);
 							projSummon.DamageType = DamageClass.Summon;
 							break;
-						case 5: // Red sets
+						case SetBonusType.RedSkywareMelee: // Red sets
 							Projectile projMelee2 = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -470,7 +498,7 @@ namespace RijamsMod.Items.Armor.Skyware
 								Player.whoAmI);
 							projMelee2.DamageType = DamageClass.Melee;
 							break;
-						case 6:
+						case SetBonusType.RedSkywareRanged:
 							Projectile projRanged2 = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -481,7 +509,7 @@ namespace RijamsMod.Items.Armor.Skyware
 								Player.whoAmI);
 							projRanged2.DamageType = DamageClass.Ranged;
 							break;
-						case 7:
+						case SetBonusType.RedSkywareMagic:
 							Projectile projMagic2 = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -492,7 +520,7 @@ namespace RijamsMod.Items.Armor.Skyware
 								Player.whoAmI);
 							projMagic2.DamageType = DamageClass.Magic;
 							break;
-						case 8:
+						case SetBonusType.RedSkywareSummon:
 							Projectile projSummon2 = Projectile.NewProjectileDirect(
 								Entity.GetSource_OnHit(victim),
 								Player.Center,
@@ -540,6 +568,19 @@ namespace RijamsMod.Items.Armor.Skyware
 					}
 				}
 			}
+		}
+
+		public enum SetBonusType
+		{
+			None,
+			SkywareMelee,
+			SkywareRanged,
+			SkywareMagic,
+			SkywareSummon,
+			RedSkywareMelee,
+			RedSkywareRanged,
+			RedSkywareMagic,
+			RedSkywareSummon
 		}
 	}
 }

@@ -19,8 +19,6 @@ namespace RijamsMod.Items.Accessories.Melee
 
 		public override void SetDefaults()
 		{
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Cyan; //9
 			Item.value = Item.sellPrice(0, 25, 0, 0);
 			Item.accessory = true;
@@ -88,8 +86,6 @@ namespace RijamsMod.Items.Accessories.Melee
 
 		public override void SetDefaults()
 		{
-			Item.width = 40;
-			Item.height = 46;
 			Item.rare = ItemRarityID.Yellow; //8
 			Item.value = Item.sellPrice(0, 15, 0, 0);
 			Item.accessory = true;
@@ -121,8 +117,6 @@ namespace RijamsMod.Items.Accessories.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 14;
-			Item.height = 32;
 			Item.rare = ItemRarityID.Green; // 2
 			Item.value = Item.sellPrice(0, 1, 0, 0);
 			Item.accessory = true;
@@ -141,8 +135,6 @@ namespace RijamsMod.Items.Accessories.Melee
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 14;
-			Item.height = 32;
 			Item.rare = ItemRarityID.Yellow;
 			Item.value = Item.sellPrice(0, 1, 0, 0);
 			Item.accessory = true;

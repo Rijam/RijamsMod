@@ -230,6 +230,12 @@ namespace RijamsMod.Projectiles.Ranged
 
 	public class SulfurFlareProj : FlareProjBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override int DustType(ref float dustScale)
 		{
 			return ModContent.DustType<SulfurDust>();
@@ -243,6 +249,12 @@ namespace RijamsMod.Projectiles.Ranged
 
 	public class SolarFlareFlareProj : FlareProjBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override int DustType(ref float dustScale)
 		{
 			//dustScale = 0.5f;
@@ -261,6 +273,12 @@ namespace RijamsMod.Projectiles.Ranged
 
 	public class GreekFireFlareProj : FlareProjBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override int DustType(ref float dustScale)
 		{
 			return DustID.YellowTorch;

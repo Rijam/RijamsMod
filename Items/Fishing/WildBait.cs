@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,13 +8,11 @@ namespace RijamsMod.Items.Fishing
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Requires 3 Fishing Quests]", "[c/474747:to be completed to craft]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Requires 3 Fishing Quests]", "[c/474747:to be completed to craft]"]);
 			Item.ResearchUnlockCount = 5;
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 32;
 			Item.rare = ItemRarityID.White;
 			Item.value = 400;
 			Item.maxStack = Item.CommonMaxStack;

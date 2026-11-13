@@ -17,16 +17,54 @@ namespace RijamsMod.Items
 	{
 
 		// The player can't use the support minion weapons if they already have one active.
-		public static List<int> SupportMinionsDefenseBuffs = new();
-		public static List<int> SupportMinionsHealingBuffs = new();
+		public static List<int> SupportMinionsDefenseBuffs = [];
+		public static List<int> SupportMinionsHealingBuffs = [];
 
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation)
 		{
 			return entity.ModItem is CudgelDefenseItem || entity.ModItem is CudgelHealingItem || entity.ModItem is CudgelBuffItem;
 		}
 
+		public static bool CanUseFreeSupportMinion(Player player, Item item)
+		{
+			//Main.NewText($"CanUse slots required == 0 {ItemID.Sets.StaffMinionSlotsRequired[item.type] == 0f}");
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			if (modPlayer.Stat_FreeSupportMinion && modPlayer.Stat_CurrentlyUsedFreeSupportMinion == -1)
+			{
+				modPlayer.Stat_CurrentlyUsedFreeSupportMinion = item.shoot;
+				//ItemID.Sets.StaffMinionSlotsRequired[item.type] = 0f;
+				return true;
+			}
+			//ItemID.Sets.StaffMinionSlotsRequired[item.type] = 1f;
+			return false;
+		}
+		public static bool ShouldSupportMinionProjectileBeFree(Player player, Item item, Projectile projectile)
+		{
+			//Main.NewText($"Should slots required == 0 {ItemID.Sets.StaffMinionSlotsRequired[item.type] == 0f}");
+			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
+			if (modPlayer.Stat_CurrentlyUsedFreeSupportMinion == item.shoot)
+			{
+				projectile.minionSlots = 0f;
+				return true;
+			}
+			return false;
+		}
+
 		public override bool CanUseItem(Item item, Player player)
 		{
+			//Main.NewText($"CanUseItem projectile {player.GetModPlayer<RijamsModPlayer>().Stat_CurrentlyUsedFreeSupportMinion}");
+			//Main.NewText($"CanUseItem staff slots {ItemID.Sets.StaffMinionSlotsRequired[item.type]}");
+
+			// ItemID.Sets.StaffMinionSlotsRequired[item.type] = 1f;
+
+			if (!CanUseFreeSupportMinion(player, item))
+			{
+				if (player.slotsMinions >= player.maxMinions)
+				{
+					return false;
+				}
+			}
+
 			if (item.ModItem is CudgelDefenseItem)
 			{
 				for (int i = 0; i < SupportMinionsDefenseBuffs.Count; i++)
@@ -47,6 +85,7 @@ namespace RijamsMod.Items
 					}
 				}
 			}
+
 			return true;
 		}
 
@@ -87,6 +126,7 @@ namespace RijamsMod.Items
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 			ItemID.Sets.CanGetPrefixes[Item.type] = true;
+			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; 
 		}
 
 		public int AdditionalDefense = 0;
@@ -124,6 +164,7 @@ namespace RijamsMod.Items
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 			ItemID.Sets.CanGetPrefixes[Item.type] = true;
+			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; 
 		}
 
 		public int AdditionalHealingAmount = 0;

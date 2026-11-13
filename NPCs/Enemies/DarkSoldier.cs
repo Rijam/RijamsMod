@@ -27,6 +27,7 @@ namespace RijamsMod.NPCs.Enemies
 
 			// Specify the debuffs it is immune to
 			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+			CustomNPCIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 
 		public override void SetDefaults()

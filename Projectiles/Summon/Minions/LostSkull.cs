@@ -13,6 +13,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 		{
 			Main.projFrames[Projectile.type] = 2;
 			ProjectileID.Sets.MinionShot[Type] = true;
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 
 		public override void SetDefaults()

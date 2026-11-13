@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -15,6 +14,7 @@ namespace RijamsMod.Projectiles.Magic
         {
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
         public override void SetDefaults()
 		{

@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace RijamsMod.Items.Accessories.Summoner
+namespace RijamsMod.Items.Accessories.Summoner.Minion
 {
 	[AutoloadEquip(EquipType.Neck)]
 	public class ObsidianPygmyNecklace : ModItem
@@ -16,8 +15,6 @@ namespace RijamsMod.Items.Accessories.Summoner
 
 		public override void SetDefaults()
 		{
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Orange; //3
 			Item.value = Item.sellPrice(0, 3, 50, 0);
 			Item.accessory = true;
@@ -49,8 +46,6 @@ namespace RijamsMod.Items.Accessories.Summoner
 
 		public override void SetDefaults()
 		{
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.LightRed; //4
 			Item.value = Item.sellPrice(0, 4, 0, 0);
 			Item.accessory = true;
@@ -85,13 +80,11 @@ namespace RijamsMod.Items.Accessories.Summoner
 		{
 			// DisplayName.SetDefault("Naughty List");
 			// Tooltip.SetDefault("+1 Minion capacity\n+1 Sentry capacity");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by Santa-NK1]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by Santa-NK1]"]);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 36;
-			Item.height = 36;
 			Item.rare = ItemRarityID.Yellow; //8
 			Item.value = Item.sellPrice(0, 4, 50, 0);
 			Item.accessory = true;
@@ -99,7 +92,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.maxMinions += 1;
-			player.maxTurrets += 1;
+			player.GetArmorPenetration(DamageClass.Summon) += 4;
 		}
 	}
 	public class NaughtyScarab : NaughtyList
@@ -112,8 +105,6 @@ namespace RijamsMod.Items.Accessories.Summoner
 
 		public override void SetDefaults()
 		{
-			Item.width = 36;
-			Item.height = 36;
 			Item.rare = ItemRarityID.Yellow; //8
 			Item.value = Item.sellPrice(0, 5, 0, 0);
 			Item.accessory = true;
@@ -121,7 +112,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.maxMinions += 2;
-			player.maxTurrets++;
+			player.GetArmorPenetration(DamageClass.Summon) += 4;
 			player.GetDamage(DamageClass.Summon) += 0.15f;
 			player.GetKnockback(DamageClass.Summon).Base += 2f;
 			player.fireWalk = true;
@@ -149,8 +140,6 @@ namespace RijamsMod.Items.Accessories.Summoner
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Lime; //7
 			Item.value = Item.sellPrice(0, 5, 0, 0);
 			Item.accessory = true;
@@ -159,10 +148,11 @@ namespace RijamsMod.Items.Accessories.Summoner
 		{
 			player.maxMinions += 1;
 			player.maxTurrets += 1;
-			player.GetDamage(DamageClass.Summon) += 0.30f;
+			player.GetDamage(DamageClass.Summon) += 0.10f;
 			player.statDefense++;
 			player.fireWalk = true;
 			player.GetModPlayer<RijamsModPlayer>().Accessory_FrostyRose = true;
+			player.GetModPlayer<RijamsModPlayer>().Accessory_LegionScarf = Item;
 		}
 		public override void AddRecipes()
 		{
@@ -187,8 +177,6 @@ namespace RijamsMod.Items.Accessories.Summoner
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Cyan; //9
 			Item.value = Item.sellPrice(0, 10, 0, 0);
 			Item.accessory = true;
@@ -196,7 +184,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
 			player.maxMinions += 3;
-			player.maxTurrets += 2;
+			player.GetArmorPenetration(DamageClass.Summon) += 4;
 			player.GetDamage(DamageClass.Summon) += 0.30f;
 			player.GetKnockback(DamageClass.Summon).Base += 2f;
 			player.statDefense++;
@@ -208,8 +196,7 @@ namespace RijamsMod.Items.Accessories.Summoner
 		{
 			CreateRecipe()
 				.AddIngredient(ModContent.ItemType<NaughtyScarab>(), 1)
-				.AddIngredient(ModContent.ItemType<HailfirePygmyScarf>(), 1)
-				.AddIngredient(ItemID.PutridScent, 1)
+				.AddIngredient(ModContent.ItemType<ObsidianPygmyNecklace>(), 1)
 				.AddIngredient(ItemID.LunarBlockStardust, 5)
 				.AddIngredient(ItemID.LunarBar, 1)
 				.AddTile(TileID.TinkerersWorkbench)

@@ -1,19 +1,18 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using RijamsMod.Items.Consumables;
-using RijamsMod.Items.Weapons;
-using RijamsMod.NPCs;
-using RijamsMod.NPCs.TownNPCs;
-using RijamsMod.NPCs.TownNPCs.SnuggetPet;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
+using RijamsMod.Items.Consumables;
+using RijamsMod.NPCs.TownNPCs.SnuggetPet;
 
 namespace RijamsMod
 {
@@ -41,6 +40,8 @@ namespace RijamsMod
 			// }
 			Asset<Effect> inlineShader = this.Assets.Request<Effect>("Effects/Inline");
 			GameShaders.Misc["RijamsMod:Inline"] = new MiscShaderData(inlineShader, "InlinePass");
+
+			ChatManager.Register<UI.RijamsModIconChatTag>(UI.RijamsModIconChatTag.RijamsModIcon);
 		}
 		
 		public override void Unload()
@@ -65,6 +66,10 @@ namespace RijamsMod
 			ArmorUseGlowLegs = null;
 			WeaponAttackFlash = null;
 			*/
+
+			// From Magic Storage https://github.com/blushiemagic/MagicStorage/blob/1.4.4/TagHandlers/RecipeGroupTagHandler.cs#L71
+			ConcurrentDictionary<string, ITagHandler> handler = UI.RijamsModIconChatTag.Get_ChatManager__handlers();
+			handler.TryRemove(UI.RijamsModIconChatTag.RijamsModIcon, out _);
 		}
 
 		public override void PostSetupContent()
@@ -96,7 +101,7 @@ namespace RijamsMod
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "EmpressOfLight", ModContent.ItemType<Items.Weapons.Melee.JoustingLances.EtherealJoustingLance>(), new List<Condition>() { });
 				bossesAsNPCs.Call("AddToShop", "WithDiv", "Pumpking", ModContent.ItemType<Items.Weapons.Melee.JoustingLances.HorsemansJoustingLance>(), new List<Condition>() { }, 0.1f);
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "IceQueen", ModContent.ItemType<Items.Materials.FestivePlating>(), new List<Condition>() { Condition.DownedSantaNK1 });
-				bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.NaughtyList>(), new List<Condition>() { Condition.DownedSantaNK1 }, 0.1f);
+				bossesAsNPCs.Call("AddToShop", "WithDiv", "IceQueen", ModContent.ItemType<Items.Accessories.Summoner.Minion.NaughtyList>(), new List<Condition>() { Condition.DownedSantaNK1 }, 0.1f);
 				bossesAsNPCs.Call("AddToShop", "DefaultPrice", "Dreadnautilus", ModContent.ItemType<Items.Weapons.Summon.Minions.BabyBloodEelStaff>(), new List<Condition>() { (Condition)bossesAsNPCs.Call("GetCondition", "DownedDreadnautilus") });
 			}
 			if (ModLoader.TryGetMod("FishermanNPC", out Mod fishermanNPC))

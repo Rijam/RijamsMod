@@ -15,8 +15,6 @@ namespace RijamsMod.Items.Materials
 		public override void SetDefaults() 
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 14;
-			Item.height = 34;
 			Item.value = 125000;
 			Item.rare = ItemRarityID.Yellow;
 		}
@@ -31,8 +29,6 @@ namespace RijamsMod.Items.Materials
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 20;
-			Item.height = 20;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Yellow;
 		}
@@ -48,8 +44,6 @@ namespace RijamsMod.Items.Materials
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 20;
-			Item.height = 10;
 			Item.value = 25;
 			Item.rare = ItemRarityID.White;
 		}
@@ -65,8 +59,6 @@ namespace RijamsMod.Items.Materials
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 24;
-			Item.height = 24;
 			Item.value = 5000;
 			Item.rare = ItemRarityID.Orange;
 		}
@@ -81,8 +73,6 @@ namespace RijamsMod.Items.Materials
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 20;
-			Item.height = 20;
 			Item.value = 7500;
 			Item.rare = ItemRarityID.LightRed;
 		}
@@ -97,8 +87,6 @@ namespace RijamsMod.Items.Materials
 		public override void SetDefaults()
 		{
 			Item.maxStack = Item.CommonMaxStack;
-			Item.width = 22;
-			Item.height = 22;
 			Item.value = 8000;
 			Item.rare = ItemRarityID.Yellow;
 		}

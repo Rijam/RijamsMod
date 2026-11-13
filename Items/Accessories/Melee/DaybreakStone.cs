@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,8 +19,6 @@ namespace RijamsMod.Items.Accessories.Melee
 		public override void SetDefaults()
 		{
 			//item.color = Color.Yellow; //colors the inventory sprite
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Cyan; //9
 			Item.value = Item.sellPrice(0, 5, 0, 0);
 			Item.accessory = true;

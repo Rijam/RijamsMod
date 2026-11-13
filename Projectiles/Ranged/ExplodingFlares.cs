@@ -89,7 +89,6 @@ namespace RijamsMod.Projectiles.Ranged
 		public override void SetStaticDefaults()
 		{
 			ProjectileID.Sets.IsARocketThatDealsDoubleDamageToPrimaryEnemy[Type] = true;
-			ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[Type] = true;
 			ProjectileID.Sets.Explosive[Type] = true;
 		}
 
@@ -443,6 +442,12 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.CursedFlare}";
 
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override int DustType(ref float dustScale)
 		{
 			return DustID.CursedTorch;
@@ -512,6 +517,12 @@ namespace RijamsMod.Projectiles.Ranged
 	{
 		public override string Texture => $"RijamsMod/Projectiles/Ranged/{nameof(SulfurFlareProj)}";
 
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override int DustType(ref float dustScale)
 		{
 			return ModContent.DustType<SulfurDust>();
@@ -530,6 +541,12 @@ namespace RijamsMod.Projectiles.Ranged
 	public class ExplodingSolarFlareFlareProj : ExplodingFlareBase
 	{
 		public override string Texture => $"RijamsMod/Projectiles/Ranged/{nameof(SolarFlareFlareProj)}";
+
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
 
 		public override int DustType(ref float dustScale)
 		{
@@ -563,6 +580,12 @@ namespace RijamsMod.Projectiles.Ranged
 	public class ExplodingGreekFireFlareProj : ExplodingFlareBase
 	{
 		public override string Texture => $"RijamsMod/Projectiles/Ranged/{nameof(GreekFireFlareProj)}";
+
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
 
 		public override int DustType(ref float dustScale)
 		{

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using RijamsMod.Projectiles.Ranged;
 using Terraria.Audio;
-using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -16,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 	{
 		public override void SetStaticDefaults()
 		{
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Lunatic Cultist]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Lunatic Cultist]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarSMG>(); // Shimmer transforms the item.
 		}
 
@@ -25,8 +24,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.damage = 220;
 			Item.crit = 26; // 30 crit
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 100;
-			Item.height = 38;
 			Item.useTime = 40;
 			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Shoot; //5

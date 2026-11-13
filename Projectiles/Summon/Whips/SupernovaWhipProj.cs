@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,11 +16,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 			Projectile.WhipSettings.RangeMultiplier = 3f;
 		}
 
-		private float Timer2
-		{
-			get => Projectile.ai[2];
-			set => Projectile.ai[2] = value;
-		}
+		private int StardustExplosionTimer { get; set; }
 
 		public override int DustType()
 		{
@@ -51,7 +48,7 @@ namespace RijamsMod.Projectiles.Summon.Whips
 		public override void AI()
 		{
 			base.AI();
-			Timer2 = 1; // Each segment can only spawn one Stardust Explosion
+			StardustExplosionTimer = 1; // Each segment can only spawn one Stardust Explosion
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -70,11 +67,11 @@ namespace RijamsMod.Projectiles.Summon.Whips
 					// Main.NewText("Timer: " + Timer);
 					// Main.NewText("swingTime: " + swingTime);
 					// Main.NewText("Timer2: " + Timer2);
-					if (Timer2 > 0 && Timer < swingTime)
+					if (StardustExplosionTimer > 0 && Timer < swingTime)
 					{
 						// Main.NewText("Spawn StardustExplosion");
 						Projectile.NewProjectile(Entity.GetSource_FromThis(), target.Center.X, target.Center.Y, 0f, 0f, ModContent.ProjectileType<StardustExplosion>(), Projectile.damage, 0, Projectile.owner);
-						Timer2 -= 1;
+						StardustExplosionTimer -= 1;
 					}
 				}
 			}
@@ -99,6 +96,16 @@ namespace RijamsMod.Projectiles.Summon.Whips
 		public override Color DrawColor(int i, Vector2 currentElement, List<Vector2> controlPoints)
 		{
 			return Color.White;
+		}
+
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			writer.Write(SecondaryWhipTimer);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			SecondaryWhipTimer = reader.ReadInt32();
 		}
 	}
 }

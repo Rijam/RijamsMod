@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using RijamsMod.Items.Armor.Skyware;
-using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -15,12 +17,17 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		{
 			// DisplayName.SetDefault("Red Skyware Mask");
 			// Tooltip.SetDefault("+10% Melee damage\n+10% Melee critical strike chance\n+5 Melee armor penetration\n+10% Melee weapon scale");
+			AddArmorSet<RedSkywareMask, RedSkywareChestplate, RedSkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.RedSkyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/RedSkyware_Melee",
+				Effect: SetBonus_RedSkyware_Melee
+			);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 26;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;//8
 			Item.defense = 30;
@@ -52,15 +59,10 @@ namespace RijamsMod.Items.Armor.RedSkyware
 				.Register();
 		}
 
-		public override bool IsArmorSet(Item head, Item body, Item legs)
+		public static void SetBonus_RedSkyware_Melee(Player player)
 		{
-			return body.type == ModContent.ItemType<RedSkywareChestplate>() && legs.type == ModContent.ItemType<RedSkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
-		{
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 5;
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.RedSkywareMelee;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
@@ -80,12 +82,17 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		{
 			// DisplayName.SetDefault("Red Skyware Helmet");
 			// Tooltip.SetDefault("+10% Ranged damage\n+10% Ranged critical strike chance\n+5 Ranged armor penetration\n+10% projectile speed and knockback");
+			AddArmorSet<RedSkywareHelmet, RedSkywareChestplate, RedSkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.RedSkyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/RedSkyware_Ranged",
+				Effect: SetBonus_RedSkyware_Ranged
+			);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 26;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;//8
 			Item.defense = 20;
@@ -116,20 +123,17 @@ namespace RijamsMod.Items.Armor.RedSkyware
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return head.type == Type && body.type == ModContent.ItemType<RedSkywareChestplate>() && legs.type == ModContent.ItemType<RedSkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
+
+		public static void SetBonus_RedSkyware_Ranged(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 6;
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.RedSkywareRanged;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
+
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadowLokis = true;
@@ -142,12 +146,17 @@ namespace RijamsMod.Items.Armor.RedSkyware
 		{
 			// DisplayName.SetDefault("Red Skyware Hood");
 			// Tooltip.SetDefault("+10% Magic damage\n+10% Magic critical strike chance\n+40 Mana capacity\n-20% Mana cost");
+			AddArmorSet<RedSkywareHood, RedSkywareChestplate, RedSkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.RedSkyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/RedSkyware_Magic",
+				Effect: SetBonus_RedSkyware_Magic
+			);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 22;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;//8
 			Item.defense = 14;
@@ -178,20 +187,17 @@ namespace RijamsMod.Items.Armor.RedSkyware
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return head.type == Type && body.type == ModContent.ItemType<RedSkywareChestplate>() && legs.type == ModContent.ItemType<RedSkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
+
+		public static void SetBonus_RedSkyware_Magic(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 7;
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.RedSkywareMagic;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
+
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadowLokis = true;
@@ -205,12 +211,19 @@ namespace RijamsMod.Items.Armor.RedSkyware
 			// DisplayName.SetDefault("Red Skyware Headgear");
 			// Tooltip.SetDefault("+10% Summon damage\n+3 minion capacity\n+1 sentry capacity\n+7 Support minion radius");
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
+			AddArmorSet<RedSkywareHeadgear, RedSkywareChestplate, RedSkywareLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.RedSkyware"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/RedSkyware_Summon",
+				Effect: SetBonus_RedSkyware_Summon
+			);
+			ArmorIDs.Head.Sets.CanDrawOnVelociraptorMount[Item.headSlot] = true;
+			ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[Item.headSlot] = new Vector2(0, -2);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 14;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;//8
 			Item.defense = 10;
@@ -241,20 +254,18 @@ namespace RijamsMod.Items.Armor.RedSkyware
 				.AddTile(TileID.SkyMill)
 				.Register();
 		}
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			return head.type == Type && body.type == ModContent.ItemType<RedSkywareChestplate>() && legs.type == ModContent.ItemType<RedSkywareLeggings>();
-		}
-		public override void UpdateArmorSet(Player player)
+
+		public static void SetBonus_RedSkyware_Summon(Player player)
 		{
 			RijamsModPlayer modPlayer = player.GetModPlayer<RijamsModPlayer>();
-			modPlayer.Armor_SkywareArmorSetBonus = 8;
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.RedSkyware");
+			modPlayer.Armor_SkywareArmorSetBonus = SkywareArmorSetPlayer.SetBonusType.RedSkywareSummon;
 			if (modPlayer.Armor_SkywareArmorSetBonusTimer > 0)
 			{
 				modPlayer.Armor_SkywareArmorSetBonusTimer--;
 			}
 		}
+
+
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadowLokis = true;
@@ -271,8 +282,6 @@ namespace RijamsMod.Items.Armor.RedSkyware
 
 		public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 20;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;
 			Item.defense = 16;
@@ -305,16 +314,8 @@ namespace RijamsMod.Items.Armor.RedSkyware
 	[AutoloadEquip(EquipType.Legs)]
 	public class RedSkywareLeggings : ModItem
 	{
-		// Thanks Exterminator for the help
-		public int LegEquipTextureFemale;
+		public Asset<Texture2D> LegEquipTextureFemale;
 
-		public override void Load()
-		{
-			if (!Main.dedServ)
-			{
-				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this, "RedSkywareLeggings_FemaleLegs");
-			}
-		}
 		public override void SetStaticDefaults()
 		{
 			// DisplayName.SetDefault("Red Skyware Leggings");
@@ -323,8 +324,6 @@ namespace RijamsMod.Items.Armor.RedSkyware
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 18;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;
 			Item.defense = 14;
@@ -354,10 +353,16 @@ namespace RijamsMod.Items.Armor.RedSkyware
 				.Register();
 		}
 
-		// Changing the equipSlot in the leggings breaks the shadows. Sorry ladies!
-		public override void SetMatch(bool male, ref int equipSlot, ref bool robes)
+		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
 		{
-			if (!male) equipSlot = LegEquipTextureFemale;
+			if (!drawInfo.drawPlayer.Male)
+			{
+				LegEquipTextureFemale ??= ModContent.Request<Texture2D>((GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs");
+
+				drawData.texture = LegEquipTextureFemale.Value;
+			}
+
+			return base.ModifyEquipTextureDraw(ref drawInfo, ref drawData, equipTexture, methodName);
 		}
 	}
 }

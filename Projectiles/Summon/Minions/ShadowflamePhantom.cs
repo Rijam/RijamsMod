@@ -29,6 +29,7 @@ namespace RijamsMod.Projectiles.Summon.Minions
 			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
 			// Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = false;
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 
 		public sealed override void SetDefaults()

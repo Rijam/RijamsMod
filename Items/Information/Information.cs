@@ -1,8 +1,7 @@
+using Microsoft.Xna.Framework.Graphics;
+using RijamsMod.UI;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -24,8 +23,6 @@ namespace RijamsMod.Items.Information
 		public override void SetDefaults()
 		{
 			//item.color = Color.Red; //colors the inventory sprite
-			Item.width = 32;
-			Item.height = 28;
 			Item.maxStack = 1;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = 100;
@@ -170,10 +167,16 @@ namespace RijamsMod.Items.Information
 		{
 			tooltips.Add(new TooltipLine(Mod, "MinionCount", "[i:SlimeStaff] Maximum minions: " + StatCalc.MaxMinions()));
 			tooltips.Add(new TooltipLine(Mod, "SentryCount", "[i:DD2BallistraTowerT1Popper] Maximum sentries: " + StatCalc.MaxTurrets()));
-			tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "[i:ThornWhip] Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
-			tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
 			tooltips.Add(new TooltipLine(Mod, "SummonKB", "[i:BabyBirdStaff] Summon Knockback: " + StatCalc.Knockback(DamageClass.Summon) + "    Summon KB Base: " + StatCalc.KnockbackBase(DamageClass.Summon)));
-			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.SlotsMinions()));
+			tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
+			tooltips.Add(new TooltipLine(Mod, "SummonMeleeSpeed", "[i:ThornWhip] Summon whip speed: " + StatCalc.AttackSpeed(DamageClass.SummonMeleeSpeed)));
+			tooltips.Add(new TooltipLine(Mod, "MaxTagEffects", "[i:BoneWhip] Max Tag Effects: " + StatCalc.MaxTagEffects()));
+			tooltips.Add(new TooltipLine(Mod, "TagEffectDuration", "[i:MeteorWhip] Tag Effect Duration: " + StatCalc.TagEffectDuration()));
+			tooltips.Add(new TooltipLine(Mod, "BonusWhipTagDamage", $"[i:CorruptWhip] {RijamsModIconChatTag.IconNoShadow} Bonus Whip Tag Damage: " + StatCalc.BonusWhipTagDamage()));
+			tooltips.Add(new TooltipLine(Mod, "BonusWhipTagCritChance", $"[i:CrimsonWhip] {RijamsModIconChatTag.IconNoShadow} Bonus Whip Tag Critical Hit Chance: " + StatCalc.BonusWhipTagCritChance()));
+			tooltips.Add(new TooltipLine(Mod, "SupportMinionRadiusIncrease", $"[i:RijamsMod/CobaltProtectorCudgel] {RijamsModIconChatTag.IconNoShadow} Support Minion Radius Increase: " + StatCalc.SupportMinionRadiusIncrease()));
+			tooltips.Add(new TooltipLine(Mod, "SupportMinionPotency", $"[i:RijamsMod/GraniteElementalCudgel] {RijamsModIconChatTag.IconNoShadow} Support Minion Potency: " + StatCalc.SupportMinionPotency()));
+			tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:FlinxStaff] Current minion count: " + StatCalc.SlotsMinions()));
 		}
 	}
 	public class InformationInterface : ModItem
@@ -193,8 +196,6 @@ namespace RijamsMod.Items.Information
 		public override void SetDefaults()
 		{
 			//item.color = Color.Gold; //colors the inventory sprite
-			Item.width = 48;
-			Item.height = 48;
 			Item.maxStack = 1;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = 1000;
@@ -238,10 +239,12 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "noFallDmg", "[i:LuckyHorseshoe] Fall damage immunity: " + StatCalc.NoFallDmg()));
 
 				//Summons
-				tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
 				tooltips.Add(new TooltipLine(Mod, "MinionCount", "[i:SlimeStaff] Maximum minions: " + StatCalc.MaxMinions()));
 				tooltips.Add(new TooltipLine(Mod, "SentryCount", "[i:DD2BallistraTowerT1Popper] Maximum sentries: " + StatCalc.MaxTurrets()));
-				tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:SlimeStaff] Current minion count: " + StatCalc.SlotsMinions()));
+				tooltips.Add(new TooltipLine(Mod, "WhipRangeMultiplier", "[i:BlandWhip] Whip range multiplier: " + StatCalc.WhipRangeMultiplier()));
+				tooltips.Add(new TooltipLine(Mod, "MaxTagEffects", "[i:BoneWhip] Max Tag Effects: " + StatCalc.MaxTagEffects()));
+				tooltips.Add(new TooltipLine(Mod, "TagEffectDuration", "[i:MeteorWhip] Tag Effect Duration: " + StatCalc.TagEffectDuration()));
+				tooltips.Add(new TooltipLine(Mod, "SummonCountCurrent", "[i:FlinxStaff] Current minion count: " + StatCalc.SlotsMinions()));
 			}
 
 			if (isLeftCtrlHeld)
@@ -305,9 +308,12 @@ namespace RijamsMod.Items.Information
 				tooltips.Add(new TooltipLine(Mod, "InZoneHallow", "[i:CrystalShard] In Hallow biome: " + StatCalc.PlayerInZoneHallow()));
 				tooltips.Add(new TooltipLine(Mod, "GolfScore", "[i:GolfClubIron] Golf score: " + StatCalc.GolferScoreAccumulated()));
 				tooltips.Add(new TooltipLine(Mod, "Luck", "[i:LuckPotionGreater] Luck: " + StatCalc.Luck()));
-				tooltips.Add(new TooltipLine(Mod, "CriticalHitAdditionalDamage", "[i:RijamsMod/CritDisplay] [Rijam's Mod] Additional Critical Hit Damage: " + StatCalc.CriticalHitAdditionalDamage()));
-				tooltips.Add(new TooltipLine(Mod, "SupportMinionRadiusIncrease", "[i:RijamsMod/SummonsDisplay] [Rijam's Mod] Support Minion Radius Increase: " + StatCalc.SupportMinionRadiusIncrease()));
-				tooltips.Add(new TooltipLine(Mod, "KnockbackSusceptibility", "[i:RijamsMod/CritDisplay] [Rijam's Mod] Knockback Susceptibility: " + StatCalc.KnockbackSusceptibility()));
+				tooltips.Add(new TooltipLine(Mod, "CriticalHitAdditionalDamage", $"[i:RijamsMod/MorphasRing] {RijamsModIconChatTag.IconNoShadow} Additional Critical Hit Damage: " + StatCalc.CriticalHitAdditionalDamage()));
+				tooltips.Add(new TooltipLine(Mod, "SupportMinionRadiusIncrease", $"[i:RijamsMod/CobaltProtectorCudgel] {RijamsModIconChatTag.IconNoShadow} Support Minion Radius Increase: " + StatCalc.SupportMinionRadiusIncrease()));
+				tooltips.Add(new TooltipLine(Mod, "SupportMinionPotency", $"[i:RijamsMod/GraniteElementalCudgel] {RijamsModIconChatTag.IconNoShadow} Support Minion Potency: " + StatCalc.SupportMinionPotency()));
+				tooltips.Add(new TooltipLine(Mod, "BonusWhipTagDamage", $"[i:CorruptWhip] {RijamsModIconChatTag.IconNoShadow} Bonus Whip Tag Damage: " + StatCalc.BonusWhipTagDamage()));
+				tooltips.Add(new TooltipLine(Mod, "BonusWhipTagCritChance", $"[i:CrimsonWhip] {RijamsModIconChatTag.IconNoShadow} Bonus Whip Tag Critical Hit Chance: " + StatCalc.BonusWhipTagCritChance()));
+				tooltips.Add(new TooltipLine(Mod, "KnockbackSusceptibility", $"[i:RijamsMod/Aspis] {RijamsModIconChatTag.IconNoShadow} Knockback Susceptibility: " + StatCalc.KnockbackSusceptibility()));
 				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Pixels: " + Main.LocalPlayer.position.X));
 				tooltips.Add(new TooltipLine(Mod, "PosY", "[i:WorldGlobe] Position Y Pixels: " + Main.LocalPlayer.position.Y));
 				tooltips.Add(new TooltipLine(Mod, "PosX", "[i:WorldGlobe] Position X Tiles: " + Main.LocalPlayer.position.X / 16f));
@@ -456,6 +462,8 @@ namespace RijamsMod.Items.Information
 		public static string NumMinions() => colorSummon + player.numMinions.ToString() + colorClose;
 		public static string SlotsMinions() => colorSummon + player.slotsMinions.ToString() + colorClose;
 		public static string WhipRangeMultiplier() => colorSummon + player.whipRangeMultiplier.ToString() + colorClose;
+		public static string MaxTagEffects() => colorSummon + player.maxTagEffects.ToString() + colorClose;
+		public static string TagEffectDuration() => colorSummon + player.tagEffectDuration.ToString() + colorClose;
 
 		//Other
 		public static string TaxMoney() => colorOther + player.taxMoney.ToString() + colorClose;
@@ -479,6 +487,9 @@ namespace RijamsMod.Items.Information
 		public static string Luck() => colorOther + player.luck.ToString() + colorClose;
 		public static string CriticalHitAdditionalDamage() => colorCrit + modPlayer.Stat_CriticalHitAdditionalDamage + colorClose;
 		public static string SupportMinionRadiusIncrease() => colorSummon + modPlayer.Stat_SupportMinionRadiusIncrease + colorClose;
+		public static string SupportMinionPotency() => colorSummon + modPlayer.Stat_SupportMinionPotency + colorClose;
+		public static string BonusWhipTagDamage() => colorSummon + modPlayer.Stat_BonusWhipTagDamage + colorClose;
+		public static string BonusWhipTagCritChance() => colorSummon + modPlayer.Stat_BonusWhipTagCritChance + colorClose;
 		public static string KnockbackSusceptibility() => colorKnockback + modPlayer.Stat_KnockbackSusceptibility + colorClose;
 	}
 }

@@ -53,6 +53,7 @@ namespace RijamsMod.Projectiles.Ranged
 			// DisplayName.SetDefault("Sulfur Arrow");     //The English name of the projectile
 			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 2;    //The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
 		}
 
 		public override void SetDefaults()

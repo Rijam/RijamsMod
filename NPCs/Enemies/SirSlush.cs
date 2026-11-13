@@ -48,6 +48,7 @@ namespace RijamsMod.NPCs.Enemies
 			NPC.knockBackResist = 0f;
 			NPC.aiStyle = NPCAIStyleID.FaceClosestPlayer; //0 will face the player
 			NPC.dontTakeDamage = false;
+			NPC.coldDamage = true;
 			Banner = NPC.type;
 			BannerItem = ModContent.ItemType<Items.Placeable.EnemyBanners.SirSlushBanner>();
 		}

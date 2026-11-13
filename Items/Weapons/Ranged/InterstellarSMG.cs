@@ -4,13 +4,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using System;
-using System.Collections.Generic;
 using Terraria.DataStructures;
-using RijamsMod.Items.Armor.Vanity.IntTrav;
 using RijamsMod.Projectiles.Ranged;
-using Terraria.Audio;
-using Microsoft.CodeAnalysis;
-using ReLogic.Content;
 
 namespace RijamsMod.Items.Weapons.Ranged
 {
@@ -20,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			// DisplayName.SetDefault("Interstellar SMG");
 			// Tooltip.SetDefault("50% not to consume ammo\nInherits many aspects of the bullets used");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Interstellar Traveler]", "[c/474747:After defeating Plantera]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<InterstellarPistol>(); // Shimmer transforms the item.
 		}
 
@@ -29,8 +24,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 			Item.damage = 37;
 			Item.crit = 6; // 10 crit
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 82;
-			Item.height = 36;
 			Item.useTime = 7;
 			Item.useAnimation = 7;
 			Item.useStyle = ItemUseStyleID.Shoot; //5

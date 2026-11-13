@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,14 +13,12 @@ namespace RijamsMod.Items.Accessories.Misc
 		{
 			// DisplayName.SetDefault("Life Sapper Ring");
 			// Tooltip.SetDefault("Gain a little bit of life after slaying an enemy\nScales with max health");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Hell Trader]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ManaSapperRing>(); // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.sellPrice(0, 1, 0, 0);
 			Item.accessory = true;
@@ -39,14 +36,12 @@ namespace RijamsMod.Items.Accessories.Misc
 		{
 			// DisplayName.SetDefault("Mana Sapper Ring");
 			// Tooltip.SetDefault("Gain a little bit of mana after slaying an enemy\nScales with max mana");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Hell Trader]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<LifeSapperRing>(); // Shimmer transforms the item.
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Green;
 			Item.value = Item.sellPrice(0, 1, 0, 0);
 			Item.accessory = true;

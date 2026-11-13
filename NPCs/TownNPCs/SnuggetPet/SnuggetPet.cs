@@ -4,14 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.UI;
 using RijamsMod.EmoteBubbles;
-using System;
 
 namespace RijamsMod.NPCs.TownNPCs.SnuggetPet
 {

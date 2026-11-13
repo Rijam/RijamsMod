@@ -15,9 +15,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.damage = 7;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 10;
-			Item.height = 22;
-			Item.maxStack = 999;
 			Item.consumable = true;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.knockBack = 0.5f;
 			Item.value = 10;
@@ -45,8 +42,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ModContent.ItemType<BasicDart>());
-			Item.width = 30;
-			Item.height = 36;
 			Item.maxStack = 1;
 			Item.consumable = false;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.value = 5000;
@@ -76,9 +71,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.damage = 14;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 14;
-			Item.height = 28;
-			Item.maxStack = 999;
 			Item.consumable = true;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.knockBack = 2f;
 			Item.value = 8;
@@ -109,9 +101,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.damage = 16;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 14;
-			Item.height = 28;
-			Item.maxStack = 999;
 			Item.consumable = true;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.knockBack = 4f;
 			Item.value = 1000;
@@ -150,9 +139,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.damage = 15;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 14;
-			Item.height = 30;
-			Item.maxStack = 999;
 			Item.consumable = true;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.knockBack = 4f;
 			Item.value = 1500;
@@ -183,9 +169,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.damage = 19;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 14;
-			Item.height = 30;
-			Item.maxStack = 999;
 			Item.consumable = true;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.knockBack = 4f;
 			Item.value = 1500;
@@ -216,9 +199,6 @@ namespace RijamsMod.Items.Weapons.Ranged.Ammo
 		{
 			Item.damage = 20;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 18;
-			Item.height = 36;
-			Item.maxStack = 999;
 			Item.consumable = true;			 //You need to set the item consumable so that the ammo would automatically consumed
 			Item.knockBack = 4f;
 			Item.value = 1500;

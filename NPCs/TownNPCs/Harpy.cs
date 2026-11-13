@@ -14,6 +14,7 @@ using RijamsMod.EmoteBubbles;
 using RijamsMod.Items.Accessories.Movement;
 using RijamsMod.Items.Placeable;
 using RijamsMod.Projectiles.Magic;
+using RijamsMod.Items.Accessories.Summoner.Support;
 
 namespace RijamsMod.NPCs.TownNPCs
 {
@@ -525,6 +526,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			npcShop.Add(new Item(ModContent.ItemType<Items.Materials.GiantRedHarpyFeather>()) { shopCustomPrice = 25000 * 5 * 2 }, Condition.Hardmode, Condition.DownedGolem);
 			npcShop.Add(new Item(ItemID.SoulofFlight) { shopCustomPrice = 200 * 5 * 2}, Condition.Hardmode, Condition.DownedMechBossAll);
 			npcShop.Add(ItemID.HarpyWings, Condition.Hardmode, Condition.DownedPlantera);
+			npcShop.Add(ModContent.ItemType<HarpyHeadband>());
 			npcShop.Add(ModContent.ItemType<GuideToProperFlightTechniques>(), Condition.Hardmode, Condition.DownedMechBossAll);
 			npcShop.Add(ModContent.ItemType<Items.Materials.SunEssence>(), Condition.Hardmode, Condition.DownedGolem);
 			npcShop.Add(ItemID.BirdieRattle, ShopConditions.CountTownNPCs(20));

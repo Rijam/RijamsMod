@@ -1,8 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using RijamsMod.Items.Armor.Vanity.IntTrav;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -18,7 +15,7 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			// DisplayName.SetDefault("Quietus");
 			// Tooltip.SetDefault("Much more powerful when combined with mana:\n  Throws multiple long range projectiles\n  Weapon does double damage\n  Uses 20 mana\n'Not to be confused with the Whisper's Edge'");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Golem]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Sold by Hell Trader]", "[c/474747:After defeating Golem]"]);
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<HammerOfRetribution>(); // Shimmer transforms the item.
 			ItemID.Sets.UsesBetterMeleeItemLocation[Type] = true;
 		}
@@ -27,8 +24,6 @@ namespace RijamsMod.Items.Weapons.Melee
 		{
 			Item.damage = 60;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 72;
-			Item.height = 72;
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.Swing;

@@ -14,8 +14,6 @@ namespace RijamsMod.Items.Placeable
 		public override void SetDefaults()
 		{
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.LivingSulfurFireBlock>());
-			Item.width = 18;
-			Item.height = 20;
 		}
 		public override void PostUpdate(WorldItem item)
 		{

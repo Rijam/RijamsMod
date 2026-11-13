@@ -14,8 +14,6 @@ namespace RijamsMod.Items.Placeable
 		{
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
-			Item.width = 28;
-			Item.height = 32;
 			Item.value = 10000;
 			Item.rare = ItemRarityID.Blue;
 			Item.useTurn = true;

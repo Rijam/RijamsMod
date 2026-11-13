@@ -1,4 +1,7 @@
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -16,8 +19,6 @@ namespace RijamsMod.Items.Armor.Vanity.Harpy
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 18;
-			Item.height = 20;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ItemRarityID.Blue;//1
 			Item.vanity = true;
@@ -33,30 +34,24 @@ namespace RijamsMod.Items.Armor.Vanity.Harpy
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ItemRarityID.Blue;//1
 			Item.vanity = true;
 			Item.defense = 0;
 		}
 
-		//Thanks Exterminator for the help
-		public int LegEquipTextureMale;
-		public int LegEquipTextureFemale;
+		public Asset<Texture2D> LegEquipTextureFemale;
 
-		public override void Load()
+		public override bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
 		{
-			if (!Main.dedServ)
+			if (!drawInfo.drawPlayer.Male)
 			{
-				LegEquipTextureMale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_Legs", EquipType.Legs, this, "Harpy_Shorts_Legs");
-				LegEquipTextureFemale = EquipLoader.AddEquipTexture(Mod, (GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs", EquipType.Legs, this, "Harpy_Shorts_FemaleLegs");
+				LegEquipTextureFemale ??= ModContent.Request<Texture2D>((GetType().Namespace + "." + Name).Replace('.', '/') + "_FemaleLegs");
+
+				drawData.texture = LegEquipTextureFemale.Value;
 			}
-		}
-		public override void SetMatch(bool male, ref int equipSlot, ref bool robes)
-		{
-			if (male) equipSlot = LegEquipTextureMale;
-			if (!male) equipSlot = LegEquipTextureFemale;
+
+			return base.ModifyEquipTextureDraw(ref drawInfo, ref drawData, equipTexture, methodName);
 		}
 	}
 }

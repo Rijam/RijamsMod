@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -18,12 +19,17 @@ namespace RijamsMod.Items.Armor.Festive
 			{
 				ArmorUseGlowHead.RegisterData(Item.headSlot, new ArmorHeadLegsOptions(Texture + "_Head_Glowmask", Color.White, GlowMaskEffects.LerpOnOff));
 			}
+			AddArmorSet<FestiveMask, FestiveChestplate, FestiveLeggings>
+			(
+				LocalizedText: Language.GetText($"Mods.{Mod.Name}.ArmorSetBonus.Festive"),
+				PrimaryPart: ArmorSetBonus.PartType.None,
+				Identifier: "RijamsMod/Festive",
+				Effect: SetBonus_Festive
+			);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 24;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;//8
 			Item.defense = 10;
@@ -34,26 +40,20 @@ namespace RijamsMod.Items.Armor.Festive
 			player.GetDamage(DamageClass.Summon) += 0.15f;
 		}
 
-		public override bool IsArmorSet(Item head, Item body, Item legs)
+		public static void SetBonus_Festive(Player player)
 		{
-			return body.type == ModContent.ItemType<FestiveChestplate>() && legs.type == ModContent.ItemType<FestiveLeggings>();
-		}
-
-		public override void UpdateArmorSet(Player player)
-		{
-			// TODO player.setBonus = Language.GetTextValue("Mods." + Mod.Name + ".ArmorSetBonus.Festive");
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.35f;
 			player.whipRangeMultiplier += 0.5f;
 			player.GetDamage(DamageClass.SummonMeleeSpeed) += 0.25f;
-			// player.GetCritChance(DamageClass.SummonMeleeSpeed) += 0.02f; // Don't even know if this works lol. It's so low that hopefully nobody will notice if it doesn't work.
 			if (Math.Abs(player.velocity.X) > 2 || Math.Abs(player.velocity.Y) > 2)
 			{
 				float x2 = player.position.X - player.velocity.X / 10f;
 				float y2 = player.position.Y - player.velocity.Y / 10f;
 				int selectRand = Utils.SelectRandom(Main.rand, DustID.GreenTorch, DustID.RedTorch);
-				Dust.NewDust(new Vector2(x2,y2), player.width / 2, player.height, selectRand, 0f, 0f, 100, default, 0.5f);
+				Dust.NewDust(new Vector2(x2, y2), player.width / 2, player.height, selectRand, 0f, 0f, 100, default, 0.5f);
 			}
 		}
+
 		public override void ArmorSetShadows(Player player)
 		{
 			player.armorEffectDrawShadowLokis = true;
@@ -77,8 +77,6 @@ namespace RijamsMod.Items.Armor.Festive
 
 		public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 20;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;
 			Item.defense = 12;
@@ -108,8 +106,6 @@ namespace RijamsMod.Items.Armor.Festive
 
 		public override void SetDefaults()
 		{
-			Item.width = 22;
-			Item.height = 18;
 			Item.value = 20000;
 			Item.rare = ItemRarityID.Yellow;
 			Item.defense = 11;

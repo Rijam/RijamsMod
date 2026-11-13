@@ -14,8 +14,6 @@ namespace RijamsMod.Items.Placeable
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 16;
-			Item.height = 6;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.noWet = false;
 			Item.useTurn = true;

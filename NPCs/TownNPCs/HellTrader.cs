@@ -462,6 +462,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				chatEmotion.Add("I can only carry a limited amount of items to sell to you right now. Seek me out another time and I will have other items for offer.");
 				chatEmotion.Add("Being constantly on the move means I can't bring everything I have own with me all of the time. If we are to meet again, I may have other things for sale.");
 				chatEmotion.Add("I was just moving to one of my other item stashes, but you can browse what items I have on me at this moment.");
+				chatEmotion.Add("I have never had a stable place to call home. I have to stay on the move in this dangerous environment.", emotion: PortraitEmotion.Sad);
 				chatEmotion.Add("Who is this \"Slayer\" that you speak of?", 0.1, emotion: PortraitEmotion.Worried);
 				if (!Main.hardMode)
 				{
@@ -474,11 +475,11 @@ namespace RijamsMod.NPCs.TownNPCs
 			{
 				chatEmotion.Add("Hey, human! Good to see you again.", emotion: PortraitEmotion.Happy);
 				chatEmotion.Add("I've got plenty of that special fabric if you want to purchase more of it!", emotion: PortraitEmotion.Happy);
-				chatEmotion.Add("I'm starting to get used to living with others. It's fun!", emotion: PortraitEmotion.Happy);
 				chatEmotion.Add("Ever notice how all of the other Imps wear chokers around their neck?", emotion: PortraitEmotion.Thinking);
 				chatEmotion.Add("Interesting fact: Imps have blueish skin color as an adolescent. Yes, Imps have to grow up, too!", emotion: PortraitEmotion.Happy);
 				chatEmotion.Add("That Wall of Flesh was the biggest demon I'd ever seen! How does something like that even move forward?", emotion: PortraitEmotion.Shocked);
 				chatEmotion.Add("Do you not like the smell of sulfur? It smells fine to me.", emotion: PortraitEmotion.Thinking);
+				chatEmotion.Add("I spent a lot of my time attempting to learn about the world above of the Underworld. I want to see how much of it is true!", emotion: PortraitEmotion.VeryHappy);
 				chatEmotion.Add("Who is this \"Slayer\" that you speak of?", 0.2, emotion: PortraitEmotion.Worried);
 
 				if (NPC.life < NPC.lifeMax * 0.2)
@@ -493,6 +494,9 @@ namespace RijamsMod.NPCs.TownNPCs
 				else
 				{
 					chatEmotion.Add($"Thanks again, {Main.LocalPlayer.name}, for asking me to live in your town. Much better than living alone in the Underworld!", emotion: PortraitEmotion.Happy);
+					chatEmotion.Add("I'm starting to get used to living with others. It's fun!", emotion: PortraitEmotion.Happy);
+					chatEmotion.Add("There's so many interesting people to meet. I should've left the Underworld long ago!", emotion: PortraitEmotion.Happy);
+					chatEmotion.Add("Do you think the other townspeople will accept me for who I am?", emotion: PortraitEmotion.Sad);
 				}
 
 				if (Main.LocalPlayer.accJarOfSouls && Main.LocalPlayer.lastCreatureHit == BannerSystem.NPCtoBanner(NPCID.FireImp))
@@ -542,6 +546,9 @@ namespace RijamsMod.NPCs.TownNPCs
 				if (!player.ZoneSkyHeight && !player.ZoneDirtLayerHeight && !player.ZoneRockLayerHeight && !player.ZoneUnderworldHeight)
 				{
 					chatEmotion.Add("It's so vibrant on the surface! I'm used to nothing but reds and grays.", emotion: PortraitEmotion.Happy);
+				}
+				if (!player.ZoneDirtLayerHeight && !player.ZoneRockLayerHeight && !player.ZoneUnderworldHeight)
+				{
 					if (Main.dayTime)
 					{
 						if (Main.raining)
@@ -574,6 +581,7 @@ namespace RijamsMod.NPCs.TownNPCs
 				{
 					chatEmotion.Add("Y'know, the Underworld isn't that friendly of a place. I still like it from nostalgia, though.", emotion: PortraitEmotion.Happy);
 					chatEmotion.Add("I read that there was once a great civilization down here. They are the ones who built all of these buildings. I never did figure out what happened to them, though.", emotion: PortraitEmotion.Thinking);
+					chatEmotion.Add("Despite spending my lifetime in the Underworld attempting to study its history, I don't think we'll ever fully know what happened to the civilization that constructed those towers.", emotion: PortraitEmotion.Thinking);
 				}
 				if (player.ZoneDesert || player.ZoneJungle || player.ZoneUnderworldHeight)
 				{
@@ -745,6 +753,7 @@ namespace RijamsMod.NPCs.TownNPCs
 			}
 			npcShop.Add(ModContent.ItemType<Items.Accessories.Misc.LifeSapperRing>());
 			npcShop.Add(ModContent.ItemType<Items.Accessories.Misc.ManaSapperRing>());
+			npcShop.Add(ModContent.ItemType<Items.Accessories.Summoner.Support.ImpChoker>());
 			npcShop.Add(ModContent.ItemType<Items.Materials.InfernicFabric>(), Condition.DownedEarlygameBoss);
 			npcShop.Add(ModContent.ItemType<Items.Materials.Sulfur>(), Condition.Hardmode);
 			npcShop.Add(new Item(ItemID.PlumbersHat) { shopCustomPrice = 400000 }, ShopConditions.HellTraderMovedIn);
@@ -771,7 +780,8 @@ namespace RijamsMod.NPCs.TownNPCs
 					disableChance = 10;
 				}
 				if (entry.Item.type == ModContent.ItemType<Items.Accessories.Misc.LifeSapperRing>() ||
-					entry.Item.type == ModContent.ItemType<Items.Accessories.Misc.ManaSapperRing>())
+					entry.Item.type == ModContent.ItemType<Items.Accessories.Misc.ManaSapperRing>() ||
+					entry.Item.type == ModContent.ItemType<Items.Accessories.Summoner.Support.ImpChoker>())
 				{
 					disableChance = 5;
 				}

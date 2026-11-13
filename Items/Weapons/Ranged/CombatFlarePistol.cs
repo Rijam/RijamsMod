@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -43,8 +42,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			Item.damage = 15;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 48;
-			Item.height = 28;
 			Item.useTime = 18;
 			Item.useAnimation = 18;
 			Item.useStyle = ItemUseStyleID.Shoot; // 5
@@ -127,8 +124,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			Item.damage = 16;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 48;
-			Item.height = 28;
 			Item.useTime = 18;
 			Item.useAnimation = 18;
 			Item.useStyle = ItemUseStyleID.Shoot; // 5
@@ -213,8 +208,6 @@ namespace RijamsMod.Items.Weapons.Ranged
 		{
 			Item.damage = 25;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 80;
-			Item.height = 40;
 			Item.useTime = 12;
 			Item.useAnimation = 12;
 			Item.useStyle = ItemUseStyleID.Shoot; // 5

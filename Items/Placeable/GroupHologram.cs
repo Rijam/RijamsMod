@@ -12,8 +12,6 @@ namespace RijamsMod.Items.Placeable
 	{
 		public override void SetDefaults()
 		{
-			Item.width = 36;
-			Item.height = 32;
 			Item.value = 1000000;
 			Item.rare = ItemRarityID.Purple;
 			Item.useStyle = ItemUseStyleID.Swing;

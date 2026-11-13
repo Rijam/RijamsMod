@@ -14,8 +14,6 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 24;
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = Item.sellPrice(0, 1, 0, 0);
 			Item.accessory = true;
@@ -40,8 +38,6 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 24;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.sellPrice(0, 0, 75, 0);
 			Item.accessory = true;
@@ -116,8 +112,6 @@ namespace RijamsMod.Items.Accessories.Misc
 	{
 		public override void SetDefaults()
 		{
-			Item.width = 28;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Pink;
 			Item.value = Item.sellPrice(0, 1, 75, 0);
 			Item.accessory = true;

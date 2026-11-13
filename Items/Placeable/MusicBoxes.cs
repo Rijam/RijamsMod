@@ -1,6 +1,5 @@
 using Terraria.ModLoader;
 using Terraria.ID;
-using RijamsMod.Items.Information;
 
 namespace RijamsMod.Items.Placeable
 {
@@ -24,8 +23,6 @@ namespace RijamsMod.Items.Placeable
 			Item.autoReuse = true;
 			Item.consumable = true;
 			Item.createTile = ModContent.TileType<Tiles.MusicBoxOSW>();
-			Item.width = 24;
-			Item.height = 24;
 			Item.rare = ItemRarityID.LightRed;
 			Item.value = 100000;
 			Item.accessory = true;

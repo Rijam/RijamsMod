@@ -15,8 +15,6 @@ namespace RijamsMod.Items.Accessories.Movement
 		}
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 56;
 			Item.rare = ItemRarityID.Yellow;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.accessory = true;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,13 +11,11 @@ namespace RijamsMod.Items.Accessories.Defense
 		{
 			// DisplayName.SetDefault("Frosty Rose");
 			// Tooltip.SetDefault("Grants immunity to Frostburn, Frozen, and Chilled");
-			ItemOriginDesc.itemList.Add(Item.type, new List<string> { "[c/474747:Dropped by The Frost Legion]" });
+			ItemOriginDesc.itemList.Add(Item.type, ["[c/474747:Dropped by The Frost Legion]"]);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 38;
 			Item.rare = ItemRarityID.LightRed; //4
 			Item.value = Item.sellPrice(0, 2, 50, 0);
 			Item.accessory = true;
@@ -42,8 +39,6 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 32;
 			Item.rare = ItemRarityID.LightRed; //4
 			Item.value = Item.sellPrice(0, 4, 50, 0);
 			Item.accessory = true;
@@ -77,8 +72,6 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 34;
 			Item.rare = ItemRarityID.LightPurple; //6
 			Item.value = Item.sellPrice(0, 5, 0, 0);
 			Item.accessory = true;
@@ -112,8 +105,6 @@ namespace RijamsMod.Items.Accessories.Defense
 
 		public override void SetDefaults()
 		{
-			Item.width = 50;
-			Item.height = 44;
 			Item.rare = ItemRarityID.LightRed; //4
 			Item.value = Item.sellPrice(0, 4, 0, 0);
 			Item.accessory = true;

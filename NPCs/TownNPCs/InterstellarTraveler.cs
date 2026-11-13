@@ -19,7 +19,7 @@ using Terraria.ModLoader;
 using RijamsMod.EmoteBubbles;
 using RijamsMod.Items.Accessories.Misc;
 using RijamsMod.Items.Accessories.Ranger;
-using RijamsMod.Items.Accessories.Summoner;
+using RijamsMod.Items.Accessories.Summoner.Support;
 using RijamsMod.Items.Information;
 using RijamsMod.Items.Quest;
 using RijamsMod.Items.Tools;
@@ -958,13 +958,17 @@ namespace RijamsMod.NPCs.TownNPCs
 				lines.Add("Nice job! You have collected and turned in everything I needed.", emotion: PortraitEmotion.VeryHappy);
 				lines.Add("With your help, I have everything I need to repair my ship! I quite like it here, though. I might stay a little longer!", emotion: PortraitEmotion.Smirk);
 				lines.Add("I'm going to be in so much trouble when I get back home. Not only have I been MIA for a long time, but when I do show up, how do I explain all of the magical parts in my ship? Sorry, none of this is your fault. You were great help!", emotion: PortraitEmotion.Worried);
+				lines.Add("I'm going to miss this place once I leave. I hope I'll be allowed to return one day.", emotion: PortraitEmotion.Sad);
+				lines.Add("My ship will be better than new! Thank you.", emotion: PortraitEmotion.Happy);
 			}
 			else
 			{
 				Main.npcChatCornerItem = ModContent.ItemType<QuestTrackerIncomplete>();
 				lines.Add("I'm looking for some specific items to repair my space ship. If you think have anything I'd be interested in, then feel free to talk to me.");
 				lines.Add("I need some items to repair my space ship. Do you think you could help me out?");
-				lines.Add("Look at my checklist to see which quests you have completed and what I still need.");
+				lines.Add("I need your help sourcing some new parts to repair my ship. Can I count on you?", emotion: PortraitEmotion.Thinking);
+				lines.Add("My space ship was badly damaged. Do you mind helping me?", emotion: PortraitEmotion.Worried);
+				lines.Add("Look at my checklist to see which quests you have completed and what I still need.", emotion: PortraitEmotion.Happy);
 
 				if (!RijamsModWorld.intTravQuestOddDevice)
 				{
@@ -994,6 +998,10 @@ namespace RijamsMod.NPCs.TownNPCs
 					{
 						lines.Add($"{Main.npc[cyborg].FullName} has several rockets available. I bet you could use those to craft a new [c/FFFF00:thruster] for my ship.", emotion: PortraitEmotion.Thinking);
 					}
+				}
+				if (!RijamsModWorld.intTravQuestBreadAndJelly)
+				{
+					lines.Add("I'm always in the mood to try foreign food. Do you have anything delicacies for me to try?", 0.5, emotion: PortraitEmotion.Blushing);
 				}
 			}
 			ChatWithPortrait.DialogWithEmotion chosenLine = lines.ChatDB.Get();
@@ -1178,7 +1186,8 @@ namespace RijamsMod.NPCs.TownNPCs
 				.Add(ModContent.ItemType<InterstellarSniper>(), Condition.DownedCultist)
 				.Add(ModContent.ItemType<InterstellarCarbine>(), Condition.DownedMoonLord)
 				// .Add(ModContent.ItemType<ControlGlove>(), new Condition("After defeating Deerclops or in Hardmode", () => Condition.DownedDeerclops.IsMet() || Condition.Hardmode.IsMet()));
-				.Add(ModContent.ItemType<ControlGlove>(), ShopConditions.OrConditions(Condition.DownedDeerclops, Condition.Hardmode));
+				// .Add(ModContent.ItemType<ControlGlove>(), ShopConditions.OrConditions(Condition.DownedDeerclops, Condition.Hardmode));
+				.Add(ModContent.ItemType<InterstellarCuffs>());
 
 			Condition watchRandom(int numberToCheck) => new("Swaps between Watches at random", () => Main.GameUpdateCount % 2 == numberToCheck);
 			npcShop.Add(new Item(ItemID.GoldWatch) { shopCustomPrice = 10000 }, watchRandom(0));

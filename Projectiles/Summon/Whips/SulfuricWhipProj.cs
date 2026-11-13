@@ -7,6 +7,12 @@ namespace RijamsMod.Projectiles.Summon.Whips
 {
 	public class SulfuricWhipProj : WhipProjBase
 	{
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+			CustomProjectileIDSets.IsFireBasedAttackForFrostyRose[Type] = true;
+		}
+
 		public override void SetDefaults()
 		{
 			base.SetDefaults();

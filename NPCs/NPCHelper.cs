@@ -6,7 +6,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
-using Terraria.GameContent.Bestiary;
 
 namespace RijamsMod.NPCs
 {
@@ -155,11 +154,11 @@ namespace RijamsMod.NPCs
 		/// <returns>List NPC of all the Town NPCs within 25 tiles.</returns>
 		public static List<NPC> GetNearbyResidentNPCs(NPC npc, int searchMode, out List<int> npcTypeListHouse, out List<int> npcTypeListNearBy, out List<int> npcTypeListVillage, out List<int> npcTypeListAll)
 		{
-			List<NPC> list = new();
-			npcTypeListHouse = new();
-			npcTypeListNearBy = new();
-			npcTypeListVillage = new();
-			npcTypeListAll = new();
+			List<NPC> list = [];
+			npcTypeListHouse = [];
+			npcTypeListNearBy = [];
+			npcTypeListVillage = [];
+			npcTypeListAll = [];
 			Vector2 npc1Home = new(npc.homeTileX, npc.homeTileY);
 			if (npc.homeless)
 			{
@@ -312,7 +311,6 @@ namespace RijamsMod.NPCs
 		/// <param name="mod">The mod that the item is from.</param>
 		/// <param name="itemString">The class name of the item.</param>
 		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
-		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
 		/// <param name="customPrice">The custom price of the item.</param>
 		public static void SafelySetCrossModItem(Mod mod, string itemString, NPCShop shop, int customPrice, params Condition[] condition)
 		{
@@ -335,7 +333,6 @@ namespace RijamsMod.NPCs
 		/// <param name="mod">The mod that the item is from.</param>
 		/// <param name="itemString">The class name of the item.</param>
 		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
-		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
 		/// <param name="priceDiv">The price will be divided by this amount.</param>
 		public static void SafelySetCrossModItem(Mod mod, string itemString, NPCShop shop, float priceDiv, params Condition[] condition)
 		{
@@ -358,7 +355,6 @@ namespace RijamsMod.NPCs
 		/// <param name="mod">The mod that the item is from.</param>
 		/// <param name="itemString">The class name of the item.</param>
 		/// <param name="shop">The Chest shop of the Town NPC. Pass shop in most cases.</param>
-		/// <param name="nextSlot">The ref nextSlot. Pass ref nextSlot in most cases.</param>
 		/// <param name="priceDiv">The price will be divided by this amount.</param>
 		/// <param name="priceMulti">The price will be multiplied by this amount after the priceDiv.</param>
 		public static void SafelySetCrossModItem(Mod mod, string itemString, NPCShop shop, float priceDiv, float priceMulti, params Condition[] condition)

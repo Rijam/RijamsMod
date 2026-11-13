@@ -12,8 +12,6 @@ namespace RijamsMod.Items.Weapons.Magic.Lanterns
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Item.width = 20;
-			Item.height = 40;
 			Item.shoot = ModContent.ProjectileType<LanternLightShadow>();
 			Item.shootSpeed = 4;
 			Item.rare = ItemRarityID.Green;

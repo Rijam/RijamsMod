@@ -21,7 +21,7 @@ Citadel: {
 
 FrostyRose: {
 	DisplayName: Frosty Rose
-	Tooltip: Grants immunity to Frostburn, Frozen, and Chilled
+	Tooltip: 20% reduced damage from hot attacks
 }
 
 GelidSkullRose: {
@@ -31,7 +31,7 @@ GelidSkullRose: {
 		+1 Defense
 		Melee attacks inflict Frostbite
 		Grants immunity to fire blocks
-		Grants immunity to Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
 		'''
 }
 
@@ -41,7 +41,7 @@ ObsidianFrostySkullRose: {
 		'''
 		+1 Defense
 		Grants immunity to fire blocks
-		Grants immunity to Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
 		'''
 }
 
@@ -50,7 +50,7 @@ RoseOfFireAndIce: {
 	Tooltip:
 		'''
 		Reduces damage from touching lava
-		Grants immunity to Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
 		'''
 }
 
@@ -61,7 +61,7 @@ StellarShield: {
 		+2 Defense
 		Grants immunity to knockback
 		Grants immunity to fire blocks
-		Grants immunity to Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
 		Reduce damage from touching lava
 		Causes stars to fall after taking damage
 		Increases length of invincibility after taking damage
@@ -116,7 +116,7 @@ BandOfManaSapping: {
 	DisplayName: Band of Mana Sapping
 	Tooltip:
 		'''
-		+20 Max Mana
+		+40 Max Mana
 		Gain a little bit of mana after slaying an enemy
 		  Scales with max mana
 		'''
@@ -127,7 +127,7 @@ CosmicSorcery: {
 		'''
 		+15% Magic damage
 		+10% Magic Critical Strike chance
-		+40 Max Mana
+		+60 Max Mana
 		-8% Mana Cost
 		Increased mana regeneration rate
 		Increases pickup range for mana stars
@@ -146,7 +146,7 @@ DestroyerCuffs: {
 		'''
 		+10% Magic damage
 		+8% Magic Critical Strike chance
-		+20 Max Mana
+		+40 Max Mana
 		Increases pickup range for mana stars
 		Restores mana when damage
 		'''
@@ -266,9 +266,40 @@ LegionScarf: {
 	DisplayName: Legion Scarf
 	Tooltip:
 		'''
-		+5% increased damage
-		While in the Snow biome or Space:
-		  +9% increased damage
+		Launch 10 snowballs in all directions after taking damage
+		  Snowballs have a base damage of 25 
+		Gain +10% critical hit damage
+		       +10% whip tag critical hit chance
+		2 second cooldown
+		'''
+}
+
+LegionCloak: {
+	DisplayName: Legion Cloak
+	Tooltip:
+		'''
+		Causes stars to fall after taking damage
+		{$LegionScarf.Tooltip}
+		'''
+}
+
+PanicScarf: {
+	DisplayName: Panic Scarf
+	Tooltip:
+		'''
+		Increases movement speed after taking damage
+		{$LegionScarf.Tooltip}
+		'''
+}
+
+LegionSweetheartCloak: {
+	DisplayName: Legion Sweetheart Cloak
+	Tooltip:
+		'''
+		Causes stars to fall after taking damage
+		Increases movement speed after taking damage
+		Releases bees and douses the user in honey when damaged
+		{$LegionScarf.Tooltip}
 		'''
 }
 
@@ -422,7 +453,7 @@ HailfireBoots: {
 		+10% increased movement speed and +0.5 seconds of flight time
 		Provides the ability to walk on water, honey, & lava
 		Grants immunity to fire blocks and 7 seconds of immunity to lava
-		Grants immunity to On Fire!, Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
 		Reduces damage from touching lava
 		Increases jump speed and allows auto-jump
 		Increases fall resistance
@@ -505,29 +536,21 @@ RocketBooster: {
 
 # Items/Accessories/Summoner
 
+# Items/Accessories/Summoner/Minion
+
 AssembleAssemble: {
 	DisplayName: Assemble Assemble
 	Tooltip:
 		'''
 		+3 Minion capacity
-		+2 Sentry capacity
-		+30% Minion damage
+		+4 Summon armor penetration
+		+30% Summon damage
 		+200% Summon knockback
 		+1 Defense
 		Grants immunity to fire blocks
-		Grants immunity to Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
 		Enemies are less likely to target you
 		'FlavorText BYTE "It all comes together", 0'
-		'''
-}
-
-ControlGlove: {
-	DisplayName: Control Glove
-	Tooltip:
-		'''
-		+2 Support minion radius
-		+4 Summon armor penetration
-		Enables auto swing for all minion and sentry weapons
 		'''
 }
 
@@ -538,7 +561,7 @@ HailfirePygmyNecklace: {
 		+1 Minion capacity
 		+1 Defense
 		Grants immunity to fire blocks
-		Grants immunity to Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
 		'''
 }
 
@@ -548,10 +571,11 @@ HailfirePygmyScarf: {
 		'''
 		+1 Minion capacity
 		+1 Sentry capacity
-		+15% Minion damage
+		+10% Summon damage
 		+1 Defense
 		Grants immunity to fire blocks
-		Grants immunity to Frostburn, Frozen, and Chilled
+		{$FrostyRose.Tooltip}
+		{$LegionScarf.Tooltip}
 		'Don't question it.'
 		'''
 }
@@ -561,7 +585,7 @@ NaughtyList: {
 	Tooltip:
 		'''
 		+1 Minion capacity
-		+1 Sentry capacity
+		+4 Summon armor penetration
 		'''
 }
 
@@ -570,8 +594,8 @@ NaughtyScarab: {
 	Tooltip:
 		'''
 		+2 Minion capacity
-		+1 Sentry capacity
 		+15% Minion damage
+		+4 Summon armor penetration
 		+2 Minion knockback
 		'''
 }
@@ -586,17 +610,111 @@ ObsidianPygmyNecklace: {
 		'''
 }
 
+# Items/Accessories/Summoner/Sentry
+
+FoamFinger: {
+	DisplayName: Foam Finger
+	Tooltip: +1 Sentry capacity
+}
+
+TaggingSpike: {
+	DisplayName: Tagging Spike
+	Tooltip: Sentries apply the currently held whip's tag effect
+}
+
+# Items/Accessories/Summoner/Support
+
+ImpChoker: {
+	DisplayName: Imp Choker
+	Tooltip:
+		'''
+		+8 Support minion radius
+		+50% Support minion potency
+		'''
+}
+
+HarpyHeadband: {
+	DisplayName: Harpy Headband
+	Tooltip:
+		'''
+		The first support minion does not require a minion slot
+		May require resummoning each minion to take effect
+		  Dismiss all of your minions,
+		  summon the free support minion first,
+		  then the rest of your minions
+		'''
+}
+
+InterstellarCuffs: {
+	DisplayName: Interstellar Cuffs
+	Tooltip:
+		'''
+		Support minions inflict their effects negatively to enemies
+		  in their radius at half effectiveness
+		'''
+}
+
+DreamCatcher: {
+	DisplayName: Dream Catcher
+	Tooltip:
+		'''
+		{$ImpChoker.Tooltip}
+		{$HarpyHeadband.Tooltip}
+		'''
+}
+
+FringeCuffs: {
+	DisplayName: Fringe Cuffs
+	Tooltip:
+		'''
+		{$InterstellarCuffs.Tooltip}
+		{$HarpyHeadband.Tooltip}
+		'''
+}
+
+SpikedBracelets: {
+	DisplayName: Spiked Bracelets
+	Tooltip:
+		'''
+		{$ImpChoker.Tooltip}
+		{$InterstellarCuffs.Tooltip}
+		'''
+}
+
+UltimateSupportAccessory: {
+	DisplayName: Ultimate Support Accessory
+	Tooltip:
+		'''
+		{$ImpChoker.Tooltip}
+		{$InterstellarCuffs.Tooltip}
+		{$HarpyHeadband.Tooltip}
+		'''
+}
+
+# Items/Accessories/Summoner/Whip
+
+/*
+ControlGlove: {
+DisplayName: Control Glove
+Tooltip:
+'''
++4 Support minion radius
++4 Summon armor penetration
+Enables auto swing for all minion and sentry weapons
+'''
+}
+*/
+
 ReinforcedSummonersGlove: {
 	DisplayName: Reinforced Summoner's Glove
 	Tooltip:
 		'''
+		+1 whip tag effect slot
 		+12% All Summon speed
 		+10% Whip size
 		+5% Whip damage
-		+100% Summon knockback
-		+2 Support minion radius
-		+4 Summon armor penetration
-		+4 Defense
+		+2 Summon knockback
+		{$VirtuousArmlet.Tooltip}
 		Enables auto swing for all summon weapons
 		'''
 }
@@ -605,12 +723,31 @@ SummonersGlove: {
 	DisplayName: Summoner's Glove
 	Tooltip:
 		'''
+		+1 whip tag effect slot
 		+12% Whip speed
 		+10% Whip size
-		+100% Summon knockback
-		+2 Support minion radius
-		+4 Summon armor penetration
+		+2 Summon knockback
+		{$VirtuousArmlet.Tooltip}
 		Enables auto swing for all summon weapons
+		'''
+}
+
+VirtuousArmlet: {
+	DisplayName: Virtuous Armlet
+	Tooltip:
+		'''
+		+5 Summon tag damage
+		+10% Summon tag critical strike chance
+		'''
+}
+
+HarmonyArmlets: {
+	DisplayName: Harmony Armlets
+	Tooltip:
+		'''
+		+1 Maximum summon tag effects
+		+1 Whip knockback
+		{$VirtuousArmlet.Tooltip}
 		'''
 }
 
@@ -1139,7 +1276,8 @@ DistortionSphereItem: {
 		Equip Ice Skates to stop sliding.
 		Equip Water Walking Boots to walk on water.
 		Equip Balloons to increase jump height.
-		Cannot use any items when transformed.
+		Equip Frog Legs to auto jump.
+		Can dash, but only if a dash item is equipped.
 		'''
 }
 

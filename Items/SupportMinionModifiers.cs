@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
